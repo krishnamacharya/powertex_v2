@@ -1,0 +1,334 @@
+<div class="container pad_t_5per pad_b_5per" id="outstandWraper">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Upcoming Products</span>
+  </p>
+  <div class="row t_s_1">
+    <div class="row bg-theme dash_status" style="margin:0px">
+      <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':UPhidden == true}"
+          (click)="up()">Upcoming Products</a></div>
+      <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':ELhidden == true}"
+          (click)="el()">Enquiries List</a></div>
+    </div>
+    <div *ngIf="UPhidden">
+      <div class="row pad_15">
+        <section *ngIf="createcode">
+          <div class="row">
+            <div class="col-sm-12">
+
+              <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Create New Upcoming Products<span class="a_b_2"
+                  (click)="availoffers()">
+                  <button class="a_b_1 btn btn-primary pull-right"><i class="fa fa-long-arrow-left"></i>&nbsp;Available
+                    Upcoming Products</button></span></h4>
+              <div class="row pad_15" style="margin:15px;">
+
+                <form (ngSubmit)="onSubmit(masterDataForm)" #masterDataForm="ngForm">
+                  <div class="form-group row">
+                    <div>
+
+                      <div class="col-sm-3 mar_b_10_mbl">
+                        <label for="upcoming_title" >Product Name
+                          <sub class="txt_red f_size_25">*</sub>
+                        </label>
+                        <div>
+                          <input type="text" class="form-control" id="upcoming_title" name="upcoming_title"
+                            [(ngModel)]="masterData.upcoming_title" #upcoming_title="ngModel" required
+                            placeholder="Enter Product Name">
+                          <div [hidden]="upcoming_title.valid || upcoming_title.untouched" class="validation_msg">
+                            Product Name is required
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-3 mar_b_10_mbl">
+                        <label for="upcoming_description">Description
+                          <sub class="txt_red f_size_25">*</sub>
+                        </label>
+                        <div>
+                          <textarea class="form-control rounded-0" id="upcoming_description" rows="3"
+                            name="upcoming_description" [(ngModel)]="masterData.upcoming_description"
+                            #upcoming_description="ngModel" placeholder="Enter Description" required></textarea>
+                          <div [hidden]="upcoming_description.valid ||  upcoming_description.untouched"
+                            class="validation_msg">
+                            Description is required
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-3 mar_b_10_mbl">
+                        <label for="upcoming_description">Image Name
+                          <sub class="txt_red f_size_25">*</sub>
+                        </label>
+                        <div>
+                          <textarea class="form-control rounded-0" id="image" rows="3"
+                            name="image" [(ngModel)]="masterData.image"
+                            #upcoming_description="ngModel" placeholder="Enter Product Name" required></textarea>
+                          <div [hidden]="upcoming_description.valid ||  upcoming_description.untouched"
+                            class="validation_msg">
+                            Product name is required
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div>
+
+
+
+                    <div class="form-group row pad_t_b_10">
+                      <div class="col-sm-12">
+
+                        <div class="pull-left">
+                          <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                            [disabled]="masterDataForm.invalid">Submit
+                            <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section *ngIf="availableoffers">
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Upcoming Products List<span class="a_b_2"
+                  (click)="createoffers()">
+                  <button class="a_b_1 btn btn-primary pull-right">Create New Upcoming Products&nbsp;<i
+                      class="fa fa-long-arrow-right"></i></button></span></h4>
+
+              <div class="table-responsive tabres" style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc"
+                *ngIf="getupcoming_products?.length>0">
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Product Name</th>
+                        <th>Image </th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="let f of getupcoming_products | paginate: { itemsPerPage: 10, currentPage: Page}; let i=index; ">
+                        <td>{{10*(Page-1)+(i+1)}}</td>
+                        <td>{{f.upcoming_title}}</td>
+                        <td><img src="{{f.image}}" width="70" height="70"></td>
+                        <td>{{f.upcoming_description}}</td>
+
+                        <td>
+                          <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" *ngIf="f.status ==1"
+                            (click)="editproduct(f)">
+                            <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                          </span>
+                          <!-- <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="f.status ==1"
+                            (click)="enable(f)">
+                            <i class="fa fa-check" aria-hidden="true" title="Enable"></i>
+                          </span> -->
+                          <!-- *ngIf="f.status ==0" -->
+                          <span class="f_size_15 red_clr padd_right_10 cursor_pointer" 
+                            (click)="enable(f)">
+                            <i class="fa fa-close" aria-hidden="true" title="Disable"></i>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+              </div>
+              <div class="col-md-12" *ngIf="getupcoming_products?.length==0">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div *ngIf="ELhidden">
+      <div class="row pad_15">
+        <section *ngIf="availableenq">
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">
+                Enquiries List
+              </h4>
+
+              <div class="table-responsive tabres" style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc"
+                *ngIf="getupcoming_enquiries?.length>0">
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Description </th>
+                        <!-- <th>Actions</th> -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="let f of getupcoming_enquiries | paginate: { itemsPerPage: 10, currentPage: Page}; let i=index; ">
+                        <td>{{10*(Page-1)+(i+1)}}</td>
+                        <td>{{f.upcoming_id}}</td>
+                        <td>{{f.upcoming_email | lowercase}}</td>
+                        <td>{{f.upcoming_mobile}}</td>
+                        <td>{{f.upcoming_description}}</td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+              </div>
+              <div class="col-md-12" *ngIf="getupcoming_enquiries?.length==0">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="success" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Product Updated Successfully...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Upcoming Product Details Inserted Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editoffermodal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading1">Edit </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 2% 0;">
+              <div class="row" *ngIf="editproduct_data" class="row_mar_0">
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Product Name</th>
+                          <th>Description</th>
+                          <th>Image Name</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div>
+                              <input type="text" class="form-control" id="upcoming_title" name="upcoming_title"
+                                [(ngModel)]="editproduct_data.upcoming_title" #upcoming_title="ngModel" required
+                                placeholder="Enter Product Name">
+                            </div>
+                          </td>
+                          <td>
+                            <div>
+                              <textarea class="form-control rounded-0" id="upcoming_description" rows="5"
+                                name="upcoming_description" [(ngModel)]="editproduct_data.upcoming_description"
+                                #upcoming_description="ngModel" placeholder="Enter Description" required></textarea>
+                            </div>
+                          </td>
+                          
+                          <td>
+                            <div>
+                              <textarea class="form-control rounded-0" id="image" rows="5"
+                                name="image" [(ngModel)]="editproduct_data.image"
+                                #image="ngModel" placeholder="Enter Product Name" required></textarea>
+                            </div>
+                          </td>
+
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-primary" data-dismiss="modal" (click)="editproduct_submit()">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button> -->
+      </div>
+    </div>
+  </div>
+</div>

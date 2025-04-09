@@ -1,0 +1,113 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+
+<div class="container pad_t_5per pad_b_5per">
+
+
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+
+    <h3 class="shopee_name">
+      <span>{{loginUserData.content}}</span>
+    </h3>
+
+
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+
+
+  <p class="bread-crumb1" id="totalOutstanding">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Outstanding Discount Details</span>
+  </p>
+
+
+  <div class="row mar_b_15">
+    <div class="col-sm-12">
+      <div class="fl">
+        <h4>Outstanding Discount Details</h4>
+      </div>
+      <div class="fr" *ngIf="getinvoicelist5?.length>0">
+        <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+          class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="branchtable" *ngIf="getinvoicelist5?.length>0">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Business Name</th>
+            <th>Marketing Manager</th>
+            <th>Discount</th>
+            <th>Outstanding</th>
+            <th>Credit Limit</th>
+            <th>Credit Period</th>
+            <th>Due Amount</th>
+            <!-- <th>Actions</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <!-- [ngClass is used to apply the colors in to table rows based up on condition] -->
+          <tr
+            *ngFor="let getinv of getinvoicelist5 |filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i=index"
+            [ngClass]="{'ModifiedAmount':getinv.due[0].credit_limit < getinv.Outstanding}">
+            <td>{{10*(p-1)+(i+1)}}</td>
+            <td>{{getinv.business_name }}</td>
+            <td>{{getinv.due[0]?.mrk}}</td>
+            <td>{{getinv.Discount }}%</td>
+            <td>{{(getinv.Outstanding).toLocaleString('en-IN')}}</td>
+            <td>{{(getinv.due[0]?.credit_limit).toLocaleString('en-IN')}}</td>
+            <td>{{getinv.due[0]?.credit_period}}</td>
+            <td>{{(getinv.due[0]?.due).toLocaleString('en-IN')}}</td>  
+            <!-- <td><span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="gotoledger(getinv)">
+                <i class="fa fa-bars" aria-hidden="true" title="View More"></i>
+              </span></td> -->
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td></td>
+           
+            <td><span><b>Totals</b></span></td>
+            <td></td>
+            <td><span><b>{{(this.TotOutstanding).toLocaleString('en-IN')}}</b></span></td>
+            <td class="text-center"><span><b>{{(this.TotCreditLimit).toLocaleString('en-IN')}}</b></span></td>
+            <td></td>
+            <td class="text-right"><span><b>{{(this.TotDueAmount).toLocaleString('en-IN')}}</b></span></td>
+            
+          </tr>
+        </tfoot>
+
+      </table>
+    </div>
+
+
+    <div class="pull-right">
+      <button class="btn btn-primary " type="button" id="printPageButton"
+        (click)="printreport()">Print</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <button class="btn btn-primary " type="button" id="printPageButton" (click)="printreport1()">Print WithOut
+        0</button>
+    </div>
+    <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+  </div>
+
+
+
+  <div *ngIf="getinvoicelist5?.length ==0">
+    <div class="col-md-12">
+      <div class="no_data">
+        <img class="no_data_cnter" src="../assets/emptyicon.png" />
+        <span class="nodata_txt">No Data is Available</span>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,104 @@
+<div class="container pad_t_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="
+                      color: #878787 !important;">Dashboard</a></span>
+   
+    <span *ngIf="loginUserData.role=='Admin' && fromactiveusers">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Admin-ACTIVE DEALERS" style="color: #878787 !important;">Active Dealers</a>
+    </span>
+    <span *ngIf="loginUserData.role=='Admin' && !fromactiveusers">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/customerledger" style="color: #878787 !important;">Customer Ledger</a>
+    </span>
+    <span *ngIf="loginUserData.role=='Accounts Manager'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/customerledger" style="color: #878787 !important;">Customer Ledger</a>
+    </span>
+  
+    &nbsp;>&nbsp;
+    <span>Print</span>
+  </p>
+  <div class="total_invoice_page" style="margin-bottom: 20px;" id="printSectionId">
+    <!-- <h3 style="padding-bottom: 10px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;">Packing-List
+        </h3> -->
+        <div *ngIf="this.Headerdetails">
+          <h3 style="padding-bottom: 10px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;">
+            {{this.Headerdetails.bussiness_name}}
+          </h3>
+          <h6 style="padding-bottom: 10px;text-align: center;font-weight: 600;margin-top: 0px;">
+            <b>From:&nbsp;</b>{{this.Headerdetails.fromdate}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>To:&nbsp;</b>{{this.Headerdetails.tilldate}}
+          </h6>
+        </div>
+    <div class="invoce_address printwrap">
+        <div class="row" *ngIf="dealerdetails.length>0">
+            <div  class="col-md-6 text-left">
+              <!-- <b *ngIf="totalamounts && totalamounts[0].DrTotal">Total Debits  :  ₹ {{totalamounts[0].DrTotal.toLocaleString('en-IN')}}.00</b> -->
+            </div>
+            <div class="col-md-6 text-right">
+              <b *ngIf="totalamounts  && totalamounts[0].Amounts">Opening Balance : ₹ {{totalamounts[0].Amounts}} CR</b>
+              <b *ngIf="totalamounts && totalamounts[0].openingbalance && !totalamounts[0].Amounts ">Opening Balance : ₹ {{totalamounts[0].openingbalance}} DR</b>
+              <b *ngIf="totalamounts && !totalamounts[0].openingbalance ">Opening Balance : ₹ 0</b>
+              <!-- <b *ngIf="totalamounts && totalamounts[0].CrTotal">Total Credits  :  ₹ {{totalamounts[0].CrTotal.toLocaleString('en-IN')}}.00</b> -->
+            </div>
+          </div>
+      <div class="table-responsive" style="margin-top: 10px;">
+        <table class="table table-bordered table-striped pending_order printTable">
+          <thead>
+          
+            <tr>
+              <th>S.No</th>
+              <th>Transaction Id</th>
+              <th>Invoice Date</th>
+              <th>Type</th>
+              <th class="text-right">DR</th>
+              <th class="text-right">CR</th>
+              <th class="text-right">Balance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let res of dealerdetails; let j=index;">
+              <td>{{j+1}}</td>
+              <td style="text-align:left">{{res.inv_no}}</td>
+              <td style="text-align:left">{{res.inv_date}}</td>
+              <td style="text-align:left">{{res.TType}}</td>
+              <td class="text-right">₹ {{res.DR.toLocaleString('en-IN')}}.00</td>
+              <td class="text-right">₹ {{res.CR.toLocaleString('en-IN')}}.00</td>
+              <!-- <td  class="text-right">₹ {{(math.round(res.balance)).toLocaleString('en-IN')}}.00</td> -->
+              <td *ngIf="res.credit==true" class="text-right">₹ {{res.balance.toLocaleString('en-IN')}}.00 CR</td>
+              <td *ngIf="res.credit==false" class="text-right">₹ {{res.balance.toLocaleString('en-IN')}}.00 DR</td>
+            </tr>
+            <tr >
+               
+              <td colspan="3"></td>  
+              <td style="text-align:right"><b>Total</b>   </td>
+              <td style="text-align:right">
+                ₹ {{totalamounts[0].DrTotal.toLocaleString('en-IN')}}.00
+              </td>
+              <td style="text-align:right">
+                ₹ {{totalamounts[0].CrTotal.toLocaleString('en-IN')}}.00 
+              </td>
+              <td *ngIf="credit==true" style="text-align:right">
+                ₹ {{totalamounts[0].balance.toLocaleString('en-IN')}}.00 CR
+              </td>
+              <td *ngIf="credit==false" style="text-align:right">
+                ₹ {{totalamounts[0].balance.toLocaleString('en-IN')}}.00 DR
+              </td>
+            
+        </tr>
+
+
+
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+  <div class="row" style="text-align: center;padding-top: 15px;">
+    <button type="submit" class="btn btn-success" (click)="printPL()" style="letter-spacing:1px;">Print
+    </button>
+    <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Cancel</button>
+  </div>
+</div>

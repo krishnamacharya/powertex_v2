@@ -1,0 +1,57 @@
+.blue_l_clr {
+    color: #293271;
+}
+.green_clr{
+    color:#1c944f;
+}
+.red_clr{
+    color:#cf1111;
+}
+.f_size_15{
+    font-size: 15px;
+}
+.padd_right_10{
+    padding-right: 10px;
+}
+
+.alert_heading1 {
+    background: #0da550;
+    margin-top: 0;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white !important;
+}
+
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+  }
+  .bussinesInfo{
+    background: #0fa497;
+    margin-bottom: 0;
+    padding: 10px;
+    color: #fff !important;
+}    
+.a_b_1{
+    color: #fff !important;
+    background-color: #293271 !important;
+    border-color: #293271 !important;
+}
+.a_b_2 {
+    float: right;
+    font-weight: 600;
+    margin-top: -8px;
+} 
+
+.table  thead  tr  th {
+  padding: 2px !important;
+  vertical-align: bottom !important;;
+  border-bottom: 2px solid #ddd !important;;
+  font-size: 12px !important;;
+}

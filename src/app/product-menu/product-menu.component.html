@@ -1,0 +1,41 @@
+<div>
+  <div class="navigation"  style="margin-right: 0px !important;width: 100%;">
+    <ul>
+      <li class="has-sub" *ngFor="let p of resources | slice:0:8"> 
+            <a href="javascript:void(0)" (click)="selected_catg(p.Category)"> <img class="pro_img" src="{{p.icon}}" onerror="this.onerror=null;this.src='https\://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/TctSawBlade.png';">{{p.Category }}</a>
+            
+            <ul class="m_1">
+                <li class="has-sub" *ngFor="let subp of p.detail | slice:0:12" > <a href="javascript:void(0)" (mouseenter)="selected_cat_subcat(p.Category,subp['SubCategory'])" (mouseleave)="d_m()" (click)="selected_modals(p.Category,subp['SubCategory'])" > {{subp['SubCategory']  }}</a>
+                    <!-- <ul class="m_2">
+                        <div class="m_3">
+                            <div  class="col-md-7" style="padding-left: 0px;padding-right: 0px">
+                                <div class="m_4" *ngIf="SelectedSubCategory==subp.SubCategory" >
+                                    <li *ngFor="let m of subp.modelno" (change)="product_modal(m,$event)"> 
+                                        <a href="javascript:void(0)">
+                                        <label style="color:white;cursor: pointer;" for="{{m}}">{{m}}</label>
+                                        <span ><input type="checkbox" [checked]="selected" id="{{m}}" class="m_c" ></span></a>
+                                    </li>
+                                </div>
+                                <div *ngIf="SelectedSubCategory==subp.SubCategory">
+                                    <li class="select_all" style="height:40px">
+                                      <span ><input type="checkbox" (change)="select_All(subp.SubCategory,subp.modelno,$event)" style="width:20px;height:15px;"> </span>
+                                      <span class="m_s">Select all</span> 
+                                      <button class="m_p btn  btn-xs btn-primary"  [disabled]="(ok_btn() || ok)" (click)="product(p.Category,subp.SubCategory)">Proceed</button>
+                                    </li>
+                                </div>
+                            </div>
+                            <div class="col-md-5 text-center">
+                              <img src="{{subp.url}}" alt="No-image" style="width: 60%">
+                              <p class="prod_desc">{{subp.description}}</p>
+                            </div>     
+                        </div>
+                    </ul> -->
+                </li>              
+                <li><a href="javascript:void(0)" (click)="view_all_subcatg(p.Category)" style="color: lightgray;">Explore All...</a></li>
+            </ul>
+      </li>
+      <li><a href="javascript:void(0)" routerLink="/all-Category" style="margin-left:60px;margin-top:10px;" class="viewall">View All...</a></li>
+    </ul>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

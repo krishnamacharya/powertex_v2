@@ -1,0 +1,211 @@
+// ::ng-deep .mat-horizontal-stepper-header {
+//   pointer-events: none !important;
+// }
+
+body { 
+  font-family: Roboto, Arial, sans-serif;
+  margin: 0;
+}
+
+.basic-container {
+  padding: 30px;
+}
+
+.version-info {
+  font-size: 8pt;
+  float: right;
+}
+
+
+.card {
+  background: #FFF none repeat scroll 0% 0%;
+  box-shadow: none;
+  margin-bottom: 30px;
+}
+
+//login tab styles start here...
+.signup [type='text'] {
+    border: 0;
+    border-radius: 3px;
+    height: 30px;
+    width: 35%;
+    color: #232f3e;
+    border-bottom: 1px solid #0fb475;
+}
+.signup [type='password'] {
+    border: 0;
+    border-radius: 3px;
+    height: 30px;
+    width: 35%;
+    color: #232f3e;
+    border-bottom: 1px solid #0fb475;
+}
+
+//order summery tab styles start here...
+button.qty-change{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #0fa497;
+}
+.qty-input{
+    height: 30px;
+    width: 80px;
+    text-align: center;
+}
+.qty-align{
+    padding-right: 32px;
+    border: none;
+    padding-top: 10px;
+}
+.delivery-txt-color{
+    color: #0fa497;
+    font-weight: 600 !important;
+}
+.border_styles{
+    border-bottom: 3px solid #e8e6e6;
+    padding: 30px 0 20px 0;
+    box-shadow: 3px 3px 8px #e8e6e6;
+}
+.pad_l_40{
+    padding-left: 40px !important;
+}
+.mar_b_40{
+    margin-bottom: 40px;
+}
+.product_image{
+    width: 100%;
+}
+
+//address styles start here...
+// .pad_t_r_l_b{
+//     padding: 7px 20px;
+// }
+.address_data{
+  color: #545151;
+  font-size: 14px;
+}
+
+//payment options start here...
+.custom-radios div {
+    display: inline-block;
+  }
+  .custom-radios input[type="radio"] {
+    display: none;
+  }
+  .custom-radios input[type="radio"] + label {
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 23px;
+  }
+  .custom-radios input[type="radio"] + label span {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin: 0px 10px 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    line-height: 44px;
+  }
+  .custom-radios input[type="radio"] + label span img {
+    opacity: 0;
+    transition: all .3s ease;
+  }
+  .custom-radios input[type="radio"]#color-1 + label span {
+    background-color: #0da550;
+  }
+  .custom-radios input[type="radio"]#color-2 + label span {
+    background-color: #0da550;
+  }
+  .custom-radios input[type="radio"]:checked + label span {
+    opacity: 1;
+    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg) center center no-repeat;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+  }
+  .radio_text{
+    color: #525151;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+
+  //stepper styles start here
+  .mar_t_n23{
+    margin-top: -23px;
+  }
+  .bg_f5f5f5{
+    background: #f5f5f5;
+  }
+
+
+
+  //alert styles start here
+.alert_heading{
+  background: #0da550;
+  margin-top: 0;
+  padding: 50px;
+  text-align: center;
+  position: relative;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.alert_heading span{
+  color:#fff;
+}
+.right_mark{
+  background: #fff;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 40%;
+  top: 50px;
+  box-shadow: 3px 5px 10px #ddd;
+}
+.right_mark i{
+  font-size: 60px;
+  color: #0da550;
+}
+.content_msg span{
+  font-size: 18px;
+  font-weight: 550;
+}
+.close{
+  color: #fff !important;
+   opacity: 0 !important;
+  margin-top: -40px !important;
+  margin-right: -30px !important;
+}
+.modal-content{
+  border-radius: 15px !important;
+}
+.orderNo{
+  color: #0fa497;
+  font-size: 20px !important;
+  font-weight: bold !important;
+}
+
+
+:host{
+  // /deep/{
+  //   // .mat-radio-inner-circle{
+  //   //   top: -20px  !important;
+  //   // }
+  //   // .mat-radio-outer-circle{
+  //   //   top: -20px  !important;
+  //   // }
+  // }
+}

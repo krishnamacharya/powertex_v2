@@ -1,0 +1,120 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+ 
+
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+
+    <span>
+      <a href="javascript.void(0)" routerLink="/Admin-GeneratedInvoices" *ngIf="this.Type=='Documents List'" style="color: #878787 !important; ">Documents List</a>
+      <a href="javascript.void(0)" routerLink="/Admin-Pending-Generated-Invoices"  *ngIf="this.Type=='Pending Documents List'" style="color: #878787 !important; ">Pending Documents List</a>
+            </span>&nbsp;>&nbsp;
+    <span>Print</span>		
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>{{this.Type}}</h4>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="orders">
+        <div id="printsuppndng">
+          <div class="row busname text-center">
+             <h3 class="shopee_name">
+              <span> {{loginUserData.content}}</span>
+            </h3>
+            <hr>
+          <h3 class="shopee_name text-center">
+            <span> {{this.Type}} </span>
+          </h3>
+          </div>
+        <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th *ngIf="loginUserData.role=='Admin'" class="width150">Business Name</th>
+                    <th>Inv No</th>
+                    <th>Invoice Date</th>
+                    <th class="text-right">Amount</th>
+                    <th>INV</th>
+                    <th>BL</th>
+                    <th>PL</th>
+                    <th>CO</th>
+                    <th>Ins</th>
+                    <th>Others</th>
+                    <th>Others 2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders ; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.business_name}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td>{{data.invdate | date:'dd-MM-yyyy'}}</td>
+                    <td *ngIf="data.POAmount" class="text-right">{{data.POAmount | number : '1.2-2'}} ({{data.currency}})</td>
+                    <td *ngIf="data.poamount" class="text-right">{{data.poamount | number : '1.2-2'}} ({{data.currency}})</td>
+                    <td><a (click)="opentab(data.doc2)"
+                        [ngStyle]="{'color': data.doc2?'green':'red'}">{{data.doc2?"Y":"N"}}</a></td>
+                    <td><a (click)="opentab(data.doc1)"
+                        [ngStyle]="{'color': data.doc1?'green':'red'}">{{data.doc1?"Y":"N"}}</a></td>
+                    <td><a (click)="opentab(data.doc3)"
+                        [ngStyle]="{'color': data.doc3?'green':'red'}">{{data.doc3?"Y":"N"}}</a></td>
+                    <td><a (click)="opentab(data.doc4)"
+                        [ngStyle]="{'color': data.doc4?'green':'red'}">{{data.doc4?"Y":"N"}}</a></td>
+                    <td><a (click)="opentab(data.doc5)"
+                        [ngStyle]="{'color': data.doc5?'green':'red'}">{{data.doc5?"Y":"N"}}</a></td>
+                    <td><a (click)="opentab(data.doc6)"
+                        [ngStyle]="{'color': data.doc6?'green':'red'}">{{data.doc6?"Y":"N"}}</a></td>
+                    <td><a (click)="opentab(data.doc7)"
+                        [ngStyle]="{'color': data.doc7?'green':'red'}">{{data.doc7?"Y":"N"}}</a></td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+              <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+              </button>
+            
+              <button  type="submit" style="margin:10px;"
+                class="btn btn-success" *ngIf="this.Type=='Documents List'" routerLink="/Admin-GeneratedInvoices">Cancel</button>
+              <button  type="submit" style="margin:10px;"
+              class="btn btn-success" *ngIf="this.Type=='Pending Documents List'" routerLink="/Admin-Pending-Generated-Invoices">Cancel</button>
+              </div>
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

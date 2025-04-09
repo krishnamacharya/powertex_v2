@@ -1,0 +1,173 @@
+
+.img-center {
+    margin:0 auto;
+}
+.txt_onImg{
+    top: 0;
+    position: absolute;
+    font-size: 30px;
+    font-weight: bold;
+    color: #eaeaea;
+    margin-top: 100px;
+    text-align: center !important;
+}
+.img_onImg{
+    bottom: 0;
+    position: absolute;
+    margin-left: 54px;
+    margin-bottom: 25px;
+    width: 50%;
+}
+
+.userCreation_con_width{
+    width:1100px;
+}
+
+//for delete popup styles start here
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #0fa497 !important;
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+}
+.modal-header .modal-title {
+    color:#fff !important;
+}
+
+//alert styles start here
+.alert_heading{
+    background: #0da550;
+    margin-top: 0;
+    padding: 50px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .alert_heading span{
+    color:#fff;
+  }
+  .right_mark{
+    background: #fff;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 40%;
+    top: 50px;
+    box-shadow: 3px 5px 10px #ddd;
+  }
+  .right_mark i{
+    font-size: 60px;
+    color: #0da550;
+  }
+  .content_msg span{
+    font-size: 18px;
+    font-weight: 550;
+  }
+  .close{
+    color: #fff !important;
+     opacity: 0 !important;
+    margin-top: -40px !important;
+    margin-right: -30px !important;
+  }
+  .modal-content{
+    border-radius: 15px !important;
+  }
+  .high_image {
+    width:100%;height:300px;padding:20px;
+    transition: padding 0.4s;
+  }
+  .gst1{
+    width: 20%;
+    display: inline-block;
+}
+.gst2 {
+    width: 80%;
+    display: inline-block;
+}
+.regbg{
+  background: url(/assets/logins_bg.png) no-repeat left bottom;
+  background-size: cover;
+  min-height: 500px;
+}
+  /* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 480px){
+ 
+  .btn_w {
+    width: 97px !important;
+}
+  .mar_r_n15 {
+    margin-left:-16px;
+  }
+.reg_form{
+  border-radius: 0;
+  .img_onImg {
+    margin-left: 31%;
+    margin-bottom: 14px;
+    width: 33%;
+}
+
+.txt_onImg{
+  top: -45%;
+  left: 20%;
+  font-size: 22px;
+}
+.regbg{
+  background: url(/assets/logins_bg.png) no-repeat left;
+  background-size: cover;
+  min-height: 200px;
+}
+}
+.regformWrap{
+  margin:0 3px 0 3px;
+}
+.rht_side_div{
+  .form-group{
+    margin-bottom: 0;
+  }
+  .col-sm-6{
+    margin-bottom: 10px;
+  }
+  button{
+    margin:1rem 0 1rem 0;
+  }
+}
+}
+.toppad{
+  padding-top: 10px !important;
+}
+.forgot-password {
+  color: #0fb475;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  float: right;
+  padding-top: 10px;
+}
+/* tablets styles start here */
+@media screen and (min-width: 481px) and (max-width: 767px){
+  .mar_r_n15 {
+    margin-right: 0px;
+}
+}
+
+/* desktops styles start here */
+@media screen and (min-width: 768px) and (max-width: 991px){
+
+}
+
+/* desktops styles start here */
+@media screen and (min-width: 992px) and (max-width: 1023px){
+ 
+}
+
+  /* lg-desktops styles start here */
+@media screen and (min-width: 1024px) and (max-width: 1200px){
+ 
+}

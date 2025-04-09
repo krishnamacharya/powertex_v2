@@ -1,0 +1,92 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+          <h3 class="shopee_name">
+            <span> {{loginUserData.content}}</span>
+          </h3>
+          <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+        </div>
+      </div>
+  <p class="bread-crumb1">
+    <span><a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>GRN</span>
+  </p>
+  <section *ngIf="loginUserData.designation=='Marketing Manager'" [ngStyle]="{'padding-top':ven_POHidden === true ? '1%' : '3%','transition':'0.7s' }">
+    <div class="chose_vendr">
+      <div class="col-md-12   text-center">
+        <div class="form-group">
+          <label class="vendor_lab" for="sel1">Choose Dealer </label>
+          <span>
+            <select class="vendor_sel" [(ngModel)]="selectedObj" (ngModelChange)="dealer_chn($event)" id="sel1">
+              <option [ngValue]="undefined" disabled selected>Select Dealer</option>
+              <option *ngFor="let p of dealers" [ngValue]="p">{{p.business_name}}, {{p.city}}</option>
+            </select>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="ven_POHidden">
+  <div class="reg_form mar_b_30 pad_15" id="grnWrap">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>GRN Details</h4>
+        </div>
+        <div class="fr" *ngIf="inw_details?.length>0">
+          <input type="text" placeholder="Search Product" [(ngModel)]="searchText" class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row pad_15" *ngIf="inw_details?.length>0" id="grnTable">
+      <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Sr.No</th>
+          
+            <th>Company Name</th>
+            <!-- <th>PO No.</th>
+            <th>PO Date</th> -->
+            <th>Invoice No</th>
+            <th>Invoice Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of inw_details|filter:searchText  | paginate: { itemsPerPage: 10, currentPage: p };let j = index">
+            <td>{{10*(p-1)+(j+1)}}</td>
+          
+            <td>{{data.company_name}}</td>
+            <!-- <td>{{data.spo_no}}</td>
+            <td>{{data.po_date | date:'dd-MM-yyyy'}}</td> -->
+            <td>{{data.sinv_no}}</td>
+            <td>{{data.inv_date | date:'dd-MM-yyyy'}}</td>
+            <td>
+              <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                <i class="fa fa-eye" aria-hidden="true" title="View Details" (click)="invoice_data(data)"></i>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+    <div class="col-md-12" *ngIf="inw_details?.length<=0">
+      <div class="no_data">
+        <img class="no_data_cnter" src="../assets/emptyicon.png" />
+        <span class="nodata_txt">No Data is Available</span>
+      </div>
+    </div>
+  </div>
+</section>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

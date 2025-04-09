@@ -1,0 +1,86 @@
+.upload_file{
+    border: 1px dashed #c5c5c5;
+    background: #f5f5f5;
+    width: 200px;
+    height: 150px;
+}
+.upload_file span{
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+}
+.custom-file-upload {
+    border: 1px solid #0fa497;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background: #0fa497;
+    color: #fff;
+    border-radius: 3px;
+}
+input[type="file"] {
+    display: none !important;
+}
+.upload_btn{
+    background: #0da550;
+    border:1px solid #0da550;
+    color:#fff;
+    width: 115px;
+}
+.download_file{
+    font-size: 30px;
+    color: #0da550;
+    padding-left: 50px;
+    cursor: pointer;
+}
+.upload_heading{
+    font-weight: 600;
+    color: #787272;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+//alert styles start here
+.alert_heading{
+    background: #0da550;
+    margin-top: 0;
+    padding: 50px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.alert_heading span{
+    color:#fff;
+}
+.right_mark{
+    background: #fff;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 40%;
+    top: 50px;
+    box-shadow: 3px 5px 10px #ddd;
+}
+.right_mark i{
+    font-size: 60px;
+    color: #0da550;
+}
+.content_msg span{
+    font-size: 18px;
+    font-weight: 550;
+}
+.close{
+    color: #fff !important;
+     opacity: 0 !important;
+    margin-top: -40px !important;
+    margin-right: -30px !important;
+}
+.modal-content{
+    border-radius: 15px !important;
+}

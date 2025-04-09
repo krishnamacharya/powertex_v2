@@ -1,0 +1,210 @@
+.track_btn {
+    color:#fff;
+    border:1px solid #0fa497;
+    background-color: #0fa497;
+    border-radius:4px;
+}
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+}
+.exceeded {
+    background-color: rgb(207, 61, 61) !important;
+    color: #e2d4d4 !important;
+  }
+table tbody tr td {
+    text-align: center;
+}
+table thead tr th {
+    text-align: center;
+    font-family: sans-serif;
+}
+table {
+    border: 1px solid #04423ea8;
+}
+table thead th{
+    background-color: #04423ea8;
+    color: #fff;
+}
+table tbody {
+    border:2px solid #04423ea8;
+}
+.btn-ord{
+    color: #fff;
+    background-color: #04423ea8;
+    border-color: #04423ea8;
+}
+.alert_heading1 {
+    background: #0da550;
+    margin-top: 0;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white !important;
+}
+.padd_right_10{
+    padding-right: 10px;
+}
+
+// tbody {
+//     display:block;
+//     height:50px;
+//     overflow:auto;
+// }
+
+// .mat-expansion-panel-header {
+//     // flex-direction: row !important;
+//     align-items: center !important;
+//     padding: 0 24px !important;
+//     border-radius: inherit !important;
+//     display:block !important
+// }
+
+.bankdisplay {
+    max-height: calc(100vh - 210px) !important;
+    overflow-y: scroll !important;
+}
+.content{
+    width:950px !important;
+}
+.close1{
+    color:red !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    cursor:pointer !important;
+}
+.p_s_1{
+    div{
+        h4{
+            color:#ffff !important;
+        }
+    }
+}
+.btn-primary {
+    background-color: #293271 !important;
+    border-color: #323a77 !important;
+}
+.modal_title{
+    text-align:center;
+    padding:10px;
+}
+.modalinnerwrap{
+    padding: 0 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    background: #0fa497;
+    h4{
+        color:#ffff !important;
+        font-size:12px !important;
+    }
+}
+/* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 480px){
+    .conpanyCode{
+        p{
+            width:120px;
+        }
+       
+    }
+    .modalinnerwrap{
+        div{
+            float: left;
+        }
+    }
+    .expansionPanel{
+        div{
+            padding-right: 15px !important;
+            padding-left: 15px !important;
+        }
+    }
+    .modal_title{
+        padding:1px;
+    }
+    .bankdisplay{
+        .mar_t_10{
+            margin-top: 0 ;
+        }
+    }
+    .visible-sm-and-lg.modal-header{
+        padding:0 ;
+        border-bottom: none;
+    }
+    .visible-sm-and-lg{
+        margin-left: 2rem;
+        p{
+            margin-bottom: 0 !important;
+        }
+    }
+    .actiondiv{
+        margin-left:0.5rem;
+    }
+    .bread-crumb1{
+        margin-bottom: 3rem;
+    }
+    .bread-crumb1 span:last-child {
+        line-height:13px;
+        font-size:12px;
+      }
+    #tabContentWrap{
+        .row{
+        padding: 0 !important;
+        }
+        .p_s_1{
+            padding:0;
+            div{
+                float: left;
+            }
+        }
+        .mat-expansion-panel-header {
+            padding: 0 17px 0 0 !important;
+        }
+    }
+    .companyCode{
+        width:150px !important;
+    }
+    .orange_clr{
+        margin-left: 5px !important;
+    }
+    .content{
+        width: 96% !important;
+        margin-top: 38%;
+    }
+    .modalamountwrap{
+        span{
+            display: block;
+        }
+    }
+    #tabContentWrap .mat-expansion-panel .mat-expansion-panel-body .orderdetdiv {
+      padding-left: 24px;
+    }
+}
+.select_all{
+    margin-right: 24px;
+}
+.custom_loder{
+  z-index: 99999999999 !important;
+    position: fixed !important;
+    top: 50%;
+    left: 50%;
+    opacity: 9 !important;  }
+
+    
+.table  tbody  tr  td {
+  padding: 1px !important;
+  line-height: 1.42857143 !important;;
+  vertical-align: top !important;;
+  border-top: 1px solid #ddd !important;;
+  font-size: 11px !important;;
+}
+
+.table  thead  tr  th {
+  padding: 0px !important;
+  vertical-align: bottom !important;;
+  border-bottom: 2px solid #ddd !important;;
+  font-size: 12px !important;;
+}

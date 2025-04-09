@@ -1,0 +1,43 @@
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 10px 14px 10px;
+    font-size: 17px !important;
+    font-weight: 600;
+  
+}
+.chose_vendr{
+    // background: #0fa497;
+    text-align: center;
+    padding: 18px 0 0 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    overflow: hidden;
+}
+.vendor_sel{
+    width: 300px;
+    padding: 5px;
+    color:black !important;
+    border: 1px solid #20978c;
+    border-radius: 5px;
+}
+
+.vendor_lab{
+    color:#0fa497 !important;
+    font-weight: 700 !important;
+    font-size:18px;
+    padding-right: 15px;
+}
+#offerWrap{
+    padding:5px 20px 20px 20px;
+}
+.offertabwrap{
+    padding: 2px 24px;
+    margin-left: 0px;
+    margin-right: 0px;
+    background: #0fa497;
+    h4{
+        color:#ffff !important;
+        font-size:13px !important;
+    }
+}

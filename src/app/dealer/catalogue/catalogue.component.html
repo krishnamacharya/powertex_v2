@@ -1,0 +1,37 @@
+<div class="container pad_t_5per pad_b_5per dash_w dashboardwrap">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span *ngIf="id!=1">Catalogue</span> <span *ngIf="id==1">PriceList</span>
+  </p>
+  <div class="row" style="padding-bottom:30px;">
+     <div class="col-md-3 text-center" style="height:120px;padding:0px 15px;cursor:pointer;margin-top: 30px;" *ngFor="let b of brands">
+      <div  class="d_i_i" (click)="showCatalogue(b.brand)">
+        <img src="{{b.img}}" onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/USERS.png'" /></div>
+        <h4><p class="p_i_i"><b>{{b.brand}}</b></p></h4>
+    </div> 
+
+    <!-- <div class="col-md-3 text-center" style="height:120px;padding:0px 15px;cursor:pointer;margin-top: 30px;" *ngFor="let b of brands">
+      <div  class="d_i_i" (click)="showCatalogue(b.brand)">
+        <a href="'https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/USERS.png'" target="_blank">
+        <img src="{{b.img}}" onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/USERS.png'" target="_blank"/>
+      </a>
+      </div>
+        <h4><p class="p_i_i"><b>{{b.brand}}</b></p></h4>
+    </div> -->
+
+</div>
+
+
+
+
+</div>

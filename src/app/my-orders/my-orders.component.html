@@ -1,0 +1,669 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="
+        color: #878787 !important;
+    ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>My Orders</span>
+
+  </p>
+  <div class="row">
+    <div class="col-sm-12 head_header">
+      <h4 class="pull-left">
+        MY ORDERS
+        <span *ngIf="myOrders.length > 0">({{ myOrders.length }})</span>
+      </h4>
+      <!-- <div class="fr" *ngIf="loginUserData.role=='Marketing Manager'"> -->
+      <div class="fr pull-right">
+        <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search..." class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="ordr_fotr">
+    <span class="ordr_status">Ordered On <span style="color:#333333 !important;">{{orders.po_date | date : 'E, d LLL, y' }}</span> </span>
+    <span  class="fr">Order Total :
+      <span class="order_ttl">&#8377;&nbsp;{{orders.amount}}</span>
+    </span>
+  </div> -->
+  <div class="row" *ngFor="
+      let orders of myOrders
+        | filter: searchText
+        | paginate: { itemsPerPage: 10, currentPage: Page };
+      let i = index
+    ">
+    <div class="col-md-12">
+      <div class="order_block">
+        <div class="oder_header">
+          <p>
+            <span *ngIf="loginUserData.role=='Marketing Manager'" class="spanlight">Business Name - </span><span
+              *ngIf="loginUserData.role=='Marketing Manager'">{{ orders.business_name }}</span>
+            &nbsp;&nbsp;&nbsp;
+            <span class="spanlight">Order ID - </span><span>{{ orders.spo_no }}</span> &nbsp;&nbsp;&nbsp;
+            <span class="spanlight">Order Date - </span><span>{{ orders.po_date | date:'dd-MM-yyyy' }}</span>
+            &nbsp;&nbsp;&nbsp;
+            <!-- <span *ngIf="orders.amount" class="spanlight">Order Amount - </span
+            ><span *ngIf="orders.amount" >{{ orders.amount | currency :'&nbsp;' }}</span> -->
+
+            <!-- <button class="ordr_no">{{orders.po_no}}</button> -->
+            <button type="button" class="fr ordr_trk btn viewbtn" (click)="showProducts(10 * (Page - 1) + i, orders)">
+              <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;Show
+            </button>
+
+            <button type="button" class="fr ordr_trk btn" (click)="track_product(10 * (Page - 1) + i,orders)">
+              <i class="fa fa-map-marker" aria-hidden="true"></i> Track
+            </button>
+          </p>
+        </div>
+        <div *ngIf="index == (10 * (Page - 1) + i)">
+          <!-- <p class="mergedpo"><b>PO No - {{date["mergedPO"]}}</b></p> -->
+          <div class="col-md-8">
+            <div class="progressContainer">
+
+              <ul class="progress1">
+                <!-- <p><b>PO No - {{date["mergedPO"]}}</b></p> -->
+                <li class="progress__item" [ngClass]="{
+                  'progress__item--completed': date['Ordered'] == 1,
+                  current: date['Ordered'] == null
+                }">
+                  <p class="progress__title">Order Placed</p>
+                  <p class="progress__info" *ngIf="date['Ordered'] == 1">
+                    {{ date["Order_date"] | date: "dd-MM-yyyy" }}<br />
+                    Your item has been Placed.
+                  </p>
+                </li>
+                <li class="progress__item" *ngIf="date['status'] != 'Cancelled'" [ngClass]="{
+                  'progress__item--completed': date['Order_conformed'] == 1,
+                  current: date['Order_conformed'] == null
+                }">
+                  <p class="progress__title">Approved</p>
+                  <p class="progress__info" *ngIf="
+                  date['Order_conformed'] == 1 && date['status'] != 'Cancelled'
+                  ">
+                    {{ date["approval_date"] | date: "dd-MM-yyyy" }} <br />
+                    Your item has been Approved.
+
+                  </p>
+
+                </li>
+                <li class="progress__item" *ngIf="date['status'] != 'Cancelled'" [ngClass]="{
+                  'progress__item--completed': date['Packed'] == 1,
+                  current: date['Packed'] == null,'mergepotitle':  date['Packed'] == 1 && date['status'] != 'Cancelled'
+                }">
+                  <p class="progress__title">Packed</p>
+                  <p class="progress__info" *ngIf="
+                  date['Packed'] == 1 && date['status'] != 'Cancelled'
+                  ">
+                    {{ date["Packed_date"] | date: "dd-MM-yyyy" }} <br />
+                    Your item has been Packed.<br />
+                    <b *ngIf='date["mergedPO"] && pocount>0'>{{pocount}} PO's Merged [{{date["mergedPO"]}}].
+
+                    </b>
+                  </p>
+                  <!-- <p class="progress__info" *ngIf="date['Packed'] == null">
+                  Your item packing under process.
+                </p> -->
+                </li>
+                <li class="progress__item" *ngIf="date['status'] != 'Cancelled'" [ngClass]="{
+                  'progress__item--completed': date['invoicemade'] == 1,
+                  current: date['invoicemade'] == null,'mergepotitle':  date['invoicemade'] == 1 && date['status'] != 'Cancelled'
+                }">
+                  <p class="progress__title">Invoice Made</p>
+                  <p class="progress__info" *ngIf="
+                    date['invoicemade'] == 1 && date['status'] != 'Cancelled'
+                  ">
+                    {{ date["invoicemade_date"] | date: "dd-MM-yyyy" }}
+                    <br />
+                    Your item has been made Invoice.<br />
+                    <b *ngIf='date["refinvno"]'>Invoice No : {{date["refinvno"]}}.</b>
+                  </p>
+                </li>
+                <li class="progress__item" *ngIf=" date['status'] != 'Cancelled'" [ngClass]="{
+                  'progress__item--completed': date['Dispatched'] == 1,
+                  current: date['Dispatched'] == null,'mergepotitle':date['Dispatched'] == 1 && date['estDelDate'] &&
+                  date['Delivered'] == null && date['status'] != 'Cancelled' 
+                }">
+                  <p class="progress__title">Dispatched
+                    <span *ngIf="
+                  date['Dispatched'] == 1 && date['status'] != 'Cancelled'
+                " class="f_size_15 green_clr padd_left_10 cursor_pointer">
+                      <i class="fa fa-truck" aria-hidden="true" title="View Transport Details"
+                        (click)="view_transport()"></i>
+                    </span>
+                  </p>
+                  <p class="progress__info" *ngIf="
+                    date['Dispatched'] == 1 && date['status'] != 'Cancelled'
+                  ">
+                    {{ date["Dispatched_date"] | date: "dd-MM-yyyy" }}
+                    <br />
+                    Your item has been Out and Dispatched.
+                    <br>
+                    <span class="expteddate" *ngIf=" date['Dispatched'] == 1 && date['estDelDate'] &&
+                  date['Delivered'] == null && date['status'] != 'Cancelled' ">
+                      <b>Arrival Expected Date : </b>{{ date["estDelDate"] | date: "dd-MM-yyyy" }}
+                    </span>
+                  </p>
+                </li>
+
+                <li class="progress__item canceled" *ngIf="date['status'] == 'Cancelled'">
+                  <p class="progress__title">Cancelled</p>
+                  <p class="progress__info" *ngIf="date['status'] == 'Cancelled'">
+                    {{ date["cancelled_date"] | date: "dd-MM-yyyy" }} As per
+                    your request, the seller has cancelled this product in
+                    your order
+                  </p>
+                </li>
+                <li class="progress__item current" *ngIf="date['status'] == 'Cancelled'">
+                  <p class="progress__title">Refund</p>
+                  <p class="progress__info">
+                    Your shipment has been cancelled. For further
+                    details,please contact customer care.
+                  </p>
+                </li>
+                <li class="progress__item" *ngIf="
+                  
+                  date['status'] != 'Cancelled' 
+                " [ngClass]="{
+                  'progress__item--completed': date['Delivered'] == 1,
+                  current: date['Delivered'] == null
+                }">
+                  <p class="progress__title">Delivered</p>
+                  <p class="progress__info" *ngIf="date['Delivered'] == 1">
+                    {{ date["Delivered_date"] | date: "dd-MM-yyyy" }} Your
+                    item Delivered.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="rightdiv" *ngIf="amounts">
+              <div class="panel panel-default panel-success">
+                <div class="panel-heading"><h4>Invoice Details</h4></div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-6 col-xs-6">
+                      <p><b>Taxable Amount</b></p>
+                      <p *ngIf="date['devicediscamount']"><b>Discount</b></p>
+                      <p *ngIf="date['promo_amount']"><b>Promo Amount</b></p>
+                      <p><b>GST Amount </b></p>
+                      <p><b>TCS Amount </b></p>
+                      <p><b>Net Amount </b></p>
+                    </div>
+                    <div class="col-md-6 col-xs-6 text-right">
+                      <p>: &nbsp;&#8377;{{(date['final_amount']-date['gst_amount']) | currency: '&nbsp;'}}</p>
+                      <p *ngIf="date['devicediscamount']">: &nbsp;&#8377;{{date['devicediscamount'] | currency: '&nbsp;'}}
+                      </p>
+                      <p *ngIf="date['promo_amount']">: &nbsp;&#8377;{{date['promo_amount'] | currency: '&nbsp;'}}</p>
+                      <p>: &nbsp;&#8377;{{date['gst_amount'] | currency: '&nbsp;'}}</p>
+                      <p>: &nbsp;&#8377;{{date['tcs'] | currency: '&nbsp;'}}</p>
+                      <p>: &nbsp;&#8377;{{date['final_amount'] | currency: '&nbsp;'}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+             
+              <!-- <p><b>Taxable Amount &nbsp;:</b> {{(date['final_amount']-date['gst_amount']) | currency: '&nbsp;'}}</p>
+            <p *ngIf="date['devicediscamount']"><b>Discount &nbsp;&nbsp;&nbsp;:</b> {{date['devicediscamount'] | currency: '&nbsp;'}}</p>
+            <p *ngIf="date['promo_amount']"><b>Promo Amount &nbsp;&nbsp;&nbsp;:</b> {{date['promo_amount'] | currency: '&nbsp;'}}</p>
+            <p><b>GST Amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> {{date['gst_amount'] | currency: '&nbsp;'}}</p>
+            <p><b>Net Amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> {{date['final_amount'] | currency: '&nbsp;'}}</p> -->
+            </div>
+            <div class="rightdiv" *ngIf='date["refinvno"]'>
+              <div class="panel panel-default panel-info">
+                <div class="panel-heading"><h4>Download Invoice</h4></div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-5 col-xs-5">
+                    </div>
+                    <div class="col-md-2 col-xs-2">
+                      <button class="btn btn-sm btn-info" (click)="dataURLtoFile(date.invcopy,date.inv_no)" title="Download Inv Copy">
+                        Download<i class="fa fa-download" aria-hidden="true"
+                          style="padding-left:5px;padding-top:5px;cursor:pointer"></i>
+                      </button>
+                    </div>
+                    <div class="col-md-5 col-xs-5 text-right">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rightdiv" *ngIf="transport">
+              <div class="panel panel-default panel-warning">
+                <div class="panel-heading">  <h4 style="color:#d9534f"><b>Transport Details</b></h4></div>
+                <div class="panel-body">
+              <div class="row">
+                <div class="col-md-7 col-xs-6">
+                  <p><b>Delivery Mode </b></p>
+                  <p *ngIf="transportdetails.transportname"><b>Transport Name </b></p>
+                  <p *ngIf="transportdetails.lrno"><b>LR No </b></p>
+                  <p *ngIf="transportdetails.lrdate"><b>LR Date</b></p>
+                  <p *ngIf="transportdetails.del_vehicle_no"><b>Vehicle No </b> </p>
+                  <p *ngIf="transportdetails.del_driver_name"><b>Driver Name </b></p>
+                  <p *ngIf="transportdetails.del_license_no"><b>License No </b></p>
+                  <p *ngIf="transportdetails.del_contact_no"><b>Contact No </b></p>
+                  <p *ngIf="transportdetails.del_consin_no"><b>Delivery Consin No </b></p>
+                </div>
+                <div class="col-md-5 col-xs-6">
+                  <p>: {{transportdetails.del_mode}}</p>
+                  <p *ngIf="transportdetails.transportname">: &nbsp;{{transportdetails.transportname}}</p>
+                  <p *ngIf="transportdetails.lrno">: &nbsp;{{transportdetails.lrno}}</p>
+                  <p *ngIf="transportdetails.lrdate">: &nbsp;{{transportdetails.lrdate | date:'dd-MM-yyyy'}}</p>
+                  <p *ngIf="transportdetails.del_vehicle_no">: &nbsp;{{transportdetails.del_vehicle_no}}</p>
+                  <p *ngIf="transportdetails.del_driver_name">: &nbsp;{{transportdetails.del_driver_name}}</p>
+                  <p *ngIf="transportdetails.del_license_no">: &nbsp;{{transportdetails.del_license_no}}</p>
+                  <p *ngIf="transportdetails.del_contact_no">: &nbsp;{{transportdetails.del_contact_no}}</p>
+                  <p *ngIf="transportdetails.del_consin_no">: &nbsp;{{transportdetails.del_consin_no}}</p>
+                </div>
+              </div>
+              </div>
+              </div>
+              <!-- <p><b>Delivery Mode &nbsp;&nbsp;&nbsp;:</b> {{transportdetails.del_mode}}</p>
+              <p *ngIf="transportdetails.transportname"><b>Transport Name :</b> {{transportdetails.transportname}}</p>
+              <p *ngIf="transportdetails.lrno"><b>LR No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> {{transportdetails.lrno}}</p>
+              <p *ngIf="transportdetails.lrdate"><b>LR Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> {{transportdetails.lrdate |  date:'dd-MM-yyyy'}}</p>
+              <p *ngIf="transportdetails.del_vehicle_no"><b>Vehicle No :</b> {{transportdetails.del_vehicle_no}}</p>
+              <p *ngIf="transportdetails.del_driver_name"><b>Driver Name :</b> {{transportdetails.del_driver_name}}</p>
+              <p *ngIf="transportdetails.del_license_no"><b>License No :</b> {{transportdetails.del_license_no}}</p>
+              <p *ngIf="transportdetails.del_contact_no"><b>Contact No :</b> {{transportdetails.del_contact_no}}</p>
+              <p *ngIf="transportdetails.del_consin_no"><b>Delivery Consin No :</b> {{transportdetails.del_consin_no}}</p> -->
+            </div>
+          </div>
+
+        </div>
+
+        <div *ngIf="index1 == (10 * (Page - 1) + i)">
+          <div class="col-md-12">
+            <p *ngIf="mergedpo" class="mergedpo"><b>PO No - {{mergedpo}}</b></p>
+            <div class="ordr_body" *ngFor="let order of orders.detail">
+              <div class="col-md-12">
+                <div class="col-md-2 product_image" (click)="get_detail(order)">
+                  <!-- <img src="./assets/logo.png" class="product_image"> -->
+                  <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/101_{{order.modelno}}.png"
+                    class="product_image11 img-thumbnail"
+                    onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';" />
+                </div>
+
+                <div class="col-md-4 pad_l_40">
+                  <div class="mar_b_10 prod_name" (click)="get_detail(order)">
+                    <!-- {{ order.subcategory }} -->
+                    {{order.modelno}}
+                  </div>
+                  <div class="mar_b_10">
+                    <span>Price : </span>
+                    <span>&#8377;</span>
+                    <span class="f_wt_600">{{ order.net_price | currency:'&nbsp;' }}</span>&nbsp;
+                  </div>
+                  <div class="mar_b_10">
+                    <span>Qty&nbsp;&nbsp;&nbsp; : </span>
+                    <span class="f_wt_600">{{ order.qty }}</span>
+                  </div>
+                </div>
+                <div class="col-md-1 gst_p">
+                  <div class="mar_b_10">
+                    <span>GST &nbsp;&nbsp;&nbsp;:</span>
+                    <span>&nbsp;</span>
+                    <span class="f_wt_600">{{order.gst}}%</span>&nbsp;
+                  </div>
+                </div>
+                <div class="col-md-2 text-center totalwrap">
+                  <div class="mar_b_10">
+                    <span>Total : </span>
+                    <span>&#8377;</span>
+                    <span class="f_wt_600">
+                      <!-- {{
+                      (order.net_price * 18) / 100 + order.net_price | number
+                    }} -->
+                      <!-- {{(math.round(order.tot_value * 18) / 100 + order.tot_value)  | number}} -->
+                      {{order.total_value | currency:'&nbsp;'}}
+                    </span>&nbsp;
+                    <p style="font-size: 9px;text-align: center;margin-top: -4px;margin-left:1.5rem">
+                      (Including GST)
+                    </p>
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="mar_b_10">
+                    <!-- <span >Total : </span> -->
+                    <p class=" f_wt_600">
+                      Status : {{ order.Status | titlecase }}
+                    </p>
+                    <div *ngIf="order.Status === 'Delivered'"></div>
+                    <!-- <span class="txt_gray">Status.</span> -->
+                  </div>
+                </div>
+                <!-- <div *ngIf="order.Status === 'Delivered'" class="col-md-2">
+                  <div class="rating">
+                    Rating:
+                    <div>
+                      <app-rating [rating]="order.rating" [order]="order" [loginUserData]="loginUserData"></app-rating>
+                    </div>
+                    <div class="rev_cl" (click)="feedback(order)">
+                      Write a Review
+                    </div>
+                  </div>
+                </div> -->
+                <!-- <div *ngIf="order.status !=='Delivered'" class="col-md-2">
+                <div >
+                     <button style="background: #0fa497;border: 1px solid #0fa497;color: white;margin: 2px;" (click)="track_product(order)" >Track</button> 
+                    <button *ngIf="!order.Dispatched && order.status !== 'canceled'" style=" background: #0fa497; border: 1px solid #0fa497;color: white;margin: 2px;"(click)="can_product(order)">Cancel</button>
+                  </div>
+              </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr style="margin-top:0px !important;margin-bottom: 0px !important;" />
+      </div>
+    </div>
+  </div>
+  <pagination-controls *ngIf="myOrders.length > 0" (pageChange)="Page = $event"></pagination-controls>
+
+  <div class="row" *ngIf="myOrders.length == 0">
+    <div class="col-md-12">
+      <div class="no_data">
+        <img class="no_data_cnter" src="../assets/empty_shopping_cart.png" />
+        <!-- <span class="nodata_txt">No Products are Available</span> -->
+      </div>
+    </div>
+    <!-- <div class="col-md-12">
+      <div class="continue_shop txt_center">
+        <button type="submit" class="btn btn-success" routerLink="/home" style="margin-top: -35px;">Continue Shopping</button>
+      </div>
+    </div> -->
+  </div>
+</div>
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+<!-- </div> -->
+
+<!-- success small alert -->
+<div class="smallSuccess_alert" *ngIf="alert">
+  <strong> <i class="fa fa-close remove_icon"></i> {{ wish_alert }} </strong>
+</div>
+
+<div class="modal fade" id="reviewfulModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </h4>
+            <div class="content_rev">
+              <div class="form-group">
+                <label for="usr"><b>Title:</b> <sub class="txt_red f_size_25">*</sub></label>
+                <input type="text" class="form-control" [(ngModel)]="review.title" id="usr" />
+              </div>
+              <div class="form-group">
+                <label for="comment"><b>Description:</b></label>
+                <textarea class="form-control" rows="5" [(ngModel)]="review.comment" id="comment"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button> -->
+        <button type="button" class="btn btn-theme fr" data-dismiss="modal" (click)="submit_review(review)">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="trackModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal" style="color: black" style="font: bold">
+                &times;
+              </button>
+              TRACKING DETAILS
+            </h4>
+
+            <div class="content_rev">
+              <!--   <div class="form-group">
+              <label for="usr1"><b>Title:</b>
+                <sub class="txt_red f_size_25">*</sub></label>
+              <input type="text" class="form-control" [(ngModel)]="cancel.title" id="usr1">
+            </div> -->
+              <div class="form-group">
+                <!--  <label for="comment1" style="text-align: center"><b>TRACKING DETAILS</b></label> -->
+
+                <!-- <span
+                >Ordered date:&nbsp;&nbsp;{{
+                  date.Order_date | date: "dd-MM-yyyy"
+                }}</span
+              >
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+
+                <!-- <span>Ordered Quantity:&nbsp;&nbsp;{{date['qty']}}</span>  -->
+                <!--  <textarea class="form-control" rows="9"  value={{date}} [(ngModel)]="date" id="comment1"></textarea> -->
+              </div>
+              <!-- <div class="wrapper">
+              <ul class="StepProgress">
+                <li
+                  class="StepProgress-item "
+                  [ngClass]="{
+                    'is-done': date['Ordered'] == 1,
+                    current: date['Ordered'] == null
+                  }"
+                >
+                  <strong>Order Placed </strong>
+                  <span *ngIf="date['Ordered'] == 1">{{
+                    date["Order_date"] | date: "dd-MM-yyyy"
+                  }}</span>
+                </li>
+                <li
+                  class="StepProgress-item"
+                  *ngIf="date['status'] != 'cancelled'"
+                  [ngClass]="{
+                    'is-done': date['Packed'] == 1,
+                    current: date['Packed'] == null
+                  }"
+                >
+                  <strong>Packed</strong>
+                  <span
+                    *ngIf="
+                      date['Packed'] == 1 && date['status'] != 'cancelled'
+                    "
+                    >{{ date["Packed_date"] | date: "dd-MM-yyyy" }} <br />
+                    Your item has been Packed.</span
+                  >
+                  <span *ngIf="date['Packed'] == null"
+                    >Your item packing under process.
+                  </span>
+                </li>
+                <li
+                  class="StepProgress-item"
+                  *ngIf="date['Packed'] == 1 && date['status'] != 'cancelled'"
+                  [ngClass]="{
+                    'is-done': date['Dispatched'] == 1,
+                    current: date['Dispatched'] == null
+                  }"
+                >
+                  <strong>Dispatched</strong>
+                  <span
+                    *ngIf="
+                      date['Dispatched'] == 1 && date['status'] != 'cancelled'
+                    "
+                    >{{ date["Dispatched_date"] | date: "dd-MM-yyyy" }} <br />
+                    Your item has been Out and Dispatched.</span
+                  >
+                </li>
+                <li
+                  class="StepProgress-item canceled"
+                  *ngIf="date['status'] == 'cancelled'"
+                >
+                  <strong>Cancelled</strong>
+                  <span *ngIf="date['status'] == 'cancelled'"
+                    >{{ date["cancelled_date"] | date: "dd-MM-yyyy" }} As per
+                    your request, the seller has cancelled this product in
+                    your order.</span
+                  >
+                </li>
+                <li
+                  class="StepProgress-item"
+                  *ngIf="date['status'] == 'cancelled'"
+                >
+                  <strong>Refund</strong>
+                  <span
+                    >Your shipment has been cancelled. For further
+                    details,please contact customer care.</span
+                  >
+                </li>
+                <li
+                  class="StepProgress-item"
+                  *ngIf="
+                    date['Packed'] == 1 &&
+                    date['status'] != 'cancelled' &&
+                    date['Delivered'] != null
+                  "
+                  [ngClass]="{
+                    'is-done': date['Delivered'] == 1,
+                    current: date['Delivered'] == null
+                  }"
+                >
+                  <strong>Delivered</strong>
+                  <span *ngIf="date['Delivered'] == 1"
+                    >{{ date["Delivered_date"] | date: "dd-MM-yyyy" }} Your
+                    item Delivered.</span
+                  >
+                </li>
+                 <li class="StepProgress-item"><strong>Provide feedback</strong></li>
+              </ul>
+            </div> -->
+              <div class="progressContainer">
+                <ul class="progress1">
+                  <li class="progress__item" [ngClass]="{
+                    'progress__item--completed': date['Ordered'] == 1,
+                    current: date['Ordered'] == null
+                  }">
+                    <p class="progress__title">Order Placed</p>
+                    <p class="progress__info" *ngIf="date['Ordered'] == 1">
+                      {{ date["Order_date"] | date: "dd-MM-yyyy" }}
+                    </p>
+                    <p class="progress__info" *ngIf="date['Ordered'] == 1">
+                      Your item has been confirmed.
+                    </p>
+                  </li>
+                  <li class="progress__item" *ngIf="date['status'] != 'cancelled'" [ngClass]="{
+                    'progress__item--completed': date['Packed'] == 1,
+                    current: date['Packed'] == null
+                  }">
+                    <p class="progress__title">Packed</p>
+                    <p class="progress__info" *ngIf="
+                      date['Packed'] == 1 && date['status'] != 'cancelled'
+                    ">
+                      {{ date["Packed_date"] | date: "dd-MM-yyyy" }} <br />
+                      Your item has been Packed.
+                    </p>
+                    <p class="progress__info" *ngIf="date['Packed'] == null">
+                      Your item packing under process.
+                    </p>
+                  </li>
+                  <li class="progress__item" *ngIf="date['Packed'] == 1 && date['status'] != 'cancelled'" [ngClass]="{
+                    'progress__item--completed': date['Dispatched'] == 1,
+                    current: date['Dispatched'] == null
+                  }">
+                    <p class="progress__title">Dispatched</p>
+                    <p class="progress__info" *ngIf="
+                      date['Dispatched'] == 1 && date['status'] != 'cancelled'
+                    ">
+                      {{ date["Dispatched_date"] | date: "dd-MM-yyyy" }}
+                      <br />
+                      Your item has been Out and Dispatched.
+                    </p>
+                  </li>
+                  <li class="progress__item canceled" *ngIf="date['status'] == 'cancelled'">
+                    <p class="progress__title">Cancelled</p>
+                    <p class="progress__info" *ngIf="date['status'] == 'cancelled'">
+                      {{ date["cancelled_date"] | date: "dd-MM-yyyy" }} As per
+                      your request,  Your shipment has been cancelled. For further
+                      details,please contact customer care +91-9100115008.
+                    </p>
+                  </li>
+                  <li class="progress__item" *ngIf="date['status'] == 'cancelled'">
+                    <p class="progress__title">Refund</p>
+                    <p class="progress__info">
+                      Your shipment has been cancelled. For further
+                      details,please contact customer care +91-9100115008.
+                    </p>
+                  </li>
+                  <li class="progress__item" *ngIf="
+                    date['Packed'] == 1 &&
+                    date['status'] != 'cancelled' &&
+                    date['Delivered'] != null
+                  " [ngClass]="{
+                    'progress__item--completed': date['Delivered'] == 1,
+                    current: date['Delivered'] == null
+                  }">
+                    <p class="progress__title">Delivered</p>
+                    <p class="progress__info" *ngIf="date['Delivered'] == 1">
+                      {{ date["Delivered_date"] | date: "dd-MM-yyyy" }} Your
+                      item Delivered.
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              <!--  ============================ -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl pull-right" data-dismiss="modal">
+          Close
+        </button>
+        <!--   <button type="button" class="btn btn-theme fr" data-dismiss="modal" (click)="submit_Can()">Submit</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="cancelModalpopup" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-question" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Are you sure to cancel this product..?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="cancel_product2()">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

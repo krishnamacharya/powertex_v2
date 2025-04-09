@@ -1,0 +1,2256 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+
+  <!-- 
+   <ngx-spinner>
+    <div class="custom_loder" style=" z-index: 99999999999999 !important;
+    position: absolute !important;
+    top: 10px;
+    left: 0;
+    opacity: 9 !important;
+    width: 100%;
+    height: 100%;">
+ <img src="../../../assets/Loader1.gif"style="position: reletive; z-index: 9999999; left: 0; top: 10px">
+    </div>
+</ngx-spinner>  -->
+
+
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+
+  <p class="bread-crumb1" id="totalOutstanding">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Status</span>
+    <!--   <span style="float:right" *ngIf="totaloutstanding">Sales Outstanding Amount : -->
+    <!-- <span style="float:right" *ngIf="POhidden && totaloutstanding && loginUserData.role=='Admin'">Placed Orders Sales Outstanding Amount :
+      ₹ {{totaloutstanding.toLocaleString('en-IN')}}.{{decimalamount}}</span>
+      <span style="float:right" *ngIf="AOhidden && totaloutstanding && loginUserData.role=='Admin'">Approved Orders Sales Outstanding Amount :
+        ₹ {{totaloutstanding.toLocaleString('en-IN')}}.{{decimalamount}}</span>
+        <span style="float:right" *ngIf="DOhidden && totaloutstanding && loginUserData.role=='Admin'">Cancelled Orders Sales Outstanding Amount :
+          ₹ {{totaloutstanding.toLocaleString('en-IN')}}.{{decimalamount}}</span>
+          <span style="float:right" *ngIf="GRNhidden && totaloutstanding && loginUserData.role=='Admin'">Closed Orders Sales Outstanding Amount :
+            ₹ {{totaloutstanding.toLocaleString('en-IN')}}.{{decimalamount}}</span>
+    <span style="float:right" *ngIf="POhidden &&  !totaloutstanding">Placed Sales Outstanding Amount : 0</span>
+    <span style="float:right" *ngIf="AOhidden && !totaloutstanding">Approved Sales Outstanding Amount : 0</span>
+    <span style="float:right" *ngIf="DOhidden && !totaloutstanding">Cancelled Sales Outstanding Amount : 0</span>
+    <span style="float:right" *ngIf="GRNhidden && !totaloutstanding">Closed Sales Outstanding Amount : 0</span> -->
+  </p>
+  <div class="row" *ngIf="loginUserData.role=='Admin'">
+    <div class="col-md-12 orderdetdiv">
+      <div class="col-md-3 form-group " style="float:right">
+        <select class='form-control' [(ngModel)]="branch" required name="BranchDropdown" #BranchDropdown="ngModel"
+          (change)="getstatus()">
+          <option [ngValue]="undefined">Select Branch</option>
+          <option class="option" *ngFor="let bnch of branchdata" [ngValue]="bnch.company_code">{{bnch.companyname}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row t_s_1">
+
+    <div class="row bg-theme dash_status" style="margin:0px;">
+      <div class="col-md-3 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}" (click)="po()">Placed Order's</a>
+      </div>
+      <div class="col-md-3 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':AOhidden == true}" (click)="Ao()">Approved Order's</a>
+      </div>
+      <div class="col-md-3 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}" (click)="do()">Cancelled Order's</a>
+      </div>
+      <div class="col-md-3 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':GRNhidden == true}" (click)="grn()">Closed Order's</a>
+      </div>
+
+    </div>
+
+    <div style="padding:20px" id="tabContentWrap">
+      <div *ngIf="POhidden">
+        <div class="row mar_b_15">
+          <div class="col-sm-12">
+            <div class="fl">
+            </div>
+            <div class="fr">
+              <input type="text" [(ngModel)]="searchText" (keyup)="searchdata(searchText)" placeholder="Search Here"
+                class="search_style">
+              <button type="submit" class="input_btn" (click)="searchdata(searchText)">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin:0px">
+          <div class="row" style="padding: 10px;">
+            <div class="row p_s_1">
+              <div class="col-md-1 text-center">
+                <h4>S.No</h4>
+              </div>
+              <!-- <div class="col-md-1  ">
+                      <h4 style="color:#ffff !important">Company Name</h4>
+                    </div> -->
+              <div class="col-md-2 ">
+                <h4 class="hidexs">Company Name</h4>
+              </div>
+              <div class="col-md-2 text-center">
+                <h4>Mobile No</h4>
+              </div>
+              <div class="col-md-2 text-center">
+                <h4>City</h4>
+              </div>
+              <div class="col-md-1  text-center">
+                <h4>Credit Period</h4>
+              </div>
+              <div class="col-md-1 text-center hidexs">
+                <h4>Credit Limit</h4>
+              </div>
+              <div class="col-md-2 hidexs">
+                <h4 class="hidexs">Outstanding Amount</h4>
+              </div>
+              <div class="col-md-1  text-center hidexs">
+                <h4 style="font-size:12px !important;">View Outstanding</h4>
+              </div>
+            </div>
+            <mat-accordion
+              *ngFor="let p of placedorders | filter:searchText| paginate: { itemsPerPage: 10, currentPage: page3,totalItems: orderscount }; let i=index">
+              <div>
+                <mat-expansion-panel [expanded]="indexExpanded == i" (opened)="panelOpenState = true"
+                  (closed)="panelOpenState = false">
+                  <!-- <button >Toggle</button> -->
+
+                  <mat-expansion-panel-header (click)="getOrders(p,i)">
+                    <mat-panel-title>
+                      <div class="col-md-1  text-center">
+                        <p class="txt_black" style="margin-bottom: 0px;">
+                          <span>&nbsp;&nbsp;{{10*(page3-1)+(i+1)}}</span>
+                        </p>
+                      </div>
+                      <div class="col-md-3 hidexs">
+                        <p class="txt_black" style="margin-bottom: 0px;">
+                          <span
+                            *ngIf="p.userprofiledtl.business_name !==''">&nbsp;&nbsp;{{p.userprofiledtl.business_name
+                            }}</span>
+                          <span *ngIf="p.userprofiledtl.business_name ==''">&nbsp;&nbsp;customer po
+                          </span>
+                        </p>
+                      </div>
+                      <div class="col-md-2 ">
+                        <p class="txt_black" style="margin-bottom: 0px;">
+                          <span>&nbsp;&nbsp;{{p.mobile }}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="col-md-2 ">
+                        <p class="txt_black" style="margin-bottom: 0px;">
+                          <span>&nbsp;&nbsp;{{p.city }}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="col-md-1  text-center">
+                        <p class="txt_black" style="margin-bottom: 0px;">
+                          <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_period}}</span>
+                        </p>
+                      </div>
+                      <div class="col-md-1  text-center hidexs">
+                        <p class="txt_black" style="margin-bottom: 0px;">
+                          <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_limit}}</span>
+                        </p>
+                      </div>
+                      <div class="col-md-2 text-center hidexs">
+                        <p class="txt_black" style="margin-bottom: 0px;">
+                          <span style="position: absolute;right: 30%;" *ngIf="p.userprofiledtl.outstanding!=null">
+                            ₹ {{(p.userprofiledtl.outstanding).toLocaleString('en-IN')}}.<span
+                              *ngIf="!p.userprofiledtl.decimal">00</span>{{p.userprofiledtl.decimal}}</span>
+                          <span style="position: absolute;right: 50%;"
+                            *ngIf="p.userprofiledtl.outstanding==null">-</span>
+                        </p>
+                      </div>
+                      <div class="col-md-1  text-center">
+                        <span class="f_size_15  orange_clr cursor_pointer" style="margin-left:30px;"
+                          (click)="getoutstanding(p)">
+                          <i class="fa fa-eye" aria-hidden="true" title="View Outstanding"></i>
+                        </span>
+                      </div>
+
+
+                    </mat-panel-title>
+
+
+                  </mat-expansion-panel-header>
+                  <div class="visible-sm-and-lg">
+                    <p class="txt_black" style="margin-bottom: 0px;">
+                      <b> Company Name :</b> <span>&nbsp;&nbsp;{{p.userprofiledtl.business_name }}
+                      </span>
+                    </p>
+                    <p class="txt_black" style="margin-bottom: 0px;">
+                      <b> Credit Limit :</b> <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_limit }}
+                      </span>
+                    </p>
+                    <p class="txt_black" style="margin-bottom: 0px;">
+                      <b>Outstanding Amount :</b> <span *ngIf="p.userprofiledtl.outstanding!=null">
+                        ₹ {{(p.userprofiledtl.outstanding).toLocaleString('en-IN')}}.<span
+                          *ngIf="!p.userprofiledtl.decimal">00</span>{{p.userprofiledtl.decimal}}</span>
+                      <span *ngIf="p.userprofiledtl.outstanding==null">-</span>
+                    </p>
+
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 orderdetdiv">
+                      <h4>Order Details:</h4>
+                    </div>
+                    <div class="col-md-6 orderdetdiv">
+                      <div class="form-group " style="float:right">
+                        <select class="form-control" id="sel1" (change)="select_placed_action($event,p)">
+                          <option disabled>Select</option>
+                          <option value="Approve">Approve</option>
+                          <option value="Cancel">Cancel</option>
+                          <!-- <option value="Partial Cancel">Partial Cancel</option>
+                              <option value="Delivery Schedule">Delivery Schedule</option> -->
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row p_s_1">
+                    <div class="col-md-1 text-center">
+                      <h4>S.No</h4>
+                    </div>
+                    <div class="col-md-1">
+                      <h4>PO No</h4>
+                    </div>
+                    <div class="col-md-2 text-center">
+                      <h4>PO Date</h4>
+                    </div>
+                    <div class="col-md-1 hidexs">
+                      <h4>Product Line</h4>
+                    </div>
+                    <!-- <div class="col-md-2 hidexs">
+                      <h4>Outstanding Amount</h4>
+                    </div> -->
+
+                    <div class="col-md-1  text-center hidexs">
+                      <h4>Promo Amount</h4>
+                    </div>
+                    <div class="col-md-1  text-center hidexs">
+                      <h4>Discount</h4>
+                    </div>
+                    <div class="col-md-2  text-center hidexs">
+                      <h4>PO Total</h4>
+                    </div>
+
+                    <div class="col-md-1 text-center actiondiv" style="padding:0px !important;">
+                      <h4 style="float:left">Actions</h4>
+                    </div>
+
+                  </div>
+                  <tr class="approverow" *ngIf="sel_act=='Approve' && this.po_no==(p.user_id+'@'+p.company_code)">
+                    <th colspan="11">
+                      <div class="col-md-12">
+                        <div class="pull-right">
+                          <div class="select_all">
+                            <label><input type="checkbox" name="approveall" (change)="placedapproveall($event,data,p)"
+                                style="width:20px;height:15px;"> <b>Approve All</b>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+                  <tr class="approverow" *ngIf="sel_act=='Cancel' && this.po_no==(p.user_id+'@'+p.company_code)">
+                    <th colspan="11">
+                      <div class="col-md-12">
+                        <div class="pull-right">
+                          <div class="select_all">
+                            <label> <input type="checkbox" name="cancelall" (change)="placedapproveall($event,data,p)"
+                                style="width:20px;height:15px;"><b>Cancel All </b>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+                  <div *ngFor="let po of orders;let i=index">
+                    <div class="innerPOdetails">
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{i + 1}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{po.spo_no }}
+                                </span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  ">
+                              <p class="txt_black" style="margin-bottom: 0px;text-align:right;">
+                                <span>&nbsp;&nbsp;{{po.po_date | date:'dd-MM-yyyy'}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-1  text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{po.detail.length}}</span>
+                              </p>
+                            </div>
+                            <!-- <div class="col-md-2 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span *ngIf="po.outstatnding_amount==null" style="position: absolute;right: 50%;">
+                                  -</span>
+                                <span style="position: absolute;right: 30%;"
+                                  *ngIf="po.outstatnding_amount!=null">
+                                  ₹ {{po.outstatnding_amount.toLocaleString('en-IN')}}.00</span>
+                              </p>
+                            </div> -->
+
+                            <div class="col-md-1 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span *ngIf="po.promo_amount">
+                                  ₹ {{po.promo_amount.toLocaleString('en-IN')}}.00</span>
+                                <span *ngIf="!po.promo_amount" style="position: absolute;right: 40%;"> -</span>
+                              </p>
+                            </div>
+                            <div class="col-md-1 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span *ngIf="po.devicediscamount" style="position: absolute;right: 10%;">
+                                  ₹ {{po.devicediscamount.toLocaleString('en-IN')}}.00</span>
+                                <span *ngIf="!po.devicediscamount" style="position: absolute;right: 30%;"> -</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span *ngIf="po.final_amount" style="position: absolute;right: 30%;">
+                                  ₹ {{po.final_amount.toLocaleString('en-IN')}}.{{po.decimalamount}}</span>
+                                <span *ngIf="!po.final_amount" style="position: absolute;right: 30%;">
+                                  ₹ {{po.amount | currency : '&nbsp;'}}</span>
+                              </p>
+
+                            </div>
+                            <div class="col-md-1  text-center" style="padding:0px !important;">
+
+
+                              <div *ngIf="sel_act=='Approve' && this.po_no==(p.user_id+'@'+p.company_code)  ">
+                                <div class="checkbox" *ngIf="state != 'Dispatched'">
+                                  <label><input type="checkbox" id="Approve" [checked]="checke"
+                                      (change)="sel_action_check($event,po)">{{sel_act}}</label>
+                                </div>
+                              </div>
+
+                              <div *ngIf="sel_act=='Cancel' && this.po_no==(p.user_id+'@'+p.company_code)  ">
+                                <div class="checkbox" *ngIf="state != 'Dispatched'">
+                                  <label><input type="checkbox" id="Cancel" [checked]="checkc"
+                                      (change)="sel_action_check($event,po)">{{sel_act}}</label>
+                                </div>
+                              </div>
+
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+
+                        <div class="row">
+                          <div class="visible-sm-and-lg form-group">
+                            <p class="txt_black">
+                              <!-- <b> Product Line :</b> <span>&nbsp;&nbsp;{{po.detail.length}} -->
+                              <!-- </span> -->
+                            </p>
+                            <p class="txt_black">
+                              <b> Outstanding Amount :</b>
+                              <span *ngIf="po.outstatnding_amount==null">
+                                -</span>
+                              <span *ngIf="po.outstatnding_amount!=null">
+                                ₹ {{po.outstatnding_amount.toLocaleString('en-IN')}}</span>
+                            </p>
+                            <p class="txt_black">
+                              <b>Promocode Applied Amount :</b>
+                              <span *ngIf="po.promo_amount==null">
+                                -</span>
+                              <span *ngIf="po.promo_amount!=null"> ₹
+                                {{po.promo_amount.toLocaleString('en-IN')}}.00</span>
+                            </p>
+                            <p class="txt_black">
+                              <b>PO Total(Excluding Promo Amount) : </b> <span *ngIf="po.final_amount!=null">
+                                ₹ {{po.final_amount.toLocaleString('en-IN')}}.{{po.decimalamount}}</span>
+                              <span *ngIf="po.final_amount==null">-</span>
+                            </p>
+                          </div>
+
+
+
+                        </div>
+
+                        <div style="max-height: 380px;overflow: auto;" class="table-responsive">
+                          <table class="table" *ngIf="po.detail">
+                            <thead>
+                              <tr>
+                                <th>S.No</th>
+                                <th>Product </th>
+                                <th>Product Description</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Net Amount</th>
+                                <th>GST</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th>Stage</th>
+
+                              </tr>
+
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let pd of po.detail ; let i=index;">
+                                <td>{{i + 1}} </td>
+
+                                <td style="width:10%;">
+                                  <div>
+                                    <img src="{{pd.image}}"
+                                      onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                                      class="img-thumbnail" style="width:70%;height: 30px;">
+                                  </div>
+                                </td>
+                                <td>
+                                  <h4 class="table_pd_name">{{pd.name}}</h4>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0">
+
+                                    <!-- <input class="form-control f_wt_600" *ngIf="po.code1!=null" style="width:80px;"
+                                      type="text" (keypress)="keypress($event)" [(ngModel)]="pd.net_price" readonly>
+                                    <input class="form-control f_wt_600" *ngIf="po.code1==null " style="width:80px;"
+                                      type="text" (keypress)="keypress($event)" [(ngModel)]="pd.net_price"
+                                      (change)="select_price(pd.net_price,po,pd)" readonly> -->
+                                    <div>
+                                      <p>
+                                        <span class=" f_wt_600">₹ {{pd.net_price | currency:'&nbsp;'}}</span>
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>
+
+                                      <input class="form-control f_wt_600" style="width:80px;" type="text"
+                                        (keypress)="keypress1($event)" maxlength="10" [(ngModel)]="pd.total_qty"
+                                        (change)="select_qty(pd.qty,po,pd)" readonly>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p style="margin-bottom: 0px">
+                                      <span class=" f_wt_600">₹ {{pd.tot_value | currency:'&nbsp;'}}</span>
+                                    </p>
+                                    <p class="p_e_g" style="width:100px;">(Excluding GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>
+                                      <span class=" f_wt_600">{{pd.gst}}%</span>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+
+                                    <span class="f_wt_600">₹ {{pd.total_value | currency:'&nbsp;'}}</span>&nbsp;
+                                    <p class="p_e_g" style="width:100px;">(Including GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>
+                                      <span class=" f_wt_600">{{pd.status | titlecase}} &nbsp;
+
+                                      </span>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>
+                                      <span class=" f_wt_600">{{pd.stage | titlecase}} &nbsp;
+                                      </span>
+                                    </p>
+                                  </div>
+                                </td>
+
+
+                              </tr>
+                            </tbody>
+                          </table>
+
+                        </div>
+
+
+                      </mat-expansion-panel>
+                    </div>
+                  </div>
+                  <div class="row mar_t_10"
+                    *ngIf="selected_list.length>0 && this.po_no1==(p.user_id+'@'+p.company_code)">
+                    <div class="col-md-12">
+                      <button style="float:right;" class="btn btn-ord" (click)="sub_sel_data()">Submit</button>
+                    </div>
+
+                  </div>
+                </mat-expansion-panel>
+              </div>
+
+            </mat-accordion>
+            <div class="pull-left mar_t_30">
+              <pagination-controls (pageChange)="onpagechange($event)"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="AOhidden">
+        <div class="row mar_b_15">
+          <div class="col-sm-12">
+            <div class="fl">
+            </div>
+            <div class="fr">
+              <input type="text" [(ngModel)]="searchText" (keyup)="searchdata(searchText)" placeholder="Search Here"
+                class="search_style">
+              <button type="submit" class="input_btn" (click)="searchdata(searchText)">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin:0px">
+          <div>
+            <div>
+              <div class="row" style="padding: 10px;">
+                <div>
+                  <div class="row p_s_1">
+                    <div class="col-md-1 text-center">
+                      <h4>S.No</h4>
+                    </div>
+
+                    <div class="col-md-3 hidexs">
+                      <h4>Company Name</h4>
+                    </div>
+                    <div class="col-md-2 ">
+                      <h4>Mobile No</h4>
+                    </div>
+                    <div class="col-md-2 ">
+                      <h4>City</h4>
+                    </div>
+                    <div class="col-md-1  text-center">
+                      <h4>Credit Period</h4>
+                    </div>
+                    <div class="col-md-1  text-center hidexs">
+                      <h4>Credit Limit</h4>
+                    </div>
+                    <div class="col-md-2  text-center hidexs">
+                      <h4>Outstanding Amount</h4>
+                    </div>
+                    <!-- <div class="col-md-2  text-center">
+                      <h4 style="color:#ffff !important">PO Total</h4>
+                    </div> -->
+
+
+                  </div>
+
+                  <mat-accordion
+                    *ngFor="let p of approvedorders | filter:searchText| paginate: { itemsPerPage: 10, currentPage: page, totalItems: orderscount}; let i=index">
+                    <!-- *ngIf="check_status(p.dt)" -->
+                    <div>
+                      <mat-expansion-panel [expanded]="indexExpanded == i" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header (click)="getapprovedorders(p,i)">
+                          <mat-panel-title>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{10*(page-1)+(i+1)}}</span>
+                              </p>
+                            </div>
+
+                            <div class="col-md-3  hidexs">
+                              <!--   <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{p.company_name }}
+                                </span>
+                              </p> -->
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span
+                                  *ngIf="p.userprofiledtl.business_name !==''">&nbsp;&nbsp;{{p.userprofiledtl.business_name
+                                  }}</span>
+                                <span *ngIf="p.userprofiledtl.business_name ==''">&nbsp;&nbsp;customer po
+                                </span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  ">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{p.mobile }}
+                                </span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  ">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{p.city }}
+                                </span>
+                              </p>
+                            </div>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_period}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-1  text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_limit}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span style="position: absolute;right: 30%;"
+                                  *ngIf="p.userprofiledtl.outstanding!=null">&#8377;
+                                  {{(p.userprofiledtl.outstanding).toLocaleString('en-IN')}}.<span
+                                    *ngIf="!p.userprofiledtl.decimal">00</span>{{p.userprofiledtl.decimal}}</span>
+                                <span style="position: absolute;right: 50%;"
+                                  *ngIf="p.userprofiledtl.outstanding==null">-</span>
+                              </p>
+                            </div>
+                            <!-- <div class="col-md-2 text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span style="position: absolute;right: 30%;">&#8377; {{p.amount}}</span>
+                              </p>
+                            </div> -->
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="visible-sm-and-lg">
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b> Company Name :</b> <span>&nbsp;&nbsp;{{p.userprofiledtl.business_name }}
+                            </span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b> Credit Peroid :</b> <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_period }}
+                            </span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b> Credit Limit : </b> <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_limit }}
+                            </span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b>Outstanding Amount : </b> <span *ngIf="p.userprofiledtl.outstanding!=null"> &#8377;
+                              {{(p.userprofiledtl.outstanding).toLocaleString('en-IN')}}.<span
+                                *ngIf="!p.userprofiledtl.decimal">00</span>{{p.userprofiledtl.decimal}}</span>
+                            <span *ngIf="p.userprofiledtl.outstanding==null">-</span>
+                          </p>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6 orderdetdiv">
+                            <h4>Order Details:</h4>
+                          </div>
+                          <div class="col-md-6 orderdetdiv">
+                            <div class="form-group" style="float:right">
+                              <select class="form-control" id="sel1" (change)="select_placed_action1($event,p)">
+                                <option [ngValue]="undefined" disabled selected>Select</option>
+                                <!-- <option value="Approve">Approve</option> -->
+                                <option value="Cancel">Cancel</option>
+                                <!-- <option value="Partial Cancel">Partial Cancel</option>
+                                <option value="Delivery Schedule">Delivery Schedule</option> -->
+                              </select>
+                            </div>
+                          </div>
+
+                          <!--<h4 style="float: right;" (click)="grnPrint(p.detail)">Print</h4> -->
+                        </div>
+                        <div class="row p_s_1">
+                          <div class="col-md-1 text-center">
+                            <h4>S.No</h4>
+                          </div>
+                          <!-- <div class="col-md-2  text-center">
+                              <h4 style="color:#ffff !important">Company Code</h4>
+                            </div> -->
+                          <div class="col-md-1 text-center">
+                            <h4>PO No</h4>
+                          </div>
+                          <div class="col-md-2  text-center">
+                            <h4>PO Date</h4>
+                          </div>
+                          <div class="col-md-1  text-center hidexs">
+                            <h4>Product Line</h4>
+                          </div>
+                          <!-- <div class="col-md-2  text-center hidexs">
+                            <h4>Outstanding Amount</h4>
+                          </div> -->
+
+                          <div class="col-md-1  text-center hidexs">
+                            <h4>Promo Amount</h4>
+                          </div>
+                          <div class="col-md-1  text-center hidexs">
+                            <h4>Discount</h4>
+                          </div>
+                          <div class="col-md-2  text-center hidexs">
+                            <h4>PO Total</h4>
+                          </div>
+
+                          <div class="col-md-1  text-center" style="padding:0px !important;">
+                            <h4 style="float: left;">Actions</h4>
+                          </div>
+                        </div>
+                        <!-- *ngIf="sel_act=='Cancel' && this.action==true && this.po_no==(p.user_id+'@'+p.company_code)" -->
+                        <div class="approverow row"
+                          *ngIf="sel_act=='Cancel' && this.action==true &&  this.po_no==(p.user_id+'@'+p.company_code)">
+                          <div>
+                            <div class="select_all pull-right">
+                              <label>
+                                <input type="checkbox" name="cancelall" (change)="placedapproveall1($event,data,p)"
+                                  style="width:20px;height:15px;"><b>Cancel All</b>
+                              </label>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div *ngFor="let po of orders;let i=index">
+                          <mat-expansion-panel>
+                            <mat-expansion-panel-header (click)="getapprovedordersdetail(po,i)">
+                              <mat-panel-title>
+
+                                <div class="col-md-1  text-center">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <!--  <span>&nbsp;&nbsp;{{10*(page-1)+(i+1)}}</span> -->
+                                    <!--  <span>&nbsp;&nbsp;{{10*(page-1)+(i+1)}}</span> -->
+                                    <span>&nbsp;&nbsp;{{i + 1}}</span>
+                                  </p>
+                                </div>
+                                <!-- <div class="col-md-2  text-center">
+                                  <p class="txt_black" style="margin-bottom: 0px; ">
+                                    <span>&nbsp;&nbsp;{{po.company_code }} </span>
+                                  </p>
+                                </div> -->
+                                <div class="col-md-1  text-center">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span>&nbsp;&nbsp;{{po.spo_no }}
+                                    </span>
+                                  </p>
+                                </div>
+                                <div class="col-md-2  ">
+                                  <p class="txt_black" style="margin-bottom: 0px;text-align:right;">
+                                    <span>&nbsp;&nbsp;{{po.po_date | date:'dd-MM-yyyy'}}</span>
+                                  </p>
+                                </div>
+                                <div class="col-md-1  text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span>&nbsp;&nbsp;{{po.detail}}</span>
+                                  </p>
+                                </div>
+                                <!-- <div class="col-md-2 text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span *ngIf="po.outstatnding_amount" style="position: absolute;right: 10%;">&#8377;
+                                      {{po.outstatnding_amount.toLocaleString('en-IN')}}.00</span>
+                                      <span *ngIf="!po.outstatnding_amount" style="position: absolute;right: 20%;"> -</span>
+                                  </p>
+                                </div> -->
+                                <div class="col-md-1 text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span *ngIf="po.promo_amount" style="position: absolute;right: 30%;">&#8377;
+                                      {{po.promo_amount.toLocaleString('en-IN')}}.00</span>
+                                    <span *ngIf="!po.promo_amount" style="position: absolute;right: 40%;"> -</span>
+                                  </p>
+                                </div>
+                                <div class="col-md-1 text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span *ngIf="po.devicediscamount" style="position: absolute;right: 10%;">&#8377;
+                                      {{po.devicediscamount.toLocaleString('en-IN')}}.00</span>
+                                    <span *ngIf="!po.devicediscamount" style="position: absolute;right: 30%;"> -</span>
+                                  </p>
+                                </div>
+                                <div class="col-md-2 text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span *ngIf="po.final_amount" style="position: absolute;right: 30%;">&#8377;
+                                      {{po.final_amount.toLocaleString('en-IN')}}.{{po.decimalamount}}</span>
+                                    <span *ngIf="!po.final_amount" style="position: absolute;right: 30%;">&#8377;
+                                      -</span>
+                                  </p>
+
+                                </div>
+                                <!-- *ngIf="!(state === 'cancelled' || state === 'Dispatched' || state === 'Invoice Made') " -->
+                                <div class="col-md-1 text-center hidexs">
+                                  <span *ngIf="sel_act=='Cancel'  && this.po_no==(p.user_id+'@'+p.company_code)  ">
+                                    <div class="checkbox" *ngIf="po.state==true">
+                                      <label><input type="checkbox" [checked]="checkc"
+                                          (change)="sel_action_check1($event,po)">{{sel_act}}</label>
+                                    </div>
+                                  </span>
+                                </div>
+                                <!-- <div class="col-md-1  text-center" style="padding:0px !important;">
+                                  <p class="txt_black" style="margin-bottom: 0px; ">
+                                    <span><button class="btn btn-primary">More</button> </span>
+                                   
+                                  </p>
+
+
+                                </div> -->
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="visible-sm-and-lg form-group">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <b> Product Line :</b> <span>&nbsp;&nbsp;{{po.detail}}
+                                </span>
+                              </p>
+                              <!-- <p class="txt_black" style="margin-bottom: 0px;">
+                                <b>Outstanding Amount : </b> <span *ngIf="po.outstatnding_amount"> &#8377;
+                                  {{po.outstatnding_amount.toLocaleString('en-IN')}}.00</span>
+                                  <span *ngIf="!po.outstatnding_amount"> - </span>
+                              </p> -->
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <b>Promocode Applied Amount : </b> <span *ngIf="po.promo_amount"> &#8377;
+                                  {{po.promo_amount.toLocaleString('en-IN')}}.00</span>
+                                <span *ngIf="!po.promo_amount"> - </span>
+                              </p>
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <b>PO Total :</b> <span *ngIf="po.final_amount"> &#8377;
+                                  {{po.final_amount.toLocaleString('en-IN')}}.{{po.decimalamount}}</span>
+                                <span *ngIf="!po.final_amount"> &#8377;
+                                  -</span>
+                              </p>
+                            </div>
+
+                            <!-- <div class="row">
+                              <div class="col-md-6 orderdetdiv">
+                                <h4>Order Details:</h4>
+                              </div>
+                              <div class="col-md-6 orderdetdiv">
+                                <div class="form-group" style="float:right">
+                                  <select class="form-control" id="sel1" (change)="select_action($event,po)">
+                                    <option [ngValue]="undefined" disabled selected>Select</option>
+                                   
+                                    <option value="Cancel">Cancel</option>
+                                   
+                                  </select>
+                                </div>
+                              </div>
+
+                            
+                            </div> -->
+
+                            <div style="max-height: 380px;overflow: auto;" class="table-responsive">
+                              <table class="table" *ngIf="ordersdetail">
+                                <thead>
+                                  <tr>
+                                    <th>S.No</th>
+                                    <th>Product </th>
+                                    <th>Product Description</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Net Amount</th>
+                                    <th>GST</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <!-- <th>Actions</th> -->
+                                  </tr>
+                                  <!-- <tr class="approverow" *ngIf="sel_act=='Cancel' && this.action==true && this.po_no==po.po_no">
+                                    <th colspan="10">
+                                      <div>
+                                        <div class="select_all pull-right">                                        
+                                              <label>
+                                              <input type="checkbox" name="cancelall"
+                                                (change)="approveall($event,data,po)"
+                                                style="width:20px;height:15px;"><b>Cancel All</b>
+                                              </label>
+                                            </div>                             
+                                      </div>    
+                                      </th>
+                                 </tr> -->
+
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let pd of ordersdetail ; let i=index;">
+                                    <td>{{i + 1}} </td>
+
+                                    <td style="width:10%;">
+                                      <div>
+                                        <img
+                                          src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/101_{{pd.modelno}}.png"
+                                          onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                                          class="img-thumbnail" style="width:70%;height: 30px;">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <h4 class="table_pd_name">{{pd.subcategory}} {{pd.modelno}}</h4>
+                                    </td>
+                                    <td>
+                                      <div class="row_mar_0">
+                                        <span class="f_wt_600">{{pd.net_price | currency:'&nbsp;'}}</span>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>
+                                        <p>
+                                          <span class=" f_wt_600">{{pd.qty }}</span>
+                                        </p>
+
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>
+                                        <p style="margin-bottom: 0px">
+                                          <span class=" f_wt_600">₹ {{pd.total | currency:'&nbsp;'}}</span>
+                                        </p>
+                                        <p class="p_e_g">(Excluding GST)</p>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>
+                                        <p>
+                                          <span class=" f_wt_600">{{pd.gst}}%</span>
+                                        </p>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>
+
+                                        <span class="f_wt_600">₹ {{pd.total_value | currency:'&nbsp;'}}</span>&nbsp;
+                                        <p class="p_e_g">(Including GST)</p>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>
+                                        <p>
+                                          <span class=" f_wt_600">{{pd.Status | titlecase}} &nbsp;
+
+                                          </span>
+                                        </p>
+                                      </div>
+                                    </td>
+                                    <!-- <td>
+                                    
+                                      <span *ngIf="sel_act=='Cancel' && this.po_no==p.company && po.code1==null ">
+                                        <div class="checkbox"
+                                          *ngIf="!(pd.status === 'cancelled' || pd.status === 'Dispatched' || pd.status === 'Invoice Made') ">
+                                          <label><input type="checkbox" [checked]="checkc"
+                                              (change)="sel_action_check1($event,pd,po.po_no)">{{sel_act}}</label>
+                                        </div>
+                                      </span>
+                                    </td> -->
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <!-- <div class="row row_mar_0" *ngIf="selected_list.length>0 && this.po_no1==po.po_no ">
+                               <div class="col-md-12">
+                                <button style="float:right;" class="btn btn-primary"
+                                (click)="sub_sel_data()">Submit</button>
+                               </div>
+                              </div> -->
+                            </div>
+                          </mat-expansion-panel>
+
+                        </div>
+                        <div class="row  mar_t_10"
+                          *ngIf="selected_list.length>0 && this.po_no1==(p.user_id+'@'+p.company_code) ">
+                          <button style="float:right;" class="btn btn-primary" (click)="sub_sel_data()">Submit</button>
+                        </div>
+                      </mat-expansion-panel>
+
+                    </div>
+                  </mat-accordion>
+                  <div class="pull-left mar_t_30">
+                    <pagination-controls (pageChange)="onpagechange($event) "></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="DOhidden">
+        <div class="row mar_b_15">
+          <div class="col-sm-12">
+            <div class="fl">
+            </div>
+            <div class="fr">
+              <input type="text" [(ngModel)]="searchText" (keyup)="searchdata(searchText)" placeholder="Search Here"
+                class="search_style">
+              <button type="submit" class="input_btn" (click)="searchdata(searchText)">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row row_mar_0">
+          <div class="row pad_10">
+            <div>
+              <div class="row p_s_1">
+                <div class="col-md-1 text-center">
+                  <h4>S.No</h4>
+                </div>
+
+                <div class="col-md-3 hidexs">
+                  <h4>Company Name</h4>
+                </div>
+                <div class="col-md-2">
+                  <h4>Mobile No</h4>
+                </div>
+                <div class="col-md-2">
+                  <h4>City</h4>
+                </div>
+                <div class="col-md-1  text-center">
+                  <h4>Credit Period</h4>
+                </div>
+                <div class="col-md-1 text-center hidexs">
+                  <h4>Credit Limit</h4>
+                </div>
+                <div class="col-md-2  text-center hidexs">
+                  <h4>Outstanding Amount</h4>
+                </div>
+                <!-- <div class="col-md-2  text-center">
+                      <h4 style="color:#ffff !important">PO Total</h4>
+                    </div> -->
+
+                <!-- <div class="col-md-1  text-center" style="padding:0px !important;">
+                      <h4 style="color:#ffff !important;float: left;">Actions</h4>
+                    </div> -->
+              </div>
+
+              <mat-accordion
+                *ngFor="let p of cancelledorders | filter:searchText| paginate: { itemsPerPage: 10, currentPage: page1,totalItems: orderscount }; let i=index">
+                <!-- *ngIf="check_status(p.dt)" -->
+                <div>
+                  <mat-expansion-panel [expanded]="indexExpanded == i" (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header (click)="getcancelledorders(p,i)">
+                      <mat-panel-title>
+                        <div class="col-md-1  text-center">
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <span>&nbsp;&nbsp;{{10*(page1-1)+(i+1)}}</span>
+                          </p>
+                        </div>
+
+                        <div class="col-md-3  hidexs">
+                          <!-- <p class="txt_black" style="margin-bottom: 0px;">
+                            <span>&nbsp;&nbsp;{{p.company_name }}
+                            </span>
+                          </p> -->
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <span
+                              *ngIf="p.userprofiledtl.business_name !==''">&nbsp;&nbsp;{{p.userprofiledtl.business_name
+                              }}</span>
+                            <span *ngIf="p.userprofiledtl.business_name ==''">&nbsp;&nbsp;customer po
+                            </span>
+                          </p>
+                        </div>
+                        <div class="col-md-2">
+                          <p class="txt_black" style="margin-bottom: 0px; ">
+                            <span>&nbsp;&nbsp;{{p.mobile }} </span>
+                          </p>
+                        </div>
+                        <div class="col-md-2">
+                          <p class="txt_black" style="margin-bottom: 0px; ">
+                            <span>&nbsp;&nbsp;{{p.city }} </span>
+                          </p>
+                        </div>
+                        <div class="col-md-1  text-center">
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_period}}</span>
+                          </p>
+                        </div>
+                        <div class="col-md-1  text-center hidexs">
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_limit}}</span>
+                          </p>
+                        </div>
+                        <div class="col-md-2 text-center hidexs">
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <span style="position: absolute;right: 30%;"
+                              *ngIf="p.userprofiledtl.outstanding!=null">&#8377;
+                              {{(p.userprofiledtl.outstanding).toLocaleString('en-IN')}}.<span
+                                *ngIf="!p.userprofiledtl.decimal">00</span>{{p.userprofiledtl.decimal}}</span>
+                            <span style="position: absolute;right: 30%;"
+                              *ngIf="p.userprofiledtl.outstanding==null">-</span>
+                          </p>
+                        </div>
+                        <!-- <div class="col-md-2 text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span style="position: absolute;right: 30%;">&#8377; {{p.amount}}</span>
+                              </p>
+                            </div> -->
+
+                        <!-- <div class="col-md-1  text-center" style="padding:0px !important;">
+                              <p class="txt_black" style="margin-bottom: 0px; ">
+                                <span><button  class="btn btn-danger" (click)="c_a(p)">Cancel All</button> </span>
+                              </p>
+                            </div> -->
+                      </mat-panel-title>
+
+
+                    </mat-expansion-panel-header>
+                    <div class="visible-sm-and-lg form-group">
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <b> Company Name :</b> <span>&nbsp;&nbsp;{{p.userprofiledtl.business_name }}
+                        </span>
+                      </p>
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <b>Credit Period : </b> <span> &#8377;
+                          {{p.userprofiledtl.credit_period}}</span>
+                      </p>
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <b>Credit Limit : </b> <span> &#8377;
+                          {{p.userprofiledtl.credit_limit}}</span>
+                      </p>
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <b>Outstanding Amount : </b> <span *ngIf="p.userprofiledtl.outstanding!=null"> &#8377;
+                          {{(p.userprofiledtl.outstanding).toLocaleString('en-IN')}}.<span
+                            *ngIf="!p.userprofiledtl.decimal">00</span>{{p.userprofiledtl.decimal}}</span>
+                        <span *ngIf="p.userprofiledtl.outstanding==null">-</span>
+                      </p>
+
+                    </div>
+
+                    <div class="row p_s_1">
+                      <div class="col-md-1 text-center">
+                        <h4>S.No</h4>
+                      </div>
+                      <!-- <div class="col-md-2  text-center">
+                              <h4 style="color:#ffff !important">Company Code</h4>
+                            </div> -->
+                      <div class="col-md-1 text-center">
+                        <h4>PO No</h4>
+                      </div>
+                      <div class="col-md-2  text-center">
+                        <h4>PO Date</h4>
+                      </div>
+                      <div class="col-md-1  text-center">
+                        <h4>Product Line</h4>
+                      </div>
+                      <!-- <div class="col-md-2  text-center hidexs">
+                        <h4>Outstanding Amount</h4>
+                      </div> -->
+                      <div class="col-md-1  text-center hidexs">
+                        <h4>Promo Amount</h4>
+                      </div>
+                      <div class="col-md-1  text-center hidexs">
+                        <h4>Discount</h4>
+                      </div>
+                      <div class="col-md-2  text-center hidexs">
+                        <h4>PO Total</h4>
+                      </div>
+
+                      <!-- <div class="col-md-1  text-center" style="padding:0px !important;">
+                              <h4 style="color:#ffff !important;float: left;">Actions</h4>
+                            </div> -->
+                    </div>
+                    <div *ngFor="let po of orders;let i=index">
+                      <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <!--  <span>&nbsp;&nbsp;{{10*(page1-1)+(i+1)}}</span> -->
+                                <span>&nbsp;&nbsp; {{i + 1}}</span>
+                              </p>
+                            </div>
+                            <!-- <div class="col-md-2  text-center">
+                                      <p class="txt_black" style="margin-bottom: 0px; ">
+                                        <span>&nbsp;&nbsp;{{po.company_code }} </span>
+                                      </p>
+                                    </div> -->
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{po.spo_no }}
+                                </span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  ">
+                              <p class="txt_black" style="margin-bottom: 0px;text-align:right;">
+                                <span>&nbsp;&nbsp;{{po.po_date | date:'dd-MM-yyyy'}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{po.detail.length}}</span>
+                              </p>
+                            </div>
+                            <!-- <div class="col-md-2 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span *ngIf="po.outstatnding_amount" style="position: absolute;right: 30%;">&#8377;
+                                  {{po.outstatnding_amount.toLocaleString('en-IN')}}.00</span>
+                                  <span *ngIf="!po.outstatnding_amount" style="position: absolute;right: 40%;"> -</span>
+                              </p>
+                            </div> -->
+                            <div class="col-md-1 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span *ngIf="po.promo_amount" style="position: absolute;right: 30%;">&#8377;
+                                  {{po.promo_amount.toLocaleString('en-IN')}}.00</span>
+                                <span *ngIf="!po.promo_amount" style="position: absolute;right: 40%;"> -</span>
+                              </p>
+                            </div>
+                            <div class="col-md-1 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span *ngIf="po.devicediscamount" style="position: absolute;right: 10%;">&#8377;
+                                  {{po.devicediscamount.toLocaleString('en-IN')}}.00</span>
+                                <span *ngIf="!po.devicediscamount" style="position: absolute;right: 30%;"> -</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span *ngIf="po.final_amount" style="position: absolute;right: 30%;">&#8377;
+                                  {{po.final_amount.toLocaleString('en-IN')}}.{{po.decimalamount}}</span>
+                                <span *ngIf="!po.final_amount" style="position: absolute;right: 30%;">&#8377;
+                                  {{po.amount.toLocaleString('en-IN')}}.00</span>
+                              </p>
+
+                            </div>
+
+                            <!-- <div class="col-md-1  text-center" style="padding:0px !important;">
+                                      <p class="txt_black" style="margin-bottom: 0px; ">
+                                        <span><button  class="btn btn-danger" (click)="c_a(p)">Cancel All</button> </span>
+                                      </p>
+                                    </div> -->
+
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="visible-sm-and-lg form-group">
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b> Product Line :</b> <span>&nbsp;&nbsp;{{po.detail.length}}
+                            </span>
+                          </p>
+                          <!-- <p class="txt_black" style="margin-bottom: 0px;">
+                            <b>Outstanding Amount : </b> <span *ngIf="po.outstatnding_amount"> &#8377;
+                              {{po.outstatnding_amount.toLocaleString('en-IN')}}.00</span>
+                              <span *ngIf="!po.outstatnding_amount"> - </span>
+                          </p> -->
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b>Promocode Applied Amount : </b> <span *ngIf="po.promo_amount"> &#8377;
+                              {{po.promo_amount.toLocaleString('en-IN')}}.00</span>
+                            <span *ngIf="!po.promo_amount"> - </span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b>PO Total :</b> <span *ngIf="po.final_amount"> &#8377;
+                              {{po.final_amount.toLocaleString('en-IN')}}.{{po.decimalamount}}</span>
+                            <span *ngIf="!po.final_amount"> &#8377;
+                              {{po.amount.toLocaleString('en-IN')}}.00</span>
+                          </p>
+                        </div>
+
+
+
+                        <div style="max-height: 380px;overflow: auto;" class="table-responsive">
+                          <table class="table" *ngIf="po.detail">
+                            <thead>
+                              <tr>
+                                <th>S.No</th>
+                                <th>Product </th>
+                                <th>Product Description</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Net Amount</th>
+                                <th>GST</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let pd of po.detail ; let i=index;">
+                                <td>{{i + 1}} </td>
+
+                                <td style="width:10%;">
+                                  <div>
+                                    <img src="{{pd.image}}"
+                                      onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                                      class="img-thumbnail" style="width:70%;height: 30px;">
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0">
+                                    <span class="f_wt_600">{{pd.name}}</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0">
+                                    <span class="f_wt_600">{{pd.net_price | currency:'&nbsp;'}}</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>
+                                      <span class=" f_wt_600">{{pd.qty }}</span>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p style="margin-bottom: 0px">
+                                      <span class=" f_wt_600">₹ {{pd.tot_value | currency:'&nbsp;'}}</span>
+                                    </p>
+                                    <p class="p_e_g">(Excluding GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>
+                                      <span class=" f_wt_600">{{pd.gst}}%</span>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+
+                                    <span class="f_wt_600">₹ {{pd.total_value | currency:'&nbsp;'}}</span>&nbsp;
+                                    <p class="p_e_g">(Including GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>
+                                      <span class=" f_wt_600">{{pd.status | titlecase}} &nbsp;
+                                        <!-- <button *ngIf="!pd.Dispatched && pd.status !== 'canceled'" class="btn btn-danger" (click)="can_product(pd)">Cancel</button> -->
+                                      </span>
+                                    </p>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-expansion-panel>
+                </div>
+              </mat-accordion>
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="onpagechange($event)"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="GRNhidden">
+        <div class="row mar_b_15">
+          <div class="col-sm-12">
+            <div class="fl">
+            </div>
+            <div class="fr">
+              <input type="text" [(ngModel)]="searchText" (keyup)="searchdata(searchText)" placeholder="Search Here"
+                class="search_style">
+              <button type="submit" class="input_btn" (click)="searchdata(searchText)">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row mar_b_15"*ngIf="deliveredorders.length>0">
+    <div class="col-sm-12">
+      <div class="fl">
+        
+      </div>
+      <div class="fr">
+        <input type="text" [(ngModel)]="searchText" placeholder="Search here..." class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+      </div>
+    </div>
+  </div> -->
+        <div class="row" style="margin:0px">
+          <div>
+            <div>
+              <div class="row" style="padding: 10px;">
+                <div>
+                  <div class="row p_s_1">
+                    <div class="col-md-1 text-center">
+                      <h4>S.No</h4>
+                    </div>
+
+                    <div class="col-md-3 hidexs">
+                      <h4>Company Name</h4>
+                    </div>
+                    <div class="col-md-2  ">
+                      <h4>Mobile No</h4>
+                    </div>
+                    <div class="col-md-2  ">
+                      <h4>City</h4>
+                    </div>
+                    <div class="col-md-1  text-center">
+                      <h4>Credit Period</h4>
+                    </div>
+                    <div class="col-md-1  text-center hidexs">
+                      <h4>Credit Limit</h4>
+                    </div>
+                    <div class="col-md-2  text-center hidexs">
+                      <h4>Outstanding Amount</h4>
+                    </div>
+                    <!-- <div class="col-md-2  text-center">
+                          <h4 style="color:#ffff !important">PO Total</h4>
+                        </div> -->
+
+
+                  </div>
+
+                  <mat-accordion
+                    *ngFor="let p of deliveredorders | filter:searchText| paginate: { itemsPerPage: 10, currentPage: page2 ,totalItems: orderscount}; let i=index">
+                    <!-- *ngIf="check_status(p.dt)" -->
+                    <div>
+                      <mat-expansion-panel [expanded]="indexExpanded == i" (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header (click)="getclosedorders(p,i)">
+                          <mat-panel-title>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{10*(page2-1)+(i+1)}}</span>
+                              </p>
+                            </div>
+
+                            <div class="col-md-3  hidexs">
+                              <!--  <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{p.company_name }}
+                                </span>
+                              </p> -->
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span
+                                  *ngIf="p.userprofiledtl.business_name !==''">&nbsp;&nbsp;{{p.userprofiledtl.business_name
+                                  }}</span>
+                                <span *ngIf="p.userprofiledtl.business_name ==''">&nbsp;&nbsp;customer po
+                                </span>
+                              </p>
+                            </div>
+                            <div class="col-md-2 ">
+                              <p class="txt_black" style="margin-bottom: 0px; ">
+                                <span>&nbsp;&nbsp;{{p.mobile }} </span>
+                              </p>
+                            </div>
+                            <div class="col-md-2 ">
+                              <p class="txt_black" style="margin-bottom: 0px; ">
+                                <span>&nbsp;&nbsp;{{p.city }} </span>
+                              </p>
+                            </div>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_period}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-1  text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_limit}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span style="position: absolute;right: 30%;"
+                                  *ngIf="p.userprofiledtl.outstanding!=null">&#8377;
+                                  {{(p.userprofiledtl.outstanding).toLocaleString('en-IN')}}.<span
+                                    *ngIf="!p.userprofiledtl.decimal">00</span>{{p.userprofiledtl.decimal}}</span>
+                                <span style="position: absolute;right: 30%;"
+                                  *ngIf="p.userprofiledtl.outstanding==null">-</span>
+                              </p>
+                            </div>
+                            <!-- <div class="col-md-2 text-center">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span style="position: absolute;right: 30%;">&#8377; {{p.amount}}</span>
+                                  </p>
+                                </div> -->
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="visible-sm-and-lg">
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b> Company Name :</b> <span>&nbsp;&nbsp;{{p.userprofiledtl.business_name }}
+                            </span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b> Credit Peroid :</b> <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_period }}
+                            </span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b> Credit Limit : </b> <span>&nbsp;&nbsp;{{p.userprofiledtl.credit_limit }}
+                            </span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b>Outstanding Amount : </b> <span *ngIf="p.userprofiledtl.outstanding!=null"> &#8377;
+                              {{(p.userprofiledtl.outstanding).toLocaleString('en-IN')}}.<span
+                                *ngIf="!p.userprofiledtl.decimal">00</span>{{p.userprofiledtl.decimal}}</span>
+                            <span *ngIf="p.userprofiledtl.outstanding==null">-</span>
+                          </p>
+                        </div>
+                        <div class="row p_s_1">
+                          <div class="col-md-1 text-center">
+                            <h4>S.No</h4>
+                          </div>
+                          <!-- <div class="col-md-2  text-center">
+                                  <h4 style="color:#ffff !important">Company Code</h4>
+                                </div> -->
+                          <div class="col-md-2 text-center">
+                            <h4>PO No</h4>
+                          </div>
+                          <div class="col-md-2  text-center">
+                            <h4>Inv No</h4>
+                          </div>
+                          <div class="col-md-2  text-center">
+                            <h4>Inv Date</h4>
+                          </div>
+                          <div class="col-md-1  text-center hidexs">
+                            <h4>Product Line</h4>
+                          </div>
+                          <!-- <div class="col-md-2  text-center hidexs">
+                            <h4>Outstanding Amount</h4>
+                          </div> -->
+
+                          <div class="col-md-1  text-center hidexs">
+                            <h4>Promo Amount</h4>
+                          </div>
+                          <div class="col-md-1  text-center hidexs">
+                            <h4>Discount</h4>
+                          </div>
+                          <div class="col-md-2  text-center hidexs">
+                            <h4>PO Total</h4>
+                          </div>
+
+
+                        </div>
+                        <div *ngFor="let po of orders;let i=index">
+                          <mat-expansion-panel>
+                            <mat-expansion-panel-header (click)="getclosedordersdetail(po,i)">
+                              <mat-panel-title>
+
+                                <div class="col-md-1  text-center">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span>&nbsp;&nbsp;{{10*(page2-1)+(i+1)}}</span>
+                                  </p>
+                                </div>
+                                <!-- <div class="col-md-2  text-center">
+                                      <p class="txt_black" style="margin-bottom: 0px; ">
+                                        <span>&nbsp;&nbsp;{{po.company_code }} </span>
+                                      </p>
+                                    </div> -->
+                                <div class="col-md-2  text-center">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span>&nbsp;&nbsp;{{po.spo_no }}
+                                    </span>
+                                  </p>
+                                </div>
+                                <div class="col-md-2  text-center">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span>&nbsp;&nbsp;{{po.refinvno}}</span>
+                                  </p>
+                                </div>
+                                <div class="col-md-2  text-center">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span>&nbsp;&nbsp;{{po.inv_date | date:'dd-MM-yyyy'}}</span>
+                                  </p>
+                                </div>
+                                <div class="col-md-1  text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span>&nbsp;&nbsp;{{po.detail}}</span>
+                                  </p>
+                                </div>
+                                <!-- <div class="col-md-2 text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span *ngIf="po.outstatnding_amount!=null" style="position: absolute;right: 30%;">&#8377;
+                                      {{po.outstatnding_amount.toLocaleString('en-IN')}}.00</span>
+                                      <span *ngIf="po.outstatnding_amount==null" style="position: absolute;right: 40%;"> -</span>
+                                  </p>
+                                </div> -->
+                                <div class="col-md-1 text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span *ngIf="po.promo_amount" style="position: absolute;right: 30%;">&#8377;
+                                      {{po.promo_amount.toLocaleString('en-IN')}}.00</span>
+                                    <span *ngIf="!po.promo_amount" style="position: absolute;right: 40%;"> -</span>
+                                  </p>
+                                </div>
+                                <div class="col-md-1 text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span *ngIf="po.devicediscamount" style="position: absolute;right: 10%;">&#8377;
+                                      {{po.devicediscamount.toLocaleString('en-IN')}}.00</span>
+                                    <span *ngIf="!po.devicediscamount" style="position: absolute;right: 30%;"> -</span>
+                                  </p>
+                                </div>
+                                <div class="col-md-2 text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    <span *ngIf="po.final_amount" style="position: absolute;right: 30%;">&#8377;
+                                      {{po.final_amount.toLocaleString('en-IN')}}.{{po.decimalamount}}</span>
+                                    <span *ngIf="!po.final_amount" style="position: absolute;right: 30%;">&#8377;
+                                      {{po.amount.toLocaleString('en-IN')}}.00</span>
+                                  </p>
+
+                                </div>
+
+
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="visible-sm-and-lg form-group">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <b> Product Line :</b> <span>&nbsp;&nbsp;{{po.detail}}
+                                </span>
+                              </p>
+                              <!-- <p class="txt_black" style="margin-bottom: 0px;">
+                                <b>Outstanding Amount : </b> <span *ngIf="po.outstatnding_amount!=null"> &#8377;
+                                  {{po.outstatnding_amount.toLocaleString('en-IN')}}.00</span>
+                                  <span *ngIf="po.outstatnding_amount==null"> - </span>
+                              </p> -->
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <b>Promocode Applied Amount : </b> <span *ngIf="po.promo_amount"> &#8377;
+                                  {{po.promo_amount.toLocaleString('en-IN')}}.00</span>
+                                <span *ngIf="!po.promo_amount"> - </span>
+                              </p>
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <b>PO Total :</b> <span *ngIf="po.final_amount"> &#8377;
+                                  {{po.final_amount.toLocaleString('en-IN')}}.{{po.decimalamount}}</span>
+                                <span *ngIf="!po.final_amount"> &#8377;
+                                  {{po.amount.toLocaleString('en-IN')}}.00</span>
+                              </p>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-6 orderdetdiv">
+                                <h4>Order Details:</h4>
+                              </div>
+
+
+                              <!--<h4 style="float: right;" (click)="grnPrint(p.detail)">Print</h4> -->
+                            </div>
+
+                            <div style="max-height: 380px;overflow: auto;" class="table-responsive">
+                              <table class="table" *ngIf="ordersdetail">
+                                <thead>
+                                  <tr>
+                                    <th>S.No</th>
+                                    <th>Product </th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Net Amount</th>
+                                    <th>GST</th>
+                                    <th>Total Amount</th>
+                                    <!-- <th>Status</th> -->
+
+                                  </tr>
+
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let pd of ordersdetail ; let i=index;">
+
+                                    <td>{{i + 1}} </td>
+
+                                    <td style="width:10%;">
+                                      <div>
+                                        <img
+                                          src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/101_{{pd.modelno}}.png"
+                                          onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                                          class="img-thumbnail" style="width:70%;height: 30px;">
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <h4 class="table_pd_name">{{pd.subcategory}} {{pd.modelno}}</h4>
+                                    </td>
+                                    <td>
+                                      <div class="row_mar_0">
+                                        <span class="f_wt_600">{{pd.net_price | currency:'&nbsp;'}}</span>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>
+                                        <p>
+                                          <span class=" f_wt_600">{{pd.inv_qty }}</span>
+                                        </p>
+
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>
+                                        <p style="margin-bottom: 0px">
+                                          <span class=" f_wt_600">₹ {{pd.tot_value | currency:'&nbsp;'}}</span>
+                                        </p>
+                                        <p class="p_e_g">(Excluding GST)</p>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>
+                                        <p>
+                                          <span class=" f_wt_600">{{pd.gst}}%</span>
+                                        </p>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div>
+
+                                        <span class="f_wt_600">₹ {{pd.final_amount | currency:'&nbsp;'}}</span>&nbsp;
+                                        <p class="p_e_g">(Including GST)</p>
+                                      </div>
+                                    </td>
+                                    <!-- <td>
+                                      <div>
+                                        <p>
+                                          <span class=" f_wt_600">{{pd.status | titlecase}} &nbsp;
+
+                                          </span>
+                                        </p>
+                                      </div>
+                                    </td> -->
+
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <div class="row row_mar_0" *ngIf="selected_list.length>0 && this.po_no1==po.po_no ">
+                                <button style="float:right;" class="btn btn-primary"
+                                  (click)="sub_sel_data()">Submit</button>
+                              </div>
+                            </div>
+                          </mat-expansion-panel>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-accordion>
+                  <div class="pull-left mar_t_30">
+                    <pagination-controls (pageChange)="onpagechange($event)"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row row_mar_0">
+              <div class="row pad_10">
+                <div>
+                  <div class="row p_s_1">
+                    <div class="col-md-2 text-center">
+                      <h4>Srl. No</h4>
+                    </div>
+                    <div class="col-md-2 text-center">
+                      <h4>GRN No</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4>GRN Date</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4>Product Line</h4>
+                    </div>
+                    <div class="col-md-2  text-center hidexs">
+                      <h4>Purchased From</h4>
+                    </div>
+                    <div class="col-md-2  text-center hidexs">
+                      <h4>Financial Year</h4>
+                    </div>
+                  </div>
+
+                  <mat-accordion
+                    *ngFor="let g of grn_data | filter:searchText| paginate: { itemsPerPage: 10, currentPage: page }; let i=index">
+
+                    <div *ngIf="check_status(g.detail)">
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style=" margin-bottom: 0px; ">
+                                <span>&nbsp;&nbsp;{{10*(page-1)+(i+1)}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{g.grn_no }}
+                                </span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style=" margin-bottom: 0px; ">
+                                <span>&nbsp;&nbsp;{{g.grn_date | date:'dd-MM-yyyy'}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{g.detail.length}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2 text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span style="position: absolute;right: 30%;">
+                                  {{g.purchase_from_company_code}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  text-center hidexs">
+                              <p class="txt_black" style=" margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{g.financial_year }}
+                                </span>
+                              </p>
+                            </div>
+                          </mat-panel-title>
+
+
+                        </mat-expansion-panel-header>
+                        <div class="visible-sm-and-lg form-group">
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <span style="position: absolute;right: 30%;">
+                              {{g.purchase_from_company_code}}</span>
+                          </p>
+                          <p class="txt_black" style=" margin-bottom: 0px;">
+                            <span>&nbsp;&nbsp;{{g.financial_year }}
+                            </span>
+                          </p>
+                        </div>
+                        <button class="btn btn-primary" style="float: right; cursor: pointer;"
+                          (click)="grnPrint(g)">Print</button>
+                        <h4 >Order Details:</h4>
+
+                        <div style="max-height: 380px;overflow: auto;" class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>S.No</th>
+                                <th>INV.No </th>
+                                <th>Product Description</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Net Amount</th>
+                                <th>GST</th>
+                                <th>Total Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let pd of g.detail ; let i=index;">
+                                <td>{{i + 1}} </td>
+                                <td>
+                                  <div class="row_mar_0">
+                                    <span class="f_wt_600">{{pd.inv_no}}</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <h4  class="table_pd_name">{{pd.modelno}}</h4>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0">
+                                    <span class="f_wt_600">{{pd.net_price}}</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>
+                                      <span class=" f_wt_600">{{pd.receiving_qty }}</span>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p style="margin-bottom: 0px">
+                                      <span class=" f_wt_600">{{pd.tot_value}}</span>
+                                    </p>
+                                    <p class="p_e_g">(Excluding GST)
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p>
+                                      <span class=" f_wt_600">18% </span>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+
+                                    <span class="f_wt_600">{{pd.final_value}}</span>&nbsp;
+                                    <p class="p_e_g">(Including GST)
+                                    </p>
+                                  </div>
+                                </td>
+                               
+                              </tr>
+                            </tbody>
+                          </table>
+
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-accordion>
+                  <div class="pull-left mar_t_30">
+                    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="confirm" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="alert_heading" style="font: bold">
+              Give Your Comments
+
+            </h3>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Comment:</label>
+                <textarea type="text" class="form-control" [(ngModel)]="commenting" (keypress)="keypress2($event)"
+                  maxlength="100" required></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Cancel</button>
+          <!-- <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="confirm_sub1(commenting)">Ok</button> -->
+          <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="confirm_sub(commenting)"
+            value="">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="cancelModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal"></button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Are You Sure ?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="confirm_cancel()">yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-12 mar_t_10" [hidden]="printoutstand==false" id="outstanding" *ngIf="getinvdata?.length>0">
+  <div class="row">
+    <div style="text-align:center;padding:10px; color: #293271"><b>{{getinvdata[0].name}} Outstanding Details</b>
+    </div>
+    <div class="outstanding" style="padding:10px;color:#d9534f"><span class="total"><b>Total Outstanding =
+          ₹ {{outstandingdetails.total_outstatnding_amount.toLocaleString('en-IN')}}.00,</b></span><span
+        class="total"><b>Total Due Amount =
+          ₹ {{outstandingdetails.total_due_amount.toLocaleString('en-IN')}}.00,</b></span><span class="total">
+        <font color="#d9534f"><b>Total Under Due Amount = ₹
+            {{outstandingdetails.total_under_due_amount.toLocaleString('en-IN')}}.00</b></font>
+      </span></div>
+
+  </div>
+  <div>
+
+  </div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Po No </th>
+          <th>Po Date </th>
+          <th>Invoice No </th>
+          <th>Invoice Date </th>
+          <th>Due Date </th>
+          <th>Total Amount </th>
+          <th>Delay(+/-) </th>
+          <th *ngIf="this.getinvdata[0].under_due_amount">Under Due Amount </th>
+          <th *ngIf="this.getinvdata[0].due_amount">Due Amount</th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pd of getinvdatadetail">
+          <td>
+            <div style="margin:0px;text-align:center"><span class="f_wt_600">{{pd.pono_ref}}</span> </div>
+          </td>
+          <td>
+            <div class="row_mar_0"><span class="f_wt_600"> {{pd.po_date | date:'dd-MM-yyyy'}}</span> </div>
+          </td>
+          <td>
+            <div style="margin:0px;text-align:center"><span class="f_wt_600">{{pd.inv_no}}</span> </div>
+          </td>
+          <td>
+            <div class="row_mar_0"> <span class="f_wt_600">
+                {{pd.inv_date | date:'dd-MM-yyyy'}}</span></div>
+          </td>
+          <td>
+            <div class="mar_b_10">
+              <span class=" f_wt_600">{{pd.due_date | date:'dd-MM-yyyy'}} </span>
+            </div>
+          </td>
+          <td>
+            <div class="mar_b_10" style="text-align:right">
+              <span class=" f_wt_600 ">₹ {{pd.line_amount.toLocaleString('en-IN')}}.00 </span>
+            </div>
+          </td>
+          <td>
+            <div class="mar_b_10" style="text-align:center">
+              <span class=" f_wt_600">{{pd.delay}}</span>
+
+            </div>
+          </td>
+          <td>
+            <div class="mar_b_10" style="text-align:right;width:150px">
+              <span class=" f_wt_600"> ₹ {{pd.due_amount.toLocaleString('en-IN')}}.00</span>
+            </div>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="modal fade" id="viewoutstandingModal" role="dialog">
+  <div class="modal-dialog content">
+    <div class="modal-content">
+      <div class="modal-header visible-sm-and-lg">
+        <span style="float:right;">
+          <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        </span>
+      </div>
+      <div class="modal-body bankdisplay" style="padding:0;">
+        <span style="float:right;" class="hidexs">
+          <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        </span>
+
+        <div class="row" style="margin:0px">
+          <div class="col-md-12">
+            <div>
+              <div class="row" style="padding: 10px;">
+                <div class="col-md-12 mar_t_10" *ngIf="getinvdata?.length>0">
+                  <div class="row">
+                    <div class="modal_title">
+                      <h4>
+                        <font color="#293271">{{getinvdata[0].name}} Outstanding Details</font>
+                      </h4>
+                    </div>
+                    <div class="modalamountwrap" style="padding:10px;"><span class="total"><b>Total Outstanding -
+                          {{outstandingdetails.total_outstatnding_amount}},</b></span><span class="total"><b>Total Due
+                          Amount - {{outstandingdetails.total_due_amount}},</b></span><span class="total">
+                        <font color="#d9534f"><b>Total Under Due Amount -
+                            {{outstandingdetails.total_under_due_amount}}</b></font>
+                      </span>
+                    </div>
+
+                  </div>
+
+                  <div class="row modalinnerwrap">
+
+                    <!-- <div class="col-md-1 text-center">
+                        <h4>Po No</h4>
+                      </div>
+                      <div class="col-md-2 text-center">
+                        <h4>Po Date</h4>
+                      </div> -->
+
+                    <div class="col-md-2  text-center">
+                      <h4>Invoice No</h4>
+                    </div>
+                    <div class="col-md-2 hidexs">
+                      <h4>Invoice Date</h4>
+                    </div>
+                    <div class="col-md-2 hidexs" style="padding:0px 5px;">
+                      <h4>Due Date</h4>
+                    </div>
+                    <div class="col-md-2 hidexs" style="padding:0px 5px;">
+                      <h4>Total Amount</h4>
+                    </div>
+                    <div class="col-md-1 hidexs" style="padding:0px 5px;text-align:left">
+                      <h4>Delay(+/-)</h4>
+                    </div>
+                    <div class="col-md-2 hidexs" style="padding:0px 5px;"
+                      *ngIf="this.getinvdatadetail[0].under_due_amount">
+                      <h4>Under Due Amount
+                      </h4>
+                    </div>
+                    <div class="col-md-2 hidexs" style="padding:0px 5px;" *ngIf="this.getinvdatadetail[0].due_amount">
+                      <h4>Due Amount</h4>
+                    </div>
+
+
+                  </div>
+                  <mat-accordion
+                    *ngFor="let pd of getinvdatadetail | filter:searchText| filter:searchText| paginate: { itemsPerPage: 10, currentPage: page}; let i=index">
+
+                    <div class="expansionPanel">
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                        (click)="getproductdetails(pd.inv_seq_no)">
+                        <mat-expansion-panel-header [ngClass]="{'exceeded':pd.delay>0}">
+                          <mat-panel-title>
+                            <!-- <div class="col-md-1  text-center" style="padding:0px 5px;">
+                                <p class="txt_black" style="margin-bottom: 0px;">{{pd.spo_no}}</p>
+                              </div>
+                              <div class="col-md-2  text-center" style="padding:0px 5px;">
+                                <p class="txt_black" style="margin-bottom: 0px;">{{pd.po_date | date:'dd-MM-yyyy'}}</p>
+                              </div> -->
+
+                            <div class="col-md-2 text-center " style="padding:0px 5px;">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                {{pd.sinv_no}}</p>
+                            </div>
+                            <div class="col-md-2  hidexs" style="padding:0px 5px;">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                {{pd.inv_date | date:'dd-MM-yyyy'}}</p>
+                            </div>
+                            <div class="col-md-2 hidexs" style="padding:0px 5px;">
+                              <p class="txt_black" style="margin-bottom: 0px">
+                                {{pd.due_date | date:'dd-MM-yyyy'}}
+                              </p>
+                            </div>
+                            <div class="col-md-2 hidexs" style="padding:0px 5px;float:right">
+                              <p class="txt_black" style="margin-bottom: 0px">
+                                {{pd.line_amount | currency : '&nbsp;'}}</p>
+                            </div>
+                            <div class="col-md-1 hidexs" style="padding:0px 5px;">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                {{pd.delay}}</p>
+                            </div>
+                            <div *ngIf="pd.under_due_amount" class="col-md-2  text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;margin-left:5px;float:right">
+                                {{pd.under_due_amount| currency : '&nbsp;'}}</p>
+                            </div>
+                            <div *ngIf="pd.due_amount" class="col-md-2  text-center hidexs">
+                              <p class="txt_black" style="margin-bottom: 0px;margin-left:5px;float:right">
+                                {{pd.due_amount| currency : '&nbsp;'}}</p>
+                            </div>
+
+
+
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="visible-sm-and-lg">
+                          <p class="txt_black">
+                            <b>Invoice Date :</b> <span>&nbsp;&nbsp; {{pd.inv_date | date:'dd-MM-yyyy'}}
+                            </span>
+                          </p>
+                          <p class="txt_black">
+                            <b>Due Date :</b> <span>&nbsp;&nbsp; {{pd.due_date | date:'dd-MM-yyyy'}}
+                            </span>
+                          </p>
+                          <p class="txt_black">
+                            <b>Total Amount :</b> <span>&nbsp;&nbsp; &#8377; {{pd.line_amount}}
+                            </span>
+                          </p>
+                          <p class="txt_black">
+                            <b>Delay(+/-) : </b>&#8377;<span>{{pd.delay}}</span>
+                          </p>
+                          <p class="txt_black">
+                            <b>Due Amount : </b>&#8377;<span>{{pd.due_amount}}</span>
+                          </p>
+                        </div>
+
+                        <div>
+                          <div *ngIf="sub_detail?.length>0" class="row" style="padding-bottom: 15px;">
+                            <div class="col-md-6" style="text-align:left;" id="heading">
+                              <h4>
+                                <font color="#293271">Invoice Product Details:</font>
+                              </h4>
+                            </div>
+                            <div class="col-md-6" style="text-align:right;"><button type="submit"
+                                class="btn btn-success" (click)="printdetail()">Print Detail</button></div>
+
+                          </div>
+                          <div id="detailprint" class="table-responsive">
+
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th>S.No</th>
+                                  <th>Product </th>
+                                  <th>Product Description</th>
+                                  <th>Price</th>
+                                  <th>Qty</th>
+                                  <th>Net Amount</th>
+                                  <th>GST</th>
+                                  <th>Total Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+
+                                <tr *ngFor="let sd of sub_detail; let i=index;">
+                                  <td>
+                                    <div class="row_mar_0"> <span class="f_wt_600">{{i + 1}}</span></div>
+                                  </td>
+                                  <td>
+                                    <div class="row_mar_0"> <img src="{{sd.image}}"
+                                        onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                                        class="img-thumbnail" style="width:70%;height: 30px;"></div>
+                                  </td>
+                                  <td>
+                                    <div class="row_mar_0"> <span class="f_wt_600">{{sd.product_name}}</span></div>
+                                  </td>
+                                  <td>
+                                    <div class="row_mar_0"> <span class="f_wt_600">
+                                        {{sd.mrp}}</span></div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p><span class=" f_wt_600">{{sd.packing_qty}} </span></p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p><span class=" f_wt_600 ">{{sd.net_price}} </span></p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p style="margin-bottom: 0px"><span class=" f_wt_600">{{sd.gst_amount}}</span>
+                                      </p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <span class=" f_wt_600">{{sd.final_amount}}</span>
+                                      <p class="p_e_g" style="width:100px;">(Including GST)</p>
+                                    </div>
+                                  </td>
+
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-accordion>
+
+
+                </div>
+                <!-- <div class="pull-left mar_t_30">
+                  <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                </div> -->
+
+                <!-- <div *ngIf="getinvdata?.length>0"  style="text-align: center;padding-bottom: 15px;">
+                  <button type="submit" class="btn btn-success" (click)="printoutstanding()">Print Outstanding</button>
+                  <button type="submit" style="margin:10px;" class="btn btn-success" data-dismiss="modal">Cancel</button>
+              </div> -->
+                <div class="col-md-12" *ngIf="getinvdata?.length<=0">
+                  <div class="no_data">
+                    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                    <span class="nodata_txt">No Data is Available</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div *ngIf="getinvdata?.length>0" class="row" style="text-align: center;padding-bottom: 15px;">
+        <button type="submit" class="btn btn-success" (click)="printoutstanding()">Print Outstanding</button>
+        <button type="submit" style="margin:10px;" class="btn btn-success" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,918 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+<div class="container pad_t_5per pad_b_5per" id="outstandWraper">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Outstanding Position Status</span>
+  </p>
+
+  <div class="row o_s_d">
+    <div class="row bg-theme dash_status" style="margin:0px">
+      <div class=" col-md-3 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}" (click)="po()">Outstanding Details</a>
+      </div>
+      <div class="col-md-3 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}" (click)="do()">Cheque Details Form</a>
+      </div>
+      <div class="col-md-3 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':REChidden == true}" (click)="rec()">Reconsilation Status</a>
+      </div>
+      <div class="col-md-3 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':GRNhidden == true}" (click)="grn()">Final Transaction Status</a>
+      </div>
+    </div>
+
+    <div class="outstandwrap">
+      <div *ngIf="POhidden">
+        <div class="row row_mar_0">
+          <div class="row pad_10">
+            <div class="col-md-12 mar_t_10" *ngIf="getinvdata?.length>0">
+
+              <div class="row">
+
+                <div style="float:right;padding:5px;">
+                  <span class="total">
+                    <b>Total Outstanding = ₹ {{outstandingdetails.total_outstatnding_amount.toLocaleString('en-IN')}},</b>
+                  </span>
+                  <span class="total">
+                    <b>Total Due Amount = ₹ {{outstandingdetails.total_due_amount.toLocaleString('en-IN')}},</b>
+                  </span>
+                  <span class="total">
+                    <font color="#d9534f">
+                      <b>Total Under Due Amount = ₹ {{outstandingdetails.total_under_due_amount.toLocaleString('en-IN')}}</b>
+                    </font>
+                  </span>
+                  <span style="padding-bottom: 15px;">
+                    <button type="submit" class="btn btn-success" (click)="printoutstanding()">Print Outstanding
+                    </button>
+
+                  </span>
+                </div>
+                <div style="padding-bottom: 15px;float:right;padding:5px;border: #878787">
+                  <input type="text" [(ngModel)]="searchText" placeholder="Search Here..." class="search_style">
+                  <button type="submit" class="input_btn">Search</button>
+                </div>
+              </div>
+
+              <div class="row p_s_1">
+                <div class="col-md-2  text-center hidden-xs">
+                  <h4>S.No</h4>
+                </div>
+                <div class="col-md-3 text-center">
+                  <h4>Company Name</h4>
+                </div>
+
+
+                <div class="col-md-2  text-center hidden-xs">
+                  <h4>Outstanding Amount</h4>
+                </div>
+                <div class="col-md-2  text-center hidden-xs">
+                  <h4>Due Amount</h4>
+                </div>
+                <div class="col-md-2  text-center hidden-xs">
+                  <h4>Under Due Amount</h4>
+                </div>
+
+              </div>
+              <mat-accordion *ngFor="let pi of getinvdata | filter:searchText; let i=index">
+
+                <div>
+                  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <div class="col-md-2  text-center">
+                          <p class="txt_black mar_b_0">{{10*(page-1)+(i+1)}}</p>
+                        </div>
+                        <div class="col-md-3  text-center">
+                          <p class="txt_black mar_b_0">{{pi.name}}</p>
+                        </div>
+
+
+                        <div class="col-md-2  text-center hidden-xs">
+                          <p class="txt_black mar_b_0" style="float:right">
+                            ₹ {{pi.outstatnding_amount.toLocaleString('en-IN')}}</p>
+                        </div>
+                        <div class="col-md-2  text-center hidden-xs">
+                          <p *ngIf="pi.due_amount!=null" class="txt_black mar_b_0" style="float:right">
+                            ₹ {{pi.due_amount.toLocaleString('en-IN')}}
+                          </p>
+                          <p *ngIf="pi.due_amount==null" class="txt_black mar_b_0 hidden-xs">
+                            -
+                          </p>
+                        </div>
+                        <div class="col-md-2  text-center hidden-xs">
+                          <p *ngIf="pi.under_due_amount!=null" class="txt_black mar_b_0" style="float:right">
+                            ₹ {{pi.under_due_amount.toLocaleString('en-IN')}}</p>
+                          <p *ngIf="pi.under_due_amount==null" class="txt_black mar_b_0 hidden-xs">
+                            -
+                          </p>
+                        </div>
+
+                      </mat-panel-title>
+
+                    </mat-expansion-panel-header>
+                    <div class="visible-xs">
+                      <p class="txt_black mar_b_0">
+                        <span class="txt_black">Outstanding Amount :</span>
+                        <b>₹ {{pi.outstatnding_amount.toLocaleString('en-IN')}}</b>
+                      </p>
+                      <p class="txt_black mar_b_0">
+                        <span class="txt_black">Due Amount :</span>
+                        <b *ngIf="pi.due_amount!=null"> ₹ {{pi.due_amount.toLocaleString('en-IN')}}</b>
+                        <b *ngIf="pi.due_amount==null"> - </b>
+                      </p>
+                      <p class="txt_black mar_b_0">
+                        <span class="txt_black">Under Due Amount</span>
+                        <b *ngIf="pi.under_due_amount!=null"> ₹ {{pi.under_due_amount.toLocaleString('en-IN')}}</b>
+                        <b *ngIf="pi.under_due_amount==null"> -</b>
+                      </p>
+                    </div>
+                    <!-- <h4>Invoice Details:</h4> -->
+                    <div class="row p_s_1">
+
+                      <!-- <div class="col-md-1 ">
+                            <h4>Po No</h4>
+                          </div>
+                          <div class="col-md-2 ">
+                            <h4>Po Date</h4>
+                          </div> -->
+
+                      <div class="col-md-2" style="padding:0px 5px">
+                        <h4 style="text-align:left">Invoice No</h4>
+                      </div>
+                      <div class="col-md-2 hidden-xs">
+                        <h4>Invoice Date</h4>
+                      </div>
+                      <div class="col-md-2 hidden-xs">
+                        <h4 style="text-align:left">Due Date</h4>
+                      </div>
+                      <div class="col-md-2 hidden-xs">
+                        <h4>Total Amount</h4>
+                      </div>
+                      <div class="col-md-1 text-center hidden-xs">
+                        <h4>Delay(+/-)</h4>
+                      </div>
+                      <!-- <div class="col-md-1 hidden-xs" *ngIf="pi.under_due_amount">
+                            <h4>Under Due Amount</h4>
+                          </div> -->
+                      <div class="col-md-2 text-center hidden-xs">
+                        <h4>Due Amount</h4>
+                      </div>
+                      <div class="col-md-1 text-center">
+                        <h4>View
+                          <span class="hidden-xs">Payment</span>
+                        </h4>
+                      </div>
+
+                    </div>
+
+                    <div *ngFor="let pd of pi.detail;let i=index">
+                      <mat-expansion-panel (click)="getinvoiceproducts(pd.inv_seq_no)">
+                        <mat-expansion-panel-header [ngClass]="{'exceeded':pd.delay>0}">
+                          <mat-panel-title>
+
+                            <div class="col-md-2 text-center hidden-xs">
+                              <p class="txt_black mar_b_0">
+                                {{pd.sinv_no}}</p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black mar_b_0">
+                                {{pd.inv_date | date:'dd-MM-yyyy'}}</p>
+                            </div>
+                            <div class="col-md-2 text-center hidden-xs">
+                              <p class="txt_black mar_b_0">
+                                {{pd.due_date | date:'dd-MM-yyyy'}}
+                              </p>
+                            </div>
+                            <div class="col-md-2  text-center hidden-xs">
+                              <p *ngIf="!pd.final_amount" class="txt_black mar_b_0" style="float:right">
+                                ₹ {{pd.line_amount.toLocaleString('en-IN')}}</p>
+                              <p *ngIf="pd.final_amount" class="txt_black mar_b_0" style="float:right">
+                                ₹ {{pd.final_amount.toLocaleString('en-IN')}}</p>
+                            </div>
+                            <div class="col-md-1  text-center hidden-xs">
+                              <p class="txt_black mar_b_0" style="float:right">
+                                {{pd.delay}}</p>
+                            </div>
+                            <div class="col-md-2 hidden-xs">
+                              <p class="txt_black mar_b_0" style="float:right">
+                                ₹ {{pd.due_amount.toLocaleString('en-IN')}}</p>
+                            </div>
+                            <div class="col-md-1  text-center">
+                              <p>
+                                <span class="f_size_15  orange_clr cursor_pointer" (click)="getinvoicepayment(pd.inv_seq_no)">
+                                  <i class="fa fa-eye" aria-hidden="true" title="View Details"></i>
+                                </span>
+                              </p>
+                            </div>
+
+
+                            <br />
+
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="visible-xs">
+                          <p class="txt_black mar_b_0">
+                            <span class="txt_black">Invoice No : </span>
+                            <b> &nbsp;{{pd.inv_no}}</b>
+                          </p>
+                          <p class="txt_black mar_b_0">
+                            <span class="txt_black">Due Date : </span>
+                            <b>&nbsp; {{pd.due_date | date:'dd-MM-yyyy'}}</b>
+                          </p>
+                          <p class="txt_black mar_b_0">
+                            <span class="txt_black">Total Amount : </span>
+                            <b>
+                              <span *ngIf="!pd.final_amount">
+                                &nbsp; ₹ {{pd.line_amount.toLocaleString('en-IN')}}</span>
+                              <span *ngIf="pd.final_amount">
+                                &nbsp; ₹ {{pd.final_amount.toLocaleString('en-IN')}}</span>
+                            </b>
+                          </p>
+                          <p class="txt_black mar_b_0">
+                            <span class="txt_black">Delay(+/-) : </span>
+                            <b> &nbsp;{{pd.delay}}</b>
+                          </p>
+                          <p class="txt_black mar_b_0">
+                            <span class="txt_black">Under Due Amount : </span>
+                            <b> &nbsp;₹ {{pd.due_amount.toLocaleString('en-IN')}}</b>
+                          </p>
+                        </div>
+                        <div class="table-responsive" *ngIf="productdetail[0] && productdetail[0].json_dtl">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>S.No</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Net Amount</th>
+                                <th>GST</th>
+                                <th>Total Amount</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+
+                              <tr *ngFor="let sd of sub_detail; let i=index;">
+                                <td>
+                                  <h4 class="table_pd_name">{{i + 1}}</h4>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0">
+                                    <span class="f_wt_600">{{sd.subcategory}} {{sd.modelno}}</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0">
+                                    <span class="f_wt_600">
+                                      {{sd.mrp}}</span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <p>
+                                      <span class="f_wt_600">{{sd.packing_qty}} </span>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10" style="text-align:right;width:80px">
+                                    <p>
+                                      <span class="f_wt_600 ">₹ {{sd.net_price.toLocaleString('en-IN')}} </span>
+                                    </p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <p class="mar_b_0">
+                                      <span class="f_wt_600">₹ {{sd.gst_amount.toLocaleString('en-IN')}}</span>
+                                    </p>
+
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10" style="text-align:right;width:80px">
+                                    <p>
+                                      <span class="f_wt_600">₹ {{sd.final_amount.toLocaleString('en-IN')}}</span>
+                                    </p>
+                                    <p class="p_e_g">(Including GST)</p>
+                                  </div>
+                                </td>
+
+                              </tr>
+                            </tbody>
+                          </table>
+
+                        </div>
+                        <div *ngIf="!sub_detail" style="text-align:center;">This is opening balance</div>
+
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-expansion-panel>
+                </div>
+              </mat-accordion>
+
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="getinvdata?.length<=0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row p_s_1" [hidden]="printdata==false" id="outstandprint">
+          <div class="row">
+            <h4 class="payment" style="text-align:center;padding:10px 20px;">
+              <b>
+                <font color="#293271">Customers Outstanding Details</font>
+              </b>
+            </h4>
+          </div>
+          <div class="row">
+
+            <div style="float:right;padding:10px;">
+              <span class="total">
+                <b>Total Outstanding = ₹ {{outstandingdetails.total_outstatnding_amount}},</b>
+              </span>
+              <span class="total">
+                <b>Total Due Amount = ₹ {{outstandingdetails.total_due_amount}},</b>
+              </span>
+              <span class="total">
+                <font color="#d9534f">
+                  <b>Total Under Due Amount = ₹ {{outstandingdetails.total_under_due_amount}}</b>
+                </font>
+              </span>
+            </div>
+
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Company Name</th>
+
+                  <th>Outstanding Amount</th>
+                  <th>Due Amount</th>
+                  <th style="float:right;">Under Due Amount</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pi of getinvdata; let i=index;">
+                  <td>
+                    <div class="row_mar_0">
+                      <span class="f_wt_600">{{pi.name}}</span>
+                    </div>
+                  </td>
+
+                  <td>
+                    <div style="margin:0px;text-align:right;width:160px;">
+                      <span class="f_wt_600">₹ {{pi.outstatnding_amount.toLocaleString('en-IN')}}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="margin:0px;text-align:right">
+                      <span *ngIf="pi.due_amount" class="f_wt_600">
+                        ₹ {{pi.due_amount.toLocaleString('en-IN')}}</span>
+                      <span *ngIf="!pi.due_amount">-</span>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="margin:0px;text-align:right" class="mar_b_10">
+                      <span *ngIf="pi.under_due_amount" class=" f_wt_600"> ₹ {{pi.under_due_amount.toLocaleString('en-IN')}} </span>
+                      <span *ngIf="!pi.under_due_amount">-</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+      <div *ngIf="DOhidden">
+        <div class="row">
+          <div>
+            <app-cheque-detailsform></app-cheque-detailsform>
+
+          </div>
+        </div>
+      </div>
+      <div *ngIf="GRNhidden">
+        <div class="row row_mar_0">
+          <div class="row pad_0">
+              <div style="float:right;border: #878787">
+                  <input type="text" [(ngModel)]="searchText" placeholder="Search Here..." class="search_style">
+                  <button type="submit" class="input_btn">Search</button>
+                </div>
+            <div class="col-sm-12 mar_t_20" *ngIf="!invoicedetails || dealerdata">
+              <div *ngIf="getinvdata?.length>0" id="finalstatusWrap">
+                         
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr style="font-size:12px;">
+                      <th>Company Name</th>
+
+                      <th>Outstanding Amount</th>
+                      <th>Due Amount</th>
+                      <th>Under Due Amount</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let pi of getinvdata | filter:searchText; let i=index;">
+                      <td>{{pi.name}}</td>
+
+
+                      <td>
+                        <div style="text-align:right;width:120px">₹ {{pi.outstatnding_amount.toLocaleString('en-IN')}}.00
+                        </div>
+                      </td>
+                      <td *ngIf="pi.due_amount!=null">
+                        <div style="text-align:right;width:120px">₹ {{pi.due_amount.toLocaleString('en-IN')}}.00</div>
+                      </td>
+                      <td *ngIf="pi.due_amount==null">
+                        <div style="text-align:right;width:70px">-</div>
+                      </td>
+                      <td *ngIf="pi.under_due_amount!=null">
+                        <div style="text-align:right;width:110px">₹ {{pi.under_due_amount.toLocaleString('en-IN')}}.00
+                        </div>
+                      </td>
+                      <td *ngIf="pi.under_due_amount==null">
+                        <div style="text-align:right;width:70px">-</div>
+                      </td>
+                      <td>
+                        <span class="f_size_15 orange_clr padd_right_10 cursor_pointer" (click)="edit1(pi)">
+                          <i class="fa fa-edit" aria-hidden="true" title="Adjustment"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              </div>
+
+            </div>
+            <div class="col-md-12" *ngIf="getinvdata?.length<=0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="invoicedetails || !dealerdata ">
+            <div *ngIf="getinvdata?.length>0">
+              <div class="row">
+
+                <span class="a_b_2" (click)="alloutstanding()">
+                  <button class="a_b_1 btn-primary btn dealers">
+                    <i class="fa fa-long-arrow-left"></i>&nbsp;Dealers/Shopee list
+                  </button>
+                </span>
+              </div>
+              <div *ngIf="invdetail?.length>0">
+                <div class="col-md-6 mar_t_10">
+                  <div style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc">
+                    <div class="table-responsive">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr style="font-size:12px;">
+                            <th>Select</th>
+                            <th>Invoice No.</th>
+                            <th>Total Amount</th>
+                            <th>Due Amount</th>
+                            <th>Adjust Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let pd of invdetail ;let i=index;">
+                            <td>
+                              <input type="checkbox" (change)="checkValuee($event,pd.inv_no)" />
+                            </td>
+
+
+                            <td> {{pd.inv_no}}</td>
+
+                            <td *ngIf="!pd.final_amount">₹ {{pd.line_amount.toLocaleString('en-IN') }} </td>
+                            <td *ngIf="pd.final_amount">₹ {{pd.final_amount.toLocaleString('en-IN') }} </td>
+                            <td>₹ {{pd.due_amount.toLocaleString('en-IN')}}</td>
+                            <td mwlDroppable (drop)="onDrop($event)" dragOverClass="drop-over-active"> " "</td>
+
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="pull-left mar_t_30">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mar_t_10">
+                  <div style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc">
+                    <div class="table-responsive">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr style="font-size:12px;">
+                            <th>Advice No.</th>
+                            <th>Customer Name </th>
+                            <th>Cheque No.</th>
+                            <th>Total Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let cd of checkdetails;let i=index;">
+                            <td *ngIf="cd.amount==cd.balance" style="padding:8px;">
+                              <div dragActiveClass="drag-active" mwlDraggable dropData="{{cd.transid}},{{cd.balance}}">
+                                {{cd.transid}}
+                                <span *ngIf="adjustamount">₹ {{cd.amount.toLocaleString('en-IN')}}</span>
+                              </div>
+                            </td>
+                            <td *ngIf="cd.amount!=cd.balance" style="padding:8px;">
+                              <div dragActiveClass="drag-active" mwlDraggable dropData="{{cd.transid}},{{cd.balance}}">
+                                {{cd.transid}}
+                                <span *ngIf="adjustamount">₹ {{cd.balance.toLocaleString('en-IN')}}</span>
+                              </div>
+                            </td>
+                            <td> {{cd.giver_advice_name}}</td>
+                            <td *ngIf="cd.check_no"> {{cd.check_no}} </td>
+                            <td *ngIf="!cd.check_no"> CASH </td>
+                            <td *ngIf="cd.amount==cd.balance">₹ {{cd.amount.toLocaleString('en-IN')}}</td>
+                            <td *ngIf="cd.amount!=cd.balance">₹ {{cd.balance.toLocaleString('en-IN')}}</td>
+
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="invdetail?.length==0">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="getinvdata?.length==0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+
+          </div>
+          <!-- <pagination-controls (pageChange)="page = $event"></pagination-controls> -->
+        </div>
+      </div>
+    </div>
+    <!-- ================================================================================================================ -->
+    <div *ngIf="REChidden">
+      <div class="row row_mar_0">
+        <div class="row pad_0">
+          <div *ngIf="allchequedetails?.length>0" class="col-sm-12 mar_t_20">
+            <div style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc;">
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr style="font-size:12px;">
+                      <th>Advice No.</th>
+                      <th>Customer Name </th>
+                      <th>Cheque No.</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <!-- <th></th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- *ngFor="let cd of allchequedetails | paginate: { itemsPerPage: 10, currentPage: Page};let i=index;"> -->
+
+                    <tr *ngFor="let cd of allchequedetails;let i=index;">
+                      <td style="padding:8px;">
+                        <div dragActiveClass="drag-active" mwlDraggable dropData="{{cd.transid}}">{{cd.transid}}
+                        </div>
+                      </td>
+                      <td> {{cd.giver_advice_name}}</td>
+                      <td> {{cd.check_no}} </td>
+                      <td style="padding:8px;">
+                        <div dragActiveClass="drag-active" mwlDraggable dropData="{{cd.amount}}">₹ {{cd.amount.toLocaleString('en-IN')}}
+                        </div>
+                      </td>
+                      <td>
+                        <select [(ngModel)]="cd.status" name="status" #status="ngModel" (change)="onChange(cd)">
+                          <option *ngFor="let s of paymentstatus | async" [ngValue]="s.value">{{s.status}}
+                          </option>
+                        </select>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+                <!-- <pagination-controls (pageChange)="Page = $event"></pagination-controls> -->
+              </div>
+            </div>
+            <!-- ========================================== -->
+            <div class="col-sm-2 pdd pull-right" *ngIf="cheqstatus=='1'&& invdetail.length>0">
+              <label for="prodid">Adjust Type
+              </label>
+              <div >
+                <select class="form-control" [(ngModel)]="Adjusttype" #mode_of_payment="ngModel" name="Adjust" (change)="adjusttype(Adjusttype)"
+                  required>
+                  <option [ngValue]="undefined" disabled selected>--Select--</option>
+                  <option> Auto </option>
+                  <option> Manual </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12 mar_t_10" *ngIf="cheqstatus=='1'&& invdetail.length>0">
+              <div style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc">
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr style="font-size:12px;">
+                        <th *ngIf="Adjusttype=='Manual'">Select</th>
+                        <th *ngIf="Adjusttype!='Manual'">S.No</th>
+                        <th>Invoice No.</th>
+                        <th>Total Amount</th>
+                        <th>Due Amount</th>
+                        <th>Adjusted Amount</th>
+                        <th>Balance Amount</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let pd of invdetail;let i=index;">
+                        <td *ngIf="Adjusttype=='Manual'">
+                          <input type="checkbox" [disabled]="amountt==0&&!pd.adjustedAmount" (change)="checkValue(i,$event)" />
+                        </td>
+                        <td *ngIf="Adjusttype!='Manual'">
+                          {{10*(page-1)+(i+1)}}
+                        </td>
+                        <td> {{pd.inv_no}}</td>
+
+                        <td *ngIf="!pd.final_amount">₹ {{pd.line_amount.toLocaleString('en-IN') }}.00 </td>
+                        <td *ngIf="pd.final_amount">₹ {{pd.final_amount.toLocaleString('en-IN') }}.00</td>
+                        <td *ngIf="pd.due_amount">₹ {{pd.due_amount.toLocaleString('en-IN')}}.00</td>
+                        <td *ngIf="pd.adjustedAmount"> ₹ {{pd.adjustedAmount.toLocaleString('en-IN')}}.00</td>
+                        <td *ngIf="pd.balanceamount>0"> ₹ {{pd.balanceamount.toLocaleString('en-IN')}}.00</td>
+                        <td *ngIf="pd.balanceamount<1"> ₹ 0</td>
+
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="pull-left mar_t_30">
+                  <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 text-center" *ngIf="cheqstatus=='1'&& invdetail.length <=0">
+              <br>
+              <h3>
+                <b>No Pending Bills Available</b>
+              </h3>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="fr" *ngIf="cheqstatus=='1'">
+                  <button type="button" [disabled]="invdetail.length<1" (click)="adjustchequedetails()" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green">Save
+                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- ========================================== -->
+            <div class="col-md-12" *ngIf="allchequedetails?.length<=0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+<div id="successModal1" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+        <div class="right_mark" id="rightMark">
+          <i class="fa fa-question" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="modal-body text-center">
+        <h4>Do you want to proceed for adjustment ?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="edit(data)" data-dismiss="modal">Yes</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="paymentstatus" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+        <div class="right_mark">
+          <i class="fa fa-question" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="modal-body text-center">
+        <h4>Are you sure want to change the status ?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="statusupdate(cdata)" data-dismiss="modal">Yes</button>
+        <button type="reset" class="btn btn-danger" data-dismiss="modal" (click)="statuschange()">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="alertpopup" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+        <div class="right_mark">
+          <i class="fa fa-exclamation" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="modal-body text-center">
+        <h4>Select atleast one invoice to adjust the amount</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="adjustpayment" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+        <div class="right_mark">
+          <i class="fa fa-question" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="modal-body text-center">
+        <h4>Are you sure want to adjust the amount ?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="adjustpayment(dropData)" data-dismiss="modal">Yes</button>
+        <button type="reset" class="btn btn-danger" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="viewinvoicepayment" role="dialog">
+  <div class="modal-dialog content">
+    <div class="modal-content ">
+      <div class="modal-header v_h pad_0">
+        <span style="float:right;" class="visible-xs">
+          <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        </span>
+      </div>
+      <div class="modal-body bankdisplay pad_0">
+        <span style="float:right;" class="hidden-xs">
+          <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        </span>
+        <div class="row row_mar_0" id="invoicepayment">
+          <div class="col-md-12">
+            <div>
+              <div class="row" style="padding: 10px;">
+                <div class="col-md-12 mar_t_10" *ngIf="invoicepayment?.length>0">
+                  <div class="row">
+                    <h4 class="payment" style="text-align:center;padding:10px 20px;">
+                      <b>
+                        <font color="#293271">Payment Details</font>
+                      </b>
+                    </h4>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Mode Of Payment</th>
+                          <th>Transaction Id</th>
+                          <th>Cheque No.</th>
+                          <th>Cheque Date </th>
+                          <th>Bank Name</th>
+                          <th>Total Amount</th>
+                          <th>Adjusted Amount</th>
+                          <th>Balance Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let ip of invoicepayment; let i=index;">
+                          <td>
+                            <div class="row_mar_0">
+                              <span class="f_wt_600">{{ip.mode_of_payment}}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="row_mar_0">
+                              <span class="f_wt_600">
+                                {{ip.adv_no}}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="mar_b_10" *ngIf="ip.check_no">
+                              <span class=" f_wt_600">{{ip.check_no}}</span>
+                            </div>
+                            <div style="text-align:center" *ngIf="!ip.check_no">
+                              <span class=" f_wt_600">-</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="mar_b_10" *ngIf="ip.check_date">
+                              <span class=" f_wt_600">{{ip.check_date | date:'dd-MM-yyyy'}}</span>
+                            </div>
+                            <div style="text-align:center" *ngIf="!ip.check_date">
+                              <span class=" f_wt_600">-</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="mar_b_10" *ngIf="ip.giver_bank">
+                              <span class=" f_wt_600">{{ip.giver_bank}}</span>
+                            </div>
+                            <div style="text-align:center" *ngIf="!ip.giver_bank">
+                              <span class=" f_wt_600">-</span>
+                            </div>
+
+                          </td>
+                          <td>
+                            <div class="mar_b_10">
+                              <span class=" f_wt_600 ">₹ {{ip.total_amount.toLocaleString('en-IN')}} </span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="mar_b_10">
+                              <span class=" f_wt_600">₹ {{ip.adj_amount.toLocaleString('en-IN')}}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="mar_b_10">
+                              <span class=" f_wt_600">₹ {{ip.balance_amount.toLocaleString('en-IN')}}</span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-md-12" *ngIf="invoicepayment?.length<=0">
+                  <div class="no_data">
+                    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                    <span class="nodata_txt">No Data is Available</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="invoicepayment?.length>0" class="row" style="text-align: center;padding-bottom: 15px;">
+        <button type="submit" class="btn btn-success" (click)="printpayment()">Print Payment</button>
+        <button type="submit" style="margin:10px;" class="btn btn-success" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

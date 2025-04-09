@@ -1,0 +1,503 @@
+<div class="container pad_t_5per">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span>{{loginUserData.content}}</span>
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span *ngIf="!this.poData.financial_year">
+        <a href="javascript.void(0)" routerLink="/Warehouse Manager-PACKINGLIST"
+          style="color: #878787 !important;">Proforma
+          / PackingList</a>
+      </span>
+      <span *ngIf="this.poData.financial_year">
+        <a href="javascript.void(0)" routerLink="/Warehouse Manager-PACKING HISTORY"
+          style="color: #878787 !important;">Packing History/ PackingList</a>
+      </span>&nbsp;>&nbsp;
+      <span>PackingList Preparation</span>
+    </p>
+  
+    <div class="reg_form mar_b_30 pad_15 ">
+      <div class="row text-center hr_line_botm">
+        <div class="col-sm-12">
+          <span class="header_pages">Packing / Proforma Perparation</span>
+        </div>
+      </div>
+  
+  
+  
+      <div class="marg_t_b_15 pad_l_20">
+        <div class="col-sm-6">
+          <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;">
+            <b>PO Details </b>
+          </p>
+          <p><b>PO Number :</b> {{poData.spo}}<p>
+              <p><b>PO Date :</b> {{poData.po_date | date:'dd-MM-yyyy'}}</p>
+  
+              <p><b>Company Name :</b> {{poData.business_name}}</p>
+        </div>
+        <div class="col-sm-6">
+          <!-- <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;">
+            <b>Credit Terms </b>
+          </p> -->
+          <div>
+            <p>
+              <b>Marketing Manager:</b> {{poData.marketing}}</p>
+            <p>
+              <b>Marketing Mobile:</b> {{poData.marketing_mobile}}</p>
+          </div>
+        </div>
+        <div>
+          <div class="col-md-3 mar_b_10_mbl input">
+            <label for="splinstr" >Branch Manager Comment</label>
+            <sub class="txt_red f_size_25">*</sub>
+            <div >
+              <textarea type="text" class="form-control" name="splinstr" [(ngModel)]="poData.remarks1"
+                placeholder="Enter Special instructions" readonly></textarea>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="col-md-3 mar_b_10_mbl input">
+            <label for="splinstr" >Warehouse-Comments</label>
+            <sub class="txt_red f_size_25">*</sub>
+            <div>
+              <textarea type="text" class="form-control" name="splinstr" [(ngModel)]="poData.remarks2" #splinstr="ngModel"
+                (keypress)="keypress($event)" placeholder="Enter Special instructions" maxlength="100"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 list">
+          <form name="packForm" #packForm="ngForm">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="txt_centr">S.No</th>
+                    <!-- <th class="txt_left">Subcategory</th> -->
+                    <th class="txt_left">Product Name</th>
+                    <!-- <th class="txt_left">Model No.</th> -->
+                    <th class="txt_left">SKU</th>
+                    <th class="txt_left">Stock Qty</th>
+                    <th *ngIf="!this.poData.financial_year" class="txt_right">PO Qty</th>
+                    <!-- <th class="txt_right">Free Qty</th> -->
+                    <!-- <th class="txt_centr">P/C</th> -->
+  
+                    <th class="txt_centr">PO Allotted Qty</th>
+                    <th class="txt_centr" style="text-align: right;">N/C</th>
+  
+  
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of poPackingListData;let i=index" [ngClass]="{'modified':item.stock_qty < 10}">
+                    <td class="txt_centr">{{10*(p-1)+(i+1)}}</td>
+                    <td> {{item.subcategory}} {{item.modelno}}</td>
+                    <!-- <td class="txt_left">{{item.long_name}}</td> -->
+                    <!-- <td class="txt_left">{{item.modelno}}</td> -->
+                  
+                    <td *ngIf="!item.sku_no" class="txt_left">{{item.sku_number}}</td>
+                    <td *ngIf="item.sku_no" class="txt_left">{{item.sku_no}}</td>
+                    <td  *ngIf="item.stock_qty!=null" class="txt_centr">{{item.stock_qty}}</td>
+                    <td *ngIf="item.stock_qty==null" class="txt_centr">0</td>
+                    <td *ngIf="!this.poData.financial_year" class="txt_right">{{item.qty}}</td>
+                    <!-- <td class="txt_right" *ngIf="item.free_qty!==0 && item.ship==0">{{item.free_qty}}</td>
+                  <td *ngIf="item.free_qty==0 || item.ship==1"class="txt_centr">-</td> -->
+                    <!-- <td class="txt_right">{{item.piecepercarton}}</td> -->
+  
+                    <td class="txt_centr" style="width:130px;">
+                      <!-- <span class="f_size_15 blue_clr padd_right_10 "  *ngIf="item.changed==0 && packingListModel[item.po_srl_no]">
+                      <input type="text" class="form-control txt_right" required name="{{item.po_srl_no}}"
+                        #packqty="ngModel"  (keypress)="keypress1($event)" [(ngModel)]="packingListModel[item.po_srl_no]"
+                       (ngModelChange)="checkdiscount(item,packingListModel[item.po_srl_no])">
+                       
+                      {{packingListModel[option]}}
+                    </span> -->
+                      <span class="f_size_15 blue_clr padd_right_10 ">
+                        <input type="text" class="form-control txt_right" required (keypress)="keypress1($event)"
+                          [(ngModel)]="item.packing_qty" #packqty="ngModel"
+                          (ngModelChange)="checkdiscount(item,item.packing_qty)" [ngModelOptions]="{standalone: true}">
+                      </span>
+                      <!-- <span class="f_size_15 blue_clr padd_right_10"   *ngIf="item.changed==1">
+                      <input type="text" class="form-control txt_right" required title="Qty cannot be editable" name="{{item.po_srl_no}}"
+                        #packqty="ngModel" readonly [(ngModel)]="packingListModel[item.po_srl_no]">
+                      {{packingListModel[option]}}
+                    </span> -->
+  
+                    </td>
+                    <td class="txt_right" style="width:130px;">
+                      <!-- {{item.carton | number : '1.2-2'}} -->
+                      <span class="f_size_15 blue_clr padd_right_10 ">
+                        <input type="text" class="form-control txt_right" required (keypress)="keypress1($event)"
+                          [(ngModel)]="item.carton" #carton="ngModel" (ngModelChange)="cartonchange(item)"
+                          [ngModelOptions]="{standalone: true}">
+                      </span>
+                    </td>
+                    <!-- <td>
+                    <input type="number" class="form-control" name="newAttributequantity"  placeholder="Enter Quantity" [(ngModel)]="newAttribute1.qty"
+                      style="padding-left: 5px;" (keydown)="isNumberKey($event)" (change)="onKey1(newAttribute1)" (keyup)="onKey1(newAttribute1)" 
+                      min="1" maxlength="4" oninput="validity.valid||(value='');" [disabled]="sele_quan()">
+                  </td> -->
+  
+                  </tr>
+                  <tr *ngIf="freeqtyarr?.length>0"> 
+                    <td colspan="2">
+                    <b >Free Qty : </b>
+                    <span *ngFor="let f of freeqtyarr">
+                     <span> {{f.productname}} = {{f.free_qty}}&nbsp; </span>
+                     </span>
+                  </td>
+                  <td *ngIf="!this.poData.financial_year" colspan="3"></td>
+                  <td *ngIf="this.poData.financial_year" colspan="2"></td>
+                  <td class="txt_right">{{totalfreeqty}}</td>
+                  <td class="txt_right">
+                    <span class="f_size_15 blue_clr padd_right_10 ">
+                      <input type="text" class="form-control txt_right" required (keypress)="keypress1($event)"
+                        [(ngModel)]="totalfreecartoons" #totalfreecartoons1="ngModel" (ngModelChange)="addfreecartoons(totalfreecartoons)"
+                        [ngModelOptions]="{standalone: true}">
+                    </span>
+                    <!-- {{totalfreecartoons | number : '1.2-2'}}</td> -->
+                  </tr>
+                  <tr *ngIf="!this.poData.financial_year">
+                    <td>Total Items: {{order_items}}
+                    </td>
+                    <td colspan="4"></td>
+                    <td class=" txt_right">{{totalqty}}</td>
+                    <td class=" txt_right">{{totalcarton  | number : '1.2-2'}}</td>
+                    <!-- <td class="no-line txt_right" style="text-align: right;"><span style="color:#000;"></span>{{totalqty}}</td> -->
+                  </tr>
+                  <tr *ngIf="this.poData.financial_year">
+                    <td>Total Items: {{order_items}}
+                    </td>
+                    <td colspan="3"></td>
+  
+  
+                    <td class=" txt_right">{{totalqty}}</td>
+                    <td class=" txt_right">{{totalcarton  | number : '1.2-2'}}</td>
+                    <!-- <td class="no-line txt_right" style="text-align: right;"><span style="color:#000;"></span>{{totalqty}}</td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <button class="btn btn-primary" type="button" (click)="addnewproduct()">Add</button>
+              </div>
+            </div>
+            <div *ngIf="approveBtn" class="text-center validation_msg">
+              Carton Qty should not be Null.
+            </div>
+            <!-- <div *ngIf="appbtn2" class="text-center validation_msg">
+              Carton Qty should not be greater than packing qty.
+            </div> -->
+            <!-- <div *ngIf="appbtn3" class="text-center validation_msg">
+              Carton Qty should not be greater than actual carton.
+            </div> -->
+            <div *ngIf="approveBtn1" class="text-center validation_msg">
+              Packing Order should not be Null.
+            </div>
+            <div class="pull-right">
+              <button type="submit" [disabled]="packForm.invalid  || poData.remarks2==''"
+                class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" *ngIf="a_packing"
+                (click)="redirectto() ">
+                Approve
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                (click)="paking_list_print_page()" *ngIf="!a_packing && !approveBtn1 && !approveBtn ">Ok
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+  
+  <!-- modal pop up start here -->
+  <div class="modal fade " id="makeinvoiceModal2" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading" style="padding:40px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark1">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class=" text-center content_msg" style="padding-top:5%">
+                <span>Are you sure to initiate packing list ?</span>
+  
+                <br>
+                <div class="reg_form marg_t_b_15 pad_l_20 pad_r_20">
+                  <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;text-align:center">
+                    <b>Packing List</b>
+                  </p>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th class="txt_centr">S.No</th>
+  
+                          <th class="txt_left">Product  Name</th>
+  
+                          <th class="txt_left">Sku No.</th>
+                          <th *ngIf="!this.poData.financial_year" class="txt_right">PO Qty</th>
+                          <th class="txt_centr">PO Allotted Qty</th>
+                          <th class="txt_centr">N/C</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="let p of poPackingListData | paginate: { itemsPerPage: 5, currentPage: Page } ; let i=index;">
+                          <td class="txt_centr">{{5*(Page-1)+(i+1)}}</td>
+                          <td class="txt_left"> {{p.subcategory}} {{p.modelno}}</td>
+                          <!-- <td class="txt_left">{{p.long_name}}</td> -->
+  
+                          <td *ngIf="!p.sku_no" class="txt_left">{{p.sku_number}}</td>
+                          <td *ngIf="p.sku_no" class="txt_left">{{p.sku_no}}</td>
+                          <td *ngIf="!this.poData.financial_year" class="txt_right">{{p.qty}}</td>
+                          <td class="txt_right">{{p.packing_qty}}</td>
+                          <td class="txt_right">{{p.carton | currency:'&nbsp;'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+                </div>
+                <!-- <span>Your Packing No : {{packingListNo}}</span>  -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="redirectto()">No</button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="makePackingLiat()">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="modal fade " id="makeinvoiceModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <span>Packing List Prepared Successfully..!!</span>
+                <br>
+                <span>Your Packing No : {{packingListNo}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal"
+            (click)="paking_list_print_page()">Close</button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal"
+            (click)="paking_list_print_page()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="addnewproduct" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading1">Add New Product  <button *ngIf="!poData.packing_no" (click)="newprod()" style="float:right;color:black">+</button></h4>
+             
+              <div class="pad_15 text-center content_msg" style="padding: 2% 0;">
+                <div class="row" class="row_mar_0">
+                  <div class="col-md-12">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Category</th>
+                            <th>SubCategory</th>
+                            <th>Model No</th>
+                            <th>Quantity</th>
+                            <th>PCS/CTN</th>
+                            <th>No. Of.Carton's</th>
+                            <!-- <th *ngIf="loginUserData.user_type !='Dealer'">Stock</th> -->
+                            <th>Net Rate(&#8377;)</th>
+                            <th>Net Value(&#8377;)</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+  
+                            <td>
+                              <input list="categorys" class="form-control" placeholder="Select Category"
+                                [(ngModel)]="newAttribute1.category" (input)="change_form($any($event.target).value)"
+                                style="padding-left: 5px;">
+                              <datalist id="categorys">
+                                <option *ngFor="let p of resources" value="{{p.Category}}">
+                              </datalist>
+                            </td>
+                            <td>
+                              <input list="subcategorys" class="form-control" placeholder="Select SubCategory"
+                                [(ngModel)]="newAttribute1.subcategory"
+                                (input)="change1($any($event.target).value,selectedCategory_form)" style="padding-left: 5px;"
+                                [disabled]="sele_sub_catg()" />
+                              <div *ngFor="let p of resources">
+                                <datalist id="subcategorys" *ngIf="selectedCategory_form==p.Category">
+                                  <option *ngFor="let pd of p['detail']" value="{{pd['SubCategory']}}">
+                                </datalist>
+                              </div>
+                            </td>
+                            <td>
+                              <input type="text" class="form-control" list="modelno" placeholder="Select Model"
+                                [(ngModel)]="newAttribute1.modelno" (change)="change2($any($event.target).value,data)"
+                                style="padding-left: 5px;" [disabled]="sele_model()">
+                              <div>
+  
+                                <datalist id="modelno">
+                                  <select *ngIf="selectedCategory_form!=='Powertex Spare Parts'">
+                                    <option *ngFor="let data of httpdata2data" value="{{data.modelno}}">
+                                  </select>
+                                  <select *ngIf="selectedCategory_form=='Powertex Spare Parts'">
+                                    <option *ngFor="let data of httpdata2data" value="{{data.modelno}}">{{data.name3}}
+                                  </select>
+                                </datalist>
+  
+  
+                              </div>
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" name="newAttributequantity"
+                                placeholder="Enter Quantity" [(ngModel)]="newAttribute1.qty" style="padding-left: 5px;"
+                                (keydown)="isNumberKey($event)" (ngModelChange)="onKey1(newAttribute1)" min="1"
+                                maxlength="4" oninput="validity.valid||(value='');" [disabled]="sele_quan()">
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" name="newAttributepiecepercarton"
+                                [(ngModel)]="newAttribute1.piecepercarton" style="padding-left: 5px;" disabled />
+                            </td>
+                            <td>{{newAttribute1.carton | number : '1.2-2'}}
+                              <!-- <input type="text" class="form-control" name="newAttributecarton's"
+                                      [(ngModel)]="newAttribute1.carton" style="padding-left: 5px;" disabled /> -->
+                            </td>
+                            <!-- <td *ngIf="loginUserData.user_type !='Dealer'">
+                                    <input type="number" class="form-control" name="newAttributequantity" [(ngModel)]="newAttribute1.stock_qty"
+                                      placeholder="Available Quantity" style="padding-left: 5px;" disabled />
+                                  </td> -->
+  
+  
+  
+                            <td>
+                              <input class="form-control" name="newAttributeprice" type="text"
+                                [ngModel]="newAttribute1.net_price| currency : '&nbsp;'"
+                                (ngModelChange)="newAttribute1.net_price = $event" style="padding-left: 5px;" disabled />
+                            </td>
+                            <td>
+                              <input type="text" class="form-control" name="newAttributevalue"
+                                [ngModel]="newAttribute1.tot_value| currency : '&nbsp;'"
+                                (ngModelChange)="newAttribute1.tot_value = $event" style="padding-left: 5px;" disabled />
+                            </td>
+                            <td>
+                              <button class="btn btn-default" type="button" [disabled]="add_disable(newAttribute1) || add"
+                                (click)="addFieldValue()">Add</button>
+                            </td>
+                          </tr>
+  
+                        </tbody>
+  
+                      </table>
+                    </div>
+  
+                  </div>
+  
+  
+                </div>
+                <br>
+                <!-- <div class="row">
+                    <div class="col-md-12" *ngIf="edit_offers">
+                      <button class="btn btn-primary" data-dismiss="modal" (click)="edit_offer_submit()">Update</button>
+                    </div>
+                  
+                  </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="close()">Close</button>
+          <!-- <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="addnewmasterproduct" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:0;">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="alert_heading1">Add New Product</h4>
+               
+                <!-- <div class="pad_15  content_msg" style="padding: 2% 0;">
+                  <div class="row" class="row_mar_0"> -->
+                    <div class="col-md-12">
+                        <app-product-pricing></app-product-pricing>
+    
+                    </div>
+    
+    
+                  <!-- </div>
+                  <br>
+                 
+                </div> -->
+              </div>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  
+    <div id="alertpopup" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header alert_heading2">
+            <button type="button" class="close" data-dismiss="modal"></button>
+            <h4 class="modal-title text-center"></h4>
+            <div class="right_mark2">
+              <i class="fa fa-exclamation" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="modal-body text-center">
+            <h4>Sorry, {{poData.business_name}} has exceeded 90 days credit period.</h4>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+  
+          </div>
+        </div>
+      </div>
+    </div>

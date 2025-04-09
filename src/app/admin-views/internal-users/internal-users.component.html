@@ -1,0 +1,64 @@
+<div class="container pad_t_5per">
+
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Internal Users</span>
+  </p>
+  <div class="reg_form mar_b_30">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Nav tabs -->
+        <div class="card">
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active" (click)="activate('list')">
+              <a href="" aria-controls="list" role="tab" data-toggle="tab">Users List
+              </a>
+            </li>
+            <li role="presentation" (click)="activate('registrtion')">
+              <a href="" aria-controls="registrtion" role="tab" data-toggle="tab">User Creation
+              </a>
+            </li>
+            <li role="presentation" (click)="activate('reject')">
+              <a href="" aria-controls="reject" role="tab" data-toggle="tab">Rejected Users List
+              </a>
+            </li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="table-responsive">
+            <div class="tab-content">
+              <div *ngIf="openTab=='list'">
+                <div role="tabpanel" class="tab-pane active">
+                  <app-internal-users-list></app-internal-users-list>
+                </div>
+              </div>
+              <div *ngIf="openTab=='registrtion'">
+                <div role="tabpanel" class="tab-pane">
+                  <app-register [styleId]=1></app-register>
+                </div>
+              </div>
+              <div *ngIf="openTab=='reject'">
+                <div role="tabpanel" class="tab-pane">
+                  <app-reject-users [id]="2"></app-reject-users>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

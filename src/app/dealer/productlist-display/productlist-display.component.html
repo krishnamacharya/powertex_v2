@@ -1,0 +1,189 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center pad_b_30">
+      <h3 class="shopee_name"><span class="shopee_name">{{loginUserData.content}}</span></h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+    <p class="bread-crumb1">
+      <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;<span>PO Display</span>
+    </p>
+  </div>
+  <div class="row  pad_15">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="applicable" >Select Dealer
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <select class="form-control" [(ngModel)]="product.dealer"  id="sel1">
+              <option [ngValue]="undefined" disabled selected>Select Dealer</option>
+              <option *ngFor="let p of dealers" [ngValue]="p.user">{{p.business_name}}</option>
+            </select>
+
+          </div>
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="applicable" >Select
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <select class="form-control" [(ngModel)]="product.type"  id="types"
+              #type="ngModel" name="types" required>
+              <option [ngValue]="undefined" disabled selected>--Select type--</option>
+              <option *ngFor="let t of types" [ngValue]="t.name">
+                {{t.name}}
+              </option>
+
+            </select>
+
+          </div>
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <button type="button" class="btn upload_btn" (click)="getdata()">
+            Submit</button>
+        </div>
+      </div>
+    </div>
+  </div><br>
+  <div class="row pad_15 "  >
+    <div *ngIf="response?.length>0" class="reg_form ">
+      <h4 style="padding:10px;">Order Data List</h4>
+      <div class="fr" *ngIf="response.length>0">
+        <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+          class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+      </div>
+      <!-- *ngIf="(PendingPayments | filter :searchText) as PendingPayments" -->
+  <div *ngIf="(response | filter :searchText) as response">
+    <div *ngIf="response">
+      <div  *ngFor="let data of response| paginate: { itemsPerPage: 10, currentPage: page} ; let i=index ">
+        <div class="col-md-12 mar_t_30">
+          <div class="col-md-4 col-sm-4" style="width:200px;height: 200px">
+              <!-- <label><b>Order Detail</b>
+                  
+              </label> -->
+              <div *ngIf="data.businessname" >
+                <span>{{data.businessname}}</span>
+              </div>
+
+              <div *ngIf="data.image" >
+            <div class="img-thumbnail" (click)="selected_image(data.image)">
+              <div>
+                <img src="{{data.image}}"
+                  onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                  alt=""  style="width:100px;height: 100px;cursor:pointer">
+              </div>
+            </div></div>
+            <div *ngIf="data.descripts" >
+              <span>{{data.descripts}}</span>
+              <span *ngIf="data.image">&nbsp;&nbsp;
+                <button type="button" class="btn btn-sm bg_green" (click)="downloadCopy(data.img, data.businessname)">
+                  <i class="fa fa-download" aria-hidden="true" style="padding-top:5px;cursor:pointer"></i>
+                </button>
+              </span>
+              </div>
+              <div *ngIf="data.created_timestamp" >
+                <span>{{data.created_timestamp | date:'dd-MM-yyyy'}}</span>
+              </div>
+          </div>
+
+
+
+          <div class="col-md-3 col-sm-3">
+            <label><b>Comment</b>
+                <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <textarea rows="3" class="form-control" id="comment" name="comment" [(ngModel)]="data.comment" required
+              placeholder="Enter Comment Here"></textarea>
+
+          </div>
+
+          <div class="col-md-3 col-sm-3">
+            <label><b>Status</b>
+                <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <select class="form-control" [(ngModel)]="data.status"  id="status"
+                  #statuss="ngModel" name="status" required>
+                  <option [ngValue]="undefined" disabled selected>--Select type--</option>
+                  <option *ngFor="let s of status" [ngValue]="s.status">
+                    {{s.status}}
+                  </option>
+
+                </select>
+          </div>
+
+          <div class="col-md-2 col-sm-2">
+
+            <button type="button" class="btn upload_btn" (click)="submitstatus(data)">
+              Update</button>
+
+          </div>
+
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="pull-left mar_t_30">
+      <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+    </div>
+    </div>
+    <div class="col-md-12" *ngIf="response?.length<=0">
+        <div class="no_data">
+          <img class="no_data_cnter" src="../assets/emptyicon.png" />
+          <span class="nodata_txt">No Data is Available</span>
+        </div>
+      </div>
+    </div>
+   
+</div>
+<div class="modal fade" id="imageenlarge" role="dialog">
+  <div class="modal-dialog" style="margin-top:200px;">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- <h4 >
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4> -->
+            <!-- <div class=" text-center">
+              <img src="{{image}}">
+            </div>
+            <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div> -->
+              <img src="{{image}}" style="display:block; width:100%; max-width:600px;height:300px; margin:auto"/>
+          </div>
+        </div>
+      </div> 
+    
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="succModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Updated Successfully..!!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

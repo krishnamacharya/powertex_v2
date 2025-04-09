@@ -1,0 +1,37 @@
+<div style="padding-top: 10px;">
+  <div class="navigation row"  style="margin-right: 0px !important;width: 100%;">
+    <ul style="display: flex;">
+      <li class="has-sub text-center col-sm-2"> </li>
+      <li class="has-sub text-center col-sm-1" *ngFor="let p of resources | slice:0:8"> 
+            <div href="javascript:void(0)" class="text-center" (click)="selected_catg(p.Category)" style="width: 100%;"> 
+              <!-- <img class="pro_img" src="{{p.icon}}" width="100%" onerror="this.onerror=null;this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/TctSawBlade.png';"> -->
+              <img class="pro_img" src="C:/Users/GST-SRINIVAS/Desktop/powertools.png" width="100%">
+            </div>
+            <b>
+              <p style="color: rgb(5, 5, 5);padding-top: 10px;">{{p.Category }}</p>
+            </b>
+
+      </li>
+      <!-- <li><a href="javascript:void(0)" routerLink="/all-Category" class="viewall">View All...</a></li> -->
+      <li class="has-sub text-center col-sm-2"> </li>
+
+    </ul>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+
+
+
+<!-- <div class="row prod_catg">
+  <div class="col-md-2 col-sm-2 col-xs-2 text-center"  *ngFor="let p of resources | slice:0:6;let i=index">
+    <div class="img-thumbnail" (click)="selected_catg(p.Category)">
+      <div>
+        <img  class="" src="{{p.icon}}" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+           style="width:100%">
+      </div>
+      <h4 class="prod_head">{{p.Category}}</h4>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div> -->

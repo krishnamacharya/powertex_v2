@@ -1,0 +1,546 @@
+<!-- <div class=" pad_b_5per" *ngIf="editform==false"> -->
+  <div class="pad_b_5per" [ngClass]="{'container pad_t_5per':editform==true}">
+    <div class="row" >
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span>{{loginUserData.content}}</span>
+  
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1" *ngIf="this.editform">
+      <span>
+        <a href="javascript.void(0)" routerLink="/profile" style="color: #878787 !important;">Profile</a>
+      </span>&nbsp;>&nbsp;
+      <!-- <span>
+        <a href="javascript.void(0)" routerLink="/Admin-CREATE SUPPLIER" style="color: #878787 !important;">Suppliers</a>
+      </span>&nbsp;>&nbsp; -->
+      <span>Profile-edit</span>
+    </p>
+    <div class="row">
+      <div class="reg_form">
+        <div class="col-sm-3 col-md-3 mar_l_n15" *ngIf="!editform">
+          <div class="left_side_div"><img class="img-responsive img-center regbg" src=""><span class="txt_onImg"
+              style="margin-left:0px;">Update Supplier</span><img class="img_onImg" src="./assets/reg_img.png">
+          </div>
+        </div>
+        <!-- <div class="col-sm-12 col-md-12 mar_l_n15" *ngIf="editform"> -->
+        <div class="col-sm-9 col-md-9 mar_l_n15" [ngClass]="{'col-sm-12 col-md-12 mar_l_1 supplierinfo':editform==true}">
+          <form (ngSubmit)="onSubmit(supplierDataForm)" #supplierDataForm="ngForm">
+            
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-xs-12">
+                <!-- <h3 class="mb_2">Supplier Info</h3> -->
+                <h4 class="theme_green f_size_13 f_wt_600 txt_green" [ngClass]="{'supplierinfotitle':editform==true}">
+                  Profile Edit</h4>
+              </div>
+  
+              <!-- <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="user_type">Supplier Type<sup>*</sup></label>
+                  <select class="select-option form-control" [(ngModel)]="supplier.user_type" required
+                    name="user_type" #user_type="ngModel">
+                    <option [ngValue]="undefined" selected>Select </option>
+                    <option value="supplier">Supplier</option>
+                    <option value="cha">CHA</option>
+                  </select>
+    
+                  <div [hidden]="user_type.valid ||  user_type.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Select supplier type</small>
+                  </div>
+                </div>
+              </div> -->
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="salutation">Salutation <sup>*</sup></label>
+                  <!-- <input type="text" class="form-control" id="salatation" [(ngModel)]="supplier.salatation" name="salatation" #salatation="ngModel" placeholder="Enter Salutation" required> -->
+                  <select class="select-option form-control" [(ngModel)]="supplier.salatation" required name="salatation"
+                    #salatation="ngModel">
+                    <option [ngValue]="undefined" selected>Select </option>
+                    <option value="Mr">Mr</option>
+                    <option value="Ms">Ms</option> 
+                  </select>
+  
+                  <div [hidden]="salatation.valid ||  salatation.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Salutation</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="first_name">First Name <sup>*</sup></label>
+                  <input type="text" class="form-control" id="first_name" required [(ngModel)]="supplier.first_name"
+                    name="first_name" #first_name="ngModel" placeholder="First Name" pattern="[a-zA-Z ]*" minlength="3"
+                    maxlength="20">
+                  <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)" class="validation_msg">
+                    <small class="form-text text-muted text-danger" *ngIf="first_name.errors['required']">Enter First
+                      Name</small>
+                    <small class="form-text text-muted text-danger" *ngIf="first_name.errors['pattern']">Enter Valid First
+                      Name</small>
+                    <small class="form-text text-muted text-danger" *ngIf="first_name.errors['minlength']">Name should be
+                      minimum
+                      3
+                      characters</small>
+                    <small class="form-text text-muted text-danger" *ngIf="first_name.errors['maxlength']">Name should be
+                      maximum
+                      20 characters</small>
+                  </div>
+  
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="last_name">Last Name </label>
+                  <input type="text" class="form-control" id="last_name" [(ngModel)]="supplier.last_name" name="last_name"
+                    placeholder="Last Name" pattern="[a-zA-Z ]*" minlength="3" maxlength="20">
+                  <!-- <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)" class="validation_msg"> -->
+                  <!-- <small class="form-text text-muted text-danger" *ngIf="last_name.errors['required']">Enter Last
+                      Name</small> -->
+                  <!-- <small class="form-text text-muted text-danger" *ngIf="last_name.errors['pattern']">Enter Valid Last
+                      Name</small>
+                    <small class="form-text text-muted text-danger" *ngIf="last_name.errors['minlength']">Name should be
+                      minimum
+                      3
+                      characters</small>
+                    <small class="form-text text-muted text-danger" *ngIf="last_name.errors['maxlength']">Name should be
+                      maximum
+                      20
+                      characters</small>
+                  </div> -->
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="email">Email <sup>*</sup></label>
+                  <input type="email" class="form-control" id="email" required [(ngModel)]="supplier.email" name="email"
+                    #email="ngModel" placeholder="Enter email" (blur)="verifyUser(supplier.email,'email')"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                  <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation_msg">
+                    <small class="form-text text-muted text-danger" *ngIf="email.errors['required'] && !mailValidation">Enter
+                      Email
+                      Id</small>
+                    <small class="form-text text-muted text-danger" *ngIf="email.errors['pattern']">Enter Valid Email
+                      Id</small>
+                  </div>
+  
+                  <div *ngIf="mailValidation" class="validation_msg">
+                    <small class="form-text text-muted text-danger">
+                      Email Id already exist.
+                    </small>
+  
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="mobile">Mobile <sup>*</sup></label>
+                  <input type="number" class="form-control" id="mobile" required
+                    (blur)="verifyUser(supplier.mobile,'mobile')" [(ngModel)]="supplier.mobile" name="mobile"
+                    #mobile="ngModel" placeholder="Enter Mobile" onKeyPress="if(this.value.length==15) return false;" min="13"pattern="^[0-9]{1,16}$">
+                  <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
+                    <small class="form-text text-muted text-danger"
+                      *ngIf="mobile.errors['required'] && !mobileValidation">Enter
+                      Mobile No</small>
+                    <small class="form-text text-muted text-danger" *ngIf="mobile.errors['pattern']">Enter Valid Mobile
+                      No</small>
+                    <small class="form-text text-muted text-danger" *ngIf="mobile.errors['maxlength']">Mobile
+                      No</small>
+                  </div>
+                  <div *ngIf="mobileValidation" class="validation_msg">
+                    <small class="form-text text-danger">
+                      Mobile Number already exist.
+                    </small>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-xs-12">
+                <!-- <h3 class="mb_2"><u>Business Info</u></h3> -->
+                <h4 class="theme_green f_size_13 f_wt_600 txt_green">Business Info</h4>
+              </div>
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="business_name">Firm/Company Name <sup>*</sup></label>
+                  <input type="text" class="form-control" id="business_name" required [(ngModel)]="supplier.business_name"
+                    name="business_name" #business_name="ngModel" placeholder="Enter Firm/Company Name">
+                  <div [hidden]="business_name.valid ||  business_name.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Business Name</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="address1">Address1 <sup>*</sup></label>
+                  <textarea id="address1" rows="2" class="form-control" minlength="3" required
+                    [(ngModel)]="supplier.address1" name="address1" #address1="ngModel"></textarea>
+                  <div *ngIf="address1.invalid && (address1.dirty || address1.touched)" class="validation_msg">
+                    <small class="form-text text-muted text-danger" *ngIf="address1.errors['required']">Select
+                      Address1</small>
+                    <small class="form-text text-muted text-danger" *ngIf="address1.errors['minlength']">Address should be
+                      minimum
+                      3 characters</small>
+                    <small class="form-text text-muted text-danger" *ngIf="address1.errors['maxlength']">Address should be
+                      maximum
+                      50 characters</small>
+                  </div>
+  
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="address2">Address2  <sup>*</sup></label>
+                  <textarea id="address2" rows="2" class="form-control" [(ngModel)]="supplier.address2" minlength="3"
+                    name="address2" #address2="ngModel"></textarea>
+                  <div *ngIf="address2.invalid && (address2.dirty || address2.touched)" class="validation_msg">
+                    <small class="form-text text-muted text-danger" *ngIf="address2.errors['minlength']">Address should be
+                      minimum
+                      3 characters</small>
+                    <small class="form-text text-muted text-danger" *ngIf="address2.errors['maxlength']">Address should be
+                      maximum
+                      50 character</small>
+                  </div>
+  
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="state">Country <sup>*</sup></label>
+                  <input type="text" class="form-control" id="country" required [(ngModel)]="supplier.country"
+                    name="country" #country="ngModel" placeholder="Enter Country">
+                  <!-- <select class='select-option form-control' required [(ngModel)]="supplier.country"
+                                name="country" #country="ngModel" id="country"
+                                (change)="onSelectCountry(supplier.country)">
+                                <option [ngValue]="undefined" disabled selected>--Select--</option>
+                                <option class='option' *ngFor="let countries of countriesList" [ngValue]="countries.country">
+                                  {{countries.country  | titlecase}}</option>
+                              </select> -->
+  
+                  <div [hidden]="country.valid ||  country.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Country</small>
+                  </div>
+                </div>
+              </div>
+  
+            </div>
+            <div class="row">
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="state">State/Province <sup>*</sup></label>
+                  <input type="text" class="form-control" id="state" required [(ngModel)]="supplier.state" name="state"
+                    #state="ngModel" placeholder="Enter State/Province">
+                  <div [hidden]="state.valid ||  state.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter State/Province</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="city">City <sup>*</sup></label>
+                  <input type="text" class="form-control" [(ngModel)]="supplier.city" required name="city" #city="ngModel"
+                    id="city" placeholder="Enter City">
+                  <!-- <input type="text" class="select-option form-control" [(ngModel)]="supplier.city" list="bbb" name="city" #city="ngModel" id="city" placeholder="Enter City">
+                <datalist id="bbb">
+                  <option [ngValue]="undefined" disabled selected>City</option>
+                  <option class='option' *ngFor="let cities of response3" [ngValue]="cities.city">
+                    {{cities.city| titlecase}}
+                  </option>
+                </datalist> -->
+  
+                  <div [hidden]="city.valid ||  city.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter City</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="pin">Postal Code <sup>*</sup></label>
+                  <input type="number" class="form-control" id="pin" required [(ngModel)]="supplier.pin" name="pin"
+                    #pin="ngModel" placeholder="Enter Postal Code" maxlength="6" pattern="^[1-9][0-9]{5}$">
+                  <div *ngIf="pin.invalid && (pin.dirty || pin.touched)" class="validation_msg">
+                    <small class="form-text text-muted text-danger" *ngIf="pin.errors['required']">Enter Postal Code</small>
+                    <small class="form-text text-muted text-danger" *ngIf="pin.errors['pattern']">Enter Valid Postal
+                      code</small>
+                  </div>
+  
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="Off_mobile">Office Number</label>
+                  <input type="number" class="form-control" id="Off_mobile" [(ngModel)]="supplier.Off_mobile"
+                    name="Off_mobile" placeholder="Enter Office Number" maxlength="10">
+                  <!-- <p> pattern="^[6-9][0-9]{9}$"</p>  #Off_mobile="ngModel"-->
+                  <!-- <div *ngIf="Off_mobile.invalid && (Off_mobile.dirty || Off_mobile.touched)" class="validation_msg">
+                    <small class="form-text text-muted text-danger" *ngIf="Off_mobile.errors['pattern']">Enter Valid Office
+                      Number</small>
+                  </div> -->
+  
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="Off_mobile">Delivery time</label>
+                  <input type="text" class="form-control" id="delivery_time" [(ngModel)]="supplier.delivery_time"
+                    name="delivery_time" placeholder="Enter Delivery time">
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="sup" *ngIf="supplier.user_type=='supplier'">
+              <div class="row">
+                <div class="col-md-3 col-lg-3 col-xs-6">
+                  <div class="form-group">
+                    <label for="currency">Currency <sup>*</sup></label>
+                    <select class="form-control" id="currency" required [(ngModel)]="supplier.currency" name="currency"
+                      #currency="ngModel">
+                      <option [ngValue]="undefined" selected>Select Currency</option>
+                      <option class='option' *ngFor="let c of currencies" [ngValue]="c.currency">{{c.currency}}</option>
+                    </select>
+                    <div [hidden]="currency.valid ||  currency.untouched" class="validation_msg">
+                      <small class="form-text text-muted text-danger">Select Currency</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-xs-6">
+                  <div class="form-group">
+                    <label for="payment_terms">Payment Terms <sup>*</sup></label>
+                    <select class='select-option form-control' (change)="getcreditdays(supplier.payment_terms)"
+                      [(ngModel)]="supplier.payment_terms" required id="payment_terms" name="payment_terms"
+                      #payment_terms="ngModel">
+                      <option [ngValue]="undefined" disabled selected>Select Payment Terms</option>
+                      <option class='option' *ngFor="let i of paymentterms" [ngValue]="i.payment_term">{{i.payment_term}}
+                      </option>
+                    </select>
+  
+                    <div [hidden]="payment_terms.valid ||  payment_terms.untouched" class="validation_msg">
+                      <small class="form-text text-muted text-danger">Enter Payment Terms</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-xs-6">
+                  <div class="form-group">
+                    <label for="shipment_point">Delivery Terms <sup>*</sup></label>
+  
+                    <input class="form-control" autocomplete="off" type="text" class='select-option form-control' required
+                      [(ngModel)]="supplier.shipment_point" name="shipment_point" #shipment_point="ngModel"
+                      id="shipment_point" list="incotermss" placeholder="Select Delivery Terms">
+                    <datalist id="incotermss">
+                      <option [ngValue]="undefined" disabled selected>Select Delivery Terms</option>
+                      <option class='option' *ngFor="let d of incoterms" [ngValue]="d.shoert">{{d.shoert}}</option>
+                    </datalist>
+                    <div [hidden]="shipment_point.valid ||  shipment_point.untouched" class="validation_msg">
+                      <small class="form-text text-muted text-danger">Enter Delivery Terms</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-xs-6">
+                  <div class="form-group">
+                    <label for="credit_period">Credit Limit Days <sup>*</sup></label>
+                    <input type="number" class="form-control" id="credit_period" required
+                      [(ngModel)]="supplier.credit_period" name="credit_period" #credit_period="ngModel"
+                      placeholder="Enter Credit Limit Days ">
+                    <div [hidden]="credit_period.valid ||  credit_period.untouched" class="validation_msg">
+                      <small class="form-text text-muted text-danger">Enter Credit Limit Days</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3 col-lg-3 col-xs-6">
+                  <div class="form-group">
+                    <label for="skuNo">SKU <sup>*</sup></label>
+                    <input type="text" class="form-control" maxlength="2" id="skuNo" required [(ngModel)]="supplier.sku"
+                      name="sku" (keyup)="keypress($event.target.value)" #sku="ngModel" placeholder="Enter SKU">
+                    <div [hidden]="sku.valid ||  sku.untouched" class="validation_msg">
+                      <small class="form-text text-muted text-danger">Enter SKU</small>
+                    </div>
+                    <div *ngIf="skuExists" class="validation_msg">
+                      <small class="form-text text-muted text-danger">SKU Already Assigned</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="row" *ngIf="supplier.user_type=='cha'">
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="port">Port <sup>*</sup></label>
+                  <select class="form-control" id="port" required [(ngModel)]="supplier.port" name="port" #port="ngModel">
+                    <option [ngValue]="undefined" selected>Select Port</option>
+                    <option class='option' *ngFor="let p of suppliertypes" [ngValue]="p.portname">{{p.portname}}</option>
+                  </select>
+                  <div [hidden]="port.valid ||  port.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Select Port</small>
+                  </div>
+                </div>
+              </div>
+  
+            </div> -->
+            <!-- <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" required [(ngModel)]="supplier.terms" name="terms" #terms="ngModel">
+                    <span>I Agree
+                      <span class="txt_green">Terms & Conditions</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div> -->
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-xs-12">
+  
+                <h4 class="theme_green f_size_13 f_wt_600 txt_green">Bank Info</h4>
+              </div>
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="account_name">Account Name</label><!-- <sup *ngIf="!editform">*</sup> -->
+                  <input type="text" class="form-control" id="account_name" [(ngModel)]="supplier.account_name"
+                    name="account_name" placeholder="Enter Account Name">
+                  <!-- <div [hidden]="account_name.valid ||  account_name.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Account Name</small>
+                  </div> -->
+                </div>
+              </div>
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="account_no">Account No </label>
+                  <input type="number" class="form-control" id="account_no" [(ngModel)]="supplier.account_no"
+                    name="account_no" placeholder="Enter Account No">
+                  <!-- <div [hidden]="account_no.valid ||  account_no.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Account No</small>
+                  </div> -->
+                </div>
+              </div>
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="bankname">Bank Name </label>
+                  <input type="text" class="form-control" id="bankname" [(ngModel)]="supplier.bankname" name="bankname"
+                    placeholder="Enter Bank Name">
+                  <!-- <div [hidden]="bankname.valid ||  bankname.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Bank Name</small>
+                  </div> -->
+                </div>
+              </div>
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="branch">Bank Branch </label>
+                  <input type="text" class="form-control" id="branch" [(ngModel)]="supplier.branch" name="branch"
+                    placeholder="Enter Bank Branch">
+                  <!-- <div [hidden]="branch.valid ||  branch.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Bank Branch</small>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="code">Swift code/ABA/Routing no/Sort code </label>
+                  <input type="text" class="form-control" id="code" [(ngModel)]="supplier.swiftcode" name="code"
+                    placeholder="Enter Code">
+                  <!-- <div [hidden]="code.valid ||  code.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Code</small>
+                  </div> -->
+                </div>
+              </div>
+  
+              <!-- <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="bankaddress">Bank Address<sup *ngIf="!editform">*</sup></label>
+                  <textarea rows="2" class="form-control" id="bankaddress" [(ngModel)]="supplier.bankaddress" name="bankaddress"
+                    #bankaddress="ngModel" [required]="!editform" placeholder="Enter Bank Address"></textarea>
+                  <div [hidden]="bankaddress.valid ||  bankaddress.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Bank Address</small>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+  
+            <div class="row">
+              <div class="form-group">
+                <div *ngIf="!editform">
+                  <!-- [disabled]="supplierDataForm.invalid" -->
+                    <button button="submit"
+                    class="btn btn-primary center-block bg_green mt_1">Submit</button>
+                </div>
+                <div *ngIf="editform">
+                  <!-- [disabled]="supplierDataForm.invalid" -->
+                    <button button="submit"
+                    class="btn btn-primary center-block bg_green mt_1">Update</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+  <div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <span>Supplier Created Sucessfully..!!</span>
+                <br>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+  
+          <button type="button" class="btn btn-success fr" (click)="gotouserslist()" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="updateModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <span>Updated Sucessfully..!!</span>
+                <br>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+  
+          <button type="button" class="btn btn-success fr" (click)="gotouserslist()" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>

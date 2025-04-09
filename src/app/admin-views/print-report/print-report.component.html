@@ -1,0 +1,186 @@
+<div class="container pad_t_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="
+                      color: #878787 !important;">Dashboard</a></span>
+    <span *ngIf="type=='Stock' && loginUserData.role=='Warehouse Manager'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Warehouse Manager-STOCK" style="color: #878787 !important;">{{type}}
+        Report</a>
+    </span>
+    <span *ngIf="loginUserData.role=='Admin'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Admin-REPORTS" style="color: #878787 !important;">{{type}} Report</a>
+    </span>
+    <span *ngIf="loginUserData.role=='Branch Manager'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Branch Manager-REPORTS" style="color: #878787 !important;">{{type}}
+        Report</a>
+    </span>
+    <span *ngIf="loginUserData.role=='Dealer'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Dealer-REPORTS" style="color: #878787 !important;">{{type}} Report</a>
+    </span>
+    <span *ngIf="loginUserData.designation=='Warehouse Manager' || loginUserData.designation=='Marketing Manager'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Warehouse Manager-STOCK" style="color: #878787 !important;">{{type}} Report</a>
+    </span>
+    &nbsp;>&nbsp;
+    <span>Print</span>
+  </p>
+  <div class="total_invoice_page" style="margin-bottom: 20px;" id="printSectionId">
+    <!-- <h3 style="padding-bottom: 10px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;">Packing-List
+        </h3> -->
+    <div class="invoce_address printwrap" *ngIf="(reportdata | filter :searchText) as reportdata">
+      <div class="table-responsive" style="margin-top: 10px;">
+        <div class="container hided">
+          <div class="fr">
+            <input type="text" [(ngModel)]="searchText" placeholder="Search.." class="search_style">
+            <button type="submit" class="input_btn">Search</button>
+          </div>
+        </div>
+        <table class="table table-bordered table-striped pending_order printTable">
+          <thead>
+            <tr class="hr_line_botm noBorder" *ngIf="type=='PO'">
+              <th colspan="8" style="background:transparent;color:#000000;">
+                <h3 class="hr_line_botm"
+                  style="padding-bottom:10px;margin-bottom:6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 5px;">
+                  {{loginUserData.company_address.online_display_name}}
+                </h3>
+                <h3 style="margin-bottom:3px;text-align: center;font-weight: 600;font-size: 18px;margin-top: 0px;">
+                  {{type}} Report
+                </h3>
+              </th>
+            </tr>
+            <tr class="hr_line_botm noBorder" *ngIf="type=='Packing' || type=='Inv' || type=='Stock'">
+              <th colspan="7" style="background:transparent;color:#000000;">
+                <h3 class="hr_line_botm"
+                  style="padding-bottom:10px;margin-bottom:6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 5px;">
+                  {{loginUserData.company_address.online_display_name}}
+                </h3>
+                <h3 style="margin-bottom:3px;text-align: center;font-weight: 600;font-size: 18px;margin-top: 0px;">
+                  {{type}} Report
+                </h3>
+              </th>
+            </tr>
+            <tr class="hr_line_botm noBorder" *ngIf="type=='Outstanding'">
+              <th colspan="5" style="background:transparent;color:#000000;">
+                <h3 class="hr_line_botm"
+                  style="padding-bottom:10px;margin-bottom:6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 5px;">
+                  {{loginUserData.company_address.online_display_name}}
+                </h3>
+                <h3 style="margin-bottom:3px;text-align: center;font-weight: 600;font-size: 18px;margin-top: 0px;">
+                  {{type}} Report
+                </h3>
+              </th>
+            </tr>
+            <tr class="hr_line_botm noBorder" *ngIf="type=='NotSold'">
+              <th colspan="6" style="background:transparent;color:#000000;">
+                <h3 class="hr_line_botm"
+                  style="padding-bottom:10px;margin-bottom:6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 5px;">
+                  {{loginUserData.company_address.online_display_name}}
+                </h3>
+                <h3 style="margin-bottom:3px;text-align: center;font-weight: 600;font-size: 18px;margin-top: 0px;">
+                  {{type}} Report
+                </h3>
+              </th>
+            </tr>
+            <tr class="hr_line_botm noBorder" *ngIf="type=='Market'">
+              <th colspan="3" style="background:transparent;color:#000000;">
+                <h3 class="hr_line_botm"
+                  style="padding-bottom:10px;margin-bottom:6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 5px;">
+                  {{loginUserData.company_address.online_display_name}}
+                </h3>
+                <h3 style="margin-bottom:3px;text-align: center;font-weight: 600;font-size: 18px;margin-top: 0px;">
+                  {{type}} Report
+                </h3>
+              </th>
+            </tr>
+            <tr>
+              <th>S.No</th>
+              <th *ngIf="type=='NotSold'">Category</th>
+              <th *ngIf="type=='Stock' || type=='NotSold'">Product Name</th>
+              <th *ngIf="type=='Stock' || type=='NotSold'">Brand</th>
+              <th *ngIf="type=='NotSold'">Stock Qty</th>
+              <th *ngIf="type=='NotSold'">MRP</th>
+              <!-- <th *ngIf="type=='Stock'" class="text-right">Opening Qty</th> -->
+              <th *ngIf="type=='Stock'" class="text-right">Last 2month sales</th>
+              <th *ngIf="type=='Stock'" class="text-right">Pi Qty</th>
+              <th *ngIf="type=='Stock'" class="text-right">Transit Qty</th>
+              <th *ngIf="type=='Stock'" class="text-right">Closing Balance Qty</th>
+              <th *ngIf="type=='PO' || type=='Packing' || type=='Inv' || type=='Outstanding'">Business Name</th>
+              <th *ngIf="type=='PO' || type=='Packing' || type=='Outstanding'">City</th>
+              <th *ngIf="type=='PO'">PO No</th>
+              <th *ngIf="type=='PO'">PO Date</th>
+              <th *ngIf="type=='PO' || type=='Packing'">DC No</th>
+              <th *ngIf="type=='PO' || type=='Packing'">DC Date</th>
+              <th *ngIf="type=='Packing' || type=='Inv'">Packing No</th>
+              <th *ngIf="type=='Packing' || type=='Inv'">Packing Date</th>
+              <th *ngIf="type=='Inv'">Inv No</th>
+              <th *ngIf="type=='Inv'">Inv Date</th>
+              <th *ngIf="type=='Market'">Marketing Name</th>
+              <th *ngIf="type=='PO' || type=='Inv' || type=='Market' " class="text-right">Total Amount</th>
+              <th *ngIf="type=='Outstanding'">Mobile No</th>
+              <th *ngIf="type=='Outstanding'" style="text-align: right;">Outstanding Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let res of reportdata; let i=index;">
+              <td>{{i+1}}</td>
+              <td *ngIf="type=='NotSold'" style="text-align:left">{{res.category}}</td>
+              <td *ngIf="type=='NotSold'" style="text-align:left">{{res.subcategory}} {{res.modelno}}
+              </td>
+              <td *ngIf="type=='Stock'" style="text-align:left">{{res.modelno}} {{res.subcategory}}</td>
+              <td *ngIf="type=='Stock' || type=='NotSold'" style="text-align:left">{{res.Brand}}</td>
+              <td *ngIf="type=='NotSold'" style="text-align:left">{{res.stock_qty}}</td>
+              <td *ngIf="type=='NotSold'" style="text-align:left">{{res.mrp}}</td>
+              <!-- <td *ngIf="type=='Stock'" style="text-align:right">{{res.opening_bal_qty}} -->
+              <td *ngIf="type=='Stock'" style="text-align:right">{{res.saleQty}}</td>
+              <td *ngIf="type=='Stock'" style="text-align:right">{{res.zpoqty}}</td>
+              <td *ngIf="type=='Stock'" style="text-align:right">{{res.zTransitQty}}</td>
+              <td *ngIf="type=='Stock'" style="text-align:right">{{res.closing_bal_qty}}</td>
+              <td *ngIf="type=='PO' || type=='Packing'" style="text-align:left">{{res.po_company_name}}</td>
+              <td *ngIf="type=='Inv'" style="text-align:left">{{res.business_name}}</td>
+              <td *ngIf="type=='PO' || type=='Packing'" style="text-align:left">{{res.po_city}}</td>
+              <td *ngIf="loginUserData.role!='Dealer' && type=='PO'" style="text-align:left">
+                {{res.po_no}}-{{res.po_origin_company_code}}</td>
+              <td *ngIf="loginUserData.role=='Dealer' && type=='PO'" style="text-align:center">
+                {{res.pono_ref}}
+              </td>
+              <td *ngIf="type=='PO'">{{res.po_date | date:'dd-MM-yyyy'}}</td>
+              <td *ngIf="res.print && type=='PO'" style="text-align:center">{{res.print}}</td>
+              <td *ngIf="!res.print && type=='PO'" style="text-align:center">N/A</td>
+              <td *ngIf="res.printdate && type=='PO'">{{res.printdate | date:'dd-MM-yyyy'}}</td>
+              <td *ngIf="!res.printdate && type=='PO'">N/A</td>
+              <td *ngIf="type=='Packing'">{{res.dcno}}</td>
+              <td *ngIf="type=='Packing'">{{res.dcdate | date:'dd-MM-yyyy'}}</td>
+              <td *ngIf="type=='Packing'">{{res.packing_no}}</td>
+              <td *ngIf="type=='Inv'" style="text-align:left">{{res.packingno}}</td>
+              <td *ngIf="type=='Inv'" style="text-align:left">{{res.packingdate | date:'dd-MM-yyyy'}}</td>
+              <td *ngIf="type=='Packing'">{{res.packing_date | date:'dd-MM-yyyy'}}</td>
+              <td *ngIf="type=='Inv'" style="text-align:left">{{res.inv_no}}</td>
+              <td *ngIf="type=='Inv'" style="text-align:left">{{res.inv_date | date:'dd-MM-yyyy'}}</td>
+              <td *ngIf="type=='Inv'">{{res.total_inv_value | currency : '&nbsp;'}}</td>
+              <td *ngIf="type=='PO'" style="text-align:right">{{res.total_po_value | currency : '&nbsp;'}}</td>
+              <td *ngIf="type=='Market'" style="text-align:left">{{res.marketingname}}</td>
+              <td *ngIf="type=='Market'" style="text-align:right">{{res.final_amount | currency : '&nbsp;'}}</td>
+              <td *ngIf="type=='Outstanding'" style="text-align:left">{{res.name}}</td>
+              <td *ngIf="type=='Outstanding'" style="text-align:left">{{res.city}}</td>
+              <td *ngIf="type=='Outstanding'" style="text-align:left">{{res.mobile}}</td>
+              <td *ngIf="type=='Outstanding'" style="text-align:right">&#8377; {{res.Outstanding_amount?(res.Outstanding_amount).toLocaleString('en-IN'):'' | currency:"&#8377; "}}.00
+              </td>
+            </tr>
+
+
+
+
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+  <div class="row" style="text-align: center;padding-top: 15px;">
+    <button type="submit" class="btn btn-success" (click)="printPL()" style="letter-spacing:1px;">Print
+    </button>
+    <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Cancel</button>
+  </div>
+</div>

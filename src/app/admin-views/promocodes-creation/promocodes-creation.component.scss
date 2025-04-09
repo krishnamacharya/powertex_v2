@@ -1,0 +1,52 @@
+.btn-primary {
+    background-color: #293271 !important;
+    border-color: #293271 !important;
+    // margin-top: 1rem;
+    // margin-bottom: 1rem;
+}
+.padd_right_10{
+    padding-right: 10px;
+}
+.blue_l_clr {
+    color: #293271;
+}
+.green_clr{
+    color:#1c944f;
+}
+.red_clr{
+    color:#cf1111;
+}
+.alert_heading1 {
+    background: #0da550;
+    margin-top: 0;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white !important;
+}
+.bussinesInfo{
+    background: #0fa497;
+    margin-bottom: 0;
+    padding: 10px;
+    color: #fff !important;
+}    
+.a_b_1{
+    color: #fff !important;
+    background-color: #293271 !important;
+    border-color: #293271 !important;
+}
+.a_b_2 {
+    float: right;
+    font-weight: 600;
+    margin-top: -8px;
+} 
+/* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 480px){
+.tabres{
+    padding: 5px 0 !important;
+   
+}
+
+}

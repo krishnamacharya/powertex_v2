@@ -1,0 +1,1191 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div (keydown.enter)="$event.preventDefault()" class="container pad_t_5per pad_b_5per">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>{{setup}}</span>
+  </p>
+  <section *ngIf="isBusiness">
+    <div class="row">
+      <div class="col-sm-12">
+        <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Business Info<span class="a_b_2"
+            (click)="availt_branches()">
+            <button class="a_b_1 btn btn-primary"><i class="fa fa-long-arrow-left"></i>&nbsp;Available {{Role |
+              titlecase}}'s</button></span></h4>
+        <div class="reg_form pad_15 mar_b_30">
+          <form #masterCompanyForm="ngForm">
+            <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">{{Role | titlecase}} Details:</h4>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="companyname" class="col-form-label">{{Role | titlecase}} Name
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" [(ngModel)]="regProfileInfo.companyname" name="companyname"
+                      id="companyname" placeholder="Enter {{Role | titlecase}} Name" #companyname="ngModel" required>
+                  </div>
+                  <div [hidden]="companyname.valid ||  companyname.untouched" class="validation_msg">
+                    {{Role | titlecase}} Name Required
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="online_display_name" class="col-form-label">Display Name
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" name="online_display_name" id="online_display_name"
+                      [(ngModel)]="regProfileInfo.online_display_name" placeholder="Enter Dispaly Name"
+                      #disName="ngModel" required>
+                  </div>
+                  <div [hidden]="disName.valid ||  disName.untouched" class="validation_msg">
+                    Display Name Required
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="category_profile" class="col-form-label">Category Profile
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' required [(ngModel)]="regProfileInfo.category_profile"
+                      name="category" #category="ngModel">
+                      <option [ngValue]="undefined" disabled selected>Select</option>
+                      <option class='option' *ngFor="let data of categoryList | async" [ngValue]="data.category">
+                        {{data.category}}_{{data.avg_val}}% Discount</option>
+                    </select>
+                  </div>
+                  <div [hidden]="category.valid ||  category.untouched" class="validation_msg">
+                    Category Profile Required
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="country" class="col-form-label">Country
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' required [(ngModel)]="regProfileInfo.country"
+                      name="country" #country="ngModel" (change)="onSelectCountry(regProfileInfo.country)">
+                      <option [ngValue]="undefined" disabled selected>Select Country</option>
+                      <option class='option' *ngFor="let countries of countriesList | async"
+                        [ngValue]="countries.country">{{countries.country | titlecase}}</option>
+                    </select>
+                    <div [hidden]="country.valid ||  country.untouched" class="validation_msg">
+                      Country is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="state" class="col-form-label">State
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' [(ngModel)]="regProfileInfo.state" required name="state"
+                      #state="ngModel" (change)="onSelectState(regProfileInfo.state)">
+                      <option [ngValue]="undefined" disabled selected>Select State</option>
+                      <option class='option' *ngFor="let states of response1" [ngValue]="states.state">{{states.state |
+                        titlecase}}
+                      </option>
+                    </select>
+                    <div [hidden]="state.valid ||  state.untouched" class="validation_msg">
+                      State is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="district" class="col-form-label">District
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' [(ngModel)]="regProfileInfo.district" required
+                      name="district" #district="ngModel" (change)="onSelectDistrict(regProfileInfo.district)">
+                      <option [ngValue]="undefined" disabled selected>Select District</option>
+                      <option class='option' *ngFor="let districts of response2" [ngValue]="districts.district">
+                        {{districts.district}}</option>
+                    </select>
+                    <div [hidden]="district.valid ||  district.untouched" class="validation_msg">
+                      District is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="pan" class="col-form-label">PAN
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control uppercase" [(ngModel)]="regProfileInfo.pan"
+                      onkeyup="this.value = this.value.toUpperCase();" name="pan" id="pan" placeholder="Enter PAN"
+                      #pan="ngModel" minlength="10" maxlength="10" required>
+                  </div>
+                  <div [hidden]="pan.valid ||  pan.untouched" class="validation_msg">
+                    10 Digit PAN Required
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="cin" class="col-form-label">CIN
+                    <!-- <sub class="txt_red f_size_25">*</sub> -->
+                  </label>
+                  <div>
+                    <input type="text" class="form-control uppercase" [(ngModel)]="regProfileInfo.cin" name="cin"
+                      id="cin" placeholder="Enter CIN" #cin="ngModel">
+                  </div>
+                  <div [hidden]="cin.valid ||  cin.untouched" class="validation_msg">
+                    CIN Required
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="gstin" class="col-form-label">GSTIN
+                    <sub class="txt_red f_size_25">*</sub><span style="color: #d62329;font-size: 11px;">Excluding State
+                      code</span>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control gst1 " [(ngModel)]="regProfileInfo.gstcode" name="gstcode"
+                      id="gstcode" #gstcode="ngModel" readonly>
+                    <input type="text" class="form-control gst2 uppercase" [(ngModel)]="regProfileInfo.gstin"
+                      name="gstin" id="gstin" placeholder="Enter GSTIN" #gstin="ngModel" maxlength="20"
+                      pattern="^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[0-9]{1}[a-zA-Z]{1}[0-9a-zA-Z]{1}$" required>
+                  </div>
+                  <div [hidden]="gstin.valid ||  gstin.untouched" class="validation_msg">
+                    GSTIN Required
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Handling Company Details:<span *ngIf="code==1;"><i
+                  class="fa fa-pencil" (click)="c_edit()"
+                  style="font-size: 22px;color: #20978c;text-decoration: none !important;padding: 0px 11px;"></i></span>
+            </h4>
+            <div *ngIf="code1==1;" class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="handling_company_code" class="col-form-label">Handling Company Code
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" [(ngModel)]="regProfileInfo.handling_company_code"
+                      name="handling_company_code" #handling_company_code="ngModel" disabled>
+                  </div>
+                  <div [hidden]="handling_company_code.valid ||  handling_company_code.untouched"
+                    class="validation_msg">
+                    Handling Company Code Required
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="handling_company_acc_manager" class="col-form-label">Account Manager Name
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" [(ngModel)]="regProfileInfo.handling_company_acc_manager"
+                      name="handling_company_acc_manager" #ACC="ngModel" disabled>
+                    <div [hidden]="ACC.valid || ACC.untouched" class="validation_msg">
+                      Account Manager is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="handling_company_sales_manager" class="col-form-label">Sales Manager Name
+
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" [(ngModel)]="regProfileInfo.handling_company_sales_manager"
+                      name="handling_company_sales_manager" #SM="ngModel" disabled>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="pur_mgr_id" class="col-form-label">Warehouse Manager Name
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" [(ngModel)]="regProfileInfo.pur_mgr_id" name="pur_mgr_id"
+                      #pur_mgr_id="ngModel" disabled>
+                  </div>
+                  <div [hidden]="pur_mgr_id.valid ||  pur_mgr_id.untouched" class="validation_msg">
+                    Warehouse Manager Name Required
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="code1==0;" class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="handling_company_code" class="col-form-label">Handling Company Code
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' required
+                      [(ngModel)]="regProfileInfo.handling_company_code" name="handling_company_code"
+                      #handling_company_code="ngModel"
+                      (change)="onSelectHandleCmpnyCode(regProfileInfo.handling_company_code)">
+                      <option [ngValue]="undefined" disabled selected>Select Company Code</option>
+                      <option *ngFor="let hndleCodes of handlingCompanyCodesList | async"
+                        [ngValue]="hndleCodes.company_code">
+                        {{hndleCodes.companyname}}-{{hndleCodes.company_code}}</option>
+                    </select>
+                  </div>
+                  <div [hidden]="handling_company_code.valid ||  handling_company_code.untouched"
+                    class="validation_msg">
+                    Handling Company Code Required
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="handling_company_acc_manager" class="col-form-label">ACC Manager Name
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' [(ngModel)]="regProfileInfo.handling_company_acc_manager"
+                      name="handling_company_acc_manager" #ACC="ngModel"
+                      (change)="onselect(regProfileInfo.handling_company_acc_manager)">
+                      <option [ngValue]="undefined" disabled selected>Select Account Manager</option>
+                      <option *ngFor="let accManagers of accManagersList" [ngValue]="accManagers.email">
+                        {{accManagers.email}}</option>
+                    </select>
+                    <div [hidden]="ACC.valid || ACC.untouched" class="validation_msg">
+                      Account Manager is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="handling_company_sales_manager" class="col-form-label">Sales Manager Name
+                  </label>
+                  <div >
+                    <select class='select-option form-control'
+                      [(ngModel)]="regProfileInfo.handling_company_sales_manager" name="handling_company_sales_manager"
+                      #SM="ngModel">
+                      <option [ngValue]="undefined" disabled selected>Select Sales Manager</option>
+                      <option class='option' *ngFor="let salesMangers of salesManagersList"
+                        [ngValue]="salesMangers.email">{{salesMangers.email}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="pur_mgr_id" class="col-form-label">Warehouse Manager Name
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' [(ngModel)]="regProfileInfo.pur_mgr_id" name="pur_mgr_id"
+                      #pur_mgr_id="ngModel">
+                      <option [ngValue]="undefined" disabled selected>Select Warehouse Manager</option>
+                      <option class='option' *ngFor="let warehouseMangers of wareHouseManagersList"
+                        [ngValue]="warehouseMangers.email">{{warehouseMangers.email}}</option>
+                    </select>
+                  </div>
+                  <div [hidden]="pur_mgr_id.valid ||  pur_mgr_id.untouched" class="validation_msg">
+                    Warehouse Manager Name Required
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">{{Role | titlecase}} Address:</h4>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="city" class="col-form-label">City/Region
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div >
+                    <input class='select-option form-control' [(ngModel)]="regProfileInfo.city" required type="text"
+                      name="city" #city="ngModel" (change)="onSelectState(regProfileInfo.state)"
+                      placeholder="Enter City" list="bbb">
+                    <datalist id="bbb">
+                      <option [ngValue]="undefined" disabled selected>Select City</option>
+                      <option class='option' *ngFor="let cities of response3" [ngValue]="cities.city">{{cities.city|
+                        titlecase}}
+                      </option>
+                    </datalist>
+                    <div [hidden]="city.valid ||  city.untouched" class="validation_msg">
+                      City is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="company_email" class="col-form-label">Zone
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div >
+                    <input type="text" class="form-control" name="zone" id="zone" [(ngModel)]="regProfileInfo.zone"
+                      placeholder="Enter zone" #zone="ngModel" required readonly>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="company_email" class="col-form-label">Email (Official)
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div >
+                    <input type="email" required class="form-control" name="company_email" id="company_email"
+                      [(ngModel)]="regProfileInfo.company_email" placeholder="Enter Email" #company_email="ngModel"
+                      pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                    <div *ngIf="company_email.invalid && (company_email.dirty || company_email.touched)"
+                      class="validation_msg">
+                      <p *ngIf="company_email.errors['required'] && !mailValidation">Email Id is required</p>
+                      <p *ngIf="company_email.errors['pattern']">Enter Valid Email Id</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="company_mobile" class="col-form-label">Phone Number (Official)
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div >
+                    <input type="text" class="form-control" name="company_mobile" id="company_mobile"
+                      [(ngModel)]="regProfileInfo.mobile" placeholder="Enter Phone Number" #company_mobile="ngModel"
+                      minlength="10" maxlength="11" pattern="^[0-9]{10,11}$" required>
+                    <div *ngIf="company_mobile.invalid && (company_mobile.dirty || company_mobile.touched)"
+                      class="validation_msg">
+                      <p *ngIf="company_mobile.errors['required']">Phone Number is required</p>
+                      <p *ngIf="company_mobile.errors['pattern']">Enter Valid Phone Number</p>
+                      <p *ngIf="company_mobile.errors['maxlength']">Number should be Maximum 11 characters</p>
+                      <!-- <p *ngIf="company_mobile.errors['minlength']">Enter Valid Phone Number</p> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="address1" class="col-form-label">Address 1
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <textarea class="form-control" [(ngModel)]="regProfileInfo.address1" name="address1" id="address1"
+                      placeholder="Enter Address 1" #address1="ngModel" required></textarea>
+                  </div>
+                  <div [hidden]="address1.valid ||  address1.untouched" class="validation_msg">
+                    Address 1 Required
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="address2" class="col-form-label">Address 2
+                  </label>
+                  <div>
+                    <textarea class="form-control" [(ngModel)]="regProfileInfo.address2" name="address2" id="address2"
+                      placeholder="Enter Address 2" #address2="ngModel"></textarea>
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="pin" class="col-form-label">Postal Code
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" id="pin" [(ngModel)]="regProfileInfo.pin"
+                      placeholder="Enter Postal Code" name="pincode" #pincode="ngModel" maxlength="6"
+                      pattern="^[1-9][0-9]{5}$" required>
+                  </div>
+                  <div *ngIf="pincode.invalid && (pincode.dirty || pincode.touched)" class="validation_msg">
+                    <p *ngIf="pincode.errors['required']"> pincode is required</p>
+                    <p *ngIf="pincode.errors['pattern']">Enter Valid pincode</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="location_href" class="col-form-label">Location href</label>
+                  <div>
+                    <input type="text" class="form-control" name="location_href" id="location_href"
+                      [(ngModel)]="regProfileInfo.location_href" placeholder="Enter Location" #location="ngModel">
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="latitude" class="col-form-label">Latitude</label>
+                  <div>
+                    <input type="text" class="form-control" name="latitude" id="latitude"
+                      [(ngModel)]="regProfileInfo.latitude" placeholder="Enter Latitude" #latitude="ngModel">
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="longtitude" class="col-form-label">Longtitude</label>
+                  <div>
+                    <input type="text" class="form-control" name="longtitude" id="longtitude"
+                      [(ngModel)]="regProfileInfo.longtitude" placeholder="Enter Longtitude" #longtitude="ngModel">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">{{Role | titlecase}} Manager Login Details:</h4>
+            <div class="form-group row">
+
+              <div class="col-sm-12">
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="full_name" class="col-form-label">Name
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" required class="form-control" id="full_name"
+                      [(ngModel)]="branch_details.first_name" placeholder="Enter  Name" name="full_name"
+                      #full_name="ngModel" pattern="[a-zA-Z ]*" minlength="3" maxlength="30">
+                    <div *ngIf="full_name.invalid && (full_name.dirty || full_name.touched)" class="validation_msg">
+                      <p *ngIf="full_name.errors['required']"> Name is required</p>
+                      <p *ngIf="full_name.errors['pattern']">Enter Valid Name</p>
+                      <p *ngIf="full_name.errors['minlength']">It should not be below 3 letters</p>
+                      <p *ngIf="full_name.errors['maxlength']">Name should be Maximum 30 characters</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="mobile" class="col-form-label">Mobile Number
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" required class="form-control" id="mobile" [(ngModel)]="Emp_data.mobile"
+                      (blur)="verifyUser(Emp_data.mobile,'mobile')" placeholder="Enter Mobile Number" name="mobile"
+                      #mobile="ngModel" maxlength="10" pattern="^[6-9][0-9]{9}$">
+                    <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
+                      <p *ngIf="mobile.errors['required'] && !mobileValidation">Mobile Number is required</p>
+                      <p *ngIf="mobile.errors['pattern']">Enter Valid Mobile Number</p>
+                    </div>
+                    <div *ngIf="mobileValidation" class="validation_msg">Mobile Number already exist.</div>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="bm_email" class="col-form-label">Email
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="email" required class="form-control" id="email" [(ngModel)]="branch_details.email"
+                      (blur)="verifyUser(Emp_data.email,'email')" placeholder="Enter Email Id" name="email"
+                      #email="ngModel" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation_msg">
+                      <p *ngIf="email.errors['required'] && !mailValidation">Email Id is required</p>
+                      <p *ngIf="email.errors['pattern']">Enter Valid Email Id</p>
+                    </div>
+                    <div *ngIf="mailValidation" class="validation_msg">Email Id already exist.</div>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl" *ngIf="code != 1">
+                  <label for="bm_p" class="col-form-label">Password
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="password" required class="form-control" [(ngModel)]="Emp_data.password"
+                      placeholder="Enter password" name="password" #password="ngModel" minlength="6">
+                    <div *ngIf="password.invalid && (password.dirty || password.touched)" class="validation_msg">
+                      <p *ngIf="password.errors['required']"> password is required</p>
+                      <p *ngIf="password.errors['minlength']">password minlength is 6</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-sm-1"><button (click)="br_setup(Emp_data)">Get</button></div> -->
+              </div>
+            </div>
+            <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Payment Conditions:</h4>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="credit_period" class="col-form-label">Credit Period
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" name="credit_period" id="credit_period"
+                      [(ngModel)]="regProfileInfo.credit_period" placeholder="Enter Credit Period(Days)"
+                      #credit_period="ngModel" required>
+                  </div>
+                  <div [hidden]="credit_period.valid ||  credit_period.untouched" class="validation_msg">
+                    Credit Period Required
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="credit_limit" class="col-form-label">Credit Limit
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" name="credit_limit" id="credit_limit"
+                      [(ngModel)]="regProfileInfo.credit_limit" placeholder="Enter Credit Limit(INR)"
+                      #credit_limit="ngModel" required>
+                  </div>
+                  <div [hidden]="credit_limit.valid ||  credit_limit.untouched" class="validation_msg">
+                    Credit Limit Required
+                  </div>
+                </div>
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="payment_terms" class="col-form-label">Payment Terms<b>(CASH/CHEQUE)</b>
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" name="payment_terms" id="payment_terms"
+                      [(ngModel)]="regProfileInfo.payment_terms" placeholder="Enter Payment Terms"
+                      #payment_terms="ngModel" required>
+                  </div>
+                  <div [hidden]="payment_terms.valid ||  payment_terms.untouched" class="validation_msg">
+                    Payment Terms Required
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-4 mar_b_10_mbl">
+                  <label for="shipment_point" class="col-form-label">Incoterms
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' [(ngModel)]="regProfileInfo.shipment_point" required
+                      name="shipment_point" id="shipment_point" #shipment_point="ngModel">
+                      <option [ngValue]="undefined" disabled selected>Select</option>
+                      <option class='option' *ngFor="let i of incoterms" [ngValue]="i.shoert">{{i.shoert}}</option>
+                    </select>
+                  </div>
+                  <div [hidden]="shipment_point.valid ||  shipment_point.untouched" class="validation_msg">
+                    Incoterms Required
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">{{Role | titlecase}} Bank Account Details:</h4>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="acc_holder" class="col-form-label">Account Holder Name</label>
+                  <div>
+                    <input type="text" class="form-control" name="acc_holder" id="acc_holder"
+                      [(ngModel)]="bank_details.acc_holder" placeholder="Enter A/c Holder Name" #acc_holder="ngModel">
+                  </div>
+                  <!-- <div [hidden]="b_name.valid ||  b_name.untouched" class="validation_msg">
+                  Credit Period Required
+                </div> -->
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="acc_no" class="col-form-label">Account Number</label>
+                  <div>
+                    <input type="text" class="form-control" name="acc_no" id="acc_no" maxlength="20"
+                      (keypress)="keynumber($event)" [(ngModel)]="bank_details.acc_no" placeholder="Enter A/C No"
+                      #acc_no="ngModel">
+                  </div>
+                  <!-- <div [hidden]="b_number.valid ||  b_number.untouched" class="validation_msg">
+                  Credit Limit Required
+                </div> -->
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="ifsc" class="col-form-label">IFSC Code</label>
+                  <div>
+                    <input type="text" class="form-control" name="ifsc" id="ifsc" [(ngModel)]="bank_details.ifsc"
+                      placeholder="Enter IFSC Code" #ifsc="ngModel">
+                  </div>
+                  <!-- <div [hidden]="b_ifsc.valid ||  b_ifsc.untouched" class="validation_msg">
+                  Payment Terms Required
+                </div> -->
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="bank_name" class="col-form-label">Bank Name</label>
+                  <div>
+                    <input type="text" class="form-control" name="bank_name" id="bank_name"
+                      [(ngModel)]="bank_details.bank_name" placeholder="Enter Bank Name"
+                      onkeyup="this.value = this.value.toUpperCase();" #bank_name="ngModel">
+                  </div>
+                  <!-- <div [hidden]="b_bank_name.valid ||  b_bank_name.untouched" class="validation_msg">
+                  Payment Terms Required
+                </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="branch" class="col-form-label">Branch Name</label>
+                  <div>
+                    <input type="text" class="form-control" name="branch" id="branch" [(ngModel)]="bank_details.branch"
+                      placeholder="Enter A/c Holder Name" #branch="ngModel">
+                  </div>
+                  <!-- <div [hidden]="b_name.valid ||  b_name.untouched" class="validation_msg">
+                      Credit Period Required
+                    </div> -->
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row pad_t_b_10">
+              <div class="col-sm-12">
+                <div class="col-sm-12" id="btnWrap">
+                  <div class="pull-left">
+                    <button type="submit" (click)="m_cancel()"
+                      class="btn btn-primary brdr_radius_50 btn_w bg_red border_red">
+                      <i class="fa fa-long-arrow-left" aria-hidden="true"></i> cancel</button>
+                  </div>
+                  <div class="pull-right">
+                    <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                      [disabled]="masterCompanyForm.invalid" (click)="masterCompanySubmit(masterCompanyForm)">Submit
+                      <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="avail_Branches">
+    <div class="row">
+      <div class="col-sm-12">
+        <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Available {{Role | titlecase}}'s<span class="a_b_2"
+            (click)="activat_branchsetup()">
+            <button class="a_b_1 btn btn-primary">Create New {{Role | titlecase}}&nbsp;<i
+                class="fa fa-long-arrow-right"></i></button></span></h4>
+
+        <div class="branchtable">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>{{Role | titlecase}} Name</th>
+                  <th>{{Role | titlecase}} Code</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Total Outstanding</th>
+                  <th>Due Amount</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let branch of branchesList | paginate: { itemsPerPage: 10, currentPage: Page}; let i=index;"
+                  [ngStyle]="{'background-color':branch.active == 0 ? '#c5cecd' : 'white' }">
+                  <td>{{10*(Page-1)+(i+1)}}</td>
+                  <td>{{branch.companyname | titlecase }}</td>
+                  <td>{{branch.company_code}}</td>
+                  <td>{{branch.city}}</td>
+
+                  <td>{{branch.state | titlecase}}</td>
+                  <td>{{branch.outstanding_amount}}</td>
+                  <td>{{branch.due_amount}}</td>
+                  <td>
+                    <span *ngIf="branch.active == 1" class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                      <i class="fa fa-eye" aria-hidden="true" title="View More" (click)="viewMore(branch)"></i>
+                    </span>
+                    <span *ngIf="branch.active == 1" class="f_size_15 orange_clr padd_right_10 cursor_pointer"
+                      (click)="editInfo(branch)">
+                      <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                    </span>
+                    <span *ngIf="branch.active == 1" class="f_size_15 red_clr padd_right_10 cursor_pointer"
+                      (click)="reject(branch)">
+                      <i class="fa fa-close" aria-hidden="true" title="Disable"></i>
+                    </span>
+                    <span *ngIf="branch.active == 1 && Role =='Branch'"
+                      class="f_size_15 theme_clr padd_right_10 cursor_pointer" (click)="explore(branch)">
+                      <img src="../../../assets/Explore icon.svg" style="width: 5%" title="Explore">
+                    </span>
+                    <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="branch.active == 0"
+                      (click)="accept(branch)">
+                      <i class="fa fa-check" aria-hidden="true" title="Enable"></i>
+                    </span>
+                    <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="branch.active == 0"
+                      (click)="reason(branch)">
+                      <i class="fa fa-question" aria-hidden="true" title="Reason For Disable"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="row det_o_s" *ngIf="compDetails">
+    <div class="col-md-12 text-center">
+      <h3 style="margin-bottom:20px;"> <span>{{Role | titlecase}} Created Successfully..!!</span></h3>
+    </div>
+    <div class="row" style="padding:20px;">
+      <div class="col-md-6">
+        <div><span style="font-weight:600;">{{Role | titlecase}} Name:</span>
+          <span>{{ comp_new.user.companyname}}</span>
+        </div>
+        <div><span style="font-weight:600;">{{Role | titlecase}} Code:</span>
+          <span>{{ comp_new.user.company_code}}</span>
+        </div>
+        <div><span style="font-weight:600;">{{Role | titlecase}} Email:</span>
+          <span>{{ comp_new.user.company_email}}</span>
+        </div>
+        <div><span style="font-weight:600;">{{Role | titlecase}} Mobile:</span>
+          <span>{{ comp_new.user.mobile}}</span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div><span style="font-weight:600;"> Handling Company Code:</span>
+          <span>{{ comp_new.user.handling_company_code}}</span>
+        </div>
+        <div><span style="font-weight:600;">Handling Accounts Manager:</span>
+          <span>{{ comp_new.user.handling_company_acc_manager}}</span>
+        </div>
+        <div *ngIf="comp_new.user.handling_company_sales_manager"><span style="font-weight:600;"> Handling Sales
+            Manager:</span>
+          <span>{{ comp_new.user.handling_company_sales_manager}}</span>
+        </div>
+        <div><span style="font-weight:600;"> Handling Warehouse Manager:</span>
+          <span>{{ comp_new.user.pur_mgr_id}}</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="row" style="padding:40px;">
+      <button class=" btn btn-primary" (click)="emp_table()">Add Employees</button>
+      <button class=" btn btn-primary" style="float:right;" routerLink="/dashboard">Done</button>
+    </div>
+
+    <div class="row" *ngIf="emp_t" style="padding:40px;">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Designation</th>
+              <th>Full Name</th>
+              <th>Mobile Number</th>
+              <th>Email ID</th>
+              <th>Password</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of selectedEmp;let j = index">
+              <td>{{p.designation}}</td>
+              <td>{{p.first_name}}</td>
+              <td>{{p.mobile}}</td>
+              <td>{{p.email}}</td>
+              <td class="invisible-cell">{{p.password}}</td>
+              <td>
+                <i class="fa fa-trash" (click)="deleteFieldValue(j)"
+                  style="font-size: 18px;color: #20978c;text-decoration: none !important;padding: 0px 11px;"></i>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div>
+                  <select class='select-option form-control' [(ngModel)]="Emp_data.designation" required
+                    name="designation" #designation="ngModel">
+                    <option [ngValue]="undefined" disabled selected>Select</option>
+                    <option class='option' *ngFor="let data of designationsList | async" [ngValue]="data.Designation">
+                      {{data.Designation}}</option>
+                  </select>
+                  <div [hidden]="designation.valid ||  designation.untouched" class="validation_msg">
+                    Designation is required
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input type="text" required class="form-control" id="full_name" [(ngModel)]="Emp_data.first_name"
+                    placeholder="Enter  Name" name="full_name" #full_name="ngModel" pattern="[a-zA-Z ]*" minlength="3"
+                    maxlength="30">
+                  <div *ngIf="full_name.invalid && (full_name.dirty || full_name.touched)" class="validation_msg">
+                    <p *ngIf="full_name.errors['required']">Name is required</p>
+                    <p *ngIf="full_name.errors['pattern']">Enter Valid Name</p>
+                    <p *ngIf="full_name.errors['minlength']">It should not be below 3 letters</p>
+                    <p *ngIf="full_name.errors['maxlength']">Name should be maximum 30 characters</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input type="text" required class="form-control" id="mobile" [(ngModel)]="Emp_data.mobile"
+                    (blur)="verifyUser(Emp_data.mobile,'mobile')" placeholder="Enter Mobile Number" name="mobile"
+                    #mobile="ngModel" maxlength="10" pattern="^[6-9][0-9]{9}$">
+                  <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
+                    <p *ngIf="mobile.errors['required'] && !mobileValidation">Mobile Number is required</p>
+                    <p *ngIf="mobile.errors['pattern']">Enter Valid Mobile Number</p>
+                  </div>
+                  <div *ngIf="mobileValidation" class="validation_msg">Mobile Number already exist.</div>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input type="email" required class="form-control" id="email" [(ngModel)]="Emp_data.email"
+                    (blur)="verifyUser(Emp_data.email,'email')" placeholder="Enter Email Id" name="email"
+                    #email="ngModel" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                  <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation_msg">
+                    <p *ngIf="email.errors['required'] && !mailValidation">Email Id is required</p>
+                    <p *ngIf="email.errors['pattern']">Enter Valid Email Id</p>
+                  </div>
+                  <div *ngIf="mailValidation" class="validation_msg">Email Id already exist.</div>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input type="password" required class="form-control" [(ngModel)]="Emp_data.password"
+                    placeholder="Enter password" name="password" #password="ngModel" minlength="6">
+                  <div *ngIf="password.invalid && (password.dirty || password.touched)" class="validation_msg">
+                    <p *ngIf="password.errors['required']"> password is required</p>
+                    <p *ngIf="password.errors['minlength']">password minlength is 6</p>
+                    <!-- pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" -->
+                    <!-- <p *ngIf="password.errors['pattern']">Minimum eight characters, at least one letter, one number and one special character</p> -->
+                  </div>
+                </div>
+              </td>
+              <td>
+                <button class="btn btn-default" type="button" (click)="addEmp()" [disabled]="check_add()">Add</button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <input type="button" class="btn btn-primary place_ordr_btnn" value="Submit"
+        (click)="submitEmpData(Emp_data,selectedEmp)">
+    </div>
+
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+<div (keydown.enter)="$event.preventDefault()" class="modal fade" id="succModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal"></button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{message | titlecase }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div (keydown.enter)="$event.preventDefault()" class="modal fade" id="succModal1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal"></button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{message | titlecase }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="getdash()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div (keydown.enter)="$event.preventDefault()" class="modal fade" id="resModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading" style="color: white !important;font-size: 23px !important;">
+              <button type="button" class="close" data-dismiss="modal"></button>
+              Reason To Disable
+            </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{Message}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div (keydown.enter)="$event.preventDefault()" class="modal fade" id="valid" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading" style="color: white !important;font-size: 23px !important;">
+              <button type="button" class="close" data-dismiss="modal"></button>
+              <!-- Reason To Disable -->
+            </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{message}} Please Use Another One.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div (keydown.enter)="$event.preventDefault()" class="modal fade" id="disModal1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form #comments="ngForm">
+        <div class="modal-header v_h">
+          <button type="button" class="close1" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Disabling the Branch</h4>
+        </div>
+        <div class="modal-body" style="padding:30px !important;">
+          <div class="col-sm-12 mar_b_10_mbl" *ngIf="dis_data">
+
+            <label for="Reason" class="col-form-label" style="font-weight:600 !important;">Reason To Disable :
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <textarea class="form-control" rows="5" [(ngModel)]="dis_data.comments" name="Reason" id="address1"
+                placeholder="Enter Description" #reason="ngModel" required></textarea>
+            </div>
+            <div [hidden]="reason.valid ||  reason.untouched" class="validation_msg">
+              Reason Required
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border:none !important;margin-top: 120px;">
+          <button type="button" class="btn btn-danger" data-dismiss="modal" style="float :left;">Cancel</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" [disabled]="comments.invalid "
+            (click)="dis_branch()">Submit</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+<div (keydown.enter)="$event.preventDefault()" class="modal fade" id="delshop" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Dealer's & Shopee's</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Dealers</h3>
+            <p *ngFor="let data of dealers">
+              {{data.name}}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h3>Shoppee's</h3>
+            <p *ngFor="let data of shopees">
+              {{data.name}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div (keydown.enter)="$event.preventDefault()" class="modal fade" id="viewModal1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Branch Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" *ngIf="view_d">
+          <div class="col-md-6">
+            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+              <p class="view_headings" *ngIf="view_d.company_code!='' && view_d.company_code!=undefined">Company Code
+              </p>
+              <p class="view_headings" *ngIf="view_d.companyname!='' && view_d.companyname!=undefined">Company Name</p>
+              <p class="view_headings" *ngIf="view_d.online_display_name!='' && view_d.online_display_name!=undefined">
+                Display Name</p>
+              <p class="view_headings" *ngIf="view_d.company_email!='' && view_d.company_email!=undefined">Email </p>
+              <p class="view_headings" *ngIf="view_d.mobile!='' && view_d.mobile!=undefined">Mobile</p>
+              <p class="view_headings" *ngIf="view_d.pan!='' && view_d.pan!=undefined">PAN</p>
+              <p class="view_headings" *ngIf="view_d.cin!='' && view_d.cin!=undefined">CIN</p>
+              <p class="view_headings" *ngIf="view_d.gstin!='' && view_d.gstin!=undefined">GST IN</p>
+              <p class="view_headings" *ngIf="view_d.latitude!='' && view_d.latitude!=undefined">Latitude</p>
+              <p class="view_headings" *ngIf="view_d.longtitude!='' && view_d.longtitude!=undefined">Longtitude</p>
+              <p class="view_headings" *ngIf="view_d.address1!='' && view_d.address1!=undefined">Address1</p>
+              <p class="view_headings" *ngIf="view_d.address2!='' && view_d.address2!=undefined">Address2</p>
+            </div>
+            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
+              <p class="mar_b_15" *ngIf="view_d.company_code!='' && view_d.company_code!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.company_code}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.companyname!='' && view_d.companyname!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.companyname}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.online_display_name!='' && view_d.online_display_name!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.online_display_name}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.company_email!='' && view_d.company_email!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.company_email}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.mobile!='' && view_d.mobile!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.mobile}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.pan!='' && view_d.pan!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.pan}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.cin!='' && view_d.cin!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.cin}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.gstin!='' && view_d.gstin!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.gstin}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.latitude!='' && view_d.latitude!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.latitude}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.longtitude!='' && view_d.longtitude!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.longtitude}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.address1!='' && view_d.address1!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.address1}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.address2!='' && view_d.address2!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.address2}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+              <p class="view_headings" *ngIf="view_d.city!='' && view_d.city!=undefined">City</p>
+              <p class="view_headings" *ngIf="view_d.pin!='' && view_d.pin!=undefined">Pin Code</p>
+              <p class="view_headings" *ngIf="view_d.district!='' && view_d.district!=undefined">District</p>
+              <p class="view_headings" *ngIf="view_d.state!='' && view_d.state!=undefined">State</p>
+              <p class="view_headings" *ngIf="view_d.zone!='' && view_d.zone!=undefined">Zone </p>
+              <p class="view_headings" *ngIf="view_d.country!='' && view_d.country!=undefined">Country</p>
+              <p class="view_headings" *ngIf="view_d.credit_limit!='' && view_d.credit_limit!=undefined">Credit Limit
+              </p>
+              <p class="view_headings" *ngIf="view_d.credit_period!='' && view_d.credit_period!=undefined">Credit Period
+              </p>
+              <p class="view_headings" *ngIf="view_d.payment_terms!='' && view_d.payment_terms!=undefined">Payment Terms
+              </p>
+              <p class="view_headings" *ngIf="view_d.shipment_point!='' && view_d.shipment_point!=undefined">Shipment
+                Point</p>
+              <p class="view_headings" *ngIf="view_d.location_href!='' && view_d.location_href!=undefined">
+                Location(href)</p>
+            </div>
+            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
+              <p class="mar_b_15" *ngIf="view_d.city!='' && view_d.city!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.city}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.pin!='' && view_d.pin!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.pin}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.district!='' && view_d.district!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.district}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.state!='' && view_d.state!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.state}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.zone!='' && view_d.zone!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.zone}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.country!='' && view_d.country!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.country}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.credit_limit!='' && view_d.credit_limit!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.credit_limit}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.credit_period!='' && view_d.credit_period!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.credit_period}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.payment_terms!='' && view_d.payment_terms!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.payment_terms}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.shipment_point!='' && view_d.shipment_point!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.shipment_point}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.location_href!='' && view_d.location_href!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.location_href}}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row" *ngIf="view_d">
+          <div class="col-sm-12 col-md-12">
+            <div class="col-md-1"></div>
+            <div class="col-md-5">
+              <p class="view_headings"
+                *ngIf="view_d.handling_company_code!='' && view_d.handling_company_code!=undefined">Handling Company</p>
+              <p class="view_headings"
+                *ngIf="view_d.handling_company_acc_manager!='' && view_d.handling_company_acc_manager!=undefined">
+                Handling Company Acc Manager</p>
+              <p class="view_headings"
+                *ngIf="view_d.handling_company_sales_manager!='' && view_d.handling_company_sales_manager!=undefined">
+                Handling Company Sales Manager</p>
+              <p class="view_headings" *ngIf="view_d.pur_mgr_id!='' && view_d.pur_mgr_id!=undefined">Handling Company
+                Warehouse Manager</p>
+
+            </div>
+            <div class="col-md-5">
+              <p class="mar_b_15" *ngIf="view_d.handling_company_code!='' && view_d.handling_company_code!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.handling_company_code}}</span>
+              </p>
+              <p class="mar_b_15"
+                *ngIf="view_d.handling_company_acc_manager!='' && view_d.handling_company_acc_manager!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.handling_company_acc_manager}}</span>
+              </p>
+              <p class="mar_b_15"
+                *ngIf="view_d.handling_company_sales_manager!='' && view_d.handling_company_sales_manager!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.handling_company_sales_manager}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="view_d.pur_mgr_id!='' && view_d.pur_mgr_id!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{view_d.pur_mgr_id}}</span>
+              </p>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

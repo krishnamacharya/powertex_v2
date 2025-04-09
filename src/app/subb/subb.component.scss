@@ -1,0 +1,83 @@
+.pro_img {
+
+  padding:0px 15px;
+  font-size: large !important;
+  width: 25%;
+   }
+.wrapper {
+  // the wrapper acts as the submenus' positioned parent
+  position: relative;
+}
+
+ul {
+  width: 400px;
+  max-height: 250px;
+  
+  // use scrolling if necessary, but don't show a horizontal scrollbar
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+li {
+  // the submenus cannot have a positioned parent inside the scrollable list
+  position: static;
+  
+  // submenu
+  .wrapper {
+    // position on top of the menu item
+    position: absolute;
+    
+    // these are not useful because our positioned parent is not the menu item
+    //top: 0;
+    //left: 75%;
+    
+    // show on top of the menu item
+    z-index: 10;
+    
+    // do not show the submenu by default
+    display: none;
+  }
+  
+  // display the submenu when we hover on the menu item
+  &:hover > .wrapper {
+    display: block;
+  }
+}
+
+// for decoration purposes
+$c1: #0E8CE0;
+$c2: #0064B3;
+$c3: #00B99B;
+
+ul {
+  margin: 1em;
+  color: white;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+li {
+  padding: 1em;
+  
+  ul {
+    margin: 0;
+  }
+  
+  .wrapper {
+    cursor: auto;
+    li {
+      padding: 0.5em;
+    }
+  }
+  
+  &:nth-child(2n) {
+    background: $c1;
+  }
+  &:nth-child(2n+1) {
+    background: $c2;
+  }
+  &.parent {
+    background: $c3;
+    cursor: pointer;
+  }
+}

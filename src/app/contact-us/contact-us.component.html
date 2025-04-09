@@ -1,0 +1,165 @@
+<div class="pad_b_5per" style="padding-top: 2.8%;">
+  <div class="container-fluid testimonial ">
+    <div class="pad_5_per txt_center text_white">
+      <h3>Get in Touch</h3>
+      <p style="padding: 0 20%;">If you would like to find out more about how we can help you, please give us a call or
+        drop us an email. We welcome your comments and suggestions about this website and/or any other issues that you
+        wish to raise.
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mar_t_20">
+        <div class="reg_form contact_form_des">
+          <div class="contact_head">Contact us</div>
+          <!-- <div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7616.529166044314!2d78.458738!3d17.350997!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x663a94b1d0d10278!2sPowertex+Tools!5e0!3m2!1sen!2sin!4v1543299349023"
+              width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
+          </div> -->
+
+          <div>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3809.2247672080325!2d78.43096221487514!3d17.30470108812822!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcbbd138d43d563%3A0x96148ab63c7e0ca0!2sPowertex%20Tools%20Company%20Private%20Limited!5e0!3m2!1sen!2sin!4v1626070634220!5m2!1sen!2sin"
+              width="100%" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
+          </div>
+
+          <div class="col-md-12 pad_15">
+            <form>
+              <div class="row">
+                <!-- <div class="col-md-12">
+                 
+                      <h4>Address</h4>
+                      <address>
+                        <strong>Powertex Tools Company Pvt Ltd.</strong>
+                        <br> 19-2-239/1/B, Chandulal Baradari, Industrial Estate,
+                        <br>Bahadurpura, Hyderabad, 
+                        <br>Telangana, India.- 500064.
+                        <br>
+                        <span title="Phone">
+                          Ph:</span>
+                          8885080111<br>
+                          <span class="fl mar_r_15">
+                            <strong>Email Id</strong>
+                            <br>
+                            <a href="mailto:#">info&#64;powertextools.com</a>
+                          </span>
+                      </address>
+                     <br>
+                    
+                </div> -->
+
+
+                <div class="col-md-12">
+
+                  <h4>Address</h4>
+                  <address>
+                    <strong>Powertex Tools Company Pvt Ltd.</strong>
+                    <br>7-3-109/B/1, Madhubhan Colony,
+                    <br>Gagan Pahad, Katedan, Hyderabad,
+                    <br>Telangana, India.- 500077.
+                    <br>
+                    <span title="Phone">
+                      Ph:</span>
+                    8885080111<br>
+                    <span class="fl mar_r_15">
+                      <strong>Email Id</strong>
+                      <br>
+                      <a href="mailto:#">info&#64;powertextools.com</a>
+                    </span>
+                  </address>
+                  <br>
+
+                </div>
+
+
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="name">
+                        Name</label>
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-user"></span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Enter Name" required name="name"
+                          pattern="[a-zA-Z ]*" [(ngModel)]="conatct.name" #name="ngModel" minlength="3"
+                          maxlength="20" />
+                      </div>
+                      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="validation_msg">
+                        <p *ngIf="name.errors['required']">Name is required</p>
+                        <p *ngIf="name.errors['pattern']">Enter Valid Name</p>
+                        <p *ngIf="name.errors['minlength']">name should be minimum 3 characters</p>
+                        <p *ngIf="name.errors['maxlength']">name should be maximum 20 characters</p>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="email">
+                        Email Id</label>
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-envelope"></span>
+                        </span>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Enter Email Id"
+                          required [(ngModel)]="conatct.email" #email="ngModel"
+                          pattern="^[a-zA-Z0-9._%+-]+&#64;[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" />
+                      </div>
+                      <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation_msg">
+                        <p *ngIf="email.errors['required']">email is required</p>
+                        <p *ngIf="email.errors['pattern']">Enter Valid email</p>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="mobile">
+                        Mobile Number</label>
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-phone"></span>
+                        </span>
+                        <input type="text" class="form-control" id="mobile" placeholder="Enter Mobile Number" required
+                          name="mobile" [(ngModel)]="conatct.mobile" #mobile="ngModel" pattern="^[6-9][0-9]{9}$" />
+                      </div>
+                      <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
+                        <p *ngIf="mobile.errors['required']">email is required</p>
+                        <p *ngIf="mobile.errors['pattern']">Enter Valid email</p>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="subject">
+                        Subject</label>
+                      <select id="subject" name="subject" class="form-control" required="required">
+                        <option value="na" selected="">Choose One:</option>
+                        <option value="service">General Customer Service</option>
+                        <option value="suggestions">Suggestions</option>
+                        <option value="product">Product Support</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="name">
+                        Comments/Feedback</label>
+                      <textarea name="message" id="message" class="form-control" rows="9" cols="25" required="required"
+                        placeholder="Comments/Feedback write here..."></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="">&nbsp;</label>
+                      <button type="submit"
+                        class="btn btn-primary brdr_radius_50 btn_w bg_green border_green  pull-right"
+                        id="btnContactUs">
+                        Send Message</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

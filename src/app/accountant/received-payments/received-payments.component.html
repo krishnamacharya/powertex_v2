@@ -1,0 +1,291 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+<div class="container pad_t_5per pad_b_5per" id="outstandWraper">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Received Payments</span>
+  </p>
+
+  <div class="row o_s_d">
+    <div class="row bg-theme dash_status" style="margin:0px">
+      <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}"
+          (click)="po()">Received Payments</a></div>
+      <div class="col-md-6 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}"
+          (click)="do()">Outstanding Clearance History</a></div>
+
+    </div>
+    <div class="outstandwrap">
+      <div *ngIf="POhidden">
+        <div class="row row_mar_0 ">
+          <div class="row pad_10">
+
+            <span class="col-md-2" style="margin-top: 10px;">
+              <mat-form-field color="accent">
+                <mat-label> Select From Date</mat-label>
+                <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" readonly required>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </span>
+            <span class="col-md-2 selecttodate" style="margin-left: 50px; margin-top: 10px;">
+              <mat-form-field color="accent">
+                <mat-label> Select To Date</mat-label>
+                <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" readonly required>
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2 color="primary"></mat-datepicker>
+              </mat-form-field>
+
+            </span>
+            <span class="col-md-6" style="margin-left: 30px; margin-top: 10px;">
+              <button type="submit" class="input_btn " (click)="getreceived()">Get Payments
+              </button>
+            </span>
+
+
+            <div class="col-md-12 mar_t_10" *ngIf="outstandingdetails?.length>0">
+
+
+              <div class="row p_s_1">
+                <div class="col-md-1 text-center">
+                  <h4>S.No</h4>
+                </div>
+                <div class="col-md-3 ">
+                  <h4>Company Name</h4>
+                </div>
+
+                <div class="col-md-3 text-right">
+                  <h4>Received Amount</h4>
+                </div>
+
+              </div>
+
+              <mat-accordion
+                *ngFor="let pi of outstandingdetails | filter:searchText| filter:searchText; let i=index">
+
+                <div>
+                  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <div class="col-md-1 text-center ">
+                          <p class="txt_black mar_b_0">{{10*(page-1)+(i+1)}}</p>
+                        </div>
+                        <div class="col-md-3  ">
+                          <p class="txt_black mar_b_0">{{pi.bussiness_name | titlecase}}</p>
+                        </div>
+                        <div class="col-md-3">
+                          <p class="txt_black mar_b_0" style="text-align:right">
+                            ₹ {{pi.amount_received.toLocaleString('en-IN')}}.00
+                          </p>
+
+                        </div>
+
+                      </mat-panel-title>
+
+                    </mat-expansion-panel-header>
+
+
+
+
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>S.No</th>
+                            <th>Mode Of Payment </th>
+                            <th>Cheque No. </th>
+                            <th>Cheque Date</th>
+                            <th>Total Amount</th>
+                            <th>Balance Amount</th>
+                            <th>Actions</th>
+
+
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr *ngFor="let sd of pi.paydetail; let i=index;">
+                            <td>
+                              <div class="row_mar_0"> <span class="f_wt_600">{{i+1}}</span></div>
+                            </td>
+
+                            <td>
+                              <div class="row_mar_0"> <span class="f_wt_600">{{sd.mode_of_payment}}</span></div>
+                            </td>
+                            <td>
+                              <div class="row_mar_0">
+                                <span class="f_wt_600" *ngIf="sd.mode_of_payment!='CASH'"> {{sd.check_no}}</span>
+                                <span class="f_wt_600" *ngIf="sd.mode_of_payment=='CASH'"> -</span>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="mar_b_10">
+                                <p><span class="f_wt_600"
+                                    *ngIf="sd.mode_of_payment!='CASH'">{{sd.check_date | date:'dd-MM-yyyy'}} </span>
+                                  <span class="f_wt_600" *ngIf="sd.mode_of_payment=='CASH'"> -</span></p>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="mar_b_10">
+                                <p class="mar_b_0"><span class="f_wt_600">₹ {{sd.amount.toLocaleString('en-IN')}}</span>
+                                </p>
+
+                              </div>
+                            </td>
+                            <td>
+                              <div class="mar_b_10" style="text-align:right;width:80px">
+                                <p><span class="f_wt_600">₹ {{sd.balance.toLocaleString('en-IN')}}</span>
+                                </p>
+
+                              </div>
+                            </td>
+                            <td>
+                              <span class="f_size_15 orange_clr padd_left_10 cursor_pointer">
+
+                                <button type="submit" class="btn btn-primary bg_green"
+                                  (click)="deletepayment(sd)">Cancel</button>
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+
+
+                  </mat-expansion-panel>
+                </div>
+              </mat-accordion>
+
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="outstandingdetails?.length<=0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div *ngIf="DOhidden">
+        <div class="row row_mar_0 ">
+          <div class="row pad_10">
+
+
+
+
+
+            <div class="col-md-12 mar_t_10" *ngIf="discountdetails?.length>0">
+
+
+              <div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Business Name</th>
+                      <th>Invoice No</th>
+                      <th>Invoice Amount</th>
+                      <th>Discount Amount </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let pd of discountdetails|filter:searchText; let i=index;">
+                      <td>{{10*(page1-1)+(i+1)}}</td>
+                      <td>{{pd.business_name}}</td>
+                      <td>{{pd.sinv_no}}</td>
+                      <td style="width:130px;text-align:right;">₹ {{pd.final_amount.toLocaleString('en-IN')}}</td>
+                      <td style="width:140px;text-align:right">₹ {{pd.discount_amount.toLocaleString('en-IN')}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="page1 = $event"></pagination-controls>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="discountdetails?.length<=0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="success" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Payment Cancelled Successfully...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" (click)="refresh()" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="WarningModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>No Data is Available..!!</span>
+              <br>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button"  class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

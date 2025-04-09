@@ -1,0 +1,219 @@
+<div class="container pad_t_5per">
+    <p class="bread-crumb1">
+        <span>
+            <a href="javascript.void(0)" routerLink="/dashboard" style="
+                      color: #878787 !important;
+                  ">Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span><a href="javascript.void(0)" routerLink="/invoice" style="color: #878787 !important;">Invoice</a></span>
+        &nbsp;>&nbsp; <span>Invoice-Print</span>
+    </p>
+
+    <div class="total_invoice_page" style="margin-bottom: 20px;" id="printSectionId">
+        <div class="invoce_address">
+            <div class=" marg_t_b_15" style="margin-bottom: 0 !important;">
+                <div class="row text-center">
+                    <div class="col-sm-12">
+                        <span class="header_pages">Invoice Preparation</span>
+                    </div>
+                </div>
+
+
+            </div>
+            <div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><b>Proforma Number :</b> {{proformaData.packing_l_no}}</p>
+                        <p><b>Proforma Date :</b> {{proformaData.packing_l_date | date:'dd-MM-yyyy'}}</p>
+                        <p><b>PO No. :</b> {{proformaData.pono_ref}}</p>
+                        <p><b>Company Name :</b> {{proformaData.company_name}},{{proformaData.city}}</p>
+                    </div>
+                    <div class="col-md-6 invamtwrap">
+                        <p><b>Credit Period Days :</b> {{proformaData.credit_period}}</p>
+                        <p><b>Credit Limit Amount:</b> {{proformaData.payment_terms}}</p>
+                        <p *ngIf="proformaData.outstatnding_amount"><b>Outstanding Amount :</b>
+                            {{proformaData.outstatnding_amount}}</p>
+                        <p *ngIf="!proformaData.outstatnding_amount"><b>Outstanding Amount :</b> 0</p>
+                        <p><span *ngIf="proformaData.due_amount"><b>Due Amount :</b>
+                                {{proformaData.due_amount}}</span><span *ngIf="!proformaData.due_amount"><b>Due Amount
+                                    :</b> 0</span></p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div class="table-responsive" style="margin-top: 15px;">
+                        <table class="table table-bordered table-striped pending_order printTable"
+                            style="margin-bottom: 0px !important;">
+                            <thead>
+                                <tr>
+                                    <th class="txt_centr" style="font-size: 11px;">S.No</th>
+                                    <th class="txt_left" style="font-size: 11px;">Product Name</th>
+                                    <th class="txt_left" style="font-size: 11px;">Model Number</th>
+                                    <th class="txt_left" style="font-size: 11px;">SKU</th>
+                                    <th class="txt_right" style="font-size: 11px;">MRP(&#8377;)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Disc(%)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Spl Disc(%)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Net Rate(&#8377;)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Qty</th>
+                                    <th class="txt_right" style="font-size: 11px;">Total Value(&#8377;)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of invoiceListData; let i=index">
+                                    <td class="txt_centr">{{i+1}}</td>
+                                    <td class="txt_left">{{item.long_name}}</td>
+                                    <td class="txt_left">{{item.modelno}}</td>
+                                    <td class="txt_left">{{item.sku_no}}</td>
+                                    <td class="txt_right">{{item.mrp | currency : '&nbsp;'}}</td>
+                                    <td class="txt_right" *ngIf="item.offer_type!=='Clearance'">{{item.discount_eff}}
+                                    </td>
+                                    <td class="txt_right" *ngIf="item.offer_type=='Clearance'">-</td>
+                                    <td class="txt_right" *ngIf="item.sp_discount!==0">{{item.sp_discount}}</td>
+                                    <td *ngIf="item.sp_discount==0" class="txt_right">-</td>
+                                    <td class="txt_right">{{item.net_price | currency : '&nbsp;'}}</td>
+                                    <td class="txt_right">{{item.packing_qty}}</td>
+                                    <td class="txt_right">{{item.packing_qty * item.net_price | currency : '&nbsp;'}}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="9"></td>
+
+                                    <td class="no-line txt_right"><span style="color:#000;"></span>{{grand_total |
+                                        currency:'&#8377;'}}</td>
+                                </tr>
+                                <tr *ngIf="loginUserData.company_address.state == shipingAddress.state">
+
+                                    <td colspan="8" class="no-line"> </td>
+
+                                    <td class="no-line txt_right">
+                                        <strong>CGST</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span style="color:#000;"></span>{{taxAmount/2 |
+                                        currency :'&#8377;'}}</td>
+
+                                </tr>
+                                <tr *ngIf="loginUserData.company_address.state == shipingAddress.state">
+                                    <td colspan="8" class="no-line"> </td>
+                                    <td class="no-line txt_right">
+                                        <strong>SGST</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span style="color:#000;"></span>{{taxAmount/2 |
+                                        currency : '&#8377;'}}</td>
+
+                                </tr>
+                                <tr *ngIf="loginUserData.company_address.state != shipingAddress.state">
+                                    <td colspan="8" class="no-line"> </td>
+                                    <td class="no-line txt_right">
+                                        <strong>IGST</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span style="color:#000;"></span>{{taxAmount |
+                                        currency : '&#8377;'}}</td>
+
+                                </tr>
+                                <tr *ngIf="this.proformaData.promo_amount">
+                                    <td colspan="8" class="no-line"> </td>
+                                    <td class="no-line txt_right">
+                                        <strong>PROMOCODE AMOUNT</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span
+                                            style="color:#000;"></span>{{this.proformaData.promo_amount | currency
+                                        :'&#8377;'}}</td>
+
+                                </tr>
+                                <tr *ngIf="this.proformaData.devicediscamount">
+                                    <td colspan="8" class="no-line"> </td>
+                                    <td class="no-line txt_right">
+                                        <strong>TOTAL AMOUNT</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span
+                                            style="color:#000;"></span>{{grand_total+taxAmount | currency :'&#8377;'}}
+                                    </td>
+
+                                </tr>
+                                <tr *ngIf="this.proformaData.devicediscamount">
+                                    <td colspan="8" class="no-line"> </td>
+                                    <td class="no-line txt_right">
+                                        <strong>DISCOUNT</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span
+                                            style="color:#000;"></span>{{this.proformaData.devicediscamount | currency
+                                        :'&#8377;'}}</td>
+
+                                </tr>
+                                <tr *ngIf="!this.proformaData.final_amount">
+                                    <td colspan="8" class="no-line"> </td>
+                                    <td class="no-line txt_right">
+                                        <strong>NET AMOUNT</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span
+                                            style="color:#000;"></span>{{this.proformaData.line_amount | currency
+                                        :'&#8377;'}}</td>
+
+                                </tr>
+                                <tr *ngIf="this.proformaData.final_amount">
+                                    <td colspan="8" class="no-line"> </td>
+                                    <td class="no-line txt_right">
+                                        <strong>NET AMOUNT</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span
+                                            style="color:#000;"></span>{{this.proformaData.final_amount | currency
+                                        :'&#8377;'}}</td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h5>
+                        <strong class="theme_color fnt_size_12">Declaration</strong>
+                    </h5>
+                    <p style="font-size:11px;">We Declare that this invoice shows the actual price of the goods
+                        described above and that all particulars
+                        are true and correct.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h5>
+                        <strong class="theme_color fnt_size_12">Terms & Conditions :</strong>
+                    </h5>
+
+                    <p style="font-size:10px;">1. We are not responsible for any Breakage/Damage/Shortage/Leakage in
+                        transist.</p>
+                    <p style="font-size:10px;">2. Our responsiblity ceases when the goods are delivered to the carrier.
+                    </p>
+                    <p style="font-size:10px;">3. Goods once sold will not be taken back.</p>
+                    <p style="font-size:10px;">4. Interest &#64;12% p.a. will be charged, if invoice is not paid on or
+                        before due date.</p>
+                    <p style="font-size:10px;">5. All Disputes are Subject to Hyderabad Jurisdiction.</p>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="text-align: center;">
+                    <h6>
+                        <strong> *This is a computer generated invoice and does not require a physical signature.
+                        </strong>
+                    </h6>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row" style="text-align: center;padding-bottom: 15px;">
+        <button type="submit" class="btn btn-success" (click)="printInvoice()">Print Invoice</button>
+        <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Cancel</button>
+    </div>
+</div>

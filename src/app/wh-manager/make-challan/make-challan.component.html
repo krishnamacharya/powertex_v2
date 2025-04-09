@@ -1,0 +1,419 @@
+<div class="container pad_t_5per">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span>{{loginUserData.content}}</span>
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>
+        <a href="javascript.void(0)" routerLink="/Warehouse Manager-TRANSPORT DETAILS"
+          style=" color: #878787 !important;">Transport</a>
+      </span>&nbsp;>&nbsp;
+      <span>Transport Details</span>
+    </p>
+  
+    <div class="reg_form mar_b_30 pad_15">
+      <div class="row text-center">
+        <div class="col-sm-12">
+          <span class="header_pages">Transport Details</span>
+        </div>
+      </div>
+      <div class="row mar_b_15">
+        <div class="col-sm-6">
+          <h4>Invoice No : {{challanData.refinvno}}</h4>
+          <h4>Invoice Date : {{challanData.inv_date | date:'dd-MM-yyyy'}}</h4>
+          <!-- <h4>PO No. : {{challanData.po_no}}</h4> -->
+        </div>
+        <div class="col-sm-6">
+          <h4>Business Name : {{challanData.company_name}}</h4>
+       
+          <!-- <h4>PO No. : {{challanData.po_no}}</h4> -->
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-sm-12 list table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="txt_centr">S.No</th>
+                <th class="txt_left">Subcategory</th>
+                <th class="txt_left">Product name</th>
+                <th class="txt_left">Model No.</th>
+                <th class="txt_left">Sku No.</th>
+                <th class="txt_left">PO Qty</th>
+                <th class="txt_left">Free Qty</th>
+                <th class="txt_right">Packing Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of challanListData ; let i=index">
+                <td class="txt_centr">{{10*(p-1)+(i+1)}}</td>
+                <td> {{item.subcategory}}</td>
+                <td class="txt_left">{{item.long_name}}</td>
+                <td class="txt_left">{{item.modelno}}</td>
+                <td class="txt_left">{{item.sku_no}}</td>
+                <td class="txt_left">{{item.packing_qty}}</td>
+                <td class="txt_left">{{item.free_qty}}</td>
+                <td class="txt_right">{{item.packing_qty + item.free_qty }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="fr">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div> -->
+  
+        </div>
+      </div>
+  
+      <form #challanDataModalForm="ngForm">
+        <div class="form-group row">
+          <div class="col-sm-3">
+            <label>Delivery Mode
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <select class="form-control" [(ngModel)]="challanDataModal.del_mode" #del_mode="ngModel" name="del_mode"
+                required>
+                <option [ngValue]="undefined" disabled selected>Select</option>
+                <option value="Vehicle" selected>Vehicle</option>
+                <option value="Courier" selected>Courier</option>
+              </select>
+              <div [hidden]="del_mode.valid || del_mode.untouched" class="validation_msg">
+                please select Delivery Mode.
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <label for="invoice_no" >Invoice No <sub class="txt_red f_size_25">*</sub></label>
+            <div>
+              <input type="text" class="form-control" id="invoice_no" (change)="checkinv(challanDataModal.invno)"
+                [(ngModel)]="challanDataModal.invno" name="invno" #invno="ngModel" placeholder="Enter Invoice No"
+                required>
+              <div [hidden]="invno.valid ||  invno.untouched" class="validation_msg">
+                Invoice No is required
+              </div>
+              <div [hidden]="errmsg==false" class="validation_msg">
+                Invoice No already exists
+              </div>
+            </div>
+          </div>
+       
+        <div class="col-sm-3">
+          <label for="cartoon" >N/C <sub class="txt_red f_size_25">*</sub></label>
+          <div>
+            <input type="text" class="form-control" id="cartoon" [(ngModel)]="challanDataModal.cartoon" name="cartoon"
+              #cartoon="ngModel" readonly required>
+  
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <label for="lr_no" >LR No. / Waybill No. </label>
+          <div>
+            <input type="text" class="form-control" id="lr_no" [(ngModel)]="challanDataModal.lrno" name="lrno"
+              #lrno="ngModel" placeholder="Enter LR No / Waybill No">
+            <div [hidden]="lrno.valid ||  lrno.untouched || lrno" class="validation_msg">
+              LR No / Waybill No is required
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-3">
+        <label for="lr_date" >LR Date</label>
+        <div>
+          <input type="date" class="form-control" id="lr_date" [(ngModel)]="challanDataModal.lrdate" name="lrdate"
+            #lrdate="ngModel" placeholder="Enter LR Date">
+          <div [hidden]="lrdate.valid ||  lrdate.untouched || lrdate" class="validation_msg">
+            LR Date is required
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="transport_name" >Transport Name <sub class="txt_red f_size_25">*</sub></label>
+        <div>
+          <input type="text" class="form-control" required id="transport_name"
+            [(ngModel)]="challanDataModal.transportname" name="transportname" #transportname="ngModel"
+            placeholder="Enter Transport Name">
+          <div [hidden]="transportname.valid ||  transportname.untouched" class="validation_msg">
+            Transport Name is required
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="del_consin_no" >Delivery Consin No </label>
+        <div>
+          <input type="text" class="form-control" id="del_consin_no" [(ngModel)]="challanDataModal.del_consin_no"
+            name="del_consin_no" #del_consin_no="ngModel" placeholder="Enter Consin No">
+          <div [hidden]="del_consin_no.valid ||  del_consin_no.untouched" class="validation_msg">
+            Delivery Consin No is required
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="del_contact_no" >Contact Number </label>
+        <div>
+          <input type="text" class="form-control" id="del_contact_no" [(ngModel)]="challanDataModal.del_contact_no"
+            name="del_contact_no" #del_contact_no="ngModel" placeholder="Enter Driver Number" maxlength="10"
+            pattern="^[6-9][0-9]{9}$">
+          <div *ngIf="del_contact_no.invalid && (del_contact_no.dirty || del_contact_no.touched)" class="validation_msg">
+            <p *ngIf="del_contact_no.errors['required']">Office Phone Number is required</p>
+            <p *ngIf="del_contact_no.errors['pattern']">Enter Valid Office Phone Number</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row" *ngIf="challanDataModal.del_mode=='Vehicle'">
+      <div class="col-sm-3">
+        <label for="estDelDate" >Arrival Expected Date<sub class="txt_red f_size_25">*</sub></label>
+        <div>
+          <input type="date" class="form-control" id="estDelDate" required [(ngModel)]="challanDataModal.estDelDate"
+            name="estDelDate" #estDelDate="ngModel" placeholder="Enter Arrival Expected Date">
+          <div [hidden]="estDelDate.valid ||  estDelDate.untouched" class="validation_msg">
+            Arrival Expected Date is required
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="del_driver_name" >Driver Name </label>
+        <div>
+          <input type="text" class="form-control" id="del_driver_name" [(ngModel)]="challanDataModal.del_driver_name"
+            name="del_driver_name" #del_driver_name="ngModel" placeholder="Enter Driver Name">
+          <div [hidden]="del_driver_name.valid ||  del_driver_name.untouched" class="validation_msg">
+            Driver Name is required
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-sm-3">
+        <label for="del_vehicle_no" >Vehicle Number </label>
+        <div>
+          <input type="text" class="form-control" id="del_vehicle_no" [(ngModel)]="challanDataModal.del_vehicle_no"
+            name="del_vehicle_no" #del_vehicle_no="ngModel" placeholder="Enter Vehicle Number">
+          <div [hidden]="del_vehicle_no.valid ||  del_vehicle_no.untouched" class="validation_msg">
+            Vehicle Number is required
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="del_license_no" >Licence Number </label>
+        <div>
+          <input type="text" class="form-control" id="del_license_no" [(ngModel)]="challanDataModal.del_license_no"
+            name="del_license_no" #del_license_no="ngModel" placeholder="Enter Licence Number">
+          <div [hidden]="del_license_no.valid ||  del_license_no.untouched" class="validation_msg">
+            License Number is required
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="del_license_no" >Transport Cost </label>
+        <div>
+          <input type="text" class="form-control" id="del_cost" [(ngModel)]="challanDataModal.transport_cost"
+            name="del_cost" #del_cost="ngModel" placeholder="Enter Transport Cost">
+        </div>
+      </div>
+    </div>
+  
+    <div class="form-group row" *ngIf="challanDataModal.del_mode=='Courier'">
+      <div class="col-sm-3">
+        <label for="estDelDate" >Arrival Expected Date<sub class="txt_red f_size_25">*</sub></label>
+        <div>
+          <input type="date" class="form-control" id="estDelDate" required [(ngModel)]="challanDataModal.estDelDate"
+            name="estDelDate" #estDelDate="ngModel" placeholder="Enter Arrival Expected Date">
+          <div [hidden]="estDelDate.valid ||  estDelDate.untouched" class="validation_msg">
+            Arrival Expected Date is required
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="del_courier_name" >Courier Name <sub class="txt_red f_size_25">*</sub> </label>
+        <div>
+          <input type="text" class="form-control" id="del_courier_name" [(ngModel)]="challanDataModal.del_courier_name"
+            name="del_courier_name" required #del_courier_name="ngModel" placeholder="Enter Courier Name">
+          <div [hidden]="del_courier_name.valid ||  del_courier_name.untouched" class="validation_msg">
+            Courier Name is required
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-sm-3">
+            <label for="courier_per_name" >Courier Person Name</label>
+            <div >
+              <input type="text" class="form-control" id="courier_per_name"
+                [(ngModel)]="challanDataModal.courier_per_name" name="courier_per_name" #courier_per_name="ngModel"
+                placeholder="Enter Courier Person Name">
+              <div [hidden]="courier_per_name.valid ||  courier_per_name.untouched" class="validation_msg">
+                Courier Person Name is required
+              </div>
+            </div>
+          </div> -->
+      <div class="col-sm-3">
+        <label for="courier_wgt" >Courier Approx Wt </label>
+        <div>
+          <input type="text" class="form-control" id="courier_wgt" [(ngModel)]="challanDataModal.courier_wgt"
+            name="courier_wgt" #courier_wgt="ngModel" placeholder="Enter Courier Wt.">
+          <!-- <div [hidden]="courier_wgt.valid ||  courier_wgt.untouched" class="validation_msg">
+                Vehicle Number is required
+              </div> -->
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="del_license_no" >Licence Number </label>
+        <div>
+          <input type="text" class="form-control" id="del_license_no" [(ngModel)]="challanDataModal.del_license_no"
+            name="del_license_no" #del_license_no="ngModel" placeholder="Enter Licence Number">
+          <!-- <div [hidden]="del_license_no.valid ||  del_license_no.untouched" class="validation_msg">
+                Vehicle Number is required
+              </div> -->
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <label for="del_license_no" >Transport Cost </label>
+        <div>
+          <input type="text" class="form-control" id="del_cost" [(ngModel)]="challanDataModal.transport_cost"
+            name="del_cost" #del_cost="ngModel" placeholder="Enter Transport Cost">
+        </div>
+      </div>
+    </div>
+  
+    <div class="pull-right">
+      <button type="submit" *ngIf="a_challan" [disabled]="challanDataModalForm.invalid || errmsg==true"
+        class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+        (click)="generateChallandata(challanDataModal)">Generate
+        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+      </button>
+      <!-- (click)="generateChallan(challanDataModalForm)" -->
+      <button class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" *ngIf="!a_challan"
+        (click)="gotoChallanPrint()">OK
+        <i class="fa fa-long-arrow-right" aria-hidden="true"></i> </button>
+    </div>
+    </form>
+  </div>
+  
+  
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+  
+  <div class="modal fade" id="succModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" *ngIf="challanPrint!=''" style="padding: 15% 0;">
+                <span>Transport Details added Successfully..!!</span>
+                <br>
+                <span>Your Transport No : {{challan_no}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button> -->
+          <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoChallanPrint()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="updateModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" *ngIf="challanPrint!=''" style="padding: 15% 0;">
+                <span>Transport Details updated Successfully..!!</span>
+                <br>
+                <span>Your Transport No : {{challan_no}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button> -->
+          <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoChallanPrint()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- modal pop up start here -->
+  <div class="modal fade " id="makeinvoiceModal2" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading" style="padding:40px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark1">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class=" text-center content_msg" style="padding-top:5%">
+                <span>Are you sure to Generate Transport?</span>
+  
+                <br>
+                <div class="reg_form marg_t_b_15 pad_l_20 pad_r_20">
+                  <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;text-align:center">
+                    <b>Transport Details</b>
+                  </p>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th class="txt_centr">S.No</th>
+                          <th class="txt_left">Invoice No</th>
+                          <th class="txt_centr">N/C</th>
+                          <th class="txt_left">LR No/ Waybill No</th>
+                          <th class="txt_left">LR Date</th>
+                          <th class="txt_left">Transport Type</th>
+                          <th class="txt_left">Transport Name</th>
+                          <th class="txt_left">Arrival expected Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="let p of transportdetails | paginate: { itemsPerPage: 5, currentPage: Page } ; let i=index;">
+                          <td class="txt_centr">{{5*(Page-1)+(i+1)}}</td>
+                          <td class="txt_left"> {{p.invno}}</td>
+                          <td class="txt_left"> {{p.cartoon}}</td>
+                          <td class="txt_left"> {{p.lrno}}</td>
+                          <td class="txt_left"> {{p.lrdate | date:'dd-MM-yyyy'}}</td>
+                          <td class="txt_left"> {{p.del_mode}}</td>
+                          <td class="txt_left"> {{p.transportname}}</td>
+                          <td class="txt_left"> {{p.estDelDate | date:'dd-MM-yyyy'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+                </div>
+                <!-- <span>Your Packing No : {{packingListNo}}</span>  -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal" >No</button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="generateChallan(challanDataModalForm)">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>

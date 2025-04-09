@@ -1,0 +1,136 @@
+<div class="form-group">
+  <div class="row mar_b_15" *ngIf="internalRejectUsersList.length>0">
+    <div class="col-sm-12">
+      <div class="fl">
+        <!-- <h4>Rejected Dealers</h4> -->
+      </div>
+      <div class="fr">
+        <input type="text" [(ngModel)]="searchText" placeholder="Search" class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="(internalRejectUsersList | filter :searchText) as internalRejectUsersList">
+    <div class="row">
+      <div class="col-sm-12 list" *ngIf="internalRejectUsersList.length>0">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Business Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Mobile No</th>
+                <th>City</th>
+                <th>User Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let data of internalRejectUsersList | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                <td>{{10*(p-1)+(i+1)}}</td>
+                <td>{{data.business_name | titlecase}}</td>
+                <td>{{data.first_name | titlecase}}</td>
+                <td>{{data.last_name | titlecase}}</td>
+                <td>{{data.email | lowercase}}</td>
+                <td>{{data.mobile}}</td>
+                <td>{{data.city | titlecase}}</td>
+                <td>{{data.user_type}}</td>
+                <td> <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="viewMore(data)">
+                    <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                  </span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <div *ngIf="internalRejectUsersList.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/emptyicon.png" />
+            <span class="nodata_txt">No Data is Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+<div class="modal fade" id="editApproveModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+        <!-- <div class="right_mark">
+              <i class="fa fa-question" aria-hidden="true"></i>
+            </div> -->
+      </div>
+       
+      <div class="modal-body text-center">
+        <h4>Do you want to Assign to Active Dealer ?</h4>
+        <br>
+        <br>
+     
+    
+        <div class="row">
+          <div>
+            <div class="col-md-offset-1 col-md-5">
+              <select class='select-option form-control' required [(ngModel)]="assign.dealer">
+                <option [ngValue]="undefined" disabled selected>Select Active Dealer</option>
+                <option class='option' *ngFor="let data of activeList " [ngValue]="data.user_id">
+                  {{data.business_name | titlecase}}</option>
+              </select>
+            </div>
+            <div class="col-md-5">
+
+              <textarea type="text" name="msg"  [(ngModel)]="assign.msg" class="form-control" required (keypress)="keypress($event)"
+                placeholder="Enter Description..."></textarea>
+            </div>
+          </div>
+        </div> <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="assigntodealer()"  class="btn btn-success brdr_radius_50   fr">Assign
+        </button>
+        <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+   
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="succModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Assigned Successfully..!!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

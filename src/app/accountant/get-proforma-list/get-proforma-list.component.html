@@ -1,0 +1,98 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+<div class="container pad_t_5per">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+          <h3 class="shopee_name">
+            <span>{{loginUserData.content}}</span>
+          </h3>
+          <img class="s_bpy_ctg" src="../../../assets/images/Underline Shaded.svg">
+        </div>
+      </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Estimation</span>
+  </p>
+  <!--  -->
+  <div class="reg_form mar_b_30 pad_15">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Estimation</h4>
+        </div>
+        <div class="fr">
+          <input type="text" [(ngModel)]="searchText" placeholder="Search Here..." class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="(proformaList | filter :searchText) as proformaList">
+      <div class="col-sm-12 list" *ngIf="proformaList.length>0">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Ship to Company Name</th>
+              
+             
+                <!-- <th>PO No</th>
+                <th>PO Date</th> -->
+                <th>Packing No</th>
+                <th>Packing Date</th>
+              
+                <th>Financial Year</th>
+                <th>Make Invoice</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of proformaList; let i=index" 
+                   [ngClass]="{'modified': item.days==3,'modified2': item.days>3}">
+                <td>{{10*(p-1)+(i+1)}}</td>
+                <td>{{item.company_name}}</td>
+              
+                <td>{{item.packing_l_no}}</td>
+                <td>{{item.packing_l_date | date:'dd-MM-yyyy'}}</td>
+               
+                <td>{{item.financial_year}}</td>
+                <td>
+                  <span class="f_size_15 padd_right_10 orange_clr cursor_pointer" (click)="makeInvoice(item)">
+                    <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-12" *ngIf="proformaList.length>0" id="printPageButton">
+          <div class="pull-right">
+            <div>
+              <div class="color-box" style="background-color: #FF850A;"></div>&nbsp;Equal to 2days
+            </div>
+            <div>
+              <div class="color-box" style="background-color: #d9534f;"></div>&nbsp;More than 2 days
+            </div>
+          </div>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+
+      </div>
+      <div class="col-md-12" *ngIf="proformaList.length==0">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/emptyicon.png" />
+            <span class="nodata_txt">No Data Available</span>
+          </div>
+        </div>
+    </div>
+
+  
+
+  </div>
+</div>
+
+<ngx-spinner class="loader_spinner"></ngx-spinner>

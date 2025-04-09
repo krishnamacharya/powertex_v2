@@ -1,0 +1,29 @@
+
+<div style="margin-top:5%">
+</div>
+<div class="container" style="padding: 0px 0px;box-shadow: 1px 1px 1px 1px lightgrey;margin-top: 30px;margin-bottom: 30px;">
+  <p class="bread-crumb">
+    <span>
+      <a href="javascript.void(0)" routerlink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp; <span>  <a href="javascript.void(0)" routerLink="/wh-stock" style="color: #878787 !important;">Stock</a></span>&nbsp;>&nbsp;
+    <span>{{d}}</span>&nbsp;>&nbsp;<span>{{e}}</span>
+  </p>
+  
+  <div class="row prod_catg">
+    <div class="col-md-3  text-center " style="padding:5px;" *ngFor="let p of resources  | paginate: { itemsPerPage: 12, currentPage: Page };let i=index">
+      <div class="img-thumbnail" (click)="selected_sub_cat(p.subcategory)">
+        <div>
+            <img src="{{p.low_image_1}}"  onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"alt="{{p.subcategory}}" class="catg_img" >
+        </div>
+        <h4 >{{p.modelno}}</h4>
+        <h4 >Stock:{{p.stock_qty}}</h4>
+      </div>
+    </div>
+  </div>
+  <div style="padding:20px;">
+    <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+  </div>
+  <div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

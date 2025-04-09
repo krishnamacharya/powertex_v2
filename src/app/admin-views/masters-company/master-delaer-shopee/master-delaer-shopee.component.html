@@ -1,0 +1,269 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center" >
+      <h3 class="shopee_name">
+          <span>{{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span><a href="javascript.void(0)" routerLink="/Admin-BRANCH SETUP">Branch Setup</a> </span>
+    &nbsp;>&nbsp;
+    <span>Dealers & Shopee's</span>
+  </p>
+  <div class="row t_s_c" >
+    <div class="row bg-theme dash_status" style="margin:0px">
+      <div class="col-md-6 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':Delhidden == true}" (click)="A_dealers()">Dealer's</a>
+      </div>
+      <div class="col-md-6 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':Shophidden == true}" (click)="A_shopees()">Shopee's</a>
+      </div>
+    </div>
+    <div class="pad_20">
+      <div *ngIf="Delhidden">
+        <div class="row" style="margin:0px">
+          <div *ngIf="dealers.length>0" class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Dealer Code</th>
+                    <th>Business Name</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Total Outstanding</th>
+                    <th>Due Amount</th>
+                    <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of dealers;let i=index">
+                  <td>{{i+1}}</td>
+                  <td>{{data.company_code}}</td>
+                  <td>{{data.companyname}}</td>
+                  <td>{{data.mobile}}</td>
+                  <td>{{data.email}}</td>
+                  <td>{{data.city}}</td>
+                  <td>{{data.state}}</td>
+                  <td>{{data.outstanding}}</td>
+                  <td>{{data.due_amount}}</td>
+                  <td> <span class="f_size_15 orange_clr padd_right_10 cursor_pointer" (click)="editInfo(data)">
+                    <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                  </span>
+                  <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="explore(data)">
+                      <i class="fa fa-eye" aria-hidden="true" title="View Outstanding"></i>
+                    </span>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="dealers.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data  Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="Shophidden">
+        <div class="row" style="margin:0px">
+          <div *ngIf="shopees.length>0" class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Shopee Code</th>
+                    <th>Shopee Name</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Total Outstanding</th>
+                    <th>Due Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of shopees;let i=index">
+                  <td>{{i+1}}</td>
+                  <td>{{data.company_code}}</td>
+                  <td>{{data.companyname}}</td>
+                  <td>{{data.mobile}}</td>
+                  <td>{{data.email}}</td>
+                  <td>{{data.city}}</td>
+                  <td>{{data.state}}</td>
+                  <td>{{data.outstanding}}</td>
+                  <td>{{data.due_amount}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="shopees.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data  Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editmodal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+        <!-- <div class="right_mark">
+              <i class="fa fa-question" aria-hidden="true"></i>
+            </div> -->
+      </div>
+      <div class="modal-body ">
+       <h4 style="text-align:center;">Brand Wise Discounts</h4>
+       <br>
+       <br>
+        <div class="row">
+          <div>
+            <div class="col-sm-4 mar_b_10_mbl">
+              <label for="category_profile" class="col-form-label">Powertex Brand
+                  
+              </label>
+              <div>
+                <select class='select-option form-control' required [(ngModel)]="profileData.powertex"
+                      name="powertex" #powertex="ngModel">
+                  <option [ngValue]="undefined" disabled selected>Select</option>
+                  <option class='option' *ngFor="let data of categoryList" [ngValue]="data.category">
+                    {{data.category}}_{{data.avg_val | number:'1.0-0'}}% Discount</option>
+                </select>
+              </div>
+             
+             
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label for="category_profile" class="col-form-label">Sunflower Brand 
+            </label>
+            <div>
+              <select class='select-option form-control'  [(ngModel)]="profileData.sunflower"
+                    name="sunflower" #sunflower="ngModel">
+                <option [ngValue]="undefined" disabled selected>Select</option>
+                <option class='option' *ngFor="let data of categoryList" [ngValue]="data.category">
+                  {{data.category}}_{{data.avg_val | number:'1.0-0'}}% Discount</option>
+              </select>
+            </div>
+           
+           
+        </div>
+        <div class="col-sm-4 mar_b_10_mbl">
+          <label for="category_profile" class="col-form-label">Powertex(Gold) Brand
+          </label>
+          <div>
+            <select class='select-option form-control'  [(ngModel)]="profileData.powertexgold"
+                  name="powertexgold" #powertexgold="ngModel">
+              <option [ngValue]="undefined" disabled selected>Select</option>
+              <option class='option' *ngFor="let data of categoryList " [ngValue]="data.category">
+                {{data.category}}_{{data.avg_val | number:'1.0-0'}}% Discount</option>
+            </select>
+          </div>
+        
+         
+      </div>
+          
+          </div>
+        </div> <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="submit()" class="btn btn-success brdr_radius_50   fr">Submit
+        </button>
+        <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="dealeroutstandingModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header alert_heading">
+  
+          <h4 class="modal-title text-center">Outstanding Details</h4>
+  
+        </div>
+        <div class="modal-body">
+          <div class="row" style="margin:0px">
+            <div class="col-md-12">
+              <div>
+                <div class="row" style="padding: 10px;">
+                  <div *ngIf="dealersdata?.length>0">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <th>Invoice No</th>
+                          <th>Invoice Date </th>
+                          <th>Due Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+  
+                        <tr
+                          *ngFor="let pd of dealersdata| paginate: { itemsPerPage: 10, currentPage: page }; let i=index;">
+                          <td>{{10*(page-1)+(i+1)}}</td>
+                          <td>
+                            <div style="margin:0px; font-size: 13px !important;">
+                              <p><span>{{pd.inv_no}}</span></p>
+                            </div>
+                          </td>
+  
+  
+                          <td>
+                            <div class="mar_b_10" style="text-align:right;width:80px">
+                              <p><span>{{pd.inv_date | date:'dd-MM-yyyy'}} </span></p>
+                            </div>
+  
+                          </td>
+  
+                          <td>
+                            <div class="mar_b_10" style="text-align:right;width:80px">
+                              <p><span>{{pd.due_amount | currency : '&nbsp;'}} </span></p>
+                            </div>
+                          </td>
+  
+  
+  
+                        </tr>
+                      </tbody>
+                      <div class="pull-left mar_b_10">
+                        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                      </div>
+                    </table>
+  
+                  </div>
+                  <div class="col-md-12" *ngIf="dealersdata?.length<=0">
+                    <div class="no_data">
+                      <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                      <span class="nodata_txt">No Data is Available</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </div>

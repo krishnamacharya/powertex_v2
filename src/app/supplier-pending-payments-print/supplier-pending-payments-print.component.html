@@ -1,0 +1,137 @@
+<div class="container-fluid">
+  <div class="row pad_t_5per">
+    <ngx-spinner class="custom_loder">
+      <img src="../../../assets/Loader.gif">
+    </ngx-spinner>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span> {{loginUserData.content}}</span>
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <!-- <span>Supplier Pending Payments</span> -->
+         <span *ngIf="this.loginUserData.user_type == 'Admin'">&nbsp;>&nbsp;
+        <a href="javascript.void(0)" routerLink="/Supplier-Pending-Payments" style="color: #878787 !important;">OnPortStatus></a>
+      </span>&nbsp;>&nbsp;
+      <span>Print</span>
+    </p>
+    <div class="reg_form mar_b_30">
+      <div class="row mar_b_15">
+        <div class="col-sm-12">
+          <div class="fl">
+            <h4>Pending Payments&nbsp;</h4>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="PendingPayments">
+        <div id="printsuppndng">
+          <div class="row busname text-center">
+          <h3 class="shopee_name">
+            <span> {{loginUserData.company_address.companyname}}</span>
+          </h3>
+          <hr>
+        
+            <h3 class="shopee_name text-center">
+              {{this.loginUserData.shipment_point}} On Port Summary (Admin)
+            </h3>
+          </div>
+        <div class="row printwrap" *ngIf="(PendingPayments | filter :searchText) as PendingPayments">
+          <div class="col-sm-12 list" *ngIf="PendingPayments.length>0">
+
+
+            <div class="table-responsive">
+              <table class="table table-striped" >
+                <thead>
+                  <tr>
+                    <!-- <th>Year</th> -->
+                    <th>Supplier Name</th>
+                    <th class="text-right">Invoice Date</th>
+                    <th>Invoice No</th>
+                    <th class="text-right">Amount</th>
+                    <!-- <th class="text-right">Invoice (CNY)</th> -->
+                    <th class="text-right">BL Date</th>
+                    <th class="text-right">Cr Days</th>
+                    <th class="text-right">Payment Due Date</th>
+                    <th>Status</th>
+                    <th>CTNS</th>
+                    <th>Days</th>
+                    <!-- <th class="text-center" style="width: 5%;">Option</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of PendingPayments">
+                    <!-- <td>{{data.financial_year}}</td> -->
+                    <td>{{data.Suplier_Name}}</td>
+                    <td class="text-right">{{data.InvDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td class="text-right" *ngIf ="data.CType == 'USD'">&#x24;&nbsp;{{data.Invoice_Amount | number : '1.2-2'}}</td>
+                    <td class="text-right" *ngIf ="data.CType == 'CNY'">&#165;&nbsp;{{data.Invoice_Amount | number : '1.2-2'}}</td>
+                    <!-- <td class="text-right">{{data.Invoice_CNY | number : '1.2-2'}}</td> -->
+                    <td class="text-right">{{data.BL_Date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.No_of_Days}}</td>
+                    <td class="text-right">{{data.Due_date | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.STAUS}}</td>
+                    <td>{{data.ctns}}</td>
+                    <td>15 + {{data.days}}</td>
+                    <!-- <td class="text-center">
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-print" aria-hidden="true" title="Print Details"
+                          (click)="printdatadetail(data.INVQHID)"></i>
+                      </span>
+                    </td> -->
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <td class="text-right"><b>&#x24;&nbsp;{{this.totalinvoiceusd | number : '1.2-2'}}</b></td>
+                    <td class="text-right"><b>&#165;&nbsp;{{this.totalinvoicecny | number : '1.2-2'}}</b></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+               
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="PendingPayments.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-md-12">
+        <div class="pull-right">
+          <button class="btn btn-primary " type="button" id="printPageButton" (click)="printreport()">Print</button>
+
+        
+        </div>
+       
+      </div> -->
+
+
+      <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+        <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+        </button>
+        <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Supplier-Pending-Payments">Cancel</button>
+      </div>
+
+
+      </div>
+      <ngx-spinner class="loader_spinner"></ngx-spinner>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,135 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+<div style="margin-top:50px">
+  <app-catg-menu></app-catg-menu>
+</div>
+<div class="container-fluid"style="padding:30px 25px; ">
+  
+  <div class="row" >
+    <div class="col-md-2 cat_filter" >
+      <!-- <div>
+        <button class="btn  btn_cat btn-primary btn-block" (click)="disp_catg()">Categories</button>
+        <div *ngIf="catgHidden">
+            <app-product-menu></app-product-menu> 
+        </div>
+      </div> -->
+      <div class="pad_t_b_5">
+        <h4>Price</h4>
+        <!-- <nouislider [connect]="true"  [(ngModel)]="someValue" 
+[config]="someKeyboardConfig" (change)="saveSecondRange($event)">     
+</nouislider> -->
+        <ngx-slider [(value)]="minValue" [(highValue)]="maxValue"  (valueChange)="price_min(minValue,maxValue)" [options]="options"></ngx-slider>
+        <div class="col-md-6"> <p>Min value: <input type="text" class="form-control" (change)="price_min(minValue,maxValue)" [(ngModel)]="minValue"></p></div>
+        <div class="col-md-6"><p>Max value: <input type="text" class="form-control" (change)="price_min(minValue,maxValue)" [(ngModel)]="maxValue"></p></div>
+      </div>
+
+      <div></div>
+
+      
+      <hr style="border:1px solid #00000017;"/>
+
+      <div class="pad_t_b_5">
+        <div>
+          <h4>Discount</h4> 
+          <ul  class="list-unstyled">
+             
+              <li style="padding-bottom: 5px;">
+                <span ><input type="checkbox" (change)="disc(10)" [checked]="selected_disc === 10" style="width:20px;height:20px;margin-top: 0px;"></span>
+                <span style="vertical-align: super;padding-left: 12px;">10% or More</span>
+              </li>
+              <li style="padding-bottom: 5px;">
+                <span ><input type="checkbox"  (change)="disc(20)" [checked]="selected_disc === 20" style="width:20px;height:20px;margin-top: 0px;"></span>
+                <span style="vertical-align: super;padding-left: 12px;">20% or More</span>
+              </li>
+              <li style="padding-bottom: 5px;">
+                <span ><input type="checkbox" (change)="disc(30)"  [checked]="selected_disc === 30" style="width:20px;height:20px;margin-top: 0px;"></span>
+                <span style="vertical-align: super;padding-left: 12px;">30% or More</span>
+              </li>
+              <li style="padding-bottom: 5px;">
+                <span ><input type="checkbox"  (change)="disc(40)" [checked]="selected_disc === 40"  style="width:20px;height:20px;margin-top: 0px;"></span>
+                <span style="vertical-align: super;padding-left: 12px;">40% or More</span>
+              </li>
+              <li style="padding-bottom: 5px;">
+                <span ><input type="checkbox"  (change)="disc(50)" [checked]="selected_disc === 50" style="width:20px;height:20px;margin-top: 0px;"></span>
+                <span style="vertical-align: super;padding-left: 12px;">50% or More</span>
+              </li>
+          </ul>
+        
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-10" >
+      <div class="row catlistwrap">
+        <div class="col-md-12" style="padding: 7px;border-bottom: 1px solid #00000014;margin-bottom: 5px;">
+          <!-- <h3 *ngFor="let p of resources2|unique">{{p.subcategory}} </h3> -->
+          <div class="row sortwrap">
+          <div class="col-12 col-md-1"><b>Sort By</b></div>
+          <div class="col-12 col-md-5"><span style="padding: 7px;">Popularity</span>
+            <span style="padding: 7px;cursor: pointer;" (click)="Ascend()">Price--Low to High</span>
+            <span style="padding: 7px; cursor: pointer;" (click)="Descend()">Price--High to Low</span></div>
+          <!-- <div class="col-md-2" style="padding-left: 0px;padding-right: 0px">Price--Low to High</div>
+          <div class="col-md-2 " style="padding-left: 0px;padding-right: 0px">Price--High to Low</div> -->
+        </div>
+        </div>
+        <div *ngFor="let p of resources2 | paginate: { itemsPerPage: 12, currentPage: Page };let i=index ">
+          <!-- <div class="col-md-3 " >
+            
+            <div class="cat_style" >
+              <p style="text-align:right;"><a href="javascript:void(0)" (click)="wish_list()"><i class="fa fa-heart-o" [ngStyle]="{'color':wish_color}"></i></a></p>
+              <div (click)="sub_cat(p)">
+              <img src="{{p.low_image_1}}"  onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"class="center">
+              <p style="font-size:13px;margin: 0px;color: gray;">{{p.subcategory}}</p>
+              <p style="font-size:14px;margin: 0px;">{{p.modelno}}</p>
+            <p class="row_mar_0"><span style="text-decoration:line-through; color: #9e8f8f">Rs.{{p.mrp}}</span> <span> Rs.{{p.net_price}}</span></p>
+            <p class="gst">(Excluding GST)</p>
+            <p style="color: #0da550">{{p.discount}}% Off</p>
+          </div>
+            </div>
+          </div> -->
+          <div class="col-md-3">
+            <div class="cat_style pad_15">
+              <div *ngIf="log_as_cust">
+              <i *ngIf="p.wishlist == '1'" class="fa fa-heart wishlist_styles fr cursor_pointer" style="color: #ff6161" aria-hidden="true"
+                (click)="wish_list()"></i>
+              <i *ngIf="p.wishlist != '1'" class="fa fa-heart wishlist_styles fr cursor_pointer" style="color:#cac7c7;" aria-hidden="true"
+                (click)="wish_list()"></i>
+              </div>
+              
+              <div (click)="sub_cat(p)">
+                <img  src="{{p.low_image_1}}" width="200" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';" class="pointer">
+                <h5 class="C_s">{{p.subcategory}}</h5>
+                <p class="C_m" title="{{p.modelno}}">{{p.modelno | slice:0:20}}</p>
+                <p class="row_mar_0">
+                  <span class="C_np"> Rs.{{p.net_price}}</span>&nbsp;
+                  <span  class="strikemrp">Rs.{{p.mrp}}</span>
+                  &nbsp;
+                  <span style="color: #0da550"> {{p.discount}}% Off</span>
+                </p>
+                <p class="gst">(Excluding GST)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:20px;">
+        <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+      </div>
+      <!-- <div class="row"style="border: 1px solid black;">
+        <div *ngFor="let p of resources2"   >
+          <div class="col-md-3 " >
+            
+            <div class="cat_style" (click)="sub_cat(p)">
+              <img src="{{p.low_image_1}}"  onError="this.src='../../assets/200x200.jpg';"class="center">
+            <p>{{p.subcategory}}-{{p.modelno}}</p>
+            <p><span style="text-decoration:line-through; color: #9e8f8f">Rs.{{p.mrp}}</span> <span> Rs.{{p.net_price}}</span></p>
+            <p style="color: #0da550">{{p.discount}}% Off</p>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

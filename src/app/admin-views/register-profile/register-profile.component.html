@@ -1,0 +1,157 @@
+<div class="form-group">
+  <div class="row mar_b_15" *ngIf="regList.length>0">
+    <div class="col-sm-12">
+      <div class="fl">
+        <!-- <h4>Pending Dealers</h4> -->
+      </div>
+      <div class="fr">
+        <input type="text" [(ngModel)]="searchText" placeholder="Search here..." class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="(regList | filter :searchText) as regList">
+    <div class="row">
+      <div class="col-sm-12 list" *ngIf="regList.length>0">
+        <div class="table-responsive">
+          <form #updateForm="ngForm">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <!-- <th>User ID</th> -->
+                  <th>Business Name</th>
+                  <!-- <th>Last Name</th> -->
+                  <th>Email</th>
+                  <th>Mobile No</th>
+                  <th>User Type</th>
+                  <th>Status</th>
+                  <th *ngIf='underProcessId==5'>State/City</th>
+                  <th *ngIf='underProcessId==5'>Assign Branch</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reg of regList | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                  <td>{{10*(p-1)+(i+1)}}</td>
+                  <!-- <td>{{reg.user_id}}</td> -->
+                  <td>{{reg.business_name | titlecase}}</td>
+                  <!-- <td>{{reg.last_name}}</td> -->
+                  <td>{{reg.email | lowercase}}</td>
+                  <td>{{reg.mobile}}</td>
+                  <td>{{reg.user_type}}</td>
+                  <td>{{reg.status}}</td>
+                  <td *ngIf='underProcessId==5'>{{reg.state| titlecase}}<br>{{reg.city | titlecase}}</td>
+                  <td *ngIf='underProcessId==5' style="max-width:230px;">
+                    <select class='select-option form-control' required (change)="getBranchValue($any($event.target).value)">
+                      <option [ngValue]="undefined" disabled selected>Select Branch</option>
+                      <option class='option' *ngFor="let data of branchesList | async" [ngValue]="data.company_code">
+                        {{data.companyname | titlecase}}-{{data.company_code}}</option>
+                    </select>
+                  </td>
+                  <td *ngIf='underProcessId==5'>
+                    <span class="f_size_15 blue_clr padd_right_5 cursor_pointer" (click)="viewMore(reg)">
+                      <i class="fa fa-eye" aria-hidden="true" title="View More"></i>
+                    </span>
+                    <span class="f_size_15 green_clr padd_right_5 cursor_pointer" (click)="movetoBranch(reg)">
+                      <i class="fa fa-check" aria-hidden="true" title="Assign"></i>
+                    </span>
+                  </td>
+                  <td *ngIf='underProcessId!=5'>
+                    <span class="f_size_15 blue_clr padd_right_5 cursor_pointer" (click)="viewMore(reg)">
+                      <i class="fa fa-eye" aria-hidden="true" title="View More"></i>
+                    </span>
+                    <span *ngIf="underProcessId!=6" class="f_size_15 green_clr padd_right_5 cursor_pointer"
+                      (click)="approve(reg)">
+                      <i class="fa fa-check" aria-hidden="true" title="Approve"></i>
+                    </span>
+                    <span *ngIf="underProcessId==6" class="f_size_15 green_clr padd_right_10 cursor_pointer"
+                      (click)="reject(reg)">
+                      <i class="fa fa-check" aria-hidden="true" title="Active"></i>
+                    </span>
+                    <span *ngIf="underProcessId!=6" class="f_size_15 red_clr padd_right_5 cursor_pointer"
+                      (click)="reject(reg)">
+                      <i class="fa fa-close" aria-hidden="true" title="Reject"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <div *ngIf="regList.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/emptyicon.png" />
+            <span class="nodata_txt">No Data is Available</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- success small alert -->
+  <div class="smallSuccess_alert" *ngIf="alert" style="bottom:23%;">
+    <strong>
+      <i class="fa fa-check add_icon" *ngIf="icon"></i>
+      <i class="fa fa-close remove_icon" *ngIf="!icon"></i>
+      {{wish_alert}} </strong>
+  </div>
+
+  <div id="confirmModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <form>
+        <div class="modal-content">
+          <div class="modal-header view_header">
+            <button type="button" class="close" data-dismiss="modal"></button>
+            <h4 class="modal-title text-center">Are you Sure?</h4>
+          </div>
+          <div class="modal-body text-center">
+            <p>Answer to this Questions</p>
+          </div>
+          <div *ngFor="let qns of RejectQns;let i=index;">
+            &nbsp; Q {{i+1}} . <span>{{qns.question}}</span>
+            <textarea class="form-control" id="remarks" rows="2" name="remarks" required [(ngModel)]="qns.answer"
+              name="ans" placeholder="Enter Answer"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success fr" (click)="confirm()">Yes</button>
+            <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="moveBranchModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+                <span>Assigned to Branch Successfully</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <app-view-more></app-view-more>

@@ -1,0 +1,196 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Sales Return Report</span>
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Sales Return Report</h4>
+        </div>
+        <!-- <div class="fr"  *ngIf="orders.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div> -->
+      </div>
+      <div class="fr"  *ngIf="orders.length>0">
+        <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+          class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+      </div>
+      <div class="row row1">
+        <span class="col-md-3">
+          <mat-form-field color="accent">
+            <mat-label> Select From Date</mat-label>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" required [max]="maxdate">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </span>
+        <span class="col-md-3 selecttodate">
+          <mat-form-field color="accent">
+            <mat-label> Select To Date</mat-label>
+            <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" required [max]="maxdate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 color="primary"></mat-datepicker>
+          </mat-form-field>
+
+        </span>
+        <span class="col-md-2">
+          <button type="submit" class="input_btn" (click)="getinvregister()">Get Data</button>
+        </span>
+      </div>
+      <!-- </div> -->
+    </div>
+    <div>
+      <div *ngIf="orders">
+        <div class="row" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders1.length>0">
+
+            <div class="table-responsive">
+              <table class="table table-striped">
+
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th class="text-left">Bussiness Name</th>
+                    <th class="text">Return Inv No</th>
+                    <th class="text-right">Return Inv Date </th>
+                    <th class="text-right">Line Of Total</th>
+                    <th class="text-right">GST Amount</th>
+                    <th class="text-right">Final Amount</th>
+                    <th class="text-center">Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Final_Amount: 19966   6
+                  GST_Amount: 3966   5
+                  GST_Percent: null   
+                  Inv_seq_no: 185   
+                  Line_Of_Total: 16000   4
+                  Return_date: "2021-02-28T00:00:00"   3
+                  Return_inv_no: "RP-185/20-21"   2
+                  Seq_no: 1   
+                  User_id: 1809   
+                  businessname: "Eco Fresh Enterprises" -->
+                  <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td class="text-left">{{data.businessname}}</td>
+                    <td class="text">{{data.Return_inv_no}}</td>
+                    <td class="text-right">{{data.Return_date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.Line_Of_Total | number:'1.2-2'}}</td>
+                    <td class="text-right">{{data.GST_Amount | number:'1.2-2'}}</td>
+                    <td class="text-right">{{data.Final_Amount | number:'1.2-2'}}</td>
+                    <td class="text-center">
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-eye" aria-hidden="true" title="View More" (click)="viewMore(data)"></i>&nbsp;
+                      </span>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-md-12" *ngIf="orders.length>0">
+              <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" (click)="printreport()">Print</button>
+              </div>
+            </div>
+
+            <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+
+<div class="modal fade" id="viewpoModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center">Return Product Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Product Name</th>
+                <!-- <th>Brand</th> -->
+                <th>Qty</th>
+                <!-- <th>Price</th>
+                <th class="text-right">Amount</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let view_d of this.productdata;let i=index">
+                <td>
+                  <span class="table_pd_name">{{i + 1}}</span>
+                </td>
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key">{{view_d.modelno}}</span>
+                  </div>
+                </td>
+                <!-- <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.productid.brand}}</span>
+                  </div>
+                </td> -->
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.qty}}</span>
+                  </div>
+                </td>
+
+                <!-- <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.price | number : '1.2-2'}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.amount | number : '1.2-2'}}</span>
+                  </div>
+                </td> -->
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

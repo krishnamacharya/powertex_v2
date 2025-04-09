@@ -1,0 +1,106 @@
+.f_size_15{
+    font-size: 15px;
+}
+.blue_clr{
+    color:#108ed2;
+}
+.green_clr{
+    color:#1c944f;
+}
+.red_clr{
+    color:#cf1111;
+}
+.orange_clr{
+    color:#f7a22d;
+}
+.gray_clr{
+    color:#c5c2bd;
+}
+.padd_right_10{
+    padding-right: 10px;
+}
+
+
+.txt_center{
+    text-align: center;
+}
+.marg_l_r_10{
+    margin: 0 10px;
+}
+/* fieldset.scheduler-border {
+    border: 0px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+} */
+
+legend.scheduler-border {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:0 10px;
+    border-bottom:none;
+}
+.close1{
+    color: #0e0d0d !important;
+    opacity: 1;
+    float: right;
+    font-size: 30px;
+    line-height: 1;
+    text-shadow: 0 1px 0 #fff;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    padding: 7px 2px 0 0 !important;
+}
+.modal-header {
+    padding: 1px !important;
+    // padding-top: 3px;
+    // padding-right: 0px;
+    // padding-bottom: 0px;
+    // padding-left: 0px;
+   
+}
+.modal-dialog {
+    width: 800px;
+    margin: 30px auto;
+}
+.txt_right{
+    text-align: right;
+}
+td{
+    text-transform: capitalize !important;
+}
+
+.custom_loder{
+    z-index: 99999999999 !important;
+     position: fixed !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important;  }
+        
+    
+        .chose_vendr {
+            background: #0fa497;
+            text-align: center;
+            padding: 18px 0 0 0;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            overflow: hidden;
+          }
+          .vendor_sel {
+            width: 300px;
+            padding: 5px;
+            color: black !important;
+            border: 1px solid #20978c;
+            border-radius: 5px;
+          }
+          
+          .vendor_lab {
+            color: #fff !important;
+            font-weight: 700 !important;
+            font-size: 18px;
+            padding-right: 15px;
+          }

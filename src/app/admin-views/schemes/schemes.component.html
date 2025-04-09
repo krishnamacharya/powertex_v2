@@ -1,0 +1,325 @@
+
+<div class="container pad_t_5per pad_b_5per dash_w">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Schemes</span>
+    </p>
+  </div>
+  <section>
+    <div class="row"
+      style="margin:0px;box-shadow: 1px 1px 2px 2px lightgray;border-top-left-radius: 20px;border-top-right-radius: 20px;">
+      <div class="row bg-theme dash_status" style="margin:0px">
+        <div class="col-md-4 status_align">
+          <a href="javascript:void(0)" [ngClass]="{'active_tab':NewSch == true}" (click)="new_sch()">Create Scheme</a>
+        </div>
+        <div class="col-md-4 status_align">
+          <a href="javascript:void(0)" [ngClass]="{'active_tab':AvailSch == true}" (click)="Avail_sch()">Available Scheme's</a>
+        </div>
+        <div class="col-md-4 status_align">
+            <a href="javascript:void(0)" [ngClass]="{'active_tab':NAppSch == true}" (click)="Approve_sch()"> Scheme's Status</a>
+          </div>
+      </div>
+      <div class="pad_20">
+        <div *ngIf="NewSch">
+          <div class="row" style="margin:0px">
+            <div class="row" style="margin:0px">
+                <h4 style="color: #293271 !important;"><u>Scheme Details</u>:</h4>
+                <div class="col-md-3">
+                  <mat-form-field>
+                    <mat-label >Select Category</mat-label>
+                      <mat-select  multiple (selectionChange)="sel_category($any($event.target).value)" [(ngModel)]="field.Category" name="category" 
+                        class="filter_select"  #category="ngModel" >
+                        <!-- <mat-option  disabled="disabled" class="filter-option" > -->
+                        <div class="pad_t_b_5 text-center">
+                          <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll()">Select All</button>&nbsp;
+                          <button mat-raised-button class="mat-accent fill text-sm" (click)="deselectAll()">Deselect All</button> </div>
+                        <mat-option *ngFor="let data of data_list"  [value]="data.Category">{{data.Category}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field>
+                    <mat-label>Select Sub Category</mat-label>
+                      <mat-select  multiple [disabled]="sub_catg_disable()" [(ngModel)]="subc" (ngModelChange)="testy()">
+                        <mat-option *ngFor="let data of sub_arr_list"  [value]="data.subcategory">{{data.subcategory}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field>
+                    <mat-label>Select Model</mat-label>
+                      <mat-select multiple [disabled]="model_disable()" [(ngModel)]="offers_data.productid" >
+                        <!-- <mat-option [value]="All">Select All</mat-option> -->
+                        <mat-option *ngFor="let data of model_list" [value]="data.productid">{{data.modelno}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3 hidden">
+                  <mat-form-field>
+                    <mat-label>Select Country</mat-label>
+                    <mat-select [(value)]="selected" disabled >
+                      <mat-option>None</mat-option>
+                      <mat-option value="INDIA">INDIA</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field>
+                    <mat-label>Select States</mat-label>
+                    <mat-select multiple  [(ngModel)]="offers_data.states" >
+                      <!-- <mat-option [value]="All">Select All</mat-option> -->
+                      <mat-option *ngFor="let data of states_list" [value]="data.state">{{data.state}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field>
+                    <mat-label>Select Scheme Type</mat-label>
+                    <mat-select  [(ngModel)]="offers_data.scheme_type" >
+                      <!-- <mat-option [value]="All">Select All</mat-option> -->
+                      <mat-option value="Target Based">Target Based</mat-option>
+                      <mat-option value="Product Based">Product Based</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field class="example-full-width" style="color:red;">
+                        <input type="number" matInput    [(ngModel)]="offers_data.scheme_value">
+                        <mat-placeholder>Enter Scheme Value</mat-placeholder>
+                      </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field color="accent">
+                    <mat-label> Select From Date</mat-label>
+                    <input matInput [matDatepicker]="picker1" [(ngModel)]="offers_data.fromdate"  readonly required>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-3">
+                  <mat-form-field color="accent">
+                    <mat-label> Select to Date</mat-label>
+                    <input matInput [matDatepicker]="picker2" [(ngModel)]="offers_data.todate"  readonly required>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>
+                </div>
+            </div>
+              
+              <div class="row" style="margin:0px">
+                  <h4 style="color: #293271 !important;"><u>Scheme Features</u>:</h4>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <textarea matInput  [(ngModel)]="offers_data.scheme_benfit1"></textarea>
+                        <mat-placeholder>Enter Benfit-1</mat-placeholder>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <textarea matInput  [(ngModel)]="offers_data.scheme_benfit2"></textarea>
+                        <mat-placeholder>Enter Benfit-2</mat-placeholder>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <textarea matInput  [(ngModel)]="offers_data.scheme_benfit3"></textarea>
+                      <mat-placeholder>Enter Benfit-3</mat-placeholder>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <textarea matInput  [(ngModel)]="offers_data.scheme_remarks1"></textarea>
+                      <mat-placeholder>Enter Remarks-1</mat-placeholder>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                        <textarea matInput  [(ngModel)]="offers_data.scheme_remarks2"></textarea>
+                        <mat-placeholder>Enter Remarks-2</mat-placeholder>
+                        <!-- <mat-icon matSuffix class="material-icons">perm_identity</mat-icon> -->
+                    </mat-form-field>
+                  </div>
+              </div>
+              
+    <div class="row" style="margin:0px">
+        <button class="btn btn-primary" (click)="submit_offers()">Submit</button>
+      </div>
+          </div>
+        </div>
+      </div>
+      <div class="p_20">
+        <div *ngIf="AvailSch" class="table-responsive">
+          <div class="row" style="margin:0px">
+              <table class="table">
+                  <thead >
+                    <tr>
+                        <th>S.No</th>
+                        <th>Scheme Type</th>
+                        <th>Turnover</th>
+                        <th>Scheme Period</th>
+                        <th>States</th>
+                        <th>Applied On</th>
+                        <th>Status</th>
+                        <th>Actions</th> 
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of schemes_data; let i=index;" [ngStyle]="{'background-color':data.active == 0 ? '#c5cecd' : 'white' }">
+                      <td>Scheme {{i+1}}</td>
+                      <td>{{data.scheme_type}}</td>
+                      <td *ngIf="data.scheme_type=='Target Based'">{{data.scheme_value}}</td>
+                      <td *ngIf="data.scheme_type=='Product Based'">{{data.scheme_value}} Pcs.</td>
+                      <td>{{data.fromdate}} to {{data.todate}}</td>
+                      <!-- <th style="width: 20%">{{data.model}}</th> -->
+                      <td><div class="td_h">{{data.states}}</div></td>
+                      <td style="width: 20%"  *ngIf="data.spec=='All'">All Products</td>
+                      <td style="width: 20%" *ngIf="data.productid">{{data.modelno}}</td>
+                      <td *ngIf="data.active==1">Active</td>
+                      <td *ngIf="data.active==0">Disabled</td>
+                      <!-- <td style="width: 20%">{{data.message}}</td> -->
+                      <td><span (click)="dis_ena(data,0)" *ngIf="data.active==1">&nbsp;&nbsp;<i class="fa fa-check" title="Disable" style="font-size:18px;color:green"></i></span><span *ngIf="data.active==0" (click)="dis_ena(data,1)">&nbsp;&nbsp;
+                        <i class="fa fa-close" title="Enable" style="font-size:18px;color:#bc422e"></i></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+          </div>
+        </div>
+      </div>
+      <div class="p_20">
+        <div *ngIf="NAppSch" class="table-responsive"> 
+          <div class="row" style="margin:0px">
+              <table class="table">
+                  <thead >
+                    <tr>
+                        <th>S.No</th>
+                        <th>Business Name</th>
+                        <th>Scheme Type</th>
+                        <th>Turnover</th>
+                        <th>Scheme Period</th>
+                        <th>States</th>
+                        <!-- <th>Applied On</th> -->
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of approval_schemes_data; let i=index;">
+                      <td>{{i+1}}</td>
+                      <td>{{data.business_name}}</td>
+                      <td>{{data.scheme_type}}</td>
+                      <td *ngIf="data.scheme_type=='Target Based'">{{data.scheme_value}}</td>
+                      <td *ngIf="data.scheme_type=='Product Based'">{{data.scheme_value}} Pcs.</td>
+                      <td>{{data.fromdate}} to {{data.todate}}</td>
+                      <td ><div class="td_h">{{data.states}}</div> </td>
+                      <td>{{data.status}}</td>
+                      <td>
+                        <span *ngIf="data.approval==0">&nbsp;&nbsp;<i class="fa fa-check" title="Approve" (click)="approve_schema(data,1)" style="font-size:20px;color: green;"></i></span>&nbsp;&nbsp;
+                        <span *ngIf="data.approval==!1"><i class="fa fa-close" (click)="approve_schema(data,-1)" title="Reject" style="font-size:20px;color: red;"></i></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <div class="row">
+    
+  </div>
+  <div class="row">
+    
+  </div>
+  
+</div>
+<div class="modal fade" id="schemeedit" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading1">
+                Scheme Edit
+            </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 3% 0;">
+             <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="createSuccess" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="text-center content_msg">
+                <p style="padding-top: 9%;" class="alert_order_no">New Scheme Created Successfully..!!</p>
+              <p class="m_p_t"> Thank You, For Choosing Powertex</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" >OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="enabledisableSuccess" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="text-center content_msg">
+                  <p style="padding-top: 9%;" class="alert_order_no" *ngIf="en_dis_id==0"> Scheme Disabled Successfully..!!</p>
+                  <p style="padding-top: 9%;" class="alert_order_no" *ngIf="en_dis_id==1"> Scheme Enabled Successfully..!!</p>
+                <p class="m_p_t"> Thank You, For Choosing Powertex</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success fr" data-dismiss="modal" >OK</button>
+        </div>
+      </div>
+    </div>
+  </div>

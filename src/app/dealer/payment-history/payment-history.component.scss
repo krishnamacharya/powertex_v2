@@ -1,0 +1,161 @@
+.chose_vendr{
+    // background: #0fa497;
+    text-align: center;
+    padding: 18px 0 0 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    overflow: hidden;
+}
+.textcolor{
+    color: #ad0808 !important;
+  font-weight: bold; 
+    }
+.vendor_sel{
+    width: 300px;
+    padding: 5px;
+    color:black !important;
+    border: 1px solid #20978c;
+    border-radius: 5px;
+}
+
+.vendor_lab{
+    color:#0fa497 !important;
+    font-weight: 700 !important;
+    font-size:18px;
+    padding-right: 15px;
+}
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+  
+}
+.exceeded {
+    background-color: rgb(207, 61, 61) !important;
+    color: #e2d4d4 !important;
+  }
+.total{
+    margin-right:10px;
+}
+.unadjusted{
+margin-left:15px;
+}
+#paymentWrap{
+padding:5px 20px 20px 20px
+}
+.paymcompanywrap{
+    padding: 2px 24px;
+    margin-left: 0px;
+    margin-right: 0px;
+    background: #0fa497;
+    h4{
+        color:#ffff !important;
+        font-size:13px !important;
+    }
+}
+.lineamt{
+    p{
+        margin-bottom: 0px;
+        text-align:right;
+        width:120px
+    }
+}
+.dueamt{
+    p{
+        margin-bottom: 0px;
+        width:125px;
+        text-align:right
+    }
+}
+/* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 520px){
+    .paymenttable{
+        overflow:scroll !important;
+        table{
+            th{
+                font-size: 1rem;
+            }
+            td{
+                border: 1px solid #ddd;
+                padding:5px !important;
+                div{
+                    width:100px !important;
+                }
+               
+                p{
+                    font-size: 1rem !important; 
+                    margin: 7px 0 2px;
+                    line-height: 1 !important; 
+                }
+            }
+            td:nth-child(8){
+                div{
+                    width:81px !important;
+                }
+            }
+            td:nth-child(8){
+                div{
+                    width:80px !important;
+                }
+            }
+        }
+    }
+    .dueamt{
+        p{
+           margin-left: -4rem !important;
+        }
+    }
+    #paymentpanelwrap{
+        .mat-expansion-indicator{
+            margin-top:-1rem;
+        }
+    }
+   
+#paymentWrap{
+    padding:5px 8px 20px 8px !important;
+}
+.tabcontent{
+    padding: 0 !important;
+    .col-md-2{
+        text-align: left;
+        padding: 0 !important;
+        h4{
+            display: inline-block;
+            float: left;
+            margin-right: 1rem;
+            margin-top: 4px;
+            margin-bottom: 6px;
+        }
+    }
+    .statusdata{
+        .row{
+            padding: 2px 6px !important;
+        }
+        p.txt_black{
+            margin: 16px 5px 10px;
+            text-align: left !important;
+        }
+    }
+   
+    .mat-expansion-panel-header{
+        padding: 2px 17px 0 0 !important;
+        margin-top: -1rem;
+    }
+   
+   }
+}
+.pr2{
+    padding-right: 2.2rem !important;
+}
+.mr2{
+    margin-right: 2.2rem;
+}
+
+.custom_loder{
+    z-index: 99999999999 !important;
+     position: fixed !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important;  }

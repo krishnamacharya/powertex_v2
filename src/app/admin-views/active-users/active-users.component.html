@@ -1,0 +1,470 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+  </ngx-spinner> 
+<div [ngClass]="{'container pad_t_5per':styleId!=1}">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Active Dealers</span>
+  </p>
+  <div class="row o_s_d">
+    <div class="row bg-theme dash_status" style="margin:0px" *ngIf="hid">
+      <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}"
+          (click)="po()">Active Dealers</a></div>
+      <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}"
+          (click)="do()">All Dealers</a></div>
+
+    </div>
+    <div class="reg_form mar_b_30 pad_15">
+
+      <div class="form-group" *ngIf="POhidden">
+        <div class="row mar_b_15" *ngIf="regList.length>0">
+          <div class="col-sm-12">
+            <div class="fl">
+              <!-- <h4>Active Dealers</h4> -->
+            </div>
+            <div class="fr">
+              <input type="text" [(ngModel)]="searchText" placeholder="Search Here" class="search_style">
+              <button type="submit" class="input_btn">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="(regList | filter :searchText) as regList">
+          <div class="row" id="userTable">
+            <div class="col-sm-12 list" *ngIf="regList.length>0">
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <!-- <th>User ID</th> -->
+                      <th class="col-md-2">Business Name</th>
+                      <!-- <th>Last Name</th> -->
+                      <th class="col-md-2">Email</th>
+                      <th class="col-md-1">Mobile No</th>
+                      <th class="col-md-1">City</th>
+                      <th  class="col-md-1">State</th>
+                      <!-- <th class="customwidth20 text-right">Total Outstanding</th> -->
+                      <th class="col-md-2 text-right">Total Outstanding</th>
+                      <!-- <th>Due Amount</th> -->
+                      <th class="col-md-3 text-right">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let reg of regList; let i=index">
+                      <td>{{10*(p-1)+(i+1)}}</td>
+                      <!-- <td>{{reg.user_id}}</td> -->
+                      <td>{{reg.business_name | titlecase}}</td>
+                      <!-- <td>{{reg.last_name}}</td> -->
+                      <td>{{reg.email | lowercase}}</td>
+                      <td>{{reg.mobile}}</td>
+                      <td>{{reg.city| titlecase}}</td>
+                      <td>{{reg.state| titlecase}}</td>
+                      <td class="text-right">{{reg['Out standing Amount'].toLocaleString('en-IN')}}</td>
+                      <!-- <td>{{reg.due_amount | currency : '&nbsp;'}}</td> -->
+
+                      <td class="text-right">
+                        <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="viewInfo(reg)">
+                          <i class="fa fa-eye" aria-hidden="true" title="View More"></i>
+                        </span>
+                        <span class="f_size_15 red_clr padd_right_10 cursor_pointer" (click)="reject(reg)">
+                          <i class="fa fa-close" aria-hidden="true" title="Inactive"></i>
+                        </span>
+                        <span class="f_size_15 orange_clr padd_right_10 cursor_pointer" (click)="editInfo(reg)">
+                          <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                        </span>
+                        <span class="f_size_15 green_clr padd_right_10 cursor_pointer" (click)="editInfo1(reg)">
+                          <i class="fa fa-pencil" aria-hidden="true" title="Edit"></i>
+                        </span>
+                        <span class="f_size_15 theme_clr padd_right_10 cursor_pointer" (click)="explore(reg)">
+                          <img src="../../../assets/Explore icon.svg" style="width: 8%" title="Explore">
+                        </span>
+                        <span class="f_size_15 theme_clr padd_right_10 cursor_pointer" (click)="getopeningbalancedetails(reg)">
+                          <i class="fa fa-bars" aria-hidden="true" title="Ledger"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+            <div *ngIf="regList.length==0">
+              <div class="col-md-12">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="DOhidden">
+        <div class="row mar_b_15" *ngIf="dealersList.length>0">
+          <div class="col-sm-12">
+            <div class="fl">
+              <!-- <h4>Active Dealers</h4> -->
+            </div>
+            <div class="fr">
+              <input type="text" [(ngModel)]="searchText" placeholder="Search Here" class="search_style">
+              <button type="submit" class="input_btn">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="(dealersList | filter :searchText) as dealersList">
+          <div class="row" id="userTable">
+            <div class="col-sm-12 list" *ngIf="regList.length>0">
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <!-- <th>User ID</th> -->
+                      <th>Business Name</th>
+                      <th>Marketing Manager</th>
+                      <th>Email</th>
+                      <th>Mobile No</th>
+                      <th>User Type</th>
+                      <th>Status</th>
+                      <!-- <th>Total Outstanding</th>
+                    <th>Due Amount</th> -->
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let reg of dealersList ; let i=index">
+                      <td>{{10*(page1-1)+(i+1)}}</td>
+                      <!-- <td>{{reg.user_id}}</td> -->
+                      <td>{{reg.business_name | titlecase}}</td>
+                      <td>{{reg.marketing}}</td>
+                      <td>{{reg.email}}</td>
+                      <td>{{reg.mobile}}</td>
+                      <td>{{reg.user_type}}</td>
+                      <td>{{reg.status}}</td>
+                      <!-- <td>{{reg.outstanding_amount}}</td>
+                    <td>{{reg.due_amount}}</td> -->
+
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pagination-controls (pageChange)="page1 = $event"></pagination-controls>
+            </div>
+            <div *ngIf="dealersList.length==0">
+              <div class="col-md-12">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- success small alert -->
+<div class="smallSuccess_alert" *ngIf="alert" style="bottom:23%;">
+  <strong>
+    <i class="fa fa-check add_icon" *ngIf="icon"></i>
+    <i class="fa fa-close remove_icon" *ngIf="!icon"></i>
+    {{wish_alert}} </strong>
+</div>
+
+<!-- Modal pop-up start here -->
+<div id="confirmModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header view_header">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+      </div>
+      <div class="modal-body text-center">
+        <p>Are you Sure?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" (click)="confirm()">Yes</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal pop-up end here -->
+<div class="modal fade" id="editmodal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+        <!-- <div class="right_mark">
+              <i class="fa fa-question" aria-hidden="true"></i>
+            </div> -->
+      </div>
+      <div class="modal-body ">
+        <h4 style="text-align:center;">Brand Wise Discounts</h4>
+        <br>
+        <br>
+        <div class="row ">
+          <div>
+            <div class="col-sm-4 mar_b_10_mbl">
+              <label for="category_profile" class="col-form-label">Powertex Brand
+
+              </label>
+              <div>
+                <select class='select-option form-control' required [(ngModel)]="profileData.powertex" name="powertex"
+                  #powertex="ngModel">
+                  <option [ngValue]="undefined" disabled selected>Select</option>
+                  <option class='option' *ngFor="let data of categoryList" [ngValue]="data.category">
+                    {{data.category}}_{{data.avg_val | number:'1.0-0'}}% Discount</option>
+                </select>
+              </div>
+
+
+            </div>
+            <div class="col-sm-4 mar_b_10_mbl">
+              <label for="category_profile" class="col-form-label">Sunflower Brand
+
+              </label>
+              <div>
+                <select class='select-option form-control' [(ngModel)]="profileData.sunflower" name="sunflower"
+                  #sunflower="ngModel">
+                  <option [ngValue]="undefined" disabled selected>Select</option>
+                  <option class='option' *ngFor="let data of categoryList" [ngValue]="data.category">
+                    {{data.category}}_{{data.avg_val | number:'1.0-0'}}% Discount</option>
+                </select>
+              </div>
+
+
+            </div>
+            <div class="col-sm-4 mar_b_10_mbl">
+              <label for="category_profile" class="col-form-label">Powertex(Gold) Brand
+
+              </label>
+              <div>
+                <select class='select-option form-control' [(ngModel)]="profileData.powertexgold" name="powertexgold"
+                  #powertexgold="ngModel">
+                  <option [ngValue]="undefined" disabled selected>Select</option>
+                  <option class='option' *ngFor="let data of categoryList" [ngValue]="data.category">
+                    {{data.category}}_{{data.avg_val | number:'1.0-0'}}% Discount</option>
+                </select>
+              </div>
+
+
+            </div>
+
+          </div>
+        </div> <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="submit()" class="btn btn-success brdr_radius_50   fr">Submit
+        </button>
+        <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="dealeroutstandingModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <h4 class="modal-title text-center">Outstanding Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="margin:0px">
+          <div class="col-md-12">
+            <div>
+              <div class="row" style="padding: 10px;">
+                <div *ngIf="dealersdata?.length>0">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Invoice No</th>
+                        <th>Invoice Date </th>
+                        <th>Due Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr
+                        *ngFor="let pd of dealersdata; let i=index;">
+                        <td>{{10*(page-1)+(i+1)}}</td>
+                        <td>
+                          <div style="margin:0px; font-size: 13px !important;">
+                            <p><span>{{pd.inv_no}}</span></p>
+                          </div>
+                        </td>
+
+
+                        <td>
+                          <div class="mar_b_10" style="text-align:right;width:80px">
+                            <p><span>{{pd.inv_date | date:'dd-MM-yyyy'}} </span></p>
+                          </div>
+
+                        </td>
+
+                        <td>
+                          <div class="mar_b_10" style="text-align:right;width:80px">
+                            <p><span>{{pd.due_amount.toLocaleString('en-IN')}} </span></p>
+                          </div>
+                        </td>
+
+
+
+                      </tr>
+                    </tbody>
+
+                  </table>
+                  <div class="pull-left mar_b_10">
+                    <pagination-controls (pageChange)="page = $event" id="o"></pagination-controls>
+                  </div>
+                </div>
+                <div class="col-md-12" *ngIf="dealersdata?.length<=0">
+                  <div class="no_data">
+                    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                    <span class="nodata_txt">No Data is Available</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="customerledger" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <h4 class="modal-title text-center">Customer Ledger</h4>
+      </div>
+      <div class="modal-body">
+        <div style="margin:0px">
+          <div class="row" *ngIf="customerLedger?.length>0">
+           
+            <div class="col-md-6 pull-right">
+              <b *ngIf="obdetails[0].Amount!=null && obdetails[0].credit==true">Opening Balance : ₹ {{obdetails[0].Amounts.toLocaleString('en-IN')}}.00 CR</b>
+              <b *ngIf="obdetails[0].Amount!=null && obdetails[0].credit==false">Opening Balance : ₹ {{obdetails[0].Amount.toLocaleString('en-IN')}}.00 DR</b>
+              <b *ngIf="obdetails[0].Amount==null">Opening Balance : ₹ 0</b>
+            </div>
+          </div>
+              <div class="row" style="padding: 10px;">
+                <div *ngIf="customerLedger?.length>0" class="table-responsive">
+                  <table class="table table-condensed">
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Type</th>
+                        <th class="text-right">Invoice No</th>
+                        <th class="text-right">Invoice Date</th>
+                        <th style="text-align:right">CR</th>
+                        <th style="text-align:right">DR</th>
+                        <th style="text-align:right">Balance</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr
+                        *ngFor="let led of customerLedger; let k=index;">
+                        <td>{{10*(pagee-1)+(k+1)}}</td>
+                        <td>
+                          <div style="margin:0px; font-size: 13px !important;">
+                            <p><span>{{led.TType}}</span></p>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="mar_b_10" style="text-align:right;">
+                            <p><span>{{led.inv_no}} </span></p>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="mar_b_10" style="text-align:right;">
+                            <p><span>{{led.inv_date | date:'dd-MM-yyyy'}} </span></p>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="mar_b_10" style="text-align:right;">
+                            <p><span>₹ {{led.CR.toLocaleString('en-IN') }}.00 </span></p>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="mar_b_10" style="text-align:right;">
+                            <p><span>₹ {{led.DR.toLocaleString('en-IN') }}.00 </span></p>
+                          </div>
+                        </td>
+                        <td>
+                          <div *ngIf="led.credit==true" class="mar_b_10" style="text-align:right;">
+                            <p><span>₹ {{led.balance.toLocaleString('en-IN') }}.00 CR </span></p>
+                          </div>
+                          <div *ngIf="led.credit==false" class="mar_b_10" style="text-align:right;">
+                            <p><span>₹ {{led.balance.toLocaleString('en-IN') }}.00 DR </span></p>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                       
+                        <td class="text-right">Total &nbsp;<b>:</b></td>
+                        <td>
+                          <div class="mar_b_10" style="text-align:right;">
+                            <p><span>{{DrTotal.toLocaleString('en-IN')}}.00 </span></p>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="mar_b_10" style="text-align:right;">
+                            <p><span>{{DrTotal.toLocaleString('en-IN')}}.00 </span></p>
+                          </div>
+                        </td>
+                        <td *ngIf="credit==true">
+                          <div class="mar_b_10" style="text-align:right;">
+                            <p><span>{{balanceTotal.toLocaleString('en-IN')}}.00 CR </span></p>
+                          </div>
+                        </td>
+                        <td *ngIf="credit==false">
+                          <div class="mar_b_10" style="text-align:right;">
+                            <p><span>{{balanceTotal.toLocaleString('en-IN')}}.00 DR</span></p>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <div class="col-md-12">
+                    <button class="btn btn-primary" style="float:right" type="button" (click)="printreport()">Print</button>
+                  </div>
+                </div>
+                <div class="pull-left mar_b_10">
+                  <pagination-controls (pageChange)="pagee = $event" id="d"></pagination-controls>
+                </div>
+                <div class="col-md-12" *ngIf="customerLedger?.length<=0">
+                  <div class="no_data">
+                    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                    <span class="nodata_txt">No Data is Available</span>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+
+<app-view-more></app-view-more>

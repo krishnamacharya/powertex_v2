@@ -1,0 +1,106 @@
+// fieldset.scheduler-border {
+//     border: 1px groove #ddd !important;
+//     padding: 0 1.4em 1.4em 1.4em !important;
+//     margin: 0 0 1.5em 0 !important;
+//     -webkit-box-shadow:  0px 0px 0px 0px #000;
+//             box-shadow:  0px 0px 0px 0px #000;
+// }
+
+// legend.scheduler-border {
+//     font-size: 1.2em !important;
+//     font-weight: bold !important;
+//     text-align: left !important;
+//     width:auto;
+//     padding:0 10px;
+//     border-bottom:none;
+// }
+
+
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #0fa497 !important;
+  border-top-left-radius: 6px !important;
+  border-top-right-radius: 6px !important;
+}
+.modal-header .modal-title {
+  color:#fff !important;
+}
+
+.green_btn{
+  width:100px !important;
+}
+
+//alert styles start here
+.alert_heading{
+  background: #0da550;
+  margin-top: 0;
+  padding: 50px;
+  text-align: center;
+  position: relative;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.alert_heading span{
+  color:#fff;
+}
+.right_mark{
+  background: #fff;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 40%;
+  top: 50px;
+  box-shadow: 3px 5px 10px #ddd;
+}
+.right_mark i{
+  font-size: 60px;
+  color: #0da550;
+}
+.content_msg span{
+  font-size: 18px;
+  font-weight: 550;
+}
+.close{
+  color: #fff !important;
+   opacity: 0 !important;
+  margin-top: -40px !important;
+  margin-right: -30px !important;
+}
+.modal-content{
+  border-radius: 15px !important;
+}
+/* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 480px){
+.mar_b_10_mbl{
+  margin-bottom: 5px;
+}
+  }
+  
+  /* tablets styles start here */
+  @media screen and (min-width: 481px) and (max-width: 767px){
+    .mar_b_10_mbl{
+      margin-bottom: 5px;
+    }
+  }
+  
+  /* desktops styles start here */
+  @media screen and (min-width: 768px) and (max-width: 991px){
+  
+  }
+  
+  /* desktops styles start here */
+  @media screen and (min-width: 992px) and (max-width: 1023px){
+   
+  }
+  
+    /* lg-desktops styles start here */
+  @media screen and (min-width: 1024px) and (max-width: 1200px){
+   
+  }

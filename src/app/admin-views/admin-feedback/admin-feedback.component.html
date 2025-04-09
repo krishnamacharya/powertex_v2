@@ -1,0 +1,167 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="pad_t_5per pad_b_5per" style="width:100%;">
+
+  <div class="pad_15 mar_b_30">
+    <div class="container">
+      <p class="bread-crumb1">
+        <span>
+          <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+        </span>&nbsp;>&nbsp;<span>Feedback</span>
+      </p>
+      <div class="row t_s_1">
+        <div class="row bg-theme dash_status" style="margin:0px">
+          <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}"
+              (click)="po()">Supplier&nbsp;Feedback</a></div>
+          <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}"
+              (click)="do()">Contact&nbsp;Supplier</a></div>
+        </div>
+
+        <div style="padding:5px 20px 20px 20px">
+          <br>
+          <!-- Supplier Feedback -->
+          <div *ngIf="POhidden">
+            <div *ngIf="details">
+              <div class="row" *ngIf="(details | filter :searchText) as details">
+                <div class="col-sm-12 list" *ngIf="details.length>0">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <th>Business Name</th>
+                         <th>Option</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="let pd of details|filter:searchText; let i=index;">
+                         <td>{{10*(page-1)+(i+1)}}</td>
+                          <td>{{pd.business_name}}</td>
+                          <td>
+                            <button type="button" class="btn btn-sm bg_green cursor_pointer" title="Chat" (click)="Chat(pd)">Chat</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+                <div *ngIf="details.length==0">
+                  <div class="col-md-12">
+                    <div class="no_data">
+                      <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                      <span class="nodata_txt">No Data is Available</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Supplier -->
+          <div *ngIf="DOhidden">
+              <div class="row">
+                <div class="col-sm-12 list">
+                   <div class="col-sm-6">
+                        <div class="col-sm-12">
+                          <label for="supplier1" class="control-label mt_zerosix text-right">Select Supplier
+                            Name<sup>*</sup>
+                          </label>
+                          <select class="form-control" id="supplier1" required name="supplier" [(ngModel)]="suppliername"
+                            #supplier="ngModel">
+                            <option [ngValue]="undefined" selected>-- Select Supplier --</option>
+                            <option class='option' *ngFor="let s of suppliers" [ngValue]="s">{{s.business_name}}</option>
+        
+                          </select>
+                        </div>
+                      <br>
+                      <div class="col-sm-12 pt-2" style="padding-top: 20px;">
+                        <label for="messag" class="control-label mt_zerosix text-right">Message<sup>*</sup></label>
+                        <textarea class="form-control rounded-0" rows="3" name="messag" [(ngModel)]="message" id="messag"
+                          placeholder="Enter Message" minlength="3" maxlength="1000" required></textarea>
+                        <br>
+                        <button type="submit" class="input_btn" (click)="Sendsupplier(message)">Submit</button>
+                      </div>
+                    </div>
+                </div>
+
+              </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  <div class="modal fade" id="comment" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h3 class="alert_heading" style="font: bold">
+                Reply for Comment
+  
+              </h3>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label>Comment:</label>
+                  <textarea type="text" class="form-control" [(ngModel)]="commenting" maxlength="1000" required></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger fl" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="confirm_sub(commenting)"
+              value="">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="modal fade" id="chatModaledit" role="dialog" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header v_h">
+          <button type="button" class="close1" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title col-md-12" align="center">{{this.busname}}</h4>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive scrollit">
+            <table class="table table-striped" *ngIf="feeddtls != 0">
+              <tr *ngFor="let data of feeddtls; let i=index" [ngClass]="{'Admincls':data.returnby == '1'}">
+                <td class="text-right icon" *ngIf="data.returnby=='1'">
+                  <small style="background-color:#0fa497;border-radius: 30px 30px 30px 0px;">PPT Desk</small>
+                  <br>{{data.comment}}</td>
+                <td class="text-left icon" *ngIf="data.returnby !='1'">
+                  <small style="background-color:#49d7f0;border-radius: 30px 30px 0px 30px;">Supplier</small>
+                  <br>{{data.comment}}
+                </td>
+              </tr>
+          </table>
+          </div>
+          <div class="container-fluid send">
+            <div class="col-sm-9">
+              <input type="text" class="form-control rounded-0" rows="3" name="commenting" [(ngModel)]="commenting" style="width:100%;" required
+              placeholder="Give your comments" minlength="3" maxlength="1000">
+            </div>
+            <div class="col-sm-3">
+               <button type="submit" class="btn btn-sm bg_green btn2" (click)="confirm_sub(commenting)">Send&nbsp;
+                <i class="fa fa-paper-plane" style="color: #49d7f0;" aria-hidden="true"></i></button>&nbsp;
+                <button type="button" class="btn btn-sm btn-danger btn2" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

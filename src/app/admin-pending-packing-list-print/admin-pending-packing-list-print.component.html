@@ -1,0 +1,127 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>
+
+
+    <span *ngIf="this.loginUserData.user_type == 'Admin'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Admin-Supplier-Pending-Packing-List" style="color: #878787 !important;">Pending Packing List</a>
+    </span>
+    <span *ngIf="this.loginUserData.user_type != 'Admin'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/admin-pending-packing-list-print" style="color: #878787 !important;">Pending Packing List</a>
+    </span>
+    &nbsp;>&nbsp;
+    <span>Print</span>
+
+
+    <!-- <span>Admin Track Report</span> -->
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Pending Packing List</h4>
+        </div>
+        <div class="fr" *ngIf="supplierdata.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div>
+      <div>
+
+
+        <div *ngIf="supplierpayments" id="printsuppndng">
+          <div class="row busname text-center">
+  
+            <h3 class="shopee_name">
+              <span> {{loginUserData.company_address.companyname}}</span>
+            </h3>
+            <hr>
+            <h3 class="shopee_name">
+             
+               <h4>Pending Packing List</h4>
+              <br>
+            </h3>
+          </div>
+
+        <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+
+          <div class="col-sm-12 list" *ngIf="supplierdata.length>0">
+
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Supplier Name</th>
+                    <th>PI No</th>
+                    <th>PI Date</th>
+                    <th>Inv No</th>
+                    <th>Invoice Date</th>
+                    <!-- <th>Amount</th> -->
+                    <th>Shipment Port</th>
+                    <th>Discharge Port</th>
+                    <!-- <th>Actions</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierdata ; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.business_name}}</td>
+                    <td>{{data.pi_no}}</td>
+                    <td *ngIf="data.pidate=='==='" class="text-center">--</td>
+                    <td *ngIf="data.pidate!='==='">{{data.pidate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td>{{data.createdon | date:'dd-MM-yyyy'}}</td>
+                    <!-- <td>{{data.poamount | number : '1.2-2'}}&nbsp;({{data.currency}})</td> -->
+                    <td>{{data.shipmentport}}</td>
+                    <td>{{data.dischargeport}}</td>
+                  
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+           
+            <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+              <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+              </button>
+              <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Admin-Supplier-Pending-Packing-List">Cancel</button>
+            </div>
+
+
+          </div>
+          <div *ngIf="supplierdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+

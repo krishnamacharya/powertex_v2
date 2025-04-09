@@ -1,0 +1,607 @@
+<div class="container pad_t_5per pad_b_5per user_profile">
+  <p class="bread-crumb1">
+    <span>
+      <!-- <a href="javascript.void(0)" routerLink="/home" style="
+          color: #878787 !important;
+      ">Home</a> -->
+    <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp; 
+    <span>Profile</span>
+
+  </p>
+  <div class="reg_form mar_b_30">
+    <mat-tab-group (selectedTabChange)="tabChanged($event)">
+
+      <mat-tab label="Profile Information" class="left_label">
+        <h4 class="mar_b_30"
+          style="background: #0fa497; margin-top: -10px;margin: -10px -15px 0 -15px;padding: 10px;color: #fff !important;">
+          Personal
+          Information
+        </h4>
+        <form #profileForm="ngForm" style="margin-top: 30px;">
+          <div class="pad_t_b_20 reg_form">
+            <div class="row">
+              <!-- <span class="p_info_h" (click)="editPersonalInfo()">Personal
+                Information<i class="fa fa-pencil-square-o pad_l_10 cursor_pointer theem_color" aria-hidden="true"></i>
+              </span> -->
+              <!-- <span class="p_info_h">Personal Information</span> -->
+              <button type="button" class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fr"
+              (click)="editprofile()">Edit&nbsp;
+              <!-- <i class="fa fa-long-arrow-right" aria-hidden="true"></i> -->
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            </button>
+            </div>
+            <div class="mar_10">
+              <div class="col-md-12 ">
+                <div class="col-md-6">
+                  <!-- <label>First Name</label> -->
+                  <mat-form-field>
+                    <input type="text" [disabled]="edit" required name="first_name" #first_name="ngModel" matInput
+                      placeholder="First Name" onkeypress="return (event.charCode > 64 && 
+                      event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"
+                      [(ngModel)]="loginUserData.first_name">
+                  </mat-form-field>
+
+                </div>
+                <div class="col-md-6">
+                  <!-- <label>Last Name</label> -->
+                  <mat-form-field>
+                    <input matInput [disabled]="edit" required name="last_name" placeholder="Last Name" onkeypress="return (event.charCode > 64 && 
+                    event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"
+                      [(ngModel)]="loginUserData.last_name">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="col-md-6">
+                  <label>Gender</label>
+                  <mat-radio-group [disabled]="edit" required name="radio" class="example-radio-group"
+                    [(ngModel)]="loginUserData.salatation">
+                    <mat-radio-button name="Ms" value="Ms"></mat-radio-button>
+                    <label for="color-2">
+                      <span></span>
+                    </label>
+                    <span class="radio_text">Female</span>
+                    <mat-radio-button name="Mr" value="Mr" class="pad_l_15"></mat-radio-button>
+                    <label for="color-1">
+                      <span></span>
+                    </label>
+                    <span class="radio_text">Male</span>
+                  </mat-radio-group>
+                </div>
+
+              </div>
+            </div>
+            <br>
+
+            <div class="row">
+              <div class="col-md-12">
+                <button *ngIf="!edit" [disabled]="profileForm.invalid" type="submit"
+                  class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
+                  (click)="updateIserInfoData(1,'user')">Update
+                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form #profileUserForm="ngForm" style="margin-top: 30px;">
+          <div class="reg_form pad_t_b_20">
+            <div class="col-md-12">
+              <div class="col-md-6">
+
+                <!-- <label>Email</label> -->
+                <mat-form-field>
+                  <!-- <span class="fr" (click)="editUserEmail=!editUserEmail"><i
+                      class="fa fa-pencil-square-o pad_l_10 cursor_pointer theem_color" aria-hidden="true"></i></span> -->
+                  <input type="email" [disabled]="editUserEmail" required name="email" matInput placeholder="Email Id"
+                    [(ngModel)]="loginUserData.email" #email="ngModel"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                </mat-form-field>
+                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation_msg">
+                  <p class="validation_msg" *ngIf="email.errors['pattern']">Enter Valid Email</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+
+                <mat-form-field>
+                  <!-- <span class="fr" (click)="editUserMobile=!editUserMobile"><i
+                      class="fa fa-pencil-square-o pad_l_10 cursor_pointer theem_color" aria-hidden="true"></i></span> -->
+                  <input type="text" [disabled]="editUserMobile" #mobile="ngModel" maxlength="12" required name="mobile"
+                    matInput placeholder="Mobile Number" [(ngModel)]="loginUserData.mobile" pattern="^[6-9][0-9]{11}$">
+                </mat-form-field>
+                <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
+                  <p class="validation_msg" *ngIf="mobile.errors['pattern']">Enter Valid Mobile</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="showOtp && (!editUserEmail ||!editUserMobile)">
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input type="number" required name="otp" matInput placeholder="Enter OTP" [(ngModel)]="otp">
+                </mat-form-field>
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12" *ngIf="!editUserEmail && !showOtp">
+                <button [disabled]="profileUserForm.invalid" type="submit"
+                  class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
+                  (click)="updateIserInfoData(2,loginUserData.email)">Update Email
+                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                </button>
+                <button type="submit" class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
+                  (click)="cancelEditData()">Cancel
+                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="col-md-12" *ngIf="showOtp">
+                <button [disabled]="profileUserForm.invalid" type="submit"
+                  class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
+                  (click)="submitOtp(otp)">Submit
+                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="col-md-12" *ngIf="!editUserMobile && !showOtp">
+                <button [disabled]="profileUserForm.invalid" type="submit"
+                  class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
+                  (click)="updateIserInfoData(2,loginUserData.mobile)">Update Mobile No
+                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                </button>
+                <button type="submit" class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
+                  (click)="cancelEditData()">Cancel
+                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <form #profileUserForms="ngForm" style="margin-top: 30px;">
+          <div class="reg_form pad_t_b_20">
+            <div class="col-md-12">
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input type="text" [disabled]="editUserEmail" required name="address1" matInput placeholder="Address1"
+                    [(ngModel)]="loginUserData.address1" #address1="ngModel"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                </mat-form-field>
+                <div *ngIf="address1.invalid && (address1.dirty || address1.touched)" class="validation_msg">
+                  <p class="validation_msg" *ngIf="address1.errors['pattern']">Enter Valid address1</p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input type="text" [disabled]="editUserMobile" #address2="ngModel" maxlength="12" required name="address2"
+                    matInput placeholder="Address2" [(ngModel)]="loginUserData.address2" pattern="^[6-9][0-9]{11}$">
+                </mat-form-field>
+                <div *ngIf="address2.invalid && (address2.dirty || address2.touched)" class="validation_msg">
+                  <p class="validation_msg" *ngIf="address2.errors['pattern']">Enter Valid address2</p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input type="text" [disabled]="editUserEmail" required name="state" matInput placeholder="State"
+                    [(ngModel)]="loginUserData.state" #state="ngModel"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                </mat-form-field>
+                <div *ngIf="state.invalid && (state.dirty || state.touched)" class="validation_msg">
+                  <p class="validation_msg" *ngIf="state.errors['pattern']">Enter Valid State</p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input type="text" [disabled]="editUserEmail" required name="city" matInput placeholder="City"
+                    [(ngModel)]="loginUserData.city" #city="ngModel"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                </mat-form-field>
+                <div *ngIf="city.invalid && (city.dirty || city.touched)" class="validation_msg">
+                  <p class="validation_msg" *ngIf="city.errors['pattern']">Enter Valid City</p>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input type="text" [disabled]="editUserEmail" required name="country" matInput placeholder="Country"
+                    [(ngModel)]="loginUserData.country" #country="ngModel"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                </mat-form-field>
+                <div *ngIf="country.invalid && (country.dirty || country.touched)" class="validation_msg">
+                  <p class="validation_msg" *ngIf="country.errors['pattern']">Enter Valid Country</p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input type="text" [disabled]="editUserEmail" required name="pin" matInput placeholder="Pincode"
+                    [(ngModel)]="loginUserData.pin" #pin="ngModel"
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                </mat-form-field>
+                <div *ngIf="pin.invalid && (pin.dirty || pin.touched)" class="validation_msg">
+                  <p class="validation_msg" *ngIf="pin.errors['pattern']">Enter Valid Pin</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </mat-tab>
+
+      <mat-tab label="Change Password" class="mat-tab-label-content">
+        <div class="mar_b_30">
+          <h4
+            style="background: #0fa497; margin-top: -10px;margin: -10px -15px 0 -15px;padding: 10px;color: #fff !important;">
+            Change
+            Password</h4>
+        </div>
+
+        <form #changePwdForm="ngForm">
+          <div class="col-md-12">
+            <div class="col-md-12">
+              <mat-form-field>
+                <input type="password" name="setpassword" minlength="6" matInput id="setpassword"
+                  [(ngModel)]="loginData.setpassword" placeholder="Enter New Password" #setpassword="ngModel" required>
+              </mat-form-field>
+            </div>
+            <div class="col-md-12">
+              <mat-form-field>
+                <input type="password" minlength="6" matInput id="confirmPassword"
+                  [(ngModel)]="loginData.confirmPassword" placeholder="Enter confirm Password" name="confirmPassword"
+                  #confirmPassword="ngModel" required>
+              </mat-form-field>
+            </div>
+            <div *ngIf="loginData.setpassword!=loginData.confirmPassword" class="validation_msg">
+              New Password and confirm password should be match.
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="mar_b_30">
+              <h4 style="color:#0fa497 !important;">
+                <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                  [disabled]="!changePwdForm.valid" (click)="changePassword(changePwdForm,loginData.confirmPassword)">
+                  Update
+                </button>
+              </h4>
+            </div>
+          </div>
+
+        </form>
+
+        <div class="note_points">
+          <h3 class="instructions">Note:</h3>
+          <ul>
+            <li>
+              <p>Be at least 6 characters in length</p>
+            </li>
+            <li>
+              <p>Not be same as your current password</p>
+            </li>
+            <li>
+              <p>Not contain common passwords.</p>
+            </li>
+          </ul>
+        </div>
+
+      </mat-tab>
+
+      <mat-tab label="Manage Addresses" class="left_label"
+        *ngIf="(loginUserData.user_type=='Customer' || loginUserData.user_type=='Dealer' || loginUserData.user_type=='Guest' )">
+
+        <h4
+          style="background: #0fa497; margin-top: -10px;margin: -10px -15px 0 -15px;padding: 10px;color: #fff !important;">
+          Manage Address
+        </h4>
+        <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+          (click)="addNewAdd('new',2)" style="margin-top: 20px;">
+          <i class="fa fa-map-marker" aria-hidden="true"></i> Add New Address
+        </button>
+
+        <mat-grid-list cols="2" rowHeight="2:1" *ngIf="!newAddress">
+          <mat-grid-tile *ngFor="let address of shipingAddress; let i = index">
+            <!-- <mat-list *ngIf="!newAddress">
+              <mat-list-item> -->
+            <div class="mat_addr_styles">
+              <div class="user_data_addr">
+                <p>
+                  <span matLine>
+                    <b>{{address.Contact_person}}</b>
+                  </span>
+                  <span class="fr pad_l_20">
+                    <a href="javascript:void(0)" class="txt_red" (click)="deleteAddress(address.seq_no)" title="Edit">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                  </span>
+                  <span class="fr">
+                    <a href="javascript:void(0)" class="txt_red" (click)="addNewAdd(address,1)" title="Edit">
+                      <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </a>
+                  </span>
+
+                </p>
+                <!-- <h3 matLine> {{address.Contact_person}} </h3> -->
+                <p matLine>
+                  <span> {{address.mobile}}, </span>
+                </p>
+                <p matLine>
+                  <span> {{address.address1}}, </span>
+                  <span> {{address.address2}}, </span>
+                </p>
+                <p matLine>
+                  <span> {{address.city}}, </span>
+                  <span> {{address.state}}. </span>
+                </p>
+                <!-- <p matLine>
+                  <span> {{address.state}}. </span>
+                </p> -->
+              </div>
+              <mat-radio-group class="example-radio-group mat_rad">
+                <mat-radio-button name="seqno" value="{{address.default1}}" [checked]="address.default1==1"
+                  (change)="setasDefault(address)"></mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <!-- </mat-list-item>
+            </mat-list> -->
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        <div class="newAddress" *ngIf="newAddress">
+          <h4 *ngIf="addressId==2" class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">New Address:</h4>
+          <h4 *ngIf="addressId==1" class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Edit Address:</h4>
+          <form #newAddForm="ngForm">
+            <div class="form-group row">
+              <div>
+                <div class="col-sm-3">
+                  <label for="name" >Full Name
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" #name="ngModel" required id="name" name="name"
+                      [(ngModel)]="edipShipAddress.Contact_person" placeholder="Enter Full Name">
+                  </div>
+                  <div [hidden]="name.valid ||  name.untouched" class="validation_msg">
+                    Full Name is required
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <label for="mobile" >Mobile Number
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" #mobile="ngModel" required id="mobile"
+                      [(ngModel)]="edipShipAddress.mobile" name="mobile" placeholder="Enter Mobile Number"
+                      maxlength="10" pattern="^[6-9][0-9]{9}$">
+                  </div>
+                  <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
+                    <p *ngIf="mobile.errors['required']">Mobile Number is required</p>
+                    <p *ngIf="mobile.errors['pattern']">Enter Valid Mobile Number</p>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <label for="hno">Address 1
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" #address1="ngModel" required
+                      [(ngModel)]="edipShipAddress.address1" id="address1" name="address1"
+                      placeholder="Enter House Number">
+                  </div>
+                  <div [hidden]="address1.valid ||  address1.untouched" class="validation_msg">
+                    Address is required
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <label for="street">Address 2
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" required class="form-control" #address2="ngModel"
+                      [(ngModel)]="edipShipAddress.address2" id="address2" name="address2"
+                      placeholder="Enter Street Name">
+                  </div>
+                  <div [hidden]="address2.valid ||  address2.untouched" class="validation_msg">
+                    Address is required
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div>
+
+                <!-- <div class="col-sm-3">
+                  <label  for="country">Country
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div >
+                    <select class='select-option form-control' required [(ngModel)]="edipShipAddress.country" name="country"
+                      #country="ngModel" (change)="onSelectCountry(edipShipAddress.country)">
+                      <option [ngValue]="undefined" disabled selected>--Select--</option>
+                      <option class='option' *ngFor="let countries of countriesList| async" [ngValue]="countries.country">{{countries.country}}</option>
+                    </select>
+                    <div [hidden]="country.valid ||  country.untouched" class="validation_msg">
+                      Country is required
+                    </div>
+                  </div>
+                </div> -->
+                <div class="col-sm-3">
+                  <label for="shopAddress">State
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' [(ngModel)]="edipShipAddress.state" required name="state"
+                      #state="ngModel" (change)="onSelectState(edipShipAddress.state)">
+                      <option [ngValue]="undefined" disabled selected>--select--</option>
+                      <option class='option' *ngFor="let states of response1" [ngValue]="states.state">{{states.state}}
+                      </option>
+                    </select>
+                    <div [hidden]="state.valid ||  state.untouched" class="validation_msg">
+                      State is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <label for="city">District
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' [(ngModel)]="edipShipAddress.district" required
+                      name="district" #district="ngModel" (change)="onSelectDistrict(edipShipAddress.district)">
+                      <option [ngValue]="undefined" disabled selected>--select--</option>
+                      <option class='option' *ngFor="let districts of response2" [ngValue]="districts.district">
+                        {{districts.district}}</option>
+                    </select>
+                    <div [hidden]="district.valid ||  district.untouched" class="validation_msg">
+                      District is required
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <label for="shopAddress">City/Region
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class='select-option form-control' [(ngModel)]="edipShipAddress.city" required name="city"
+                      #city="ngModel">
+                      <option [ngValue]="undefined" disabled selected>--select--</option>
+                      <option class='option' *ngFor="let cities of response3" [ngValue]="cities.city">{{cities.city}}
+                      </option>
+                    </select>
+                    <div [hidden]="city.valid ||  city.untouched" class="validation_msg">
+                      City is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <hr>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="fl">
+                <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                  (click)="cancelNewAdd()">
+                  <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Cancel
+                </button>
+              </div>
+              <div class="fr">
+                <button type="submit" [disabled]="newAddForm.invalid" (click)="saveAddress()"
+                  class="btn btn-primary brdr_radius_50 btn_w bg_green border_green">Save
+                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </mat-tab>
+      <!-- <mat-tab label="Brand Discount " class="left_label"
+      *ngIf="( loginUserData.user_type=='Dealer' )">
+      <h4 class="mar_b_30"
+      style="background: #0fa497; margin-top: -10px;margin: -10px -15px 0 -15px;padding: 10px;color: #fff !important;">
+      Brand Discount
+    </h4>
+   
+    </mat-tab> -->
+      <mat-tab label="Logout" class="left_label"></mat-tab>
+
+    </mat-tab-group>
+  </div>
+</div>
+
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+
+<!-- success small alert -->
+<div class="smallSuccess_alert" *ngIf="alert" style="top:10%;margin-left:40%;width: 30%;">
+  <strong>
+    <i class="fa fa-check add_icon" *ngIf="icon && !icon2"></i>
+    <i class="fa fa-close remove_icon" *ngIf="!icon && icon2"></i> {{wish_alert}} </strong>
+</div>
+
+
+<!-- modal pop up start here -->
+<div class="modal fade" id="successModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{alertMessage}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal pop up start here -->
+<div class="modal fade" id="changePwdModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Password Changed Successfully</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal popup end here -->
+
+<!-- modal pop up start here -->
+<!-- <div class="modal fade" id="incorectPwdModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Password should match.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!-- Modal popup end here -->

@@ -1,0 +1,65 @@
+<div class="container pad_t_5per pad_b_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard"  class="breadcrumb_clr">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Import GRN</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>GRN Details</h4>
+        </div>
+        <div class="fr">
+          <input type="text" placeholder="Search here..." [(ngModel)]="searchText" class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="(inw_details | filter :searchText) as inw_details">
+      <div class="row" *ngIf="inw_details.length>0">
+        <div class="table-responsive">
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Sr.No</th>
+              <th>Invoice. No</th>
+              <th>Invoice. Date</th>
+              <th>Vendor Code</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let data of inw_details|filter:searchText  | paginate: { itemsPerPage: 10, currentPage: p };let j = index">
+              <td>{{10*(p-1)+(j+1)}}</td>
+              <td>{{data.inv_no}}</td>
+              <td>{{data.inv_date}}</td>
+              <td>{{data.purchase_from_company_code}}</td>
+              <td>
+                <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="getInvData(data)">
+                  <i class="fa fa-eye" aria-hidden="true" title="View Details"></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <div *ngIf="inw_details.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/emptyicon.png" />
+            <span class="nodata_txt">No Data is Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

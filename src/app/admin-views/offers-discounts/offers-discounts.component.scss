@@ -1,0 +1,133 @@
+.f_size_15{
+    font-size: 15px;
+}
+.blue_clr{
+    color:#108ed2;
+}
+.blue_l_clr {
+    color: #293271;
+}
+.green_clr{
+    color:#1c944f;
+}
+.red_clr{
+    color:#cf1111;
+}
+.orange_clr{
+    color:#f7a22d;
+}
+.gray_clr{
+    color:#c5c2bd;
+}
+.padd_right_10{
+    padding-right: 10px;
+}
+.P_l_1{
+    padding: 4px;
+    margin-top: 0px !important;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.s_s_r {
+    padding: 5px 5px;
+    border-radius: 4px;
+    border: 1px solid #0fa497;
+}
+.btn_t {
+    color: #1f1919;
+    background-color: #ffffff;
+    border-color: #20978c;
+}
+.c_m_n{
+    margin-left: 5px;
+    width: 20px;
+    height: 15px;
+    vertical-align: text-bottom;
+}
+.bussinesInfo{
+    background: #0fa497;
+    margin-bottom: 0;
+    padding: 10px;
+    color: #fff !important;
+}    
+.a_b_1{
+    color: #fff !important;
+    background-color: #293271 !important;
+    border-color: #293271 !important;
+}
+.a_b_2 {
+    float: right;
+    font-weight: 600;
+    margin-top: -8px;
+}
+// .txt_center{
+//     text-align: center;
+// }
+
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+  
+}
+
+#formatted {
+    white-space: pre-line;
+  }
+.alert_heading1 {
+    background: #0da550;
+    margin-top: 0;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white !important;
+}
+.offerswrap{
+    padding:50px 25px;
+    margin:10px 15px;
+    box-shadow: 2px 2px 8px #dcdcdc;
+}
+/* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 480px){
+.bussinesInfo{
+    margin-right: 0 !important;
+    font-size: 1.3rem !important;
+}
+.a_b_1{
+    padding: 2px  !important;
+    font-size: 13px !important;
+    margin-top: 0.3rem !important;
+}
+.input_btn {
+    width: 69px;
+}
+.offerswrap{
+    padding:10px 25px !important;
+}
+}
+.custom_loder{
+    z-index: 99999999999 !important;
+     position: absolute !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important; 
+     }
+     .customwidth27{
+        width: 27% !important;
+    }
+    .customwidth20{
+        width: 20% !important;
+    }
+    table{
+        margin-bottom: 0 !important;
+        border: 1px solid #dfdfdf;
+    }
+    .mb-0{
+        margin-bottom: 0 !important;
+    }
+
+       

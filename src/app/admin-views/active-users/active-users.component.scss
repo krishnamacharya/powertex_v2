@@ -1,0 +1,127 @@
+.f_size_15{
+    font-size: 15px;
+}
+.blue_clr{
+    color:#108ed2;
+}
+.green_clr{
+    color:#1c944f;
+}
+.red_clr{
+    color:#cf1111;
+}
+.orange_clr{
+    color:#f7a22d;
+}
+.gray_clr{
+    color:#c5c2bd;
+}
+.padd_right_10{
+    padding-right: 8px;
+}
+.txt_center{
+    text-align: center;
+}
+.marg_l_r_10{
+    margin: 0 10px;
+}
+.view_header{
+    background: #0fa497;
+    padding: 10px 20px;
+}
+.view_header h4{
+    color:#fff !important;
+}
+
+//for delete popup styles start here
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #0fa497 !important;
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+}
+.modal-header .modal-title {
+    color:#fff !important;
+}
+.close1{
+    color:red !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    cursor:pointer !important;
+}
+
+
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+  }
+.customwidth20{
+  width: 20%;
+}
+/* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 520px){
+  
+   
+  }
+
+/* tablets styles start here */
+@media screen and (min-width: 481px) and (max-width: 767px){
+
+  }
+
+/* desktops styles start here */
+@media screen and (min-width: 768px) and (max-width: 991px){
+ 
+  }
+
+  /* desktops styles start here */
+@media screen and (min-width: 992px) and (max-width: 1023px){
+   
+  }
+
+    /* lg-desktops styles start here */
+@media screen and (min-width: 1024px) and (max-width: 1200px){
+   
+  }
+
+  .form-control {
+    display: block;
+    width: 95% !important;
+    margin-left:5px !important ;
+    margin-bottom:8px !important ;
+
+  }
+  .custom_loder{
+    z-index: 99999999999 !important;
+     position: fixed !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important;  }
+
+
+        
+.table  tbody  tr  td {
+  padding: 3px !important;
+  line-height: 1.42857143 !important;
+  vertical-align: top !important;
+  border-top: 1px solid #ddd !important;
+  font-size: 11px !important;
+}
+
+.table  thead  tr  th {
+  padding: 3px !important;
+  vertical-align: bottom !important;
+  border-bottom: 2px solid #ddd !important;
+  font-size: 12px !important;
+}
+
+.table .btn {
+  padding: 2px 5px !important;
+  font-size: 10px !important;
+  line-height: 1.5 !important;
+  border-radius: 3px !important;
+}

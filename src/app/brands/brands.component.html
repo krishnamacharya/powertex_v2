@@ -1,0 +1,38 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+<div style="margin-top:50px">
+  <app-catg-menu></app-catg-menu>
+</div>
+<div class="container c_r">
+  <p class="bread-crumb">
+    <span>
+      <a href="javascript.void(0)" routerLink="/home" style="color: #878787 !important;">Home</a>
+    </span>&nbsp;>&nbsp;
+    <span>
+      <a href="javascript.void(0)" routerLink="/all-Category" style="color: #878787 !important;"> All Categories</a>
+    </span>&nbsp;>&nbsp;
+    <span (click)="backClicked()">{{category}}</span>&nbsp;>&nbsp;
+    <span>Brands</span>
+  </p>
+  <div class="row prod_catg" style="margin:0px !important;">
+    <div class="col-md-3  text-center " style="padding:5px;" *ngFor="let p of resources2 | paginate: { itemsPerPage: 12, currentPage: page };let i=index">
+      <div class="img-thumbnail" (click)="selected_sub_cat(p.brand)">
+        <div>
+            <img src="{{p.img}}"  onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';" alt="{{p.brand}}" class="catg_img" >
+        </div>
+        <h4 class="prod_head">{{p.brand}}</h4>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;padding:20px;">
+    <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+  </div>
+ 
+  <div>
+    <!-- <p *ngFor="let p of resources2 | unique">
+      {{p.subcategory}}- <img src="{{p.image}}" alt="{{p.subcategory}}">
+    </p> -->
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

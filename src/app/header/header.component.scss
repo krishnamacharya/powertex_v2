@@ -1,0 +1,210 @@
+.header-page{
+    .banner {
+        width: 100%;
+    }
+    .navbar-inverse {
+        background-color: #c0abab94;
+    }
+}
+
+.navbar-brand {
+    cursor: pointer;
+    padding:0px !important; 
+    
+}
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #0fa497;
+}
+.navbar-inverse {
+    background-color:#ffffff;
+    border-color: #ffffff;
+}
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    color: #fff;
+    background-color: #0d7970e6;
+}
+.navbar-inverse .navbar-nav>li>a {
+    color: #048a7ee3;
+    font-weight: 600;
+    // letter-spacing: .5px;
+}
+.navbar-inverse .navbar-nav>li:hover {
+    background: #0fa497;
+    a {
+       color: white;
+    }
+}
+.form-control{
+    padding:6px 28px;
+}
+.nav>li>a {
+    font-size:15px;
+}
+.navbar {
+    border-radius: 0px;
+}
+.navbar {
+    ul li {
+        cursor: pointer !important;
+    }
+}
+// .navbar {
+//      ul li:active{
+//         background: red !important;
+//     }
+// }
+.class-name{
+    background: #0fa497;
+}
+.class-name a span{
+    color: #fff;
+}
+.titleheading {
+    color: #2a3371 !important;
+    margin-bottom: 0 !important;
+}
+.navbar-form{
+.input-group{
+    width: 100% !important;
+}
+}
+@media (max-width: 1280px){
+    .nav>li>a {
+        font-size:13px;
+    }
+}
+@media (max-width: 1024px){
+    .nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 4px;
+    font-size:9px;
+}
+.form-control{
+    padding:6px 10px;
+}
+}
+@media (max-width: 1366px){
+    .nav>li>a {
+    font-size:13px;
+}
+.form-control{
+    padding:6px 10px;
+}
+}
+// .mar_t_n13{
+//     margin-top: -13px;
+// }
+// .logo_width {
+//     width: 80%;
+// }
+// .navbar-inverse .navbar-nav>li>a {
+//     color: white !important;
+//     font-size: 15px !important;
+// 	text-transform:capitalize;
+// 	}
+// 	.navbar-inverse {
+//     background-color: #0fa497;
+//     border:none !important;
+// 	}
+// 	.carousel-inner>.item>a>img, .carousel-inner>.item>img {
+//     line-height: 1;
+//     height: 370px;
+// }
+// .navbar-nav {
+//     float: left;
+//     margin: 0;
+//     //padding-top: 1%;
+// }
+// .navbar{
+//     border-radius:0px !important;
+// }
+
+
+// .serach_bar{
+//     border-bottom-left-radius: 4px !important;
+//     border-bottom-right-radius: 0 !important;
+//     border-top-left-radius: 4px !important;
+//     border-top-right-radius: 0 !important;
+// }
+// .serach_bar_btn{
+//     border-bottom-left-radius: 0px !important;
+//     border-bottom-right-radius: 4px !important;
+//     border-top-left-radius: 0px !important;
+//     border-top-right-radius: 4px !important;
+// }
+// .search_hdr{
+//     width: 100px;
+//     border: 2px solid #ccc;
+   
+//     padding: 12px 20px 12px 40px;
+//     transition: width 0.4s ease-in-out;
+// }
+// .search_hdr:focus {
+//     width: 100%;
+//   }
+.badge{
+    /* position: absolute; */
+    background-color: #d9534f !important;
+    font-size: 10px !important;
+    left: 23px;
+    top: 3px;
+}
+
+.form-control {  
+     border: 1px solid #0da550 !important;
+     //border: 1px solid #293270 !important;
+     color: #000000 !important;
+}
+
+.navbar-inverse .navbar-nav > li a:hover{
+    color: #fff !important;
+}
+.wish_count{
+    color: #fff;
+background: #d9534f;
+padding: 3px 7px;
+border-radius: 50%;
+font-weight: 600;
+font-size: 13px;
+}
+.navbar-form{
+    border: none !important;
+}
+.navbar-inverse .navbar-toggle .icon-bar {
+    background-color: #d1242c;
+}
+.navbar-inverse .navbar-toggle {
+    border: none;
+    cursor: pointer;
+}
+.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: transparent;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 520px) { 
+#navbarSupportedContent {
+    .navbar-nav{
+        padding-left:10px;
+        padding-right:26px;
+        width: 50%;
+        float: left;
+    }
+    .glyphicon{
+        top:-1px;
+    }
+}
+
+.nav>li>a{
+    padding: 4px 7px;
+    display: inline-block;
+}
+
+.nav>li:focus{
+    outline: none;
+}
+.mat-form-field-label{
+    color: #333 !important;
+    font-weight: bold !important;
+}
+}

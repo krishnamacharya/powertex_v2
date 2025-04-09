@@ -1,0 +1,42 @@
+<ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="pad_t_5per pad_b_5per" style="width:100%;">
+  
+    <div class="pad_15 mar_b_30">
+      <div class="container">
+        <p class="bread-crumb1">
+          <span>
+            <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+          </span>&nbsp;>&nbsp;<span>Whatsapp New Arrivals</span>
+        </p>
+        <div class="row t_s_1">
+          <!-- <div class="row"> -->
+            <!-- <div class="col-md-12 col-lg-12 col-xs-12"> -->
+              <h4 class="f_size_13 f_wt_600 mt_0 bussinesInfo">Whatsapp New Arrivals</h4>
+            <!-- </div> -->
+          <!-- </div> -->
+          <div style="padding:5px 20px 20px 20px">
+  
+                <div class="row">
+                  <div class="col-sm-12 list">
+                     <div class="col-sm-6">
+                        <div class="col-sm-12 pt-2" style="padding-top: 20px;">
+                          <label for="messag" class="control-label mt_zerosix text-right">Message<sup>*</sup></label>
+                          <textarea class="form-control rounded-0" rows="3" name="messag" [(ngModel)]="message" id="messag"
+                            placeholder="Enter Message" minlength="3" maxlength="1000" required></textarea>
+                          <br>
+                          <button type="submit" class="input_btn" (click)="Sendsupplier(message)">Submit</button>
+                        </div>
+                      </div>
+                  </div>
+  
+                </div>
+  
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,212 @@
+
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>
+      <a href="javascript.void(0)" routerLink="/Admin-PAYMENTS">Payments</a>
+    </span>&nbsp;>&nbsp;
+    <span>Payments Discounts</span>
+  </p>
+  <div class="purchasewrap">
+
+    <form (ngSubmit)="onSubmit(paymentDataForm)" #paymentDataForm="ngForm" class="reg_form mar_b_30">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12">
+
+          <h4 class="theme_green f_size_13 f_wt_600 txt_green bussinesInfo">Payment Info</h4>
+        </div>
+      </div>
+      <div class="shippmentwrap">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-xs-12 pl_1">
+            <div class="col-md-6 col-lg-6">
+              <div class="form-group">
+                <p><b>Drawer Name :</b> {{paymentinvoice.business_name}} </p>
+                <!-- <p><b>City :</b> {{paymentinvoice.city}},&nbsp;<b>State :</b> {{paymentinvoice.state}},&nbsp;<b>Country :</b> {{paymentinvoice.country}} </p> -->
+                <!-- <input type="text" class="form-control" id="shipment" [(ngModel)]="pro.shipmentport" name="shipmentport" #shipmentport="ngModel"> -->
+                <!-- <option></option>
+                  </select> -->
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-xs-12 pl_1">
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label>Our Bill Reference No.
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input class="form-control" type="text" id="transactionid" required
+                    [(ngModel)]="payment.bank_transactionid" placeholder="Enter Transaction Id"
+                    name="bank_transactionid" #bank_transactionid="ngModel" (keypress)="keypress($event)">
+
+                  <div [hidden]="bank_transactionid.valid ||  bank_transactionid.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Bill Reference Number</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label>Date
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="date" class="form-control" id="brand" name="tdate" [(ngModel)]="payment.tdate"
+                    #tdate="ngModel" required placeholder="Enter Date" (click)="checkdate(payment.tdate)">
+                  <div [hidden]="tdate.valid || tdate.untouched" class="validation_msg">
+                    Please Select Date
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label>Amount
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input class="form-control" type="text" id="amount" required [(ngModel)]="payment.amount"
+                    placeholder="Enter Amount" name="amount" #amount="ngModel" (keyup)="checkamount(payment.amount)"
+                    (keypress)="keypress($event)">
+
+                  <div [hidden]="amount.valid ||  amount.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Enter Amount</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-12 mar_t_10" *ngIf="invdetail.length>0">
+          <div class="row">
+            <p><b>Total Due Balance:</b>{{total_balance_amount | number : '1.2-2'}}</p>
+            <div style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc">
+
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr style="font-size:12px;">
+                      <th>Select</th>
+                      <th>S.No</th>
+                      <th>Invoice No.</th>
+                      <th>Total Amount</th>
+                      <th>Due Amount</th>
+                      <th>Adjusted Amount</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let pd of invdetail | paginate: { itemsPerPage: 10, currentPage: page};let i=index;">
+
+                      <td>
+                        <input type="checkbox" (change)="checkValue(10*(page-1)+(i),$event)" [disabled]="!payment.bank_transactionid &&!payment.tdate"/>
+                      </td>
+                      <td>
+                        {{10*(page-1)+(i+1)}}
+                      </td>
+                      <td> {{pd.inv_no}}</td>
+                      <td>₹ {{pd.poamount | number : '1.2-2'}} ({{pd.currency}})</td>
+                      <td>
+                        <span *ngIf="pd.balance_amount>0">₹ {{pd.balance_amount | number : '1.2-2'}} ({{pd.currency}})</span>
+                        <span *ngIf="pd.balance_amount<=0">₹ 0</span>
+                      </td>
+                      <td>
+                        {{pd.adjustedAmount}}
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group justify-content-center">
+            <div>
+              <button type="submit" [disabled]="paymentDataForm.invalid"
+                class="btn btn-primary center-block bg_green mt_1">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Payment Success..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" (click)="updatemodal()" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Do you want to confirm Payment</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="confirmmodal()" class="btn btn-success fr" data-dismiss="modal">Confirm</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>

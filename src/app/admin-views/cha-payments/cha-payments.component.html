@@ -1,0 +1,197 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Cha Payments</span>
+  </p>
+
+  <div class="row pad_15" id="chequeFormWrap">
+    <div class="row">
+      <div>
+        <h4 class="theme_green f_size_13 f_wt_600 txt_green mt_0 bussinesInfo">Cha Payments</h4>
+      </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit(masterDataForm)" #masterDataForm="ngForm" class="pad_20">
+      <div class="form-group row">
+        <div>
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label for="prodid" >Mode of Payment
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <select class="form-control" [(ngModel)]="masterData.mode_of_payment" #mode_of_payment="ngModel"
+                name="mode_of_payment" required placeholder="Select">
+                <option [ngValue]="undefined" disabled selected>-- Select Mode --</option>
+                <option>CHEQUE/DD</option>
+                <option>RTGS/NET BANKING</option>
+              </select>
+              <div [hidden]="mode_of_payment.valid || mode_of_payment.untouched" class="validation_msg">
+                please select payment mode 
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label>Date
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="date" class="form-control" id="brand" name="date" [(ngModel)]="masterData.date"
+                #date="ngModel" required placeholder="Enter Date">
+              <div [hidden]="date.valid || date.untouched" class="validation_msg">
+                please select date
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label>Reference id
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="text" class="form-control" id="refno" name="refno" [(ngModel)]="masterData.refno"
+                #refno="ngModel" required placeholder="Enter Reference Number" autocomplete="off">
+              <div [hidden]="refno.valid || refno.untouched" class="validation_msg">
+                please Enter Reference Number
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="form-group row">
+        <div>
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label for="giver_company_name">Company Name
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <!-- --------------------------------------------------------- -->
+            <div>
+              <select class="form-control" required [(ngModel)]="masterData.giver_company_name"
+              (change)="onChange(giver_company_name)" required type="text" name="giver_company_name"
+                #giver_company_name="ngModel" id="giver_company_name" list="companynames" placeholder="Company Name" >
+                <option [ngValue]="undefined" disabled selected>-- Clearing House Name --</option>
+                <option class="option" *ngFor="let s of dealerslist" [ngValue]="s">{{s.businessname}}</option>
+
+              </select>
+            </div>
+            <!-- --------------------------------------------------------- -->
+          </div>
+
+
+
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label for="amount">Amount
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="text" class="form-control" id="amount" name="amount" [(ngModel)]="masterData.amount"
+                #amount="ngModel" required placeholder="Enter Amount" (keypress)="keypress($event)">
+              <div [hidden]="amount.valid || amount.untouched" class="validation_msg">
+                Amount is required
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label for="remarks" >Remarks</label>
+            <div>
+              <textarea class="form-control rounded-0" id="remarks" rows="2" name="remarks"
+                [(ngModel)]="masterData.remarks" #remarks="ngModel" placeholder="Enter Remarks"></textarea>
+            </div>
+          </div>
+
+
+      <!-- =========================================== -->
+      </div>
+    </div>
+    <div class="form-group row pad_t_b_10">
+      <div class="col-sm-12">
+        <div class="pull-left">
+          <button type="reset" class="btn btn-primary brdr_radius_50 btn_w bg_red border_red" (click)="clear()">
+            <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Clear</button>
+        </div>
+        <div class="pull-right">
+          <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+            [disabled]="masterDataForm.invalid || masterData.amount<1">Submit
+            <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+
+
+  <div class="modal fade" id="confirmation" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h3 class="alert_heading">
+                <b text-center>Confirmation</b>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h3>
+              <div>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <!-- <span><b>Company : {{this.busname}}</b></span><br> -->
+                 <!-- <span><b>Company : {{masterData.businessname}}</b></span><br>  -->
+                 <span><b>Company : {{this.busname}}</b></span><br> 
+                <span><b>Amount : {{masterData.amount}}</b></span>
+                <br>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger " data-dismiss="modal">Cancel</button>
+
+          <button type="button" class="btn btn-success fr" data-dismiss="modal"
+            (click)="atributesData(formdataa)">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <!-- <span>Payment Done Sucessfully..!!</span> -->
+                <span>{{this.chequedata}}</span>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+

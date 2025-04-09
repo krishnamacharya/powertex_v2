@@ -1,0 +1,217 @@
+<div class="container pad_t_5per pad_b_5per">
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif"> 
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <table>
+    <div class="container">
+      <p class="bread-crumb1 float-left">
+        <span class="float-left">
+          <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span>PI Edit</span>
+      </p>
+    </div>
+  </table>
+  <div class="purchasewrap">
+    <form #purchaseorderForm="ngForm">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12">
+          <h4 class="theme_green f_size_13 f_wt_600 txt_green mt_0 bussinesInfo">PI list</h4>
+        </div>
+      </div>
+      <div class="row">
+        <!-- <div class="col-md-12 col-lg-12 col-xs-12 pl_1"> -->
+          <div class="col-md-4 col-lg-4">
+            <div class="listgroup">
+              <div>
+                <label for="supplier1" class="control-label mt_zerosix text-right">Select Supplier
+                  Name<sup>*</sup>
+                </label>
+                <input autocomplete="off" type="text" class='select-option form-control' required name="supplier"
+                      [(ngModel)]="suppliername" #supplier="ngModel" id="supplier1"
+                      (change)="getdata(suppliername)"  list="suppliers"
+                      placeholder="Select Supplier">
+                    <datalist id="suppliers">
+                      <option [ngValue]="undefined" disabled selected>Select Supplier</option>
+                      <option class='option' *ngFor="let s of suppliers" [ngValue]="s">{{s.business_name}}</option>
+                    </datalist>
+              </div>
+            </div>
+          </div>
+        <!-- </div>  -->
+      </div>
+      <div class="fr"  *ngIf="productdata.length>0">
+        <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText"  placeholder="Search..."
+          class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+        <!-- <button type="submit" (click)="searchdata(searchText)" class="input_btn">Search</button> -->
+      </div>
+      <div class="reg_form">
+     <div class="supplierwrap">
+      <div class="col-sm-12" *ngIf="productdata">
+        <div class="row" *ngIf="productdata.length>0"> 
+          <div class="table-responsive mt_3" *ngIf="(productdata | filter :searchText) as productdata">
+            <table class="table table-bordered table-condensed">
+              <thead>
+                <th class="cellwidth20">Product Name</th>
+                  <th class="cellwidth11">Brand</th>
+                  <th class="cellwidth10">SKU No</th>
+                  <th class="cellwidth11">PI No</th>
+                  <th class="cellwidth8 text-right">PI Qty(Pcs)</th>
+                  <th class="cellwidth8 text-right">Balance Qty(Pcs)</th>
+                  <th class="cellwidth8 text-right">Unit Price
+                    <!-- ({{productdata[0].ctype}}) -->
+                  </th>
+                  <th class="cellwidth8 text-left">Select Currency</th>
+                  <th class="cellwidth11 text-right">Amount 
+                    <!-- ({{productdata[0].ctype}}) -->
+                  </th>
+                  <th class="cellwidth11 text-center">Options</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of productdata | paginate: { itemsPerPage: 10, currentPage: p };let i=index">
+                    <td> <input type="text" class="form-control" readonly [(ngModel)]="product.product_name" 
+                        [ngModelOptions]="{standalone: true}" #product_name="ngModel" title="{{product.product_name}}" /> </td>
+                    <td><input type="text" class="form-control" readonly [(ngModel)]="product.brand"
+                        [ngModelOptions]="{standalone: true}" #brand="ngModel" title="{{product.brand}}" /></td>
+                    <td><input type="text" class="form-control" readonly [(ngModel)]="product.sku_no"
+                        [ngModelOptions]="{standalone: true}" #sku_no="ngModel" title="{{product.sku_no}}" /></td>
+                   <td><input type="text" class="form-control" readonly [(ngModel)]="product.pi_no"
+                        [ngModelOptions]="{standalone: true}" #pi_no="ngModel" title="{{product.pi_no}}"/></td>
+                   <td><input type="number" class="form-control" readonly [(ngModel)]="product.Piqty" min="1"
+                        [ngModelOptions]="{standalone: true}" #Piqty="ngModel" title="{{product.Piqty}}"/></td>
+                    <td><input type="text" class="form-control" [(ngModel)]="product.balanceqty"
+                      (keyup)="qtychange(product)" [ngModelOptions]="{standalone: true}" #balanceqty="ngModel" /></td>
+                    <td><input type="text" class="form-control text-right" readonly [(ngModel)]="product.price"
+                        (keyup)="qtychange(product)" [ngModelOptions]="{standalone: true}"
+                         #price="ngModel" title="{{product.price}}"/></td>
+                    <td> 
+                      <div class="form-group">
+                        <select class="select-option form-control" [(ngModel)]="product.CType"  name="CType" [ngModelOptions]="{standalone: true}"
+                        [disabled]="product.disableinput" disabled>
+                          <option [ngValue]="undefined" selected disabled>Select</option>
+                          <option value="USD">USD</option>
+                          <option value="CNY">CNY</option>
+                        </select>
+                      </div>
+                    </td>
+                    <td><input type="text" class="form-control text-right" readonly
+                      [ngModel]="product.amount | number:'1.2-2'" [ngModelOptions]="{standalone: true}"
+                        #amount="ngModel" title="{{product.amount}}"/></td>
+                  <td class="text-center">        
+                    <button type="button" class="btn btn-sm bg_green" (click)="update(product)">Update</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls (pageChange)="p = $event" *ngIf="productdata.length>0"></pagination-controls>
+          </div>
+          <div *ngIf="productdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Details Updated Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Deleted Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="WarningModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>No Data is Available..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

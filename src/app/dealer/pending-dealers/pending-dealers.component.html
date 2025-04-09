@@ -1,0 +1,70 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center pad_b_30">
+      <h3 class="shopee_name"><span class="shopee_name">{{loginUserData.content}}</span></h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+    <p class="bread-crumb1">
+      <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;<span>Pending Dealers</span>
+    </p>
+  </div>
+  
+  <div class="row pad_15">
+    <div class="col-md-12">
+      <div class="paymenttable">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Dealer Name</th>
+              <th>Email</th>
+              <th>Dealer City</th>
+              <th>Mobile No.</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pd of response| paginate: { itemsPerPage: 10, currentPage: page}; let i=index;">
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{i+1}}</span></p>
+                </div>
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.first_name}}{{pd.last_name}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                  <div style="margin:0px; font-size: 13px !important;">
+                    <p><span>{{pd.email}}</span></p>
+                  </div>
+  
+                </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.city}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.mobile}}</span></p>
+                </div>
+
+              </td>
+             
+
+
+            </tr>
+          </tbody>
+        </table>
+        <div class="pull-left mar_t_30">
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

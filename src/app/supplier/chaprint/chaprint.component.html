@@ -1,0 +1,306 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span *ngIf="this.PUrl == 'A=Rep'">
+      <a href="javascript.void(0)" routerLink="/Supplier-Reports" style="color: #878787 !important;">
+        Supplier Reports</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="this.PUrl == 'A=CCR'">
+      <a href="javascript.void(0)" routerLink="/Admin-Cha-Charges-Report" style="color: #878787 !important;">
+        CHA Charges Report</a>&nbsp;>&nbsp;
+    </span>
+    <span>Print</span>
+    <!-- <span *ngIf="loginUserData.role!='Admin'">
+      <a href="javascript.void(0)" routerLink="/Supplier-PO">Orders</a>
+    </span> -->
+    <!-- <span>
+      <a>Cha Print</a>
+    </span> -->
+  </p>
+  <div class="total_invoice_page" style="margin-bottom: 20px;" id="printSectionId">
+    <div class="printwrap">
+      <div class="invoce_address">
+        <div class="table-responsive" style="margin-top: 10px;margin-bottom: 0px;">
+          <table class="table table-bordered table-striped pending_order printTable"
+            style="margin-bottom: 10px !important;table-layout: initial;">
+            <thead>
+              <tr>
+                <th style="background: transparent;color:#000000;border:none !important;padding:3px !important;"
+                  colspan="9">
+                  <div class="hr_line_botm marg_t_b_15" style="margin-bottom: 0 !important;margin-top:0px;">
+                    <div class="row" style="margin: 0 !important;">
+                      <div class="col-xs-12">
+                        <div class="company_address" style="text-align: center;">
+                          <h3 class="shiptitle text-center">
+                            {{invoiceData[0].business_name}}
+                          </h3>
+                          <div>
+                            <span style="line-height: 1.5;">
+                              {{invoiceData[0].address1}},
+                            </span>
+                            <span style="line-height: 1.5;">{{invoiceData[0].address2}},
+                            </span>
+                            <span style="line-height: 1.5;"> {{invoiceData[0].city}} - </span>
+
+                            <!-- <span style="line-height: 1;">
+                              <b>State&nbsp;</b>
+                            </span> -->
+                              <span
+                                *ngIf="invoiceData[0].pin" style="line-height: 1.5;">{{invoiceData[0].pin}}
+                                .</span><br>
+                            <span style="line-height: 1.5;">
+                             <b>Phone </b>
+                            </span>
+                            <span style="line-height: 1.5;"> :
+                              {{invoiceData[0].mobile}},</span>
+
+                            <span *ngIf="invoiceData[0].fax" style="line-height: 1.5;">
+                              <b>Fax&nbsp;</b>
+                            </span>
+                            <span *ngIf="invoiceData[0].fax" style="line-height: 1.5;"> : {{invoiceData[0].fax}}.</span>
+                            <span style="line-height: 1.5;">Email</span>
+                            <span style="line-height: 1.5;"> :
+                              {{invoiceData[0].email}},</span><br>
+                            <span *ngIf="invoiceData[0].gst" style="line-height: 1.5;">
+                              GSTIN
+                              &nbsp;</span>
+                            <span *ngIf="invoiceData[0].gst" style="line-height: 1.5;">:
+                              {{invoiceData[0].gst}},&nbsp;</span>
+                            <span *ngIf="invoiceData[0].pan" style="line-height: 1.5;">PAN
+                              &nbsp;</span>
+                            <span *ngIf="invoiceData[0].pan" style="line-height: 1.5;">:
+                              {{invoiceData[0].pan}}.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row hr_line_botm nopadding hr_line" style="display: flex;margin:0;padding: 0;">
+                    <div class="col-md-8 col-xs-6 w-75">
+                      <div class="row">
+                        <div class="col-md-2 col-xs-6 nopadding w-18">
+                          <p>Consignee</p>
+                        </div>
+                        <div class="col-md-9 col-xs-6 nopadding txt_l fnt_size_12">
+                          <p>:&nbsp;<b>{{invoiceData[0].companyname}}.</b></p>
+                          <p style="margin-left: 12px !important;">
+                            {{invoiceData[0].companynameAdd1}},<br>
+                            {{invoiceData[0].companynameadd2}},
+                            {{invoiceData[0].companynamecity}} - {{invoiceData[0].companynamepin}},
+                          </p>
+                        </div>
+
+                      </div>
+                      <div class="row">
+                        <div class="col-md-2 col-xs-6 nopadding txt_l fnt_size_12 w-18">
+                          <p>GST No</p>
+                          <p>State</p>
+                        </div>
+                        <div class="col-md-9 col-xs-6 nopadding">
+                          <p> :&nbsp;{{invoiceData[0].companynamegst}}</p>
+                          <p> :&nbsp;{{invoiceData[0].companynamestate}}</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-4 col-xs-6 w-25">
+                      <div class="row">
+                        <div class="col-md-4  col-xs-6 nopadding txt_l fnt_size_12 w-40">
+                          <p>Bill No</p>
+                          <p>Bill Date</p>
+                          <p>Job No</p>
+                          <p>Job Date</p>
+                        </div>
+                        <div class="col-md-8 col-xs-6 nopadding txt_l fnt_size_12 w-60">
+                          <p> :&nbsp; {{invoiceData[0].bill_no}}</p>
+                          <p> :&nbsp; {{invoiceData[0].bill_date | date:'dd-MM-yyyy'}}</p>
+                          <p> :&nbsp; {{invoiceData[0].chadtl[0].job_no}}</p>
+                          <p> :&nbsp; {{invoiceData[0].chadtl[0].job_date | date:'dd-MM-yyyy'}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row hr_line_botm nopadding" style="display: flex;margin:0;padding: 0;">
+                    <div class="col-md-6 col-xs-8">
+                      <div class="row">
+                        <div class="col-md-3 col-xs-6 nopadding txt_l fnt_size_12">
+                          <p>Supplier Name</p>
+                          <p>B/E No</p>
+                          <p>MBL</p>
+                          <p>Invoice No</p>
+                          <!-- <p>IGM/Item No</p> -->
+                          <!-- <p>Lic No </p> -->
+                          <p>Description</p>
+                          <!-- <p>Duty Debited Rs.</p> -->
+                        </div>
+                        <div class="col-md-9 col-xs-6 nopadding">
+                          <p> :&nbsp; <b>{{invoiceData[0].supplier}}</b></p>
+                          <p> :&nbsp;<b>{{invoiceData[0].be_no}}</b></p>
+                          <p> :&nbsp;<b>{{invoiceData[0].bl_no}}</b></p>
+                          <!-- <p> :&nbsp;<b>{{invoiceData.json_hdr.be_no}}</b> </p> -->
+                          <p> :&nbsp;<b>{{invoiceData[0].inv_no}}</b> </p>
+                          <!-- <p> :&nbsp; <b>{{invoiceData.json_hdr.noofitems}}</b></p> -->
+                          <!-- <p> :&nbsp;<b>{{invoiceData.json_hdr.be_no}}</b></p> -->
+                          <p> :&nbsp;<b>{{invoiceData[0].itemdes}}</b></p>
+                          <!-- <p>
+                            :&nbsp;<b>{{invoiceData.json_hdr.description}}{{invoiceData.json_hdr.description2}}{{invoiceData.json_hdr.description3}}</b>
+                          </p>
+                          <p> :&nbsp;<b>{{invoiceData.json_hdr.duty_approx}}</b> </p> -->
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-md-3">
+                      <div class="row">
+                        <div class="col-md-6 col-xs-6 nopadding txt_l fnt_size_12">
+                          <br>
+                          <p>BE Date &nbsp;</p>
+                          <p>BL Date &nbsp;</p>
+                           <p>Invoice Date &nbsp;</p>
+                        </div>
+                        <div class="col-md-6 col-xs-6 nopadding">
+                           <br>
+                           <p> :&nbsp;{{invoiceData[0].be_date | date:'dd-MM-yyyy'}} </p>
+                           <p> :&nbsp;{{invoiceData[0].bldate | date:'dd-MM-yyyy'}} </p>
+                           <p> :&nbsp;{{invoiceData[0].inv_date | date:'dd-MM-yyyy'}}</p>
+                         </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="row">
+                        <div class="col-md-6 col-xs-5 nopadding txt_l fnt_size_12">
+                          <p>No Pkgs.</p>
+                          <p>Country of Orgin</p>
+                          <p>No of Contr</p>
+                          <p>Cont Nos</p>
+                          <p>Gross Wt.</p>
+                          <p>Ass.Val(Rs.)</p>
+                          <p>Duty(Rs.)</p>
+                        </div>
+                        <div class="col-md-6 col-xs-7 nopadding txt_l fnt_size_12">
+                          <p> :&nbsp; {{invoiceData[0].ctns}}&nbsp;CTN</p>
+                          <p> :&nbsp;China</p>
+                          <p> :&nbsp;{{invoiceData[0].noofcontr}}</p>
+                          <p> :&nbsp;{{invoiceData[0].contnos}} </p>
+                          <p> :&nbsp;{{invoiceData[0].gw | number : '1.2-2'}}&nbsp;KGS</p>
+                          <!-- <p> :&nbsp;{{invoiceData.json_hdr.be_date}} </p> -->
+                          <p> :&nbsp;{{invoiceData[0].asses_val}} </p>
+                          <p> :&nbsp;{{invoiceData[0].duty_approx}} </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+              <tr class="ml-1 mr-1">
+                <th class="txt_centr" style="font-size: 10px;text-align: center;width: 2%;">Sr.</th>
+                <th class="txt_left" style="font-size: 10px;width:30%;word-break: break-all;">Particulars</th>
+                <th class="txt_left" style="font-size: 10px;width:10%;word-break: break-all;">Receipt Details</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;">Non-Receipted Amount</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;">Receipted Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of invoiceData[0].chadtl; let i=index">
+                <td class="txt_centr" style="font-size: 10px;text-align: center;">{{i+1}}</td>
+                <td class="txt_left" style="font-size: 9px;">{{item.particulars}}
+                </td>
+                <td class="txt_left" style="font-size: 9px;">{{item.receiptdetails}}
+                </td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.nonreceipted | number:'1.3-3'}}</td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.receipted| number:'1.3-3'}}</td>
+              </tr>
+
+              <tr> 
+                <td colspan="2" class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <b>Grand Total</b>
+                </td>
+                <td></td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    <b>{{ this.ToTnonreceipted | number:'1.3-3'}}</b>
+                  </span>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    <b>{{ this.ToTreceipted | number:'1.3-3'}}</b>
+                  </span>
+                </td> 
+              </tr>
+              <tr> 
+                <td colspan="2" class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <b>Total Net Amount</b>
+                </td>
+                <td></td>
+                <td></td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    <b>{{ this.ToTreceipted + this.ToTnonreceipted}}</b>
+                  </span>
+                </td> 
+              </tr>
+              <tr>
+                <td colspan="5" class="no-line" style="font-size: 10px;">
+                  <b><span>INR {{toWords(this.ToTreceipted + this.ToTnonreceipted)}}</span></b> 
+                 </td>
+              </tr>
+              <tr>
+
+                <td rowspan="2" style="text-align: center;font-size: 10px;"><b>HSN/SAC</b></td>
+                <td rowspan="2" style="text-align: center;font-size: 10px;vertical-align: middle;"><b>Taxable Value</b></td>
+                <td colspan="2" style="text-align: center;font-size: 10px;"><b>Integrated Tax</b></td>
+                <td rowspan="2" style="text-align: center;font-size: 10px;vertical-align: middle;"><b>Total Tax Amount</b></td>
+              </tr>
+              <tr>
+                <td  style="text-align: center;font-size: 10px;"><b>Rate</b></td> 
+                <td  style="text-align: center;font-size: 10px;"><b>Amount</b></td> 
+              </tr>
+              <tr>
+                <td></td>
+                <td  style="text-align: center;font-size: 10px;">{{ this.ToTnonreceipted | number:'1.3-3'}}</td>
+                <td  style="text-align: center;font-size: 10px;">18%</td>
+                <td  style="text-align: center;font-size: 10px;">{{this.ToTnonreceipted * 18 / 100  | number:'1.3-3'}}</td>
+                <td  style="text-align: center;font-size: 10px;">{{this.ToTnonreceipted * 18 / 100  | number:'1.3-3'}}</td>
+              </tr>
+              <tr>
+                <td style="text-align: center;font-size: 10px;"><b>Total</b></td>
+                <td style="text-align: center;font-size: 10px;">{{this.ToTnonreceipted  | number:'1.3-3'}}</td>
+                <td style="text-align: center;font-size: 10px;"></td>
+                <td style="text-align: center;font-size: 10px;">{{this.ToTnonreceipted * 18 / 100  | number:'1.3-3'}}</td>
+                <td style="text-align: center;font-size: 10px;"><b>{{(this.ToTnonreceipted) + (this.ToTnonreceipted * 18 / 100)  | number:'1.3-3'}}</b></td>
+              </tr>
+              <tr>
+                <td colspan="4"  style="font-size: 10px;">Tax Amount(in words):
+                  <b><span>INR {{toWords(this.ToTnonreceipted + (this.ToTnonreceipted * 18 / 100))}}</span></b> 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="text-align: center;padding-bottom: 15px;">
+    <button type="submit" class="btn btn-success" (click)="printCha()">Print</button>
+    <button *ngIf="this.PUrl == 'A=Rep'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Supplier-Reports">Close</button>
+    <button *ngIf="this.PUrl == 'A=CCR'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Admin-Cha-Charges-Report">Close</button>
+    <button *ngIf="this.PUrl != 'A=Rep' && this.PUrl != 'A=CCR'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Close</button>
+  </div>
+</div>

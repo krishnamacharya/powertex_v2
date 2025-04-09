@@ -1,0 +1,197 @@
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span *ngIf="loginUserData.role!='Admin'">
+      <a href="javascript.void(0)" routerLink="/Warehouse Manager-DC DETAILS" style="color: #878787 !important;">
+        DC Details</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="this.PUrl == 'A=DcP' && loginUserData.role == 'Admin'">
+      <a href="javascript.void(0)" routerLink="/Admin-DC DETAILS PRINT" style="color: #878787 !important;">
+        DC Details Print</a>&nbsp;>&nbsp;
+    </span>
+    <span>PO Print</span>
+  </p>
+  <div class="total_invoice_page" id="printSectionId" style="margin-bottom: 20px;">
+    <div class="printwrap">
+      <div class="invoce_address" id="pageCounter">
+        <div class="table-responsive" style="margin-top: 10px;">
+          <table class="table table-bordered table-striped pending_order printTable"
+            style="margin-bottom: 0px !important;">
+            <thead>
+              <tr class="hr_line_botm noBorder">
+                <th colspan="8" style="border: none !important;background: transparent !important;">
+                  <div>
+                    <h3
+                      style="color: #000000;padding-bottom: 3px;text-align: center;font-weight: 600;font-size: 18px;margin-top: 10px;margin-bottom: 2px;color: #000000 !important;">
+                      {{loginUserData.company_address.online_display_name}}
+                    </h3>
+                    <h3
+                      style="color: #000000 !important;padding-bottom: 3px;text-align: center;font-weight: 600;font-size: 16px;margin-top: 3px;margin-bottom: 2px;">
+                      D.C Details
+                    </h3>
+                  </div>
+                </th>
+              </tr>
+              <tr class="noBorder">
+                <th colspan="8" style="border: none !important;background: transparent !important;">
+                  <div class="row " style="margin-right:0px">
+                    <div class="col-md-6 company_address" style="line-height: 1;float:left;padding-top: 8px">
+                      <p style="line-height: 10px;margin-bottom: 3px;font-size:10px;color: #000000;"><b>DC No :
+                          {{poData.print}},
+                          <span style="line-height: 1;font-size:10px;">DC Date :
+                            {{poData.printdate | date:'dd/MM/yyyy'}}</span></b>
+                      </p>
+                      <p style="line-height: 10px;margin-bottom: 5px;font-size:10px;color: #000000;">
+                        <b> Name &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;:
+                          {{poData.business_name}},{{poData.U_city}}</b>
+                      </p>
+                      <p *ngIf="loginUserData.role!='Admin' && loginUserData.role!='Super'"
+                        style="line-height: 10px;margin-bottom: 5px;font-size:10px; color: #000000;">
+                        <b> Mobile &nbsp;&nbsp; &nbsp;: {{poData.mobile}}</b>,&nbsp;<br>
+                      </p>
+                      <p *ngIf="loginUserData.role!='Admin' && loginUserData.role!='Super'"
+                        style="line-height: 10px;margin-bottom: 5px;font-size:10px;color: #000000;">
+                        <b style="margin-bottom: 5px;">GST No &nbsp;&nbsp;: {{poData.gst}},</b> <br>
+                      </p>
+                      <p *ngIf="loginUserData.role!='Admin' && loginUserData.role!='Super'"
+                        style="line-height: 10px;margin-bottom: 5px;font-size:10px;color: #000000;">
+                        <b> Address &nbsp;: {{poData.address.address1}}</b>
+                      </p>
+                      <p *ngIf="loginUserData.role=='Admin'"
+                        style="line-height: 10px;margin-bottom: 5px;font-size:10px;color: #000000;">
+                        <b> Mobile &nbsp;&nbsp; &nbsp;: {{poData.bill_to_party.mobile}}</b>,&nbsp;<br><b
+                          style="margin-bottom: 5px;">GST No &nbsp;&nbsp;: {{poData.gst}},</b> <br>
+                        <span class="spnwidth"><b> Address &nbsp;:{{poData.bill_to_party.address1}},</b>
+                          &nbsp;{{poData.bill_to_party.city}}</span>
+                      </p>
+                      <p *ngIf="loginUserData.role=='Super'"
+                        style="line-height: 10px;margin-bottom: 5px;font-size:10px;color: #000000;">
+                        <b> Mobile &nbsp;&nbsp; &nbsp;: {{poData.bill_to_party.mobile}}</b>,&nbsp;<br><b
+                          style="margin-bottom: 5px;">GST No &nbsp;&nbsp;: {{poData.gst}},</b> <br>
+                        <span class="spnwidth"><b> Address &nbsp;:{{poData.bill_to_party.address1}},</b>
+                          &nbsp;{{poData.bill_to_party.city}}</span>
+                      </p>
+                    </div>
+                    <div class="col-md-6 company_address" style="line-height: 1;float:right;padding-top: 8px">
+                      <p style="margin-bottom: 5px;line-height: 1;font-size:10px;font-weight: 600;color: #000000;">Mkt
+                        Manager
+                        <span style="line-height: 1;"> : {{poData.marketing}} </span>
+                      </p>
+                      <!-- <p><b>Mobile No :</b> {{poData.b_mobile}}</p> -->
+                      <!-- <p>
+                        <b>Marketing Mobile &nbsp;&nbsp;&nbsp;</b>
+                        <span>: {{poData.marketing_mobile}}</span>
+                      </p> -->
+                    </div>
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <th class="txt_centr" style="font-size: 9px;">Sr.</th>
+                <!-- <th class="txt_left" style="font-size: 11px;">Subcategory</th> -->
+                <th class="txt_left" style="font-size: 9px;">Product name</th>
+                <!-- <th class="txt_left" style="font-size: 11px;">Model No.</th> -->
+                <!-- <th class="txt_left" style="font-size: 9px;">SKU</th>
+              <th class="txt_right" style="font-size: 9;text-align: right;">N/C</th> -->
+                <!--  <th class="txt_right" style="font-size: 11px;">Cartons</th> -->
+                <th class="txt_right" style="font-size: 9px;text-align: right;">P/C</th>
+                <!-- <th class="txt_right" style="font-size: 9px;text-align: right;">Free</th> -->
+                <th class="txt_right" style="font-size: 9px;text-align: right;">T.Qty</th>
+                <th class="txt_right text-right" style="font-size: 9px;">A.Qty</th>
+                <th class="txt_right" style="font-size: 9px;text-align: center;">Y/N</th>
+                <!-- <th class="txt_right" style="font-size: 10px;text-align: center;">Packed Cartoon No.</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of poPrintData;let i=index">
+                <td class="txt_centr">
+                  <span> {{i+1}}</span>
+                </td>
+                <!-- <td> {{item.subcategory}}</td> -->
+                <td class="txt_left">
+                  <span> {{item.subcategory}}&nbsp; {{item.modelno}}</span>
+                  <!-- {{item.long_name}} -->
+                </td>
+                <!-- <td class="txt_left">{{item.modelno}}</td> -->
+                <!-- <td class="txt_left">{{item.sku_number}}</td> -->
+                <!-- <td class="txt_left" style="text-align: right;">{{item.qty/item.PPC  | number : '1.2-2' }}</td> -->
+                <!-- <td class="txt_right">{{item.qty/item.PPC}}</td> -->
+                <!-- <td class="txt_right" *ngIf="item.free_qty" style="text-align: right;">{{item.free_qty}}</td> -->
+                <td class="txt_right" style="text-align: right;">
+                  <span> {{item.piecepercarton }} </span>
+                </td>
+                <!-- <td class="txt_right"  *ngIf="!item.free_qty" style="text-align: right;">0</td> -->
+                <td class="txt_right" style="text-align: right;">
+                  {{item.qty }} <span></span>
+                </td>
+                <td></td>
+                <td class="text-center">
+                  <p *ngIf="item.stock_qty>0">Y</p>
+                  <p *ngIf="item.stock_qty<=0">N</p>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="noBorder">
+                <td colspan="8" style="border:none !important;border:none !important">
+                  <div class="row " style="margin-right:0px">
+                    <!-- <div class="col-md-12 company_address" *ngIf="freeqtyarr?.length>0" style="line-height: 1.5;float:left;padding-top: 5px;">
+                      <p>  <b>Free Qty : </b>
+                        <b *ngFor="let f of freeqtyarr">
+                         <b> {{f.productname}} = {{f.free_qty}}&nbsp; </b>
+                       </b></p>
+                        </div> -->
+                    <div class="col-md-12 company_address" *ngIf="poData.spl_instr"
+                      style="line-height: 1.5;float:left;padding-top: 5px">
+                      <p><b>Special Instructions</b>: {{poData.spl_instr}}</p>
+                    </div>
+                    <div class="col-md-12 company_address" style="line-height: 1.5;float:left;padding-top: 5px">
+                      <p> PO No : {{poData.spo}} </p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr class="noBorder">
+                <td colspan="8" style="border:none !important;border:none !important">
+                  <div class="row " style="margin-right:0px">
+                    <div class="col-md-6 company_address" style="line-height: 1.5;float:left;padding-top: 5px">
+                      <div *ngIf="loginUserData.role=='Warehouse Manager'">
+                        <!--  <p><b>Prepared By :  {{loginUserData.headoffice_address.company_email}}</b></p> -->
+                        <p><b>Prepared By : {{loginUserData.first_name}}</b></p>
+                      </div>
+                      <div *ngIf="loginUserData.role=='Admin'">
+                        <!--  <p><b>Prepared By :  {{loginUserData.headoffice_address.company_email}}</b></p> -->
+                        <p><b>Prepared By : {{loginUserData.first_name}}</b></p>
+                      </div>
+                    </div>
+                    <div class="col-md-6 company_address pull-right"
+                      style="line-height: 1.5;float:right;padding-top: 5px">
+                      <p><b>Work Assigned To</b></p>
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row pad_t_b_5" style="text-align: center;">
+    <button type="submit" class="btn btn-success" (click)="printPO()">Print PO</button>
+    <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Cancel</button>
+  </div>
+</div>
+<ngx-spinner class="loader_spinner"></ngx-spinner>

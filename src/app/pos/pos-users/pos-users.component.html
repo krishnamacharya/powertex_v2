@@ -1,0 +1,332 @@
+<div class="container pad_t_5per pad_b_5per ">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name"><span> {{loginUserData.content}}</span></h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a></span>&nbsp;>&nbsp;
+    <span>POS</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15" style="overflow:visible !important;" *ngIf="POSorderVisible">
+    
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <button class="btn btn-pos">POS Users</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <label for="mobile">Mobile Number
+          <sub class="txt_red f_size_25">*</sub>
+        </label>
+        <input list="mobile" class="form-control" placeholder="Enter Mobile Number" [(ngModel)]="mobile" 
+                          style="width: 90%;">
+        <datalist id="mobile">
+          <option *ngFor="let p of httpdata2" value="{{p.mobile}}">
+        </datalist>
+      </div>
+      <div class="col-md-3">
+        <label for="card">Card No</label>
+        <input type="text" name="card" class="form-control" placeholder="Enter Card No">
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary mar_t_25" (click)="fetch(mobile)">Get</button>
+        <button class="btn btn-primary mar_t_25" style="float:right;" (click)="open()">New User ?</button>
+      </div>
+    </div>
+    <h4 *ngIf="newUserMsg">Welcome to New User</h4>
+    <section *ngIf="mob_d">
+      <div class="row mar_t_10" *ngIf="mob_d.length>0">
+        <div class="col-md-6">
+          <h5><b>User Details</b></h5>
+            <div *ngFor="let adr of mob_d">
+              <p class="row_mar_0">{{adr.first_name}}</p>
+              <p>{{adr.city}},{{adr.state}},{{adr.country}}</p>
+            </div>
+        </div> 
+      </div>
+    </section>
+
+    <section>
+      <div class="row mar_t_4per" style="margin-right:-8px !important;">
+        <div class="col-md-6" >
+          <div class="row"style="background: #2e9e932e;">
+            <div class="col-md-12">
+              <p class="row_mar_0"><b>Search By Category</b></p>
+              <table class="table" style="margin-bottom: 5px !important;">
+                <td>
+                  <input list="categorys" class="form-control" placeholder="Select Category" 
+                        [(ngModel)]="newAttribute1.category" (input)="change_form($any($event.target).value)"
+                        style="width: 90%;">
+                  <datalist id="categorys">
+                    <option *ngFor="let p of resources" value="{{p.Category}}">
+                  </datalist>
+                </td>
+                <td> 
+                  <input list="subcategorys" class="form-control" placeholder="Select SubCategory"
+                    [(ngModel)]="newAttribute1.subcategory" (input)="change1($any($event.target).value,selectedCategory_form)" [disabled]="sele_sub_catg()"  style="width: 90%;" />
+                  <div *ngFor="let p of resources">
+                    <datalist id="subcategorys" *ngIf="selectedCategory_form==p.Category">
+                      <option *ngFor="let pd of p['detail']" value="{{pd['SubCategory']}}">
+                    </datalist>
+                  </div>
+                </td>
+                <td *ngIf="httpdata2">
+                  <div class="dropdown">
+                    <button class="btn btn_t dropdown-toggle" type="button" data-toggle="dropdown" [disabled]="mod_disable()">Select Modal
+                      <span class="caret"></span></button>
+                    <ul class="dropdown-menu" style=" max-height: 200px; overflow: scroll; ">
+                      <li style="width:220px;" *ngFor="let data of httpdata2"><p><input type="checkbox" class="c_m_n" (change)="get_barcode(data.productid)"value="{{data.modelno}}" > {{data.modelno}}</p></li>
+                    </ul>
+                  </div>
+                </td>
+              </table>
+            </div>
+            <div class="col-md-12 mar_b_15">
+              <div class="col-md-8" style="padding:0px;">
+                <p class="row_mar_0"><b>Search By Modal No</b></p>
+                <div>
+                  <input list="all_modals" class="form-control"  [(ngModel)]="modelno" placeholder="Select Modal" 
+                  style="width: 90%;">
+                  <datalist id="all_modals">
+                    <option *ngFor="let p of all_modals" value="{{p.productid}}">{{p.modelno}}</option>
+                  </datalist>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-primary" style="vertical-align:-30px;" (click)="get_barcode(modelno)">Get</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form #barCodeForm="ngForm">
+          <div class="col-md-3">
+            <label for="barcode">Barcode
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <input type="text" required class="form-control" name="barcode" placeholder="Enter Barcode"
+                [(ngModel)]="bar_code" (ngModelChange)="changeBarCode()">
+            <div *ngIf="bar_code.length>1 && showBarcode">
+              <div *ngIf="(httpdata4 | filter :bar_code) as httpdata4" [ngClass]="{'barcode_length':httpdata4.length>5}">
+                <div *ngFor="let p of httpdata4" (click)="getBarCode(p.barcode)">{{p.barcode}}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-1">
+            <button [disabled]="barCodeForm.invalid" class="btn btn-primary mar_t_25"
+                (click)="bar_code_fetch(bar_code)">Get</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="mar_t_25">
+      <div class="row" *ngIf="displaMsg">
+        <div class="col-sm-12">
+          <p class="validation_msg">No Results Found</p>
+        </div>
+      </div>
+      <div class="row" *ngIf="invoiceListData.length>0">
+        <div class="col-sm-12 list">
+          <form #posForm="ngForm">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Product name</th>
+                  <th>Model No.</th>
+                  <th>MRP</th>
+                  <th>Discount(%)</th>
+                  <th>GST(%)</th>
+                  <th>Qty</th>
+                  <th>Total Value</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of invoiceListData; let i=index">
+                  <td>{{10*(p-1)+(i+1)}}</td>
+                  <td>{{item.long_name}}</td>
+                  <td>{{item.modelno}}</td>
+                  <td>{{item.mrp | currency : '&nbsp;'}}</td>
+                  <td>{{item.discount_eu3}}</td>
+                  <td><span *ngIf="posModel[item.productid]>0">{{posModel[item.productid] * item.gst_amount | currency : '&nbsp;'}}</span>
+                    ({{item.gst}} )</td>
+                  <td style="width:160px;">
+                    <span class="f_size_15 blue_clr padd_right_10">
+                      <input type="number" class="form-control" name={{item.productid}} required
+                        [(ngModel)]="posModel[item.productid]" [min]=1
+                        (ngModelChange)="getGrandTotalVal(item,(posModel[item.productid]*item.net_price),(posModel[item.productid] * item.gst_amount))">
+                    </span> 
+                  </td>
+                  <td class="txt_right"><span
+                      *ngIf="posModel[item.productid]>0">{{item.net_price * posModel[item.productid] | currency : '&nbsp;'}}</span></td>
+                  <td>
+                    <div (click)="deleteItem(item,((posModel[item.productid]*item.mrp)*(1-(item.discount_eu1/100)))*(1+(item.gst/100)))">
+                      <i class="fa fa-trash-o validation_msg" aria-hidden="true"></i></div>
+                  </td>
+                </tr>
+                <tr *ngIf="totalValue>0">
+                  <td colspan="8"></td>
+                  <td class="no-line txt_right"><span style="color:#000;"></span>{{totalValue| currency :'&#8377;'}}
+                  </td>
+                </tr>
+                <tr *ngIf="total_gstAmount>0">
+                  <td colspan="7" class="no-line"> </td>
+                  <td class="no-line txt_right"><strong>CGST</strong></td>
+                  <td class="no-line txt_right"><span style="color:#000;"></span>{{total_gstAmount/2| currency :'&#8377;'}}
+                  </td>
+                </tr>
+                <tr *ngIf="total_gstAmount>0">
+                  <td colspan="7" class="no-line"> </td>
+                  <td class="no-line txt_right"><strong>SGST</strong></td>
+                  <td class="no-line txt_right"><span style="color:#000;"></span>{{total_gstAmount/2| currency :'&#8377;'}}
+                  </td>
+                </tr>
+                <tr *ngIf="totalValue>0">
+                  <td colspan="7" class="no-line"> </td>
+                  <td class="no-line txt_right grand_total"><strong>NET AMOUNT</strong></td>
+                  <td class="no-line txt_right"><span
+                      style="color:#000;"></span>{{(totalValue + total_gstAmount)| currency :'&#8377;'}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="fr pad_t_15">
+              <button type="submit" [disabled]="posForm.invalid" class="btn btn-primary mar_l_100"
+                (click)="makepayment()">Approve<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="reg_form mar_b_30 pad_15" style="overflow:visible !important;background: #faebd74d;" *ngIf="POSpaymentVisible">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4 style="text-decoration:underline;">Payment Info</h4>
+        </div>
+      </div>
+    </div>
+    <section>
+      <div class="row r_s_p" >
+        <div class="col-md-6 text-center">
+          <div class="radio-item">
+            <input type="radio" id="ritema" name="ritem" value="cash" [(ngModel)]="pay.payment" >
+            <label for="ritema">Cash</label>
+          </div>
+          <div *ngIf="pay.payment=='cash'" >
+            <div style="padding:20px;text-align: left;">
+              <p><span>Total Amount &nbsp;:</span><span style="font-weight:600">&nbsp;{{(totalValue + total_gstAmount)| currency :'&#8377;'}}</span></p>
+              <table>
+                <tr>
+                  <td><label for="cc">Collected Cash&nbsp;:&nbsp;</label></td>
+                  <td> <input id="cc" type="number" class="form-control" name="cc" min="1" [(ngModel)]="pay.collected" placeholder="Collected Cash"></td>
+                </tr>
+              </table>                
+            </div>
+            <button class="btn btn-primary" (click)="make_pay(pay)">Submit</button>
+          </div>
+        </div>
+        <div class="col-md-6 text-center">
+          <div class="radio-item">
+            <input type="radio" id="ritemb" name="ritem" value="card" [(ngModel)]="pay.payment" >
+            <label for="ritemb">Card</label>
+          </div>
+          <div *ngIf="pay.payment=='card'" >
+            <div style="padding:20px;text-align: left;">
+              <p><span>Total Amount &nbsp;:</span><span style="font-weight:600">&nbsp;{{(totalValue + total_gstAmount)| currency :'&#8377;'}}</span></p>
+              <table>
+                <tr>
+                  <td><label for="rrn">Reference Number(RRN)&nbsp;:&nbsp;</label></td>
+                  <td> <input id="rrn" type="text" class="form-control" name="rrn" [(ngModel)]="pay.Reference" placeholder="Enter Reference No.."></td>
+                </tr>
+              </table>  
+            </div>
+            <button class="btn btn-primary" (click)="make_pay(pay)">Submit</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+    <div class="modal fade " id="new_user" tabindex="-1" data-backdrop="static" >
+      <div class="modal-dialog">
+        <div class="modal-content" style="border: 1rem solid #0fa497;">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title" style="float:left;">New Customer</h4>
+              <button type="button" style="float:right;" class="close" >&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="padding:0px;" *ngIf="userdata">
+              <div>
+                <div class="col-md-6 pad_2per">
+                    <label >Name:</label>
+                    <input type="text" placeholder="Enter Customer Name" [(ngModel)]="userdata.username" class="form-control">
+                </div>
+                <div class=" col-md-6 pad_2per">
+                    <label>Mobile Number:</label>
+                    <input type="text" placeholder="Enter Customer Mobile Number" [(ngModel)]="userdata.mobile" class="form-control">
+                </div>
+                <div class=" col-md-6 pad_2per">
+                    <label>Email:</label>
+                    <input type="text" placeholder="Enter Customer Mail" [(ngModel)]="userdata.email"  class="form-control">
+                </div>
+                <div class=" col-md-6 pad_2per">
+                    <label>City:</label>
+                    <input type="text" placeholder="Enter Customer Area"  [(ngModel)]="userdata.city" class="form-control">
+                </div>
+                <div class=" col-md-6 pad_2per">
+                    <label>State:</label>
+                    <input type="text" placeholder="Enter Customer State" [(ngModel)]="userdata.state" class="form-control">
+                </div>
+                <div class=" col-md-6 pad_2per">
+                    <label>Country:</label>
+                    <input type="text" placeholder="Enter Customer Area Pincode" [(ngModel)]="userdata.country" class="form-control">
+                </div>
+              </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button class="btn btn-primary bg_green border_green" style="float: right !important;" data-dismiss="modal" (click)="user_data(userdata)" >Save</button>
+              <button type="button" class="btn btn-danger" style="float: left !important;" data-dismiss="modal" >Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="succModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body" style="padding:0;">
+              <div class="row">
+                <div class="col-md-12">
+                  <h4 class="alert_heading">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </h4>
+                  <div class="right_mark">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                  </div>
+                  <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                    <span>Thank You For Shopping..!!</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button>
+              <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoPrevious()">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>

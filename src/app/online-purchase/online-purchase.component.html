@@ -1,0 +1,313 @@
+<div class="container pad_t_5per pad_b_5per dash_w">
+  <div class="row">
+
+
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Product's List</span>
+
+    <div style="padding:20px" id="tabContentWrap">
+      <div>
+        <div class="row" style="margin:0px">
+          <div class="row" style="padding: 10px;">
+            <div class="row p_s_1">
+              <div class="col-md-2">
+                <h4>&nbsp;&nbsp;S.no</h4>
+              </div>
+              <div class="col-md-2">
+                <h4 class="hidexs">Po No.</h4>
+              </div>
+              <div class="col-md-2">
+                <h4 class="hidexs">Po date</h4>
+              </div>
+              <div class="col-md-2  text-center">
+                <h4>Origin User id</h4>
+              </div>
+              <div class="col-md-2 text-center hidexs">
+                <h4>Payment Terms</h4>
+              </div>
+
+
+            </div>
+
+            <mat-accordion
+              *ngFor="let res of responsedata| filter:searchText| paginate: { itemsPerPage: 10, currentPage: page }; let i=index ">
+
+              <mat-expansion-panel (opened)="panelOpenState == true" (closed)="panelOpenState == false">
+                <mat-expansion-panel-header>
+
+                  <mat-panel-title>
+                    <div class="col-md-2 companyCode">
+                      <p class="txt_black" style="margin-bottom: 0px; ">
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;{{10*(page-1)+(i+1)}} </span>
+                      </p>
+                    </div>
+                    &nbsp;&nbsp;
+                    <div class="col-md-2 companyCode">
+                      <p class="txt_black" style="margin-bottom: 0px; ">
+                        <span>&nbsp;&nbsp;{{res.pono_ref}} </span>
+                      </p>
+                    </div>
+                    &nbsp;&nbsp;
+                    <div class="col-md-2 hidexs">
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <span>&nbsp;&nbsp;{{res.po_date| date :'short' }}
+                        </span>
+                      </p>
+                    </div> &nbsp;&nbsp;
+                    <div class="col-md-2  text-center">
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{res.po_origin_user_id}}</span>
+                      </p>
+                    </div> &nbsp;&nbsp;
+                    <div class="col-md-2  text-center hidexs">
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{res.payment_terms}}</span>
+                      </p>
+                    </div> &nbsp;&nbsp;
+                    <div class="col-md-2  text-center hidexs">
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{res.state}}</span>
+                      </p>
+                    </div>
+
+
+
+                    <div class="col-md-1  text-center">
+                      <span class="f_size_15  orange_clr cursor_pointer" style="margin-left:30px;">
+                        <i aria-hidden="true" title="View Outstanding"></i>
+                      </span>
+                    </div>
+                  </mat-panel-title>
+
+                </mat-expansion-panel-header>
+
+                <div class="row p_s_1">
+                  <div class="col-md-2">
+                    <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S.No</h4>
+                  </div>
+
+                  <div class="col-md-2 hidexs">
+                    <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Payment Terms </h4>
+                  </div>
+                  <!--   <div class="col-md-2 hidexs">
+                        <h4>Po Type </h4>
+                      </div>  -->
+                  <div class="col-md-2 hidexs">
+                    <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sqe No. </h4>
+                  </div>
+                  <div class="col-md-2 hidexs">
+                    <h4>Company code</h4>
+                  </div>
+                  <div>
+                    <div class="col-md-2 hidexs">
+                      <h4> Assign Branch</h4>
+                    </div>
+
+                    <div class="col-md-2 hidexs">
+                      <h4>&nbsp;&nbsp;&nbsp;&nbsp; Activity</h4>
+                    </div>
+                  </div>
+
+
+                </div>
+
+
+
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+
+                      <div class="col-md-2  text-center">
+                        <p class="txt_black" style="margin-bottom: 0px; ">
+                          <span>&nbsp;&nbsp;{{i + 1}} </span>
+                        </p>
+                      </div>
+
+                      <div class="col-md-2  text-center">
+                        <p class="txt_black" style="margin-bottom: 0px; ">
+                          <span>&nbsp;&nbsp; {{res.payment_terms}} </span>
+                        </p>
+
+                      </div>
+                      <!--  <div class="col-md-2  text-center">
+                            <p class="txt_black" style="margin-bottom: 0px; ">
+                              <span>&nbsp;&nbsp; {{res.po_type}} </span>
+                            </p>
+  
+                          </div>  -->
+                      <div class="col-md-2  text-center">
+                        <p class="txt_black" style="margin-bottom: 0px; ">
+                          <span>&nbsp;&nbsp; {{res.bill_to_party_seq_no}} </span>
+                        </p>
+
+                      </div>
+                      <div class="col-md-2  text-center">
+                        <p class="txt_black" style="margin-bottom: 0px; ">
+                          <span>&nbsp;&nbsp; {{res.supp_company_code}} </span>
+                        </p>
+
+                      </div>
+                      <!-- ============================== -->
+                      <div style="max-width:200px;">
+
+                        <select class='form-control' required name="response2">
+                          <option [ngValue]="undefined" select>Select branch type</option>
+                          <option class="option" *ngFor="let res2 of databranch;">
+
+                            {{res2}}
+                          </option>
+
+                        </select>
+                      </div>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      <div>
+                        <!-- <button type="submit" class="btn green_btn" [disabled]="updateForm.invalid"
+                              (click)="movetoBranch(reg)">Approve</button> -->
+                        <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="viewMore(reg)">
+                          <!--  <i class="fa fa-eye" aria-hidden="true" title="View More"></i> -->
+                        </span>
+                        &nbsp;&nbsp;
+                        <span class="f_size_15 green_clr padd_right_10 cursor_pointer"
+                          (click)="patchDatawithparams1(res)">
+                          <i class="fa fa-check" aria-hidden="true" title="Assign"></i>
+                        </span>&nbsp;&nbsp;
+                        <!--  <span class="f_size_15 red_clr padd_right_10 cursor_pointer" (click)="reject(reg)">
+                              <i class="fa fa-close" aria-hidden="true" title="Reject"></i>
+                            </span> -->
+                      </div>
+
+                      <!--  ============================== -->
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <!--   ========================================== -->
+                  <div style="max-height: 380px;overflow: auto;" class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <th>Product </th>
+                          <th>Product Description</th>
+                          <th>Price</th>
+                          <th>Qty</th>
+                          <th>Gst Amount</th>
+                          <th>Total Amount</th>
+                          <th>Status</th>
+                          <th>Sub category</th>
+
+                          <!-- <th>Activity</th>-->
+
+                        </tr>
+
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let pod of res.prod ; let i=index;">
+                          <td>{{i + 1}} </td>
+
+                          <td style="width:10%;">
+                            <div>
+                              <img src="{{pod.image}}"
+                                onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                                class="img-thumbnail" style="width:70%;height: 30px;">
+                            </div>
+                          </td>
+                          <td>
+                            <h4 class="table_pd_name">{{pod.long_name}}</h4>
+                          </td>
+                          <td>
+                            <div class="row_mar_0">
+
+
+                              {{pod.net_price}}
+                            </div>
+                          </td>
+                          <td>
+                            <div>
+
+
+                              {{pod.qty}}
+
+                            </div>
+                          </td>
+                          <td>
+                            <div>
+                              <p style="margin-bottom: 0px">
+                                <span class=" f_wt_600">{{pod.gst_amount }} </span>
+                              </p>
+
+                            </div>
+                          </td>
+
+                          <td>
+                            <div>
+                              <p>
+                                <span class=" f_wt_600">{{pod.total_value}}</span>
+                              </p>
+                            </div>
+
+                          </td>
+                          <td>
+                            <div>
+                              <p>
+                                <span class=" f_wt_600">{{pod.status}} &nbsp;
+
+                                </span>
+                              </p>
+                            </div>
+                          </td>
+                          <td>
+                            <div>
+                              <p>
+                                <span class=" f_wt_600">{{pod.subcategory}} &nbsp;
+                                </span>
+                              </p>
+                            </div>
+                          </td>
+                          <!-- <td>
+                                    <span>
+                                      <div class="checkbox">
+                                        <label><input type="checkbox" id="Approve" [checked]="checke"
+                                            (change)="sel_action_check($event,pd,po)"></label>
+                                      </div>
+                                    </span>
+  
+                                    <span>
+                                      <div class="checkbox">
+                                        <label><input type="checkbox" id="Cancel" [checked]="checkc"
+                                            (change)="sel_action_check($event,pd,po)"></label>
+                                      </div>
+                                    </span>
+                                  </td> -->
+
+                        </tr>
+                      </tbody>
+                    </table>
+                    <!-- <div class="row row_mar_0">
+                              <button style="float:right;" class="btn btn-ord" (click)="sub_sel_data()">Submit</button>
+                            </div> -->
+                  </div>
+                </mat-expansion-panel>
+
+              </mat-expansion-panel>
+
+            </mat-accordion>
+            <div class="pull-left mar_t_30">
+              <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+</div>

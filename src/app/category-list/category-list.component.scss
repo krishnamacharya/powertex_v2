@@ -1,0 +1,233 @@
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+   
+    height: 120px;
+    // padding: 10px
+}
+// .center img{
+//     width:50%;
+//     height: 120px;
+// }
+
+// .center:hover {
+//     padding: 5px;
+//     transition: all 0.2s ease-in-out;
+// }
+.cat_style{
+    text-align: center;
+    // box-shadow: 1px 1px 1px 1px #8080804a;
+
+}
+
+
+.cat_style:hover {
+    box-shadow: 1px 1px 1px 1px #8080804a;
+    // img {
+    //     width:61%;
+    //     // transition: 1s;
+    //     // transition-timing-function: ease;
+    // }
+}
+
+.cat_filter{
+    padding: 10px;
+    box-shadow: 1px 1px 1px 1px #8080804a;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+}
+.btn_cat{
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: white;
+    font-size: larger;
+    background: #0da550 !important;
+    border-color:#0da550;
+}
+.gst{
+    margin: 0px !important;
+    font-size: 11px;
+    margin-top: -7px !important;
+    color: #293271;
+    font-weight: bold;
+}
+
+.alert-success {
+    background-color: #444444;
+    border-color: #9E9E9E;
+    color: #fff;
+}
+.wish_alert{
+    margin: 0 auto !important;
+width: 20% !important;
+text-align: center;
+}
+
+
+
+
+.pointer {
+    cursor: pointer;
+}
+
+.img-thumbnail {
+    padding: 4px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    /* border: 1px solid #ddd; */
+    border: none !important;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+}
+.C_s {
+    background: none !important;
+    color: black !important; 
+    padding: 8px 0px !important;
+    margin: 0px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #5c5b5b !important;
+    /* font-size: 13px !important; */
+    /* font-weight: normal !important; */
+}
+// .C_s{
+//     background: #0fa497;
+//     color: white !important;
+//     padding: 8px 0px;
+//     margin: 0px;
+//     font-size: 14px !important;
+//     font-weight: normal !important;
+// }
+.C_ji{
+
+    // color: white !important;
+    padding: 8px 0px;
+    margin: 0px;
+    // font-size: 14px !important;
+    // font-weight: normal !important;
+    font-size: 18px!important;
+    font-weight: 400!important;
+
+}
+
+.C_m{
+    font-size:14px;
+    margin: 0px;
+    font-size: 14px;
+    margin: 0;
+    color: white;
+    /* padding-top: 12px; */
+    background-color: #1CB5B4;
+    font-weight: bold !important;
+}
+.C_s[_ngcontent-c10] {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+}
+.C_np{
+    font-size: 15px;
+    color: #403f3f;
+    font-weight: bold;
+}
+ .b_c {
+    color:#878787;
+    padding: 3px 5px; 
+    font-size:13px;
+    .b_d {
+        cursor: pointer;
+    }
+ }
+ .strikemrp{
+font-size: 12px;
+ }
+ @media only screen and (min-width: 320px) and (max-width: 520px) { 
+ .sortingwrap{
+    padding-left:2px;
+    padding-right: 3px;
+ div{
+padding-left:1px;
+padding-right: 2px;
+margin-bottom: 1rem;
+ }
+ }
+}
+
+element.style {
+    margin-left: 300px;
+}
+
+.wishlistwrap{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+.sortingwrap{
+    padding: 10px;
+    background: #fbfbfb;
+    margin-left: -10px !important;
+    box-shadow: 2px 1px 4px 1px rgba(185, 181, 181, 0.75);
+    margin-right: -10px !important;
+}
+.imgwrap{
+    // background-image: url('../../assets/product_bg.png') !important;
+}
+.imgwrap .img-thumbnail{
+    background-color: #fff !important;    
+    position: relative;
+}
+// .custom_loder{
+//     z-index: 99999999999 !important;
+//      position: absolute !important;
+//       top: 42%;
+//         left: 50%;
+//         opacity: 9 !important;  }
+
+        .custom_loder{
+            z-index: 99999999999 !important;
+              position: fixed !important;
+              top: 50%;
+              left: 50%;
+              opacity: 9 !important;  }
+.view_d{
+    padding: 10px;
+    float: right;
+    // position: absolute;
+    i{
+        font-size: 20px;
+    }
+}
+.product_desc{
+    padding: 10px 0 !important;
+}
+// .imgwrap{
+//     position: relative;
+// }
+h6{
+    font-weight: 600;
+}
+
+
+
+
+
+
+
+// ==============krishna==========
+// .product_desc_p{
+//     display: flex;
+//     height: 65px;
+//     text-align: center;
+// }
+
+.C_ji{
+    display: flex;
+    height: 65px;
+    align-items: center;
+    // text-align: center;
+    justify-content: center;
+}

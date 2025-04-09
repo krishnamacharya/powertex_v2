@@ -1,0 +1,319 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>BL Details</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>BL Details</h4>
+        </div>
+        <div class="fr" *ngIf="supplierdata.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+
+          <div class="col-sm-12 list">
+
+            <div class="table-responsive">
+              <table class="table table-striped" *ngIf="supplierdata1.length>0">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Business Name</th>
+                    <th>Invoice No.</th>
+                    <th>BL No.</th>
+                    <th>INV</th>
+                    <th>BL</th>
+                    <th>PL</th>
+                    <th class="text-center">No.of cartons</th>
+                    <th>Inv Amount</th>
+                    <th style="text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierdata | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.business_name}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td>{{data.bl_no}}</td>
+                    <td><a (click)="downloadINV(data.doc2, data.inv_no)"
+                      [ngStyle]="{'color': data.doc2?'green':'red'}">{{data.doc2?"Y":"N"}}</a></td>
+                  <td><a (click)="downloadBL(data.doc1, data.inv_no)"
+                      [ngStyle]="{'color': data.doc1?'green':'red'}">{{data.doc1?"Y":"N"}}</a></td>
+                  <td><a (click)="downloadPL(data.doc3, data.inv_no)"
+                      [ngStyle]="{'color': data.doc3?'green':'red'}">{{data.doc3?"Y":"N"}}</a></td>
+                    <td class="text-center">{{data.ctns}}</td>
+                    <td>{{data.Amount | number : '1.2-2'}}&nbsp;({{data.ctype}})</td>
+                    <td> 
+                      <button type="button" class="btn btn-sm bg_orange" title="BL Details" (click)="BLDetails(data)">BL Details</button>&nbsp;
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="supplierdata.length>0"  class="col-md-12">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton"
+                  (click)="printreport()">Print</button>
+              </div>
+              <!-- <pagination-controls *ngIf="supplierdata.length>0" (pageChange)="p = $event"></pagination-controls> -->
+               <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+            </div>
+
+            <!-- <pagination-controls *ngIf="supplierdata.length>0" (pageChange)="p = $event"></pagination-controls> -->
+          </div>
+
+          <div *ngIf="supplierdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+<div class="modal fade" id="BlDetailsModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center text-white">BL Details</h4>
+        <h4 class="modal-title text-center text-white">{{this.sup_name}}</h4>
+        <h4 class="modal-title text-center text-white">Inv.no:&nbsp;{{this.inv_num}}&nbsp;&nbsp;&nbsp;Inv Date:&nbsp;{{this.inv_dt | date:'dd-MM-yyyy'}}</h4>
+      </div>
+      <form (ngSubmit)="onSubmit(bldetailsform)" #bldetailsform="ngForm" class="pad_20">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6 col-lg-6 col-xs-6">
+              <div class="form-group">
+                <label for="blno">BL Number<sup class="astrick">*</sup></label>
+                <input type="text" class="form-control" id="blno" required [(ngModel)]="editdata.blno" name="blno"
+                  #blno="ngModel" placeholder="Enter BL Number">
+
+                <!-- <div [hidden]="bl_no.valid ||  bl_no.untouched" class="validation_msg">
+                  <small class="form-text text-muted text-danger">Enter BL Number</small>
+                </div> -->
+              </div>
+            </div>
+
+            
+          <div class="col-md-6 col-lg-6 col-xs-6">
+            <label for="bldate">BL Date<sup class="astrick">*</sup></label>
+            <div class="form-group">
+              <input type="date" class="form-control" id="bldate" name="bldate" [(ngModel)]="editdata.bldate"
+                #bldate="ngModel" required placeholder="Enter BL Date">
+              <!-- <div [hidden]="bldate.valid || bldate.untouched" class="validation_msg">
+                please enter BL Date
+              </div> -->
+            </div>
+          </div>
+          
+          <div class="col-md-6 col-lg-6 col-xs-6">
+            <label for="onportdate">On-Board Date</label>
+            <div class="form-group">
+              <input type="date" class="form-control" id="onportdate" name="onportdate" [(ngModel)]="editdata.onportdate"
+                #onportdate="ngModel" required placeholder="Enter On Board Date">
+              <!-- <div [hidden]="onportdate.valid || onportdate.untouched" class="validation_msg">
+                please enter Vessel Number
+              </div> -->
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6 col-xs-6">
+            <label for="exptdate">Expected Date</label>
+            <div class="form-group">
+              <input type="date" class="form-control" id="exptdate" name="exptdate" [(ngModel)]="editdata.exptdate"
+                #exptdate="ngModel" required placeholder="Enter On Expected Date">
+              <!-- <div [hidden]="exptdate.valid || exptdate.untouched" class="validation_msg">
+                please enter Vessel Number
+              </div> -->
+            </div>
+          </div>
+
+            <div class="col-md-6 col-lg-6 col-xs-6">
+              <div class="form-group">
+                <label for="sono">So Number</label>
+                <input type="text" class="form-control" id="sono" [(ngModel)]="editdata.sono"
+                  name="sono" placeholder="Enter SO Number">
+
+              </div>
+            </div>
+
+          <!-- </div> -->
+
+          <!-- <div class="row"> -->
+            <div class="col-md-6 col-lg-6 col-xs-6">
+              <div class="form-group">
+                <label for="vesselname">Vessel</label>
+                <input type="text" class="form-control" id="vesselname" required [(ngModel)]="editdata.vesselname" name="vesselname"
+                  #vesselname="ngModel" placeholder="Enter Vessel">
+
+                <!-- <div [hidden]="vesselname.valid ||  vesselname.untouched" class="validation_msg">
+                  <small class="form-text text-muted text-danger">Enter Vessel</small>
+                </div> -->
+              </div>
+            </div>
+
+            
+          <div class="col-md-6 col-lg-6 col-xs-6">
+            <label for="vesselno">Voyage</label>
+            <div class="form-group">
+              <input type="text" class="form-control" id="vesselno" name="vesselno" [(ngModel)]="editdata.vesselno"
+                #vesselno="ngModel" required placeholder="Enter Voyage">
+              <!-- <div [hidden]="vesselno.valid || vesselno.untouched" class="validation_msg">
+                please enter Vessel Number
+              </div> -->
+            </div>
+          </div>
+
+
+          <div class="col-md-6 col-lg-6 col-xs-6">
+            <label for="linename">Line Name<sup class="astrick">*</sup></label>
+            <div class="form-group">
+              <input type="text" class="form-control" id="linename" name="linename" [(ngModel)]="editdata.linename"
+                #linename="ngModel" required placeholder="Enter Line Name">
+              <!-- <div [hidden]="linename.valid || linename.untouched" class="validation_msg">
+                please enter Vessel Number
+              </div> -->
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6 col-xs-6">
+            <label for="noofcontainer">No.of Containers<sup class="astrick">*</sup></label>
+            <div class="form-group">
+              <input type="text" class="form-control" id="noofcontainer" name="noofcontainer" [(ngModel)]="editdata.noofcontainer"
+                #noofcontainer="ngModel" required placeholder="Enter No of Containers">
+              <!-- <div [hidden]="noofcontainer.valid || noofcontainer.untouched" class="validation_msg">
+                please enter Vessel Number
+              </div> -->
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6 col-xs-6">
+            <label for="duty_approx">Duty Approx</label>
+            <div class="form-group">
+              <input type="text" class="form-control" id="duty_approx" name="duty_approx" [(ngModel)]="editdata.duty_approx"
+                #duty_approx="ngModel" required placeholder="Enter Duty Approx">
+              <!-- <div [hidden]="duty_approx.valid || duty_approx.untouched" class="validation_msg">
+                please enter Vessel Number
+              </div> -->
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6 col-xs-6">
+            <label for="remarks">Remarks</label>
+            <div class="form-group">
+              <input type="text" class="form-control" id="remarks" name="remarks" [(ngModel)]="editdata.remarks"
+                #remarks="ngModel" required placeholder="Enter Remarks">
+              <!-- <div [hidden]="remarks.valid || remarks.untouched" class="validation_msg">
+                please enter Vessel Number
+              </div> -->
+            </div>
+          </div>
+
+          </div>
+          <div class="row">
+            <div class="table-responsive mt_3">
+              <table class="table table-bordered table-condensed">
+                <thead>
+                  <th class="">Container Number<sup class="astrick">*</sup></th>
+                  <th class="text-right ">Container Size<sup class="astrick">*</sup></th>
+                  <th class="text-right ">Actions</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let field of Contdata; let i = index">
+                    <td>{{ field.containerno }}</td>
+                    <td>{{ field.containersize }}</td>
+                    <td class="i_opt text-center">
+                      <p>
+                        <i class="fa fa-trash" (click)="deleteFieldValue(i)" style="font-size: 18px;color: #20978c;"></i>
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="newAttribute1.containerno"
+                        #containerno="ngModel" [ngModelOptions]="{standalone: true}"   />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" [(ngModel)]="newAttribute1.containersize"
+                        #containersize="ngModel"  [ngModelOptions]="{standalone: true}" />
+                    </td>
+
+                    <td class="text-center">        
+                      <button type="button" class="btn btn-sm bg_green" (click)="addd(newAttribute1)" [disabled]="!newAttribute1.containerno && !newAttribute1.containersize">Add</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success brdr_radius_50   fr" >Submit
+          </button>
+          <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  
+  <div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+
+              <!-- <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div> -->
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <span>Updated Sucessfully..!!</span>
+                <br>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+  
+          <button type="button" class="btn btn-success fr"  data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>

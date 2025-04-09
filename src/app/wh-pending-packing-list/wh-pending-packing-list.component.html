@@ -1,0 +1,222 @@
+<ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="container pad_t_5per pad_b_5per">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span>{{loginUserData.content}}</span>
+  
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Pending packing list</span>
+    </p>
+    <section *ngIf="loginUserData.role == 'Marketing Manager'">
+      <div class="chose_vendr">
+        <div class="col-md-12   text-center">
+          <div class="form-group">
+            <label class="vendor_lab" for="sel1">Choose Dealer </label>
+            <span>
+              <select class="vendor_sel" [(ngModel)]="selectedObj" (ngModelChange)="dealer_chn($event)" id="sel1">
+                <option [ngValue]="undefined" disabled selected>Select Dealer</option>
+                <option *ngFor="let p of dealers" [ngValue]="p">{{ p.business_name }}, {{ p.city }}</option>
+              </select>
+            </span>
+          </div>
+        </div>
+      </div>
+  
+    </section><br>
+    <section *ngIf="orderspage">
+      <span class="col-md-2" style="margin-top: 10px;">
+        <mat-form-field color="accent" *ngIf="type!='Stock' && type!='NotSold' && type!='Market'">
+          <mat-label> Select From Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" readonly required>
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </span>
+      <span class="col-md-2 selecttodate" style="margin-left: 50px; margin-top: 10px;">
+        <mat-form-field color="accent" *ngIf="type!='Stock' && type!='NotSold' && type!='Market'">
+          <mat-label> Select To Date</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" readonly required>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2 color="primary"></mat-datepicker>
+        </mat-form-field>
+  
+      </span>&nbsp;&nbsp;<span class="col-md-2" style=" margin-left: 30px; margin-top: 30px;">
+        <button type="submit" class="input_btn" (click)="pendingPoListDealer(fromdate,tilldate)">Get
+          Reports
+        </button>
+  
+      </span>
+      <div class="reg_form mar_b_30 pad_15">
+  
+        <div class="row mar_b_15">
+          <div class="col-sm-12">
+            <div class="fl">
+              <h4>Pending Packing list</h4>
+            </div>
+            <div>
+              <div class="fr">
+                <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchdata(searchText)"
+                  placeholder="Search..." class="search_style">
+                <button type="submit" (click)="searchdata(searchText)" class="input_btn">Search</button>
+              </div>
+            </div>
+          </div>
+          <!-- *ngIf="(poList | filter :searchText) as poList" -->
+          <div class="row">
+            <div class="col-sm-12 list" *ngIf="poList.length>0">
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Business Name</th>
+                      <!-- <th>PO No.</th>
+                  <th>PO Date</th> -->
+                      <th>City</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of poList | paginate: { itemsPerPage: 10, currentPage: page }; let i=index">
+                      <td class="txt_centr">{{10*(page-1)+(i+1)}}</td>
+                      <td>{{item.business_name}}</td>
+                      <!--  <td>{{item.spo_no}}</td>
+                  <td>{{item.po_date | date:'dd-MM-yyyy' }}</td> -->
+                      <td>{{item.bill_to_party.city}}</td>
+                      <td>
+  
+                        <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="print(item)">
+                          <i class="fa fa-pencil-square-o" aria-hidden="true" title="EditInfo"></i>
+                        </span>
+                        <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="viewmore(item)">
+                          <i class="fa fa-eye" aria-hidden="true" title="View More"></i>
+                        </span>
+                        <span class="f_size_15 red_clr padd_right_10 cursor_pointer" (click)="delete(item)">
+                          <i class="fa fa-close" aria-hidden="true" title="Delete"></i>
+                        </span>
+  
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+  
+              </div>
+  
+              <pagination-controls (pageChange)="page=$event"></pagination-controls>
+  
+  
+  
+            </div>
+  
+            <div *ngIf="poList.length==0">
+              <div class="col-md-12">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+  
+  
+        </div>
+        <ngx-spinner class="loader_spinner"></ngx-spinner>
+      </div>
+    </section>
+    <div class="modal fade" id="openmodal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+  
+          <div class="modal-header v_h">
+            <button type="button" class="close1 modal-header" data-dismiss="modal">&times;</button>
+  
+          </div>
+          <h4 class="modal-title text-center"></h4>
+  
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <!-- <th>Category</th> -->
+                  <th>Name</th>
+                  <!-- <th>Subcategory</th>  -->
+  
+                  <!--  <th>Mrp.</th> -->
+                  <th>PO No.</th>
+                  <th>PO Date</th>
+                  <!-- <th>Sku_No.</th> -->
+                  <th>Qty</th>
+                  <th>N/C</th>
+                  <th class="txt_right">P/C</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let item of viewmoredeiails | paginate: { itemsPerPage: 10, currentPage: page2 ,id:'p'};let j=index">
+                  <td class="txt_centr">{{10*(page2-1)+(j+1)}}</td>
+  
+                  <td>{{item.subcategory}}&nbsp;&nbsp;{{item.modelno}}</td>
+                  <!-- <td>{{item.subcategory}}</td> -->
+                  <td>{{item.pono_ref}}</td>
+                  <td>{{item.po_date | date:'dd-MM-yyyy' }}</td>
+                  <!-- <td>{{item.sku_no}}</td>  -->
+  
+                  <td>{{item.qty}}</td>
+                  <td>{{item.noc |number :'1.2-2'}}</td>
+                  <td style="text-align: right;">{{item.piecepercarton}}</td>
+  
+                  <!-- <td>
+      
+                      </td> -->
+                </tr>
+              </tbody>
+            </table>
+            <div class="pull-left mar_b_10">
+              <pagination-controls (pageChange)="page2=$event " id="p"></pagination-controls>
+  
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+    <div class="modal fade" id="confirm" tabindex="-1" data-backdrop="static" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:0;">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="alert_heading">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </h4>
+                <div class="right_mark">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </div>
+                <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                  <span>PO Deleted Sucessfully..!!</span>
+                  <br>
+  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+  
+            <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>

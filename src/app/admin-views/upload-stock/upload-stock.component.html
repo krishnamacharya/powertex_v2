@@ -1,0 +1,172 @@
+<section *ngIf="orderspage">
+    <div class="reg_form mar_b_30 pad_15">
+      <div class="row pad_t_5per pad_15 ordertablewrap">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+
+                <th>Category</th>
+                <th>SubCategory</th>
+                <th>Model No</th>
+                <th>Qty</th>
+                <th>MRP(&#8377;)</th>
+                <th>Cost(&#8377;)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let catg of selectedList;let j = index">
+
+                <td>{{catg.category}}</td>
+                <td>{{catg.subcategory}}</td>
+                <td>{{catg.modelno}}</td>
+                <td> <input type="number" class="form-control" placeholder="Enter Quantity" [(ngModel)]="catg.qty"
+                    name="quantity" (keydown)="isNumberKey($event)" (change)="onKey(catg)" (keyup)="onKey(catg)"
+                    style="padding-left: 5px;" required min="1" maxlength="4" oninput="validity.valid||(value='');" />
+                </td>
+                <td>{{catg.avg_pur_mrp | currency : '&nbsp;'}}</td>
+
+              </tr>
+              <tr *ngFor="let field of fieldArray; let i = index">
+
+                <td>{{field.category}}</td>
+                <td>{{field.subcategory}}</td>
+                <td>{{field.modelno}}</td>
+                <td>{{field.qty}}</td>
+                <td>{{field.avg_pur_mrp | currency : '&nbsp;':'symbol':'.3'}}</td>
+                <td>{{field.cost}}</td>
+                <td class="i_opt">
+                  <p>
+                    <i class="fa fa-trash" (click)="deleteFieldValue2(i)" style="font-size: 18px;color: #20978c;"></i>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+
+                <td>
+                  <input list="categorys" class="form-control" placeholder="Select Category"
+                    [(ngModel)]="newAttribute1.category" (input)="change_form($any($event.target)
+.value)"
+                    style="padding-left: 5px;">
+                  <datalist id="categorys">
+                    <option *ngFor="let p of resources" value="{{p.Category}}">
+                  </datalist>
+                </td>
+                <td>
+                  <input list="subcategorys" class="form-control" placeholder="Select SubCategory"
+                    [(ngModel)]="newAttribute1.subcategory" (input)="change1($any($event.target).value,selectedCategory_form)"
+                    style="padding-left: 5px;" [disabled]="sele_sub_catg()" />
+                  <div *ngFor="let p of resources">
+                    <datalist id="subcategorys" *ngIf="selectedCategory_form==p.Category">
+                      <option *ngFor="let pd of p['detail']" value="{{pd['SubCategory']}}">
+                    </datalist>
+                  </div>
+                </td>
+                <td>
+                  <input type="text" class="form-control" list="modelno" placeholder="Select Model"
+                    [(ngModel)]="newAttribute1.modelno" (change)="change2($any($event.target).value)"
+                    style="padding-left: 5px;" [disabled]="sele_model()">
+                  <div>
+
+                    <datalist id="modelno">
+                      <select *ngIf="selectedCategory_form!=='Powertex Spare Parts'">
+                        <option *ngFor="let data of httpdata2data" value="{{data.modelno}}">
+                      </select>
+                      <select *ngIf="selectedCategory_form=='Powertex Spare Parts'">
+                        <option *ngFor="let data of httpdata2data" value="{{data.modelno}}">{{data.name3}}
+                      </select>
+                    </datalist>
+
+
+                  </div>
+                </td>
+                <td>
+                  <input type="number" class="form-control" style="text-align: right;" name="newAttributequantity" placeholder="Enter Quantity"
+                    [(ngModel)]="newAttribute1.qty" style="padding-left: 5px;" (keydown)="isNumberKey($event)"
+                    (change)="onKey1(newAttribute1)" (keyup)="onKey1(newAttribute1)" min="1" maxlength="4"
+                    oninput="validity.valid||(value='');" [disabled]="sele_quan()">
+                </td>
+             
+              <td>
+                <input class="form-control txtright" name="newAttributeprice" type="number" placeholder="Enter MRP"
+                  [ngModel]="newAttribute1.avg_pur_mrp" (keydown)="isNumberKey($event)"
+                  (ngModelChange)="newAttribute1.avg_pur_mrp = $event" style="padding-left: 5px;" [disabled]="sele_quan()" />
+              </td>
+              <td>
+                <input class="form-control txtright" name="newAttributeprice" type="number" placeholder="Enter Cost"
+                  [ngModel]="newAttribute1.cost" (keydown)="isNumberKey($event)"
+                  (ngModelChange)="newAttribute1.cost = $event" style="padding-left: 5px;" [disabled]="sele_quan()" />
+              </td>
+              <td>
+                  <button class="btn btn-lg btn-default" type="button" [disabled]="add_disable(newAttribute1) || add"
+                    (click)="addFieldValue()">Add</button>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-md-6"><p style="font-weight: bold; color: #293270;">Total Items Selected : <b style="color:red">{{order_items}}</b></p></div>
+        <div class="col-md-6"> 
+            <input type="button" style="float:right" class="btn btn-success"
+               value="Submit"
+              (click)="addupd(selectedList,newAttribute1,fieldArray)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="modal fade" id="orderSuccessfulModal" tabindex="-1" data-backdrop="static" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:0;">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <h4 class="alert_heading">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </h4>
+                <div class="right_mark">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </div>
+                <div class="text-center content_msg">
+                  <!-- <span>Your Order was Placed Successfully..!!</span> -->
+                  <p style="padding: 10% 0;" class="alert_order_no">{{Message}}</p>
+                  <p class="m_p_t"> Thank You, For Choosing Powertex</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-success fr" data-dismiss="modal" >OK</button>          </div>
+        </div>
+      </div>
+    </div>
+    
+  
+    <div class="modal fade" id="check" tabindex="-1" data-backdrop="static" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:0;">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <h4 class="alert_heading">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </h4>
+                <div class="right_mark">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+                </div>
+                <div class="text-center content_msg">
+                  <!-- <span>Your Order was Placed Successfully..!!</span> -->
+                  <p style="padding: 10% 0;" class="alert_order_no">{{Message}}</p>
+                  <p class="m_p_t"> Thank You, For Choosing Powertex</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>

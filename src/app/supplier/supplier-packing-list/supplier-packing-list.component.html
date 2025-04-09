@@ -1,0 +1,431 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Packing List</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Packing List</h4>
+        </div>
+        <div class="fr" *ngIf="supplierdata.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+
+          <div class="col-sm-12 list" *ngIf="supplierdata.length>0">
+
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>PI No</th>
+                    <th>PI Date</th>
+                    <th>Inv No</th>
+                    <th>Invoice Date</th>
+                    <th>Amount</th>
+                    <th>Shipment Port</th>
+                    <th>Discharge Port</th>
+                    <!-- <th>Items</th> -->
+                    <!-- <th>INV</th>
+                    <th>BL</th>
+                    <th>PL</th>
+                    <th>CO</th> -->
+                    <!-- <th>Others</th> -->
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierdata | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.pi_no}}</td>
+                    <td *ngIf="data.pidate=='==='" class="text-center">--</td>
+                    <td *ngIf="data.pidate!='==='">{{data.pidate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td>{{data.createdon | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.POAmount | number : '1.2-2'}}&nbsp;({{data.currency}})</td>
+                    <td>{{data.shipmentport}}</td>
+                    <td>{{data.dischargeport}}</td>
+                    <!-- <td>{{data.noofitems}}</td> -->
+                    <!-- <td> <img src="{{data.productimage}}" (click)="selected_image(data.productimage)"
+                        onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                        alt=""  style="width:50px;height: 50px;cursor:pointer"></td>
+                    <td> <img src="{{data.doc1}}" (click)="selected_image(data.doc1)"
+                        onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                        alt=""  style="width:50px;height: 50px;cursor:pointer"></td>
+                    <td> <img src="{{data.doc2}}" (click)="selected_image(data.doc2)"
+                        onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                        alt=""  style="width:50px;height: 50px;cursor:pointer"></td>
+                    <td> <img src="{{data.doc3}}" (click)="selected_image(data.doc3)"
+                        onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                        alt=""  style="width:50px;height: 50px;cursor:pointer"></td>
+                    <td> <img src="{{data.doc4}}" (click)="selected_image(data.doc4)"
+                        onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                        alt=""  style="width:50px;height: 50px;cursor:pointer"></td> -->
+                    <td>
+
+                      <button type="button" class="btn btn-sm bg_blue" (click)="viewMore(data)">View</button>&nbsp;
+                      <!-- <span class="f_size_15 orange_clr padd_left_10 cursor_pointer" *ngIf="this.loginUserData.user_type== 'supplier' && !data.productimage">
+                  <i class="fa fa-upload" aria-hidden="true" title="Upload Files" (click)="uploadMore(data)"></i>
+                </span> -->
+                      <span class="f_size_15 orange_clr padd_left_10 cursor_pointer">
+                        <!-- <input type="submit" value="Generate"  class="btn btn-primary center-block bg_green"> -->
+                        <button type="submit" class="btn btn-sm bg_green"
+                          (click)="showpackingmodal(data)">Generate</button>
+                      </span>
+                      <!-- <span class="f_size_15 orange_clr padd_left_10 cursor_pointer"  >
+                 
+                  <button type="submit"  class="btn btn-primary bg_green">Print</button>
+                </span> -->
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+
+          <div *ngIf="supplierdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+<div class="modal fade" id="viewpoModal1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center">Packing Details(Invoice.No - {{invno}})</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Product Name</th>
+                <th>Brand</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <!-- <th>Image</th>
+                <th>Doc 1</th>
+                 <th>Doc 2</th>
+                 <th>Doc 3</th>
+                 <th>Doc 4</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let view_d of this.productdata;let i=index">
+                <td>
+                  <span class="table_pd_name">{{i + 1}}</span>
+                </td>
+
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key">{{view_d.productid.long_name}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.productid.brand}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.qty}}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.price | number : '1.2-2'}}&nbsp;({{view_d.ctype}})</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.amount | number : '1.2-2'}}&nbsp;({{view_d.ctype}})</span>
+                  </div>
+                </td>
+                <!-- <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key"><img src="{{view_d.productimage}}" (click)="selected_image(view_d.productimage)"
+                      onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                      alt=""  title="view image" style="width:50px;height: 50px;cursor:pointer"></span></div>
+                </td>
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key"><img src="{{view_d.doc1}}" (click)="selected_image(view_d.doc1)"
+                      onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                      alt=""  style="width:50px;height: 50px;cursor:pointer"></span></div>
+                </td>
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key"><img src="{{view_d.doc2}}" (click)="selected_image(view_d.doc2)"
+                      onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                      alt=""  style="width:50px;height: 50px;cursor:pointer"></span></div>
+                </td>
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key"><img src="{{view_d.doc3}}" (click)="selected_image(view_d.doc3)"
+                      onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                      alt=""  style="width:50px;height: 50px;cursor:pointer"></span></div>
+                </td>
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key"><img src="{{view_d.doc4}}" (click)="selected_image(view_d.doc4)"
+                      onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                      alt=""  style="width:50px;height: 50px;cursor:pointer"></span></div>
+                </td>
+                 -->
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="imageenlarge" role="dialog">
+  <div class="modal-dialog" style="margin-top:200px;">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- <h4 >
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4> -->
+            <!-- <div class=" text-center">
+              <img src="{{image}}">
+            </div>
+            <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div> -->
+            <img src="{{image}}" style="display:block; width:100%; max-width:600px;height:300px; margin:auto" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Packing Generated Sucessfully..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" (click)="gotoprint()" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="viewpoModaledit" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center">Packing Details(Invoice.No - {{invno}})</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Product Name</th>
+                <th>Brand</th>
+                <th>Qty</th>
+                <!-- <th>Price</th> -->
+                <!-- <th>Amount</th> -->
+                <th>CTNS&nbsp;<sup class="astrick">*</sup></th>
+                <th>Total G.W&nbsp;<sup class="astrick">*</sup></th>
+                <th>Total N.W&nbsp;<sup class="astrick">*</sup></th>
+                <!-- <th>CBM</th> -->
+                <th>Piece Per Carton&nbsp;<sup class="astrick">*</sup></th>
+                <!-- <th>Container Size</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let view_d of this.productdata;let i=index">
+                <td>
+                  <span class="table_pd_name">{{i + 1}}</span>
+                </td>
+
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key">{{view_d.productid.modelno}}&nbsp;{{view_d.productid.subcategory}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.productid.brand}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.qty}}</span>
+                  </div>
+                </td>
+
+                <!-- <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.price}}</span></div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.amount}}</span></div>
+                </td> -->
+                <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.ctns" name="ctns" (keyup)="totals()">
+                </td>
+                <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.gw" (keyup)="gwchange(view_d)" name="gw"
+                  (keypress)="keyfloat($event)">
+                </td>
+                <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.nw" (keyup)="nwchange(view_d)" (keypress)="keyfloat($event)"
+                    (input)="changenw(view_d)" name="nw">
+                </td>
+                <!-- <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.cpm" name="cpm">
+                </td> -->
+                <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.productid.piecepercarton" (keypress)="keynumber($event)"
+                    value="view_d.productid.piecepercarton" (change)="piecechange(view_d)" name="piecepercarton">
+                </td>
+                <!-- <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.cont_size" name="cont_size">
+                </td> -->
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td><b>Total</b></td>
+                <td>{{this.totalqty}}</td>
+                <td>{{this.totalctns | number : '1.2-2'}}</td>
+                <td>{{this.totalgw | number : '1.2-2'}}</td>
+                <td>{{this.totalnw | number : '1.2-2'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="modal-footer row">
+        <div class="col-sm-2">
+          <label for="doc3"><b>Upload Packing List</b></label>
+          <input type="file" id="doc3" name="doc3" type="file" [(ngModel)]="pro.doc3"
+            (change)="stockexcelUpload($event)" title="Upload Packing List">
+        </div>
+        <div class="col-sm-10">
+          <div class="float-left col-sm-10">
+            <label><b>CBM&nbsp;<sup class="astrick">*</sup>:</b>&nbsp;</label>
+            <input type="text" class="input" [(ngModel)]="cpm" name="cpm" required (keypress)="keyfloat($event)">
+          </div>
+          <div class="float-right col-sm-2">
+            <button type="submit" class="btn btn-primary bg_green" [disabled]="!cpm"
+              (click)="confirmmodal()">Submit</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="modal-footer">
+        <div class="row">
+        <div class="float-left col-sm-10">
+          <label><b>CBM&nbsp;<sup class="astrick">*</sup>:</b>&nbsp;</label>
+             <input type="text" class="input" [(ngModel)]="cpm" name="cpm" required>
+        </div>
+        <div class="float-right col-sm-2">
+          <button type="submit" class="btn btn-primary bg_green" [disabled]="!cpm" (click)="confirmmodal()">Submit</button>
+        </div>
+        </div>
+      </div> -->
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Do you want to confirm Packing Generation</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="generatepacking()" class="btn btn-success fr"
+          data-dismiss="modal">Confirm</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>

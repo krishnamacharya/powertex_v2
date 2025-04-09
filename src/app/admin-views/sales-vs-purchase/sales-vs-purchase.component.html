@@ -1,0 +1,256 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container-fluid pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Sales Vs Payments</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Sales Vs Payments</h4>
+        </div>
+        <div class="fr form-group" *ngIf="supplierdata.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style" (keyup)="searchdata(searchText)">
+          <button type="submit" class="input_btn" (click)="searchdata(searchText)">Search</button>
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3" *ngIf="loginUserData.designation !='Marketing Manager'">
+        <div class="form-group">
+          <div>
+            <label for="handling_marketing_manager" class="col-form-label">Select Marketing Manager
+            </label>
+            <div>
+              <select class='select-option form-control' [(ngModel)]="marktngid"
+                name="handling_marketing_manager" #handling_marketing_manager="ngModel">
+                <option [ngValue]="undefined" disabled selected>Select</option>
+                <option class='option' *ngFor="let data of market_manager_list" [ngValue]="data.user_id">
+                  {{data.first_name | titlecase}} {{data.last_name | titlecase}}
+                  <!-- -{{data.email | lowercase}} -->
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <div class="form-group">
+          <div>
+            <label for="selectedyearr" class="col-form-label">Select Year</label>
+            <div>
+              <select class='select-option form-control' [(ngModel)]="selectedyear"
+                name="selectedyearr" #selectedyearr="ngModel" id="selectedyearr">
+                <option [ngValue]="undefined" disabled selected>Select</option>
+                <option class='option' *ngFor="let data of year" [ngValue]="data.dt">{{data.yr}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" style="margin-top: 20px;" class="input_btn" (click)="getPendingPayments()">Get Data</button>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+
+          <div class="col-sm-12 list">
+            <div class="table-responsive">
+              <table class="table table-striped" *ngIf="supplierdata.length>0">
+                <thead>
+                  <tr>
+                    <th rowspan="2">S.No</th>
+                    <th rowspan="2" class="text-center" style="width: 18%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Business&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                   
+                    <th colspan="2" class="text-center">April</th>
+                    <th colspan="2" class="text-center">May</th>
+                    <th colspan="2" class="text-center">June</th>
+                    <th colspan="2" class="text-center">July</th>
+                    <th colspan="2" class="text-center">August</th>
+                    <th colspan="2" class="text-center">September</th>
+                    <th colspan="2" class="text-center">October</th>
+                    <th colspan="2" class="text-center">November</th>
+                    <th colspan="2" class="text-center">December</th>
+                    <th colspan="2" class="text-center">January</th>
+                    <th colspan="2" class="text-center">February</th>
+                    <th colspan="2" class="text-center">March</th>
+                  </tr>
+                  <tr>
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                  
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+              
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                
+                    <th class="text-center">Sale</th>
+                    <th class="text-center">Payment</th>
+                    <!-- <th class="text-center">Return</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- <tr *ngFor="let data of supplierdata | paginate: { itemsPerPage: 20, currentPage: p }; let i=index"> -->
+                  <tr *ngFor="let data of supplierdata; let i=index">
+                    <!-- <td>{{20*(p-1)+(i+1)}}</td> -->
+                    <td>{{(i+1)}}</td>
+                    <td style="width: 18%;">{{data.business_name}}</td>
+                    <!-- (math.round(res.total_po_value)).toLocaleString('en-IN') -->
+                    <td class="text-right">{{data.APRILI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.APRILP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.APRILR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.MAYI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.MAYP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.MAYR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.JUNI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.JUNP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.JUNR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.JULYI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.JULYP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.JULYR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.AUGI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.AUGP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.AUGR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.SEPI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.SEPP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.SEPR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.OCTI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.OCTP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.OCTR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.NOVI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.NOVP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.NOVR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.DECI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.DECP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.DECR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.JANI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.JANP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.JANR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.FEBI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.FEBP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.FEBR | number : '1.2-2'}}</td> -->
+                    
+                    <td class="text-right">{{data.MARI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{data.MARP.toLocaleString('en-IN')}}</td>
+                    <!-- <td class="text-right">{{data.MARR | number : '1.2-2'}}</td> -->
+                 
+                   
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="text-right"><b>Totals</b></td>
+                    <td class="text-right">{{totAPRILI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totAPRILP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totMAYI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totMAYP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totJUNI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totJUNP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totJULYI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totJULYP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totAUGI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totAUGP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totSEPI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totSEPP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totOCTI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totOCTP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totNOVI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totNOVP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totDECI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totDECP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totJANI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totJANP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totFEBI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totFEBP.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totMARI.toLocaleString('en-IN')}}</td>
+                    <td class="text-right">{{totMARP.toLocaleString('en-IN')}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="col-md-12" *ngIf="supplierdata.length>0">
+              <!-- <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls> -->
+              <!-- <div class="pull-right">
+                <button class="btn btn-primary " type="button" (click)="printreport()">Print</button>
+              </div> -->
+            </div>
+            <!-- <pagination-controls *ngIf="supplierdata.length>0" (pageChange)="p = $event"></pagination-controls> -->
+          </div>
+
+          <div *ngIf="supplierdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+

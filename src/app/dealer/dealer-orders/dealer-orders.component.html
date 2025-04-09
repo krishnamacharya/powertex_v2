@@ -1,0 +1,1103 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per" *ngIf="poHidden">
+  <div>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center pad_b_30">
+      <h3 class="shopee_name">
+        <span class="shopee_name">{{ loginUserData.content }}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg" />
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Orders</span>
+    </p>
+  </div>
+  <section *ngIf="loginUserData.designation == 'Marketing Manager'">
+    <div class="chose_vendr">
+      <div class="col-md-12   text-center">
+        <div class="form-group">
+          <label class="vendor_lab" for="sel1">Choose Dealer </label>
+          <span>
+            <select class="vendor_sel" [(ngModel)]="selectedObj" (ngModelChange)="dealer_chn($event)" id="sel1">
+              <option [ngValue]="undefined" disabled selected>Select Dealer</option>
+              <option *ngFor="let p of dealers" [ngValue]="p">{{ p.business_name }}, {{ p.city }}</option>
+            </select>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+  <section *ngIf="orderspage">
+    <!-- <div class="row">
+      <div class="col-md-6"></div>
+   
+  </div> -->
+    <div class="reg_form mar_b_30 pad_15">
+      <div class="row">
+        <div class="col-md-12 mar_span" style="float:right;" *ngIf="loginUserData.role=='Employee'">
+
+
+          <span class="total" style="float:right" *ngIf="dealer_outstanding"
+            [ngClass]="{'colorchange':dealer_outstanding>dealer_creditlimit}">
+            <b>, Outstanding Amount:</b>₹ {{dealer_outstanding.toLocaleString('en-IN')}}.00</span>
+          <span class="total" style="float:right">
+            <b> Credit Limit:</b> {{dealer_creditlimit}}</span>
+          <span class="total" style="float:right">
+            <b>Credit Period (days):</b> {{dealer_creditperiod}}, </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 adnce_search">
+          <button class="btn btn-primary" (click)="adv_display()">
+            Advanced Selection</button>&nbsp;
+          <button class="btn btn-primary hidden" (click)="display()">
+            Select Products
+          </button>
+          <!-- <button class="btn btn-primary" (click)="adv_display()">Advanced Selection</button> -->
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-12 orderstatusbtnwrap" *ngIf="loginUserData.role != 'Employee'">
+          <button style="float:right;" class="btn btn-danger" routerLink="/Dealer-STATUS"
+            [disabled]="fieldArray.length>0">
+            Purchase Orders Status
+          </button>
+        </div>
+      </div>
+      <!-- ADV_sEARCH sTART-->
+      <div class="row  mar_t_30" style="background: url('../../../assets/images/banners/slider5.jpg')"
+        *ngIf="isAdvHidden">
+        <div class="col-md-2" style="padding:0px;min-height: 300px;">
+          <ul class="menu">
+            <li *ngFor="let p of resources">
+              <a>{{ p.Category }}</a>
+              <div class="container megadrop" style="max-height:300px;overflow:auto">
+                <div class="row" style="margin:0px !important;padding: 5px;">
+                  <div class="col-md-4" style="height:200px;padding: 0px" *ngFor="let subp of p.detail">
+                    <h4>{{ subp["SubCategory"] }}</h4>
+                    <div class="col-md-12">
+                      <div class="row">
+                        <ul style="max-height:140px;overflow:auto; padding: 0px">
+                          <li class="l_s_m" *ngFor="let m of subp.modelno">
+                            <input class="a_c_f" type="checkbox" [checked]="selected" id="{{ m }}"
+                              (change)="prod_modal1(p, subp, m, $event)" />{{ m }}
+                            <i class="fa fa-info-circle" (click)="pro_detail(p, subp, m)"
+                              style="font-size:16px;color:#0fa497"></i>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="adv_det_disp" (mouseleave)="dis()"
+                    style="width: 300px;background:white;position: sticky;top: 20%;left: 40%;">
+                    <div class="row" *ngFor="let D of adv_det"
+                      style="position: fixed;background: white;padding: 10px;border: 2px solid #0fa497;left: 40%;">
+                      <h4 class="alert_heading"
+                        style="padding:10px !important;color: white !important;    margin-bottom: 0px !important; ">
+                        {{ D.modelno }} Attributes
+                      </h4>
+                      <table class="table det_table">
+                        <tr *ngFor="let p of D.details">
+                          <td>
+                            {{ p.attribute }}
+                          </td>
+                          <td style="width:100px">:</td>
+                          <td>
+                            {{ p.actual_value }}
+                          </td>
+                        </tr>
+                      </table>
+
+                      <button class="btn btn-primary" style="float:right;" (click)="dis()">
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- ADV_sEARCH END-->
+
+      <div class="row adv_search mar_t_30" style="padding-top:10px;" *ngIf="isHidden">
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-3 pad_r_l_0">
+            <div>
+              <h3>Category</h3>
+              <div class="cats">
+                <p *ngFor="let p of resources" class="pad_l_5">
+                  <input type="checkbox" [checked]="selected_cat === p.Category" (change)="prod_category(p, $event)" />
+                  {{ p.Category }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 pad_r_l_0">
+            <h3>Sub Category</h3>
+            <div *ngFor="let p of resources">
+              <div *ngIf="selectedCategory == p.Category" class="cats">
+                <p *ngFor="let pd of p['detail']" class="pad_l_5">
+                  <input type="checkbox" [checked]="selected_sub_cat === pd.SubCategory"
+                    (change)="prod_subcategory(p, pd, $event)" /> {{ pd["SubCategory"] }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 pad_r_l_0">
+            <h3>Model Type</h3>
+            <div class="cats">
+              <p *ngFor="let r of httpdatadet" class="pad_l_5">
+                <input type="checkbox" (change)="prod_modal(r)" /> {{ r.modelno }}
+                <i class="fa fa-info-circle" (mouseenter)="info_s(r)" style="font-size:16px;color:#0fa497"></i>
+              </p>
+              <!-- <div *ngIf="detailed_class" class="detail">
+                <h4>SSSSSS</h4>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row pad_t_5per pad_15 ordertablewrap">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>SubCategory</th>
+                <th>Model No</th>
+                <th>PCS In Qty</th>
+
+                <th>PCS/CTN</th>
+                <th>No. Of Carton's</th>
+                <!--  <th >Spl Discount</th>
+               <th>Additional Qty</th>  -->
+                <th>Stock</th>
+                <th class="textright">Net Rate(&#8377;)</th>
+                <th class="textright">Net Value(&#8377;)</th>
+                <th>Action</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let field of fieldArray; let i = index">
+                <td>{{ field.category }}</td>
+                <td>{{ field.subcategory }}</td>
+                <td>{{ field.modelno }}</td>
+                <td>{{ field.qty }}</td>
+                <td>{{ field.piecepercarton }}</td>
+                <td>
+                  <!-- <input type="number" class="form-control" name="fieldquantity" [(ngModel)]="field.carton"
+                  style="padding-left: 5px;" min="1" oninput="validity.valid||(value='');" (change)="onKey2(field)" (keyup)="onKey2(field)" /> -->
+                  {{ field.carton | number: "1.2-2" }}
+                </td>
+                <!-- <td *ngIf="loginUserData.user_type !='Dealer'">{{field.stock}}</td> -->
+
+                <td>{{ field.stock }}</td>
+                <!--  <td>{{field.sp_discount}}</td>
+              <td>{{field.free_qty}}</td> -->
+                <td class="textright">
+                  {{ field.net_price | currency: "&nbsp;":"symbol":".3" }}
+                </td>
+                <td class="textright">
+                  {{ field.tot_value | currency: "&nbsp;":"symbol":".3" }}
+                </td>
+                <td class="i_opt">
+                  <p>
+                    <button class="btn btn-primary" type="button" [disabled]="add_disable(newAttribute1) || add"
+                      (click)="addFieldValue()">
+                      Add
+                    </button>
+                  </p>
+               
+                </td>
+                <td class="i_opt">
+                  <!-- <p>
+                    <button class="btn btn-default" type="button" [disabled]="add_disable(newAttribute1) || add"
+                      (click)="addFieldValue()">
+                      Add
+                    </button>
+                  </p> -->
+                  <p>
+                    <i class="fa fa-trash" (click)="deleteFieldValue2(i)" style="font-size: 18px;color: #20978c;"></i>
+                  </p>
+                </td>
+              </tr>
+              <tr *ngFor="let catg of selectedList; let j = index">
+                <td>{{ catg.category }}</td>
+                <td>{{ catg.subcategory }}</td>
+                <td>{{ catg.modelno }}</td>
+                <td>
+                  <input type="number" class="form-control" placeholder="Enter Quantity" [(ngModel)]="catg.qty"
+                    name="quantity" (keydown)="isNumberKey($event)" (change)="onKey(catg)" (keyup)="onKey(catg)"
+                    style="padding-left: 5px;" required min="1" max="999999" oninput="validity.valid||(value='');" />
+                </td>
+                <td>{{ catg.piecepercarton }}</td>
+                <td>
+                  <div class="cartoninput">
+                    {{ catg.carton | number: "1.2-2" }}
+                  </div>
+                </td>
+                <!-- <td *ngIf="loginUserData.user_type !='Dealer'">{{catg.stock}}</td> -->
+                <td>{{ catg.stock }}</td>
+
+                <!--  <td >{{catg.sp_discount}}</td>
+                <td>{{catg.free_qty}}</td> -->
+                <td>{{ catg.net_price | currency: "&nbsp;" }}</td>
+                <td>{{ catg.tot_value | currency: "&nbsp;" }}</td>
+                <td>
+                  <i class="fa fa-trash" (click)="deleteFieldValue(j)" style="font-size: 18px;color: #20978c;"></i>
+                  <!-- <span class="fa glyphicon glyphicon-trash" style="font-size: 15px;color: #0fa497;"
+                    (click)="deleteFieldValue(j)"></span> -->
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input list="categorys" class="form-control" placeholder="Select Category"
+                    [(ngModel)]="newAttribute1.category" (input)="change_form($any($event.target).value)"
+                    style="padding-left: 5px;" #inputBox />
+                  <datalist id="categorys">
+                    <option *ngFor="let p of resources" value="{{ p.Category }}">
+                    </option>
+                  </datalist>
+                </td>
+                <td>
+                  <input list="subcategorys" class="form-control" placeholder="Select Sub Category"
+                    [(ngModel)]="newAttribute1.subcategory" (input)="
+                      change1($any($event.target).value, selectedCategory_form)
+                    " style="padding-left: 5px;" [disabled]="sele_sub_catg()" />
+                  <div *ngFor="let p of resources">
+                    <datalist id="subcategorys" *ngIf="selectedCategory_form == p.Category">
+                      <option *ngFor="let pd of p['detail']" value="{{ pd['SubCategory'] }}">
+                      </option>
+                    </datalist>
+                  </div>
+                </td>
+                <td>
+                  <input type="text" class="form-control" list="modelno" placeholder="Select Model"
+                    [(ngModel)]="newAttribute1.modelno" (change)="change2($any($event.target).value, data)"
+                    style="padding-left: 5px;" [disabled]="sele_model()" />
+                  <div>
+                    <datalist id="modelno">
+                      <select *ngIf="selectedCategory_form !== 'Powertex Spare Parts'">
+                        <option *ngFor="let data of httpdata2data" value="{{ data.modelno }}">
+                        </option>
+                      </select>
+
+                      <select *ngIf="selectedCategory_form == 'Powertex Spare Parts'">
+                        <option *ngFor="let data of httpdata2data" value="{{ data.modelno }}">{{ data.name3 }}
+                        </option>
+                      </select>
+                    </datalist>
+                  </div>
+                  <!-- <input type="text" class="form-control" list="modelno" placeholder="Select Model" [(ngModel)]="newAttribute1.modelno" (keyup)="getmodelslist($any($event.target).value,$event)"
+                    style="padding-left: 5px;"/>
+                  <div>
+                    <datalist id="modelno">
+                    <select *ngIf="selectedCategory_form !== 'Powertex Spare Parts'" (click)="getmodelslist($any($event.target).value,data)">
+                      <option *ngFor="let data of httpdata2data" value="{{ data.modelno }}">{{ data.modelno }}
+                      </option>
+                    </select> -->
+
+                  <!-- <select *ngIf="selectedCategory_form == 'Powertex Spare Parts'">
+                      <option *ngFor="let data of httpdata2data" value="{{ data.modelno }}">{{ data.name3 }}
+                      </option>
+                    </select> -->
+                  <!-- </datalist>
+                  </div> -->
+                </td>
+                <td style="width: 9%;">
+                  <input type="number" class="form-control" style="text-align: right;" name="newAttributequantity"
+                    placeholder="Qty" [(ngModel)]="newAttribute1.qty" style="padding-left: 5px;"
+                    (keydown)="isNumberKey($event)" (change)="onKey1(newAttribute1)" (keyup)="onKey1(newAttribute1)"
+                    min="1" max="999999" oninput="validity.valid||(value='');" [disabled]="sele_quan()" />
+                </td>
+                <td>
+                  <input type="number" class="form-control txtright" name="newAttributepiecepercarton"
+                    [(ngModel)]="newAttribute1.piecepercarton" style="padding-left: 5px;" disabled />
+                </td>
+                <td>
+                  <!-- <input type="text" class="form-control txtright" name="newAttributecarton's" [(ngModel)]="newAttribute1.carton"
+                    style="padding-left: 5px;" disabled /> -->
+                  <div class="cartoninput">
+                    {{ newAttribute1.carton | number: "1.2-2" }}
+                  </div>
+                </td>
+                <!-- <td *ngIf="loginUserData.user_type !='Dealer'">
+                  <input type="number" class="form-control" style="text-align: center;" name="newAttributequantity"
+                    [(ngModel)]="newAttribute1.stock" placeholder="Available Quantity" style="padding-left: 5px;"
+                    disabled />
+                </td> -->
+                <td>
+                  <input type="text" class="form-control" style="text-align: center;" name="newAttributequantity"
+                    [(ngModel)]="newAttribute1.stock" placeholder="Available Quantity" style="padding-left: 5px;"
+                    disabled />
+                </td>
+
+                <!--  <td >
+                <input type="text" class="form-control" name="newAttributespldisc" [(ngModel)]="newAttribute1.sp_discount"
+                  style="padding-left: 5px;" disabled>
+              </td>
+              <td > 
+                <input type="text" class="form-control" name="newAttributeaddqty" [(ngModel)]="newAttribute1.free_qty"
+                  style="padding-left: 5px;" disabled>
+              </td> -->
+                <td>
+                  <input class="form-control txtright" name="newAttributeprice" type="text"
+                    [ngModel]="newAttribute1.net_price | currency: '&nbsp;'"
+                    (ngModelChange)="newAttribute1.net_price = $event" style="padding-left: 5px;" disabled />
+                </td>
+                <td>
+                  <input type="text" class="form-control txtright" name="newAttributevalue"
+                    [ngModel]="newAttribute1.tot_value | currency: '&nbsp;'"
+                    (ngModelChange)="newAttribute1.tot_value = $event" style="padding-left: 5px;" disabled />
+                </td>
+                <td>
+                  <button class="btn btn-primary" type="button" [disabled]="add_disable(newAttribute1) || add"
+                  #btn  (click)="addFieldValue()">
+                    Add
+                  </button>
+                </td>
+                <!-- ============delete=================== -->
+                <td>
+                  <p>
+                    <i class="fa fa-trash" (click)=" deleteFieldValue3() " style="font-size: 18px;color: #20978c;" ></i>
+                  </p>
+                </td>
+
+                <!-- ============================================ -->
+              </tr>              
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p style="font-weight: bold; color: #293270;">
+              Total Items Selected :
+              <b style="color:red">{{ order_items }}</b>
+            </p>
+          </div>
+          <div class="col-md-6">
+            <!-- <input type="button" style="float:right" class="btn btn-primary" value="Place Order"
+          (click)="addupd(selectedList,newAttribute1,fieldArray)"> -->
+            <input type="button" style="float:right" class="btn btn-primary" *ngIf="loginUserData.role == 'Employee'"
+              [disabled]="dealer == false || disablee() || add || newAttribute1.category"
+              value="Place Order" (click)="addupd(selectedList, newAttribute1, fieldArray)"
+              [disabled]="disablee() || newAttribute1.category && !newAttribute1.tot_value" />
+            <input type="button" style="float:right" class="btn btn-primary" *ngIf="loginUserData.role != 'Employee'"
+              value="Place Order" (click)="addupd(selectedList, newAttribute1, fieldArray)"
+              [disabled]="disablee() || newAttribute1.category" />
+          </div>
+        </div>
+
+        <!-- <input type="button" class="btn btn-primary place_ordr_btnn" value="Save"
+        [disabled]="placeorder_disable(selectedList,newAttribute1,fieldArray)"
+        (click)="draft(selectedList,newAttribute1,fieldArray)"> [disabled]="placeorder_disable() ||  placeorder_disable2()"-->
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- *ngIf="addressHidden" -->
+<div class="container pad_t_5per pad_b_5per" *ngIf="addressHidden">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>
+    &nbsp;>&nbsp;
+    <span (click)="change()" class="bread_crumb_hover"> Orders</span>
+    &nbsp;>&nbsp;
+    <span>Info</span>
+  </p>
+  <div class="reg_form marg_t_b_15 pad_l_20 pad_r_20">
+    <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;text-align:center">
+      <b>Products List</b>
+    </p>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Product Name</th>
+            <!-- <th>SKU</th> -->
+            <th>MRP</th>
+            <th>Disc(%)</th>
+            <th>N/C</th>
+            <th>P/C</th>
+            <th>T.Qty</th>
+            <th>Rate(&#8377;)</th>
+            <th>Total(&#8377;)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="
+              let p of po | paginate: { itemsPerPage: 7, currentPage: Page };
+              let i = index
+            ">
+            <td>{{ 7 * (Page - 1) + (i + 1) }}</td>
+            <td style="text-align:left">
+              {{ p.subcategory }} - {{ p.modelno }}
+            </td>
+            <!-- <td>{{p.sku_no}}</td> -->
+            <td>{{ p.mrp | currency: "&nbsp;"}}</td>
+            <td>{{ p.discount1 }}</td>
+            <td>{{ ((p.qty + p.free_qty)/p.piecepercarton) | currency: "&nbsp;" }}</td>
+            <td>{{ p.piecepercarton }}</td>
+            <td>{{ p.qty + p.free_qty }}</td>
+            <td>₹ {{ p.net_price | currency: "&nbsp;" }}</td>
+            <td style="text-align:right">
+              ₹ {{p.tot_value| currency: "&nbsp;" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+  </div>
+  <div class="reg_form marg_t_b_15 pad_l_20">
+    <div class="col-md-4" *ngIf="this.response.devicediscamount ==''">
+      <p>
+        <b>Taxable:</b> ₹ {{ (this.response.price).toLocaleString('en-IN')}}.{{this.decimalpricevalue}}
+      </p>
+      <p *ngIf="this.response.devicediscamount">
+        <b>Discount:</b> ₹ {{ this.response.devicediscamount.toLocaleString('en-IN') }}
+      </p>
+      <p *ngIf="this.response.promo_amount">
+        <b> Promo Discount:</b> ₹ {{ this.response.promo_amount.toLocaleString('en-IN')}}
+      </p>
+      <p>
+        <b> GST:</b> ₹ {{ this.response.gst.toLocaleString('en-IN') }}
+      </p>
+      <p>
+        <b>NET Amount:</b> ₹ {{ (this.response.finalamount).toLocaleString('en-IN')}}.{{decimalfinalvalue}}
+      </p>
+    </div>
+    <div class="col-md-4" *ngIf="loginUserData.role!='Employee'">
+      <p>
+        <b>Credit Period (days):</b> {{loginUserData.credit_period}}
+      </p>
+      <p>
+        <b>Credit Limit:</b> {{loginUserData.credit_limit}}
+      </p>
+      <p *ngIf="this.totaloutstandingamount"
+        [ngClass]="{'colorchange':this.totaloutstandingamount>loginUserData.credit_limit}">
+        <b>Outstanding Amount:</b> ₹ {{this.totaloutstandingamount.toLocaleString('en-IN')}}.00
+      </p>
+    </div>
+  </div>
+  <!-- <div class="reg_form marg_t_b_15 pad_l_20">
+    <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;">
+      <b>Credit Terms :</b>
+    </p>
+    <div class="col-md-4" *ngIf="loginUserData.role!='Employee'">
+      <p><b>Credit Period (days):</b> {{loginUserData.credit_period}}</p>
+      <p><b>Credit Limit:</b> {{loginUserData.credit_limit}}</p>
+      <p *ngIf="this.totaloutstandingamount"><b>Outstanding Amount:</b> {{this.totaloutstandingamount | currency : '&nbsp;'}}</p>
+
+    </div>
+    <div class="col-md-4" *ngIf="loginUserData.role=='Employee'">
+      <p><b>Credit Period (days):</b> {{dealer_creditperiod}}</p>
+      <p><b>Credit Limit:</b> {{dealer_creditlimit}}</p>
+    </div>
+    <div class="col-md-4" >
+        <p><b>Taxable:</b> {{ this.response.price | currency : '&nbsp;' }}</p>
+        <p *ngIf="this.response.devicediscamount"><b>Discount:</b> {{ this.response.devicediscamount | currency : '&nbsp;' }}</p>
+        <p *ngIf="this.response.promo_amount"><b> Promo Discount:</b> {{ this.response.promo_amount | currency : '&nbsp;'}}</p>
+        <p><b> GST(18%):</b> {{ this.response.gst | currency : '&nbsp;' }}</p>
+        <p><b>NET Amount:</b> {{ this.response.finalamount | currency : '&nbsp;'}}</p>
+      </div>
+      <div class="col-md-4" >
+          <p><b>Special Instructions:</b><br>
+       <textarea class="form-control" cols="40" [(ngModel)]="spl_instr" #spl_instr1="ngModel" name="spl_instr1" maxlength="100"  (keypress)="keypress($event)" placeholder="Enter Instructions..."></textarea>
+      </div>
+      
+  </div> -->
+  <div class="mar__t_b_2per">
+    <button type="submit" *ngIf="new_add" class="btn btn-primary brdr_radius_50 bg_green border_green"
+      (click)="addNewAdd()">
+      <i class="fa fa-map-marker" aria-hidden="true"></i> Add New Address</button>&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="col-sm-10" *ngIf="loginUserData.role == 'Dealer' || loginUserData.role=='Employee'">
+      <button class="btn btn-primary brdr_radius_50 bg_green border_green fa fa-plus" (click)="change()">
+        Order More/Edit
+      </button>
+    </div>
+    <!-- <div class="col-sm-10" *ngIf="loginUserData.role == 'Employee'">
+      <button
+        class="btn btn-primary brdr_radius_50 bg_green border_green fa fa-plus"
+        (click)="change()"
+      >
+       Assign Dealer
+      </button>
+    </div> -->
+    <div class="reg_form pad_2per" *ngIf="newAddress">
+      <h4 class="f_wt_600 txt_decr_undl txt_black">New Address:</h4>
+      <form #newAddForm="ngForm">
+        <div class="form-group row">
+          <div>
+            <div class="col-sm-3">
+              <label for="name">Full Name
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="text" class="form-control" #name="ngModel" required id="name" name="name"
+                  [(ngModel)]="edipShipAddress.Contact_person" placeholder="Enter Full Name" />
+              </div>
+              <div [hidden]="name.valid || name.untouched" class="validation_msg">
+                Full Name is required
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <label for="mobile">Mobile Number
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="text" class="form-control" #mobile="ngModel" required id="mobile"
+                  [(ngModel)]="edipShipAddress.mobile" name="mobile" placeholder="Enter Mobile Number" maxlength="10"
+                  pattern="^[6-9][0-9]{9}$" />
+              </div>
+              <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
+                <p *ngIf="mobile.errors['required']">Mobile Number is required</p>
+                <p *ngIf="mobile.errors['pattern']">Enter Valid Mobile Number</p>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <label for="hno">Address 1
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="text" class="form-control" #address1="ngModel" required
+                  [(ngModel)]="edipShipAddress.address1" id="address1" name="address1"
+                  placeholder="Enter House Number" />
+              </div>
+              <div [hidden]="address1.valid || address1.untouched" class="validation_msg">
+                Address is required
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <label for="street" >Address 2
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="text" required class="form-control" #address2="ngModel"
+                  [(ngModel)]="edipShipAddress.address2" id="address2" name="address2"
+                  placeholder="Enter Street Name" />
+              </div>
+              <div [hidden]="address2.valid || address2.untouched" class="validation_msg">
+                Address is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div>
+            <div class="col-sm-3">
+              <label for="shopAddress">State
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <select class="select-option form-control" [(ngModel)]="edipShipAddress.state" required name="state"
+                  #state="ngModel" (change)="onSelectState(edipShipAddress.state)">
+                  <option [ngValue]="undefined" disabled selected>--select--</option>
+                  <option class="option" *ngFor="let states of response1" [ngValue]="states.state">{{ states.state }}
+                  </option>
+                </select>
+                <div [hidden]="state.valid || state.untouched" class="validation_msg">
+                  State is required
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <label for="city">District
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <select class="select-option form-control" [(ngModel)]="edipShipAddress.district" required
+                  name="district" #district="ngModel" (change)="onSelectDistrict(edipShipAddress.district)">
+                  <option [ngValue]="undefined" disabled selected>--select--</option>
+                  <option class="option" *ngFor="let districts of response2" [ngValue]="districts.district">
+                    {{ districts.district }}</option>
+                </select>
+                <div [hidden]="district.valid || district.untouched" class="validation_msg">
+                  District is required
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <label for="shopAddress">City/Region
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div >
+                <select class="select-option form-control" [(ngModel)]="edipShipAddress.city" required name="city"
+                  #city="ngModel">
+                  <option [ngValue]="undefined" disabled selected>--select--</option>
+                  <option class="option" *ngFor="let cities of response3" [ngValue]="cities.city">{{ cities.city }}
+                  </option>
+                </select>
+                <div [hidden]="city.valid || city.untouched" class="validation_msg">
+                  City is required
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="fl">
+              <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                (click)="cancelNewAdd()">
+                <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Cancel
+              </button>
+            </div>
+            <div class="fr">
+              <button type="submit" [disabled]="newAddForm.invalid" (click)="saveAddress(newAddForm)"
+                class="btn btn-primary brdr_radius_50 btn_w bg_green border_green">
+                Save
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <form #paymentForm="ngForm">
+    <div class="reg_form mar_b_30 pad_15">
+      <div class="row">
+        <div class="col-md-6">
+          <h4 class="s_d_b_a">
+            Select Delivery Address
+            <sub class="f_size_25" style="color: #900409 !important;">*</sub>
+          </h4>
+          <div class="row pad_2per addrow" *ngFor="let p of shipAdd; let i = index"
+            style="border-bottom: 1px solid #d9534f4d;">
+            <div class="col-xs-10 col-md-9">
+              {{ p.address1 }}, {{ p.city }}, {{ p.state | titlecase }}
+            </div>
+            <div class="col-xs-2 col-md-3">
+              <span style="float:right">
+                <input type="checkbox" style="width:20px;height:18px" name="shipAdd"
+                  [checked]="selected_ship === p.seq_no" (change)="shipping(p, $any($event.target).checked)" />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" style="margin-top: 1px;">
+          <h4 class="s_d_b_a">
+            Select Billing Address
+            <sub class="f_size_25" style="color: #900409 !important;">*</sub>
+          </h4>
+          <div class="row pad_2per addrow" *ngFor="let p of billAdd; let i = index"
+            style="border-bottom: 1px solid #d9534f4d;padding: 10px;">
+            <div class="col-xs-10 col-md-9">
+              {{ p.address2 }}, {{ p.city }}, {{ p.state | titlecase }}
+            </div>
+            <div class="col-xs-2 col-md-3">
+              <span style="float:right">
+                <input type="checkbox" style="width:20px;height:18px" name="billAdd" value="billAdd"
+                  [checked]="selected_bill === p.seq_no" (change)="billing(p, $any($event.target).checked)" />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reg_form mar_b_30 pad_15" *ngIf="promocodedata?.length > 0">
+        <div class="row mar_t_20">
+          <div>
+            <div class="col-sm-3">
+              <!-- <label for="promocode">Promocode</label> -->
+              <div class="form-group">
+                <input type="text" class="form-control" #promocode1="ngModel" id="promocode" name="promocode1"
+                  [(ngModel)]="promocode" placeholder="Enter Promocode Name" />
+              </div>
+            </div>
+
+            <!-- <div class="col-sm-1">
+              <button class="btn btn-primary" [disabled]="message==false" (click)=" applyprice(promocode,applycodedetails,true)">
+                Apply Code
+              </button>
+            </div> -->
+            <div class="col-sm-1">
+              <button class="btn btn-danger" (click)="deletecode()" title="Delete">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="col-sm-2">
+              <!-- <h4>Promocodes</h4> -->
+              <div>
+                <button class="btn btn-primary viewbtn" (click)="viewcode()" title="View">
+                  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                  Promocodes
+                </button>
+                <!-- <div *ngFor="let p of promocodedata">
+                  {{p.promocodename}}
+                </div> -->
+              </div>
+            </div>
+            <div class="col-sm-4" style="margin-top: -2rem;">
+              <p>
+                <b>Special Instructions:</b>
+                <!-- <br /> -->
+                <textarea class="form-control" rows="1" cols="40" [(ngModel)]="spl_instr" #spl_instr1="ngModel"
+                  name="spl_instr1" maxlength="100" (keypress)="keypress($event)"
+                  placeholder="Enter Instructions..."></textarea>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div style="margin-left:25px;" *ngIf="this.applycodedetails && message == true">
+            <b> Promocode Applied Successfully. You have saved
+              <span style="color:red;">{{ applycodedetails.promo_amount | currency: "&nbsp;" }}
+              </span>
+            </b>
+          </div>
+          <br />
+          <div style="margin-left:25px;color:red;" *ngIf="this.applycodedetails && message == false">
+            <b>This Promocode is not applicable for your order</b>
+          </div>
+          <!-- <div>
+            <input
+              type="checkbox"
+              style="width:20px;height:18px;margin-top:2px;margin-left:25px;"
+              name="code"
+              value="code"
+              (change)="
+                applyprice(
+                  promocode,
+                  applycodedetails,
+                  $any($event.target).checked
+                )
+              "
+            />Accept Promocode
+          </div> -->
+        </div>
+      </div>
+      <div class="row"></div>
+      <div class="row pad_t_5per">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 text-center">
+          <button class="btn btn-primary" *ngIf="a_order" (click)="c_order()" style="margin:5px;">
+            Cancel
+          </button>
+          <button class="btn btn-primary" *ngIf="!a_order" (click)="gotoPrint(Message)" style="margin:5px;">
+            Ok
+          </button>
+          <button class="btn btn-primary" [disabled]="con_disable() || paymentForm.invalid" (click)="confirm_order()"
+            style="margin:5px;">
+            Confirm Order
+          </button>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+<!-- modal pop up start here -->
+<div class="modal fade" id="orderSuccessfulModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="text-center content_msg">
+              <span>Your Order was Placed Successfully..!!</span>
+              <p style="padding: 10% 0;" class="alert_order_no">
+                {{ Message }}
+              </p>
+              <p class="m_p_t">Thank You, For Choosing Powertex</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoPrint(Message)">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="orderdetail" (mouseleave)="info_h()" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" *ngIf="attr_image">
+            <h4 class="alert_heading" style="padding:10px !important;color: white !important; ">
+              {{ attr_image.modelno }} Attributes
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </h4>
+            <!-- <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i> 
+              </div> -->
+            <div class=" text-center content_msg" *ngIf="attributes" style="padding:0px 40px">
+              <div class=" alert_order_no" style="font-size:14px !important">
+                <div class="text-center">
+                  <img src="{{ attr_image.low_image_1 }}" style="width:110px" />
+                </div>
+                <table class="table det_table">
+                  <tr *ngFor="let D of attributes">
+                    <td>
+                      {{ D.attribute }}
+                    </td>
+                    <td style="width:100px">:</td>
+                    <td>
+                      {{ D.actual_value }}
+                    </td>
+                  </tr>
+                </table>
+
+                <p></p>
+              </div>
+              <p class="m_p_t">Thank You, For Choosing Powertex</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="orderdetail1" tabindex="-1" *ngIf="adv_det" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;" *ngFor="let D of adv_det">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <h4 class="alert_heading" style="padding:10px !important;color: white !important; ">
+              {{ D.modelno }} Attributes
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </h4>
+            <!-- <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i> 
+              </div> -->
+            <div class=" text-center content_msg" style="padding:0px 40px">
+              <div class=" alert_order_no" style="font-size:14px !important">
+                <div class="text-center">
+                  <img src="{{ D.low_image_1 }}" style="width:110px" />
+                </div>
+                <table class="table det_table">
+                  <tr *ngFor="let p of D.details">
+                    <td>
+                      {{ p.attribute }}
+                    </td>
+                    <td style="width:100px">:</td>
+                    <td>
+                      {{ p.actual_value }}
+                    </td>
+                  </tr>
+                </table>
+
+                <p></p>
+              </div>
+              <p class="m_p_t">Thank You, For Choosing Powertex</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="check" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            <div class="text-center content_msg">
+              <span>Your Order was Placed Successfully..!!</span>
+              <p style="padding: 10% 0;" class="alert_order_no">
+                {{ Message }}
+              </p>
+              <p class="m_p_t">Thank You, For Choosing Powertex</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal fade" id="check" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark"><i class="fa fa-check" aria-hidden="true"></i></div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Please Enter Cartons..!!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+<div class="modal fade" id="addresModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Address added Successfully..!!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="offers" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </h4>
+            <!-- <div class="right_mark"><i class="fa fa-check" aria-hidden="true"></i></div> -->
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Address added Successfully..!!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!---promocodes modal-->
+
+<div class="modal fade" id="viewpromocodesmodal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <h4 class="alert_heading">
+              Promocodes
+              <button type="button" class="close1" data-dismiss="modal">
+                &times;
+              </button>
+            </h4>
+
+            <div class="content_msg">
+              <div class="row coupncard" *ngFor="let p of promocodedata">
+                <div class="col-md-12 col-xs-12 col-lg-12">
+                  <div class="col-md-4 pull-left modal_show_code">
+                    <input type="text" class="form-control modal_input" value="{{ p.promocodename }}" readonly="" />
+                  </div>
+                  <div class="col-md-3 pull-right">
+                    <button type="button" class="btn applybtn btn-sm" (click)="applycode(p.promocodename)">
+                      Apply Code
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-12 col-xs-12 col-lg-12">
+                  <h6 class="codetitle">
+                    Use code
+                    <b>{{ p.promocodename }}</b> & Get discount upto &#8377; {{ p.amount }}
+                  </h6>
+                  <ul>
+                    <li>Maximum discount avail &#8377; {{ p.amount }}</li>
+                    <li>
+                      Offer valid on minimum order value of &#8377; {{ p.minorderamount }}
+                    </li>
+                    <li>Offer valid from {{ p.fromdate }} to {{ p.todate }}</li>
+                    <li>
+                      Offer valid once per a month during the offer period
+                    </li>
+                    <li>
+                      Terms & Conditions may apply.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="modal " id="myModal" tabindex="-1" data-backdrop="static" style="display:block">
+    <div class="modal-dialog">
+      <div class="modal-content" style="border: 1rem solid #0fa497;">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="float:left;">New Customer</h4>
+          <button type="button" style="float:right;" class="close" (click)="fire()">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body" style="padding:0px;">
+          <div>
+            <div class="col-md-6 pad_2per">
+                <label >Name:</label>
+                <input type="text" placeholder="Enter Customer Name" [(ngModel)]="userdata.first_name" class="form-control">
+            </div>
+            <div class=" col-md-6 pad_2per">
+                <label>Mobile Number:</label>
+                <input type="text" placeholder="Enter Customer Mobile Number" [(ngModel)]="userdata.mobile" class="form-control">
+            </div>
+            <div class=" col-md-6 pad_2per">
+                <label>Email:</label>
+                <input type="text" placeholder="Enter Customer Mail" [(ngModel)]="userdata.email"  class="form-control">
+            </div>
+            <div class=" col-md-6 pad_2per">
+                <label>City:</label>
+                <input type="text" placeholder="Enter Customer Area"  [(ngModel)]="userdata.city" class="form-control">
+            </div>
+            <div class=" col-md-6 pad_2per">
+                <label>State:</label>
+                <input type="text" placeholder="Enter Customer State" [(ngModel)]="userdata.state" class="form-control">
+            </div>
+            <div class=" col-md-6 pad_2per">
+                <label>Country:</label>
+                <input type="text" placeholder="Enter Customer Area Pincode" [(ngModel)]="userdata.country" class="form-control">
+            </div>
+          </div>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button class="btn btn-primary bg_green border_green" style="float: right !important;" (click)="user_data(userdata)" >Save</button>
+          <button type="button" class="btn btn-danger" style="float: left !important;" (click)="fire()">Close</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  

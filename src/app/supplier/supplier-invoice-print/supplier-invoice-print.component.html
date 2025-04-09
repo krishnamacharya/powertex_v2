@@ -1,0 +1,420 @@
+<div class="container pad_t_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="
+                        color: #878787 !important;
+                    ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+      <span *ngIf="this.PUrl == 'S=IMK' || this.PUrl == 'S=CPP' ">
+        <a href="javascript.void(0)" *ngIf="loginUserData.role!='Admin'" routerLink="/Supplier-Invoice"
+          style="color: #878787 !important;">Pending PI List</a>
+          &nbsp;>&nbsp;</span>
+    <span *ngIf="this.PUrl == 'S=IMK'">
+      <a  href="javascript.void(0)" *ngIf="loginUserData.role!='Admin'" routerLink="/Supplier-Proforma Invoice" style="color: #878787 !important;">
+        Invoice</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="this.PUrl == 'S=CPP'">
+      <a  href="javascript.void(0)" *ngIf="loginUserData.role!='Admin'" routerLink="/Supplier-Invoice-Edit" style="color: #878787 !important;">
+        Consolidated PI List</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="invoiceData?.json_hdr.inv_no">Invoice-Print</span>
+    <span *ngIf="!invoiceData?.json_hdr.inv_no">Proforma Invoice-Print</span>
+  </p>
+
+  <div class="total_invoice_page" style="margin-bottom: 20px;" id="printSectionId">
+    <div class="printwrap">
+      <div class="invoce_address">
+        <div class="table-responsive" style="margin-top: 10px;margin-bottom: 0px;">
+          <table class="table table-bordered table-striped pending_order printTable"
+            style="margin-bottom: 10px !important;table-layout: initial;">
+            <thead>
+              <tr>
+                <th style="background: transparent;color:#000000;padding:3px !important;border:none !important;"
+                  colspan="9">
+                  <div class="row" style="margin: 0 !important;">
+                    <!-- <div class="col-xs-12">
+                      <h2 
+                        style="text-align: center;font-size: 18px;font-weight: 700; margin-top: 3px;margin-bottom: 1px;">
+                        {{loginUserData.headoffice_address.online_display_name}}
+                      </h2>
+                    
+
+                    </div> -->
+                  </div>
+
+                </th>
+              </tr>
+              <tr>
+                <th style="background: transparent;color:#000000;border:none !important;padding:3px !important;"
+                  colspan="9">
+                  <div class="hr_line_botm marg_t_b_15" style="margin-bottom: 0 !important;margin-top:0px;">
+                    <div class="row" style="margin: 0 !important;">
+                      <div class="col-xs-12">
+                        <div class="company_address" style="text-align: center;">
+                          <h3
+                            style="padding-bottom: 6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;padding-top: 10px;margin-bottom: 5px;">
+                            {{loginUserData.business_name}}
+                          </h3>
+                          <div>
+                            <span style="line-height: 1.5;" *ngIf="loginUserData.address1">{{ loginUserData.address1}},
+                            </span>
+                            <span style="line-height: 1.5;" *ngIf="loginUserData.address2">{{ loginUserData.address2}},
+                            </span>
+                            <span style="line-height: 1.5;" *ngIf="loginUserData.city"><br> <span
+                                style="line-height: 1;">
+                                <b>City&nbsp;</b>
+                              </span> : {{ loginUserData.city}},</span>
+
+                            <span style="line-height: 1;">
+                              <b>State&nbsp;</b>
+                            </span>
+                            <span style="line-height: 1.5;"> : {{loginUserData.state |
+                              titlecase}}&nbsp;-&nbsp; <span style="line-height: 1.5;" *ngIf="loginUserData.pin">{{
+                                loginUserData.pin}}.</span></span><br>
+                            <span style="line-height: 1.5;" *ngIf="loginUserData.mobile">
+                              <b>Mobile </b>
+                            </span>
+                            <span style="line-height: 1.5;" *ngIf="loginUserData.mobile"> :
+                              {{loginUserData.mobile}},</span>
+
+                            <span *ngIf="loginUserData.role=='Admin'"
+                              style="line-height: 1.5;font-size: 9px !important;">
+                              <b>IEC Code&nbsp;</b>
+                            </span>
+                            <span *ngIf="loginUserData.role=='Admin'" style="line-height: 1.5;"> : {{loginUserData.cin |
+                              titlecase}}.</span>
+                            <span style="line-height: 1.5;">Email</span>
+                            <span *ngIf="loginUserData.role=='Admin'" style="line-height: 1.5;"> :
+                              {{loginUserData.company_address.company_email}},</span>
+                            <span *ngIf="loginUserData.role!='Admin'" style="line-height: 1.5;"> :
+                              {{loginUserData.email}},</span><br>
+                            <span style="line-height: 1.5;font-size: 9px !important;"
+                              *ngIf="loginUserData.role=='Admin'">GSTIN
+                              &nbsp;</span>
+                            <span *ngIf="loginUserData.role=='Admin'"
+                              style="line-height: 1.5;font-size: 10px !important;">:
+                              {{loginUserData.company_address.gstin}},&nbsp;</span>
+                            <br>
+                            <span style="line-height: 1.5;font-size: 9px !important;"
+                              *ngIf="loginUserData.role=='Admin'">PAN
+                              &nbsp;</span>
+                            <span *ngIf="loginUserData.role=='Admin'"
+                              style="line-height: 1.5;font-size: 9px !important;">:
+                              {{loginUserData.company_address.pan}}.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <h4 style="margin-top: 0;margin-bottom: 5px ;text-align: center;padding:0 !important;">
+                      <b>COMMERCIAL INVOICE</b>
+                    </h4>
+                  </div>
+
+                  <div class="row hr_line_botm" style="display: flex;margin:0;padding:0;">
+                    <div class="col-md-9 company_address padding_0 customwidth70"
+                      style="line-height: 1.9;margin:0;padding: 0;">
+                      <div class="txt_l">
+                        <h4 style="text-decoration:underline;margin-top: 2px;margin-bottom: 2px;">
+                          <b>To</b>
+                        </h4>
+                      </div>
+                      <div class="txt_l fnt_size_12" style="line-height: 1.5;">
+                        <h4 style="margin-top: 1px;margin-bottom: 1px;font-weight: 600;line-height: 1.5;">
+                          {{loginUserData.headoffice_address.online_display_name}}
+                        </h4>
+                      </div>
+                      <div class="txt_l fnt_size_12" style="line-height: 1.5;">
+                        <span style="line-height: 1.5;;display: inline-block;">
+                          {{loginUserData.headoffice_address.address1}},
+                        </span><br>
+                        <span style="line-height: 1.5;display: inline-block;">
+                          {{loginUserData.headoffice_address.address2}},
+                        </span><br>
+                        <span style="line-height: 1.5;">
+                          <b>City&nbsp;</b> : {{loginUserData.headoffice_address.city}},</span>
+                        <span style="line-height: 1.5;">
+                          <b>State&nbsp;</b>
+                        </span>: <span style="line-height: 1.5;">
+                          {{loginUserData.headoffice_address.state}}-{{loginUserData.headoffice_address.pin}}</span>
+
+                      </div>
+                      <div class="txt_l fnt_size_12" style="line-height: 1.5;">
+                        <span style="line-height: 1;">Mobile&nbsp;</span>
+                        <span style="line-height: 1.5;">:
+                          {{loginUserData.headoffice_address.mobile}},&nbsp;</span>
+                        <span style="line-height: 1.5;">Email</span>
+                        <span style="line-height: 1.5;"> :
+                          {{loginUserData.headoffice_address.company_email}},</span>
+                        <br>
+                        <span style="line-height: 1.5;">GSTIN&nbsp;</span>
+                        <span style="line-height: 1.5;">:
+                          {{loginUserData.headoffice_address.gstin}},&nbsp;</span>
+                        <span style="line-height: 1.5;">PAN
+                          &nbsp;</span>
+                        <span style="line-height: 1.5;">:
+                          {{loginUserData.headoffice_address.pan}}.</span>&nbsp;
+                        <span style="line-height: 1.5;">IEC Code
+                          &nbsp;</span>
+                        <span style="line-height: 1.5;">:
+                          {{loginUserData.headoffice_address.cin}}.</span>
+                      </div>
+                    </div>
+                    <div class="col-md-3 company_address padding_0 customwidth40"
+                      style="line-height: 1.5;padding-top: 10px;margin-top:5px;">
+                      <div class="fnt_size_12" style="line-height: 1;" *ngIf="invoiceData.json_hdr.inv_no">
+                        <span style="font-size: 11px;line-height: 1;"> Invoice No &nbsp;&nbsp; </span>
+                        <span style="font-size: 11px;line-height: 1;"> : {{invoiceData.json_hdr.inv_no}}</span>
+                      </div>
+                      <div class="fnt_size_12" style="line-height: 1;" *ngIf="!invoiceData.json_hdr.inv_no">
+                        <span style="font-size: 11px;line-height: 1;"> Proforma No </span>
+                        <span style="font-size: 11px;line-height: 1;"> : {{invoiceData.json_hdr.profomaid}}</span>
+                      </div>
+                      <div class="fnt_size_12" style="line-height: 1;">
+                        <span style="font-size: 11px;line-height: 1;">Invoice Date
+                        </span>
+                        <span style="font-size: 11px;line-height: 1;"> :
+                          {{invoiceData.json_hdr.invdate | date:'dd/MM/yyyy' }} <br></span>
+                      </div>
+                      <div class="fnt_size_12" style="line-height: 1;" *ngIf="invoiceData.json_hdr.pono_ref">
+                        <span style="font-size: 11px;line-height: 1;"> PO No
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span style="font-size: 11px;line-height: 1;"> :
+                          {{invoiceData.json_hdr.pono_ref}}</span>
+                      </div>
+                      <div class="fnt_size_12" style="line-height: 1;" *ngIf="invoiceData.json_hdr.podate">
+                        <span style="font-size: 11px;line-height: 1;"> PO Date
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span style="font-size: 11px;line-height: 1;"> :
+                          {{invoiceData.json_hdr.podate | date:'dd/MM/yyyy' }} <br></span>
+                      </div>
+                      <div class="fnt_size_12" style="line-height: 1;" *ngIf="invoiceData.json_hdr.pi_no">
+                        <span style="font-size: 11px;line-height: 1;"> PI No
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span style="font-size: 11px;line-height: 1;"> : {{invoiceData.json_hdr.pi_no}}</span>
+                      </div>
+                      <div class="fnt_size_12" style="line-height: 1;" *ngIf="invoiceData.json_hdr.pidate">
+                        <span style="font-size: 11px;line-height: 1;"> PI Date
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <span style="font-size: 11px;line-height: 1;"> :
+                          {{invoiceData.json_hdr.pidate | date:'dd/MM/yyyy' }} <br></span>
+                      </div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+              <tr class="ml-1 mr-1">
+                <th class="txt_centr" style="font-size: 10px;text-align: center;width: 2%;">Sr.</th>
+                <th class="txt_left" style="font-size: 10px;width:30%;word-break: break-all;">Product Name</th>
+                <th class="txt_left" style="font-size: 10px;width:10%;word-break: break-all;">Brand</th>
+                <th class="txt_right" style="font-size: 10px;">SKU No</th>
+                <!-- <th class="txt_right" style="font-size: 10px;text-align: right;width:5%;">Aviqty</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;width:5%;">Months Qty</th> -->
+                <th class="txt_right" style="font-size: 10px;text-align: right;width:5%;">Qty</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;">Price
+                  ({{invoiceData.json_dtl[0].ctype}})</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;">Amount
+                  ({{invoiceData.json_dtl[0].ctype}})
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of invoiceData.json_dtl; let i=index">
+                <td class="txt_centr" style="font-size: 10px;text-align: center;">{{i+1}}</td>
+                <td class="txt_left" style="font-size: 9px;">{{item.productid.subcategory}} {{item.productid.modelno}}
+                </td>
+                <td class="txt_left" style="font-size: 9px;">{{item.productid.brand}}
+                </td>
+                <!-- <td class="txt_left" style="text-align: right;font-size: 9px;">{{item.productid.sku_no}}
+                </td>
+                <td class="txt_left" style="text-align: right;font-size: 9px;">{{item.aviqty}}
+                </td> -->
+                <td class="txt_left" style="text-align: right;font-size: 9px;">{{item.mappingid.sku_no}}
+                </td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.qty}}</td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.price | number:'1.3-3'}}</td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.amount| number:'1.3-3'}}</td>
+              </tr>
+              <tr *ngIf="invoiceData.json_hdr.discount">
+
+                <td colspan="6" class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>Discount</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    {{invoiceData.json_hdr.discount | number:'1.3-3'}}</span>
+                </td>
+              </tr>
+              <tr *ngIf="invoiceData.json_hdr.fright">
+                <td colspan="6" class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>Fright</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    {{invoiceData.json_hdr.fright | number:'1.3-3'}}</span>
+                </td>
+              </tr>
+              <tr *ngIf="invoiceData.json_hdr.insurance">
+                <td colspan="6" class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>Insurance</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    {{invoiceData.json_hdr.insurance | number:'1.3-3'}}</span>
+                </td>
+              </tr>
+              <tr *ngIf="invoiceData.json_hdr.others">
+                <td colspan="6" class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>Others</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    {{invoiceData.json_hdr.others | number:'1.3-3'}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3" class="no-line">
+                 <b><span>({{(invoiceData.json_dtl[0].ctype)}}-{{toWords(invoiceData.json_hdr.poamount | number:'1.3-3')}})</span></b> 
+                </td>
+                <td class="no-line txt_right alignright text-right">
+                  <span style="font-size: 8px !important;text-align: right;display: inline-block;">
+                    <b style="font-size: 12px !important;">&nbsp;&nbsp;Total
+                      Qty</b></span>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    {{this.totqty}}</span>
+                </td>
+                <td class="no-line txt_right alignright text-right">
+                  <span style="font-size: 8px !important;text-align: right;display: inline-block;">
+                    <b style="font-size: 12px !important;">&nbsp;&nbsp;Total
+                      ({{invoiceData.json_dtl[0].ctype}})</b></span>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    {{invoiceData.json_hdr.poamount | number:'1.3-3'}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p></p>
+        </div>
+        <div class="row">
+          <div>
+            <div class="flexdiv">
+              <div class="col-md-2 customwidth20">
+                <p style="margin:5px !important;line-height: 1;">Shipment Port</p>
+                <p style="margin:5px !important;line-height: 1;">Discharge Port</p>
+                <p style="margin:5px !important;line-height: 1;">Payment Terms</p>
+                <p style="margin:5px !important;line-height: 1;">Delivery Terms</p>
+                <p style="margin:5px !important;line-height: 1;" *ngIf="invoiceData.json_hdr.deliverytime">Delivery Time</p>
+              </div>
+              <div class="customwidth50 col-md-9">
+                <p style="margin:5px !important;line-height: 1;">:&nbsp;{{invoiceData.json_hdr.shipmentport}}</p>
+                <p style="margin:5px !important;line-height: 1;">:&nbsp;{{invoiceData.json_hdr.dischargeport}}</p>
+                <p style="margin:5px !important;line-height: 1;">:&nbsp;{{invoiceData.json_hdr.payment_terms}}</p>
+                <p style="margin:5px !important;line-height: 1;">:&nbsp;{{invoiceData.json_hdr.deliveryterms}}</p>
+                <p style="margin:5px !important;line-height: 1;" *ngIf="invoiceData.json_hdr.deliverytime">:&nbsp;{{invoiceData.json_hdr.deliverytime}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row" style="width: 100%;"
+          *ngIf="invoiceData.json_hdr.description||invoiceData.json_hdr.description2||invoiceData.json_hdr.description3">
+          <h5 class="col-md-12" style="margin:5px"><b>Note :</b> </h5>
+          <div class="col-md-12">
+            <div>
+              <p style="margin:5px !important;line-height: 1;" *ngIf="invoiceData.json_hdr.description">
+                {{invoiceData.json_hdr.description}}</p>
+              <p style="margin:5px !important;line-height: 1;" *ngIf="invoiceData.json_hdr.description2">
+                {{invoiceData.json_hdr.description2}}</p>
+              <p style="margin:5px !important;line-height: 1;" *ngIf="invoiceData.json_hdr.description3">
+                {{invoiceData.json_hdr.description3}}</p>
+            </div>
+          </div>
+        </div> -->
+        <div class="row mb-1half">
+          <div *ngIf="bankDetails">
+            <h5 style="margin:5px" class="col-md-12"><b>Bank Details</b></h5>
+            <div class="flexdiv">
+              <div class="col-md-2 customwidth20">
+                <p style="margin:5px !important;line-height: 1;">A/c Holder</p>
+                <p style="margin:5px !important;line-height: 1;">A/c Number</p>
+                <p style="margin:5px !important;line-height: 1;">Bank Name</p>
+                <p style="margin:5px !important;line-height: 1;">Branch</p>
+                <p style="margin:5px !important;line-height: 1;">SWIFT NO</p>
+              </div>
+              <div class="customwidth50 col-md-9 mb-1half">
+                <p style="margin:5px !important;line-height: 1;">:&nbsp;{{bankDetails.acc_holder}}
+                </p>
+                <p style="margin:5px !important;line-height: 1;"> :&nbsp;{{bankDetails.acc_no}}</p>
+                <p style="margin:5px !important;line-height: 1;">
+                  :&nbsp;{{bankDetails.bank_name}}
+                </p>
+                <p style="margin:5px !important;line-height: 1;">
+                  :&nbsp;{{bankDetails.branch}}
+                </p>
+                <p style="margin:5px !important;line-height: 1;">
+                  :&nbsp;{{bankDetails.ifsc}}
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped pending_order printTable"
+            style="margin-bottom: 10px !important;table-layout: initial;">
+            <tfoot>
+              <tr>
+                <td colspan="7">
+                  <div class="row" style="margin: 0 !important;">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-left: 2px !important;">
+                      <!-- <h5 style="margin-bottom: 2px !important;margin-top: 2px !important;"> -->
+                      <!-- <strong style="font-size: 11px;line-height: 1;">PO No &nbsp;:</strong>
+                        <span *ngIf="invoiceData.json_hdr.pono" style="font-size: 11px;line-height: 1;">
+                          {{invoiceData.json_hdr.pono_ref}} </span>
+                        <div class="txt_l fnt_size_12">
+                          <span style="font-size: 11px;line-height: 1;"><strong>For&nbsp;</strong></span>
+                          <span style="font-size: 11px;line-height: 1;">{{loginUserData.business_name}}</span>
+                        </div>
+                        <br><br>
+                         <strong *ngIf="!invoiceData.json_hdr.inv_no" class="theme_color fnt_size_9">Note:-</strong> -->
+                      <!-- </h5> -->
+                      <div *ngIf="!invoiceData.json_hdr.inv_no">
+                        <p style="font-size:10px;line-height: 1.1;margin-bottom: 1.5rem;">Above information is not an
+                          invoice and only an
+                          estimate of services described above.</p>
+                        <p style="font-size:10px;line-height: 1.1;">This estimation is not any commercial values.</p>
+                        <p style="font-size: 9px;margin-bottom: 2px;margin-top: 2px;text-align: center;">
+                          *This is a computer generated, does not require a physical signature.
+                        </p>
+                      </div>
+                      <!-- <p style="font-size: 9px;margin-bottom: 2px;margin-top: 2px;text-align: center;"> -->
+                      <!-- *This is a computer generated, does not require a physical signature. -->
+
+                      <!-- </p> -->
+                      <p class="p-1">For {{loginUserData.business_name}}</p>
+                      <p class="p-1"> {{date20}}</p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="text-align: center;padding-bottom: 15px;">
+    <button type="submit" class="btn btn-success" (click)="printInvoice()">Print</button>
+    <button *ngIf="this.PUrl == 'S=IMK' || this.PUrl == 'S=CPP'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Supplier-Invoice">Close</button>
+    <button *ngIf="this.PUrl != 'S=IMK' && this.PUrl != 'S=CPP'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Close</button>
+  </div>
+</div>

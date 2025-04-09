@@ -1,0 +1,54 @@
+.sch_h_1 {
+    text-align: center;
+    color:#293271 !important;
+    font-weight:bold;
+}
+.app{
+    font-size: 15px;
+    color: white;
+    padding: 3px 6px;
+    border: #293271;
+    background: #293271;
+    border-radius: 4px;
+}
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 50px 14px 50px;
+    font-size: 18px !important;
+    font-weight: 600;
+}
+.dash_status .status_align a {
+    color: #fff;
+    font-size: 18px !important;
+}
+.alert_heading1 {
+    background: #0da550;
+    margin-top: 0;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white !important;
+}
+.view_s{
+    table {
+        tr{
+            td ,th {
+                border-top:none;
+            }
+            
+        }
+    }
+}
+/* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 520px){
+    .active_tab{
+        padding: 5px 25px 6px 45px !important;
+        font-size: 19px !important;
+    }
+    .nodata_txt {
+        font-size: 22px;
+    }
+}

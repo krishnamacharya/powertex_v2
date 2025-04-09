@@ -1,0 +1,511 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Promocodes</span>
+  </p>
+
+  <section *ngIf="createcode">
+    <div class="row">
+      <div class="col-sm-12">
+        <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Create New Offer<span class="a_b_2"
+            (click)="availoffers()">
+            <button class="a_b_1 btn btn-primary pull-right"><i class="fa fa-long-arrow-left"></i>&nbsp;Available
+              Offers</button></span></h4>
+        <div class="row pad_15">
+
+          <form (ngSubmit)="onSubmit(masterDataForm)" #masterDataForm="ngForm">
+            <div class="form-group row">
+              <div>
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="offertype" >Select
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class="form-control" id="offertype" [(ngModel)]="masterData.offertype" #offertype="ngModel"
+                      name="offertype" required>
+                      <option [ngValue]="undefined" disabled selected>--Select Offertype--</option>
+                      <option *ngFor="let offer of offertypes" [ngValue]="offer">
+                        {{offer}}
+                      </option>
+
+                    </select>
+                    <div [hidden]="offertype.valid || offertype.untouched" class="validation_msg">
+                      please select offertype
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-3 mar_b_10_mbl" *ngIf="masterData.offertype=='Promotions'">
+                  <label for="applicable">Applicable only
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class="form-control" [(ngModel)]="masterData.applicable" id="applicable"
+                      #applicable="ngModel" name="applicable" required>
+                      <option [ngValue]="undefined" disabled selected>--Select type--</option>
+                      <option *ngFor="let applicable of applicables" [ngValue]="applicable">
+                        {{applicable}}
+                      </option>
+
+                    </select>
+                    <div [hidden]="applicable.valid || applicable.untouched" class="validation_msg">
+                      please select applicable
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="masterData.offertype">
+              <div class="form-group row" *ngIf="masterData.offertype=='Promocode'">
+                <div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="applicable" >Applicable only
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <select class="form-control" [(ngModel)]="masterData.applicable" id="applicable"
+                        #applicable="ngModel" name="applicable" required>
+                        <option [ngValue]="undefined" disabled selected>--Select type--</option>
+                        <option *ngFor="let applicable of applicables" [ngValue]="applicable">
+                          {{applicable}}
+                        </option>
+
+                      </select>
+                      <div [hidden]="applicable.valid || applicable.untouched" class="validation_msg">
+                        please select applicable
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="promocodename">Promocode Name
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="promocodename" name="promocodename"
+                        [(ngModel)]="masterData.promocodename" #promocodename="ngModel" required maxlength="15"
+                        placeholder="Enter Promocodename">
+                      <div [hidden]="promocodename.valid || promocodename.untouched" class="validation_msg">
+                        Promocodename is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="promo_title">Promocode Title
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="promo_title" name="promo_title"
+                        [(ngModel)]="masterData.promo_title" #promo_title="ngModel" required
+                        placeholder="Enter Promocode title">
+                      <div [hidden]="promo_title.valid || promo_title.untouched" class="validation_msg">
+                        Promocode title is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="minorderamount" >Min. Order Amount
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="minorderamount" name="minorderamount"
+                        [(ngModel)]="masterData.minorderamount" #minorderamount="ngModel" required
+                        placeholder="Enter Minimum Amount" (keypress)="keypress($event)">
+                      <div [hidden]="minorderamount.valid ||  minorderamount.untouched" class="validation_msg">
+                        Amount is required
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="fromdate" >From Date
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+
+                      <mat-form-field>
+                        <input matInput required [matDatepicker]="picker" placeholder="Choose fromdate"
+                          [(ngModel)]="masterData.fromdate" #fromdate="ngModel" name="fromdate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                      <div [hidden]="fromdate.valid || fromdate.untouched" class="validation_msg">
+                        From Date is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="todate" >To Date
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+
+                      <mat-form-field>
+                        <input matInput required [matDatepicker]="picker1" placeholder="Choose todate"
+                          [(ngModel)]="masterData.todate" #todate="ngModel" name="todate">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                      </mat-form-field>
+                      <div [hidden]="todate.valid || todate.untouched" class="validation_msg">
+                        To Date is required
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="form-group row">
+                <div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="num_of_times" > Number of Times
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="applyfor" name="applyfor"
+                        [(ngModel)]="masterData.applyfor" #applyfor="ngModel" required placeholder="Enter number"
+                        (keypress)="keypress($event)">
+                      <div [hidden]="applyfor.valid ||  applyfor.untouched" class="validation_msg">
+                        Num of times is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="amount"> Amount
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="amount" name="amount" [(ngModel)]="masterData.amount"
+                        #amount="ngModel" required placeholder="Enter amount" (keypress)="keypress($event)" >
+                      <div [hidden]="amount.valid ||  amount.untouched" class="validation_msg">
+                        Amount is required
+                      </div>
+                      <div [hidden]="errmsg==false" class="validation_msg">
+                        Amount should not be greater than or equal to min order amount
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="remarks">Description
+                      <!-- <sub class="txt_red f_size_25">*</sub> -->
+                    </label>
+                    <div>
+                      <textarea class="form-control rounded-0" id="remarks" rows="3" name="remarks"
+                        [(ngModel)]="masterData.remarks" #remarks="ngModel" placeholder="Enter Remarks"></textarea>
+                      <!-- <div [hidden]="remarks.valid || remarks.untouched" class="validation_msg">
+                  Remarks is required
+              </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row pad_t_b_10">
+                <div class="col-sm-12">
+                  <!-- <div class="pull-left">
+            <button type="reset" class="btn btn-primary brdr_radius_50 btn_w bg_red border_red" (click)="clear()" >
+              <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Clear</button>
+          </div> -->
+                  <div class="pull-left">
+                    <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                      [disabled]="masterDataForm.invalid">Submit
+                      <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="availableoffers">
+    <div class="row">
+      <div class="col-sm-12">
+        <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Available Offers<span class="a_b_2"
+            (click)="createoffers()">
+            <button class="a_b_1 btn btn-primary pull-right">Create New Offer&nbsp;<i
+                class="fa fa-long-arrow-right"></i></button></span></h4>
+
+        <div class="table-responsive tabres" style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc"
+          *ngIf="offerdetails?.length>0">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Offer Type</th>
+                  <th>Applicable </th>
+                  <th>Promocode Name</th>
+                  <th>Promocode Title</th>
+                  <th>Min. Order Amount</th>
+                  <th>From Date</th>
+                  <th>To Date</th>
+                  <th>Count</th>
+                  <th>Amount</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let offer of offerdetails | paginate: { itemsPerPage: 10, currentPage: Page}; let i=index; "
+                  [ngStyle]="{'background-color':offer.active == 0 ? '#c5cecd' : 'white' }">
+                  <td>{{10*(Page-1)+(i+1)}}</td>
+                  <td>{{offer.offertype}}</td>
+                  <td>{{offer.applicable}}</td>
+                  <td *ngIf="offer.promocodename">{{offer.promocodename}}</td>
+                  <td align="center" *ngIf="offer.promocodename==null">-</td>
+                  <td *ngIf="offer.promo_title">{{offer.promo_title}}</td>
+                  <td align="center" *ngIf="offer.promo_title==null">-</td>
+                  <td>{{offer.minorderamount}}</td>
+                  <td>{{offer.fromdate | date:'dd-MM-yyyy'}}</td>
+                  <td>{{offer.todate | date:'dd-MM-yyyy'}}</td>
+                  <td>{{offer.applyfor}}</td>
+                  <td>{{offer.amount}}</td>
+                  <td *ngIf="offer.remarks">{{offer.remarks}}</td>
+                  <td  *ngIf="!offer.remarks">-</td>
+                  <td>
+                    <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" *ngIf="offer.active ==1"
+                      (click)="editoffer(offer)">
+                      <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                    </span>
+                    <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="offer.active ==1"
+                      (click)="enable(offer)">
+                      <i class="fa fa-check" aria-hidden="true" title="Enable"></i>
+                    </span>
+                    <span class="f_size_15 red_clr padd_right_10 cursor_pointer" *ngIf="offer.active ==0"
+                      (click)="enable(offer)">
+                      <i class="fa fa-close" aria-hidden="true" title="Disable"></i>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+        </div>
+        <div class="col-md-12" *ngIf="offerdetails?.length==0">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/emptyicon.png" />
+            <span class="nodata_txt">No Data is Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Promocode/Coupon Details Inserted Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editoffermodal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading1">Edit </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 2% 0;">
+              <div class="row" *ngIf="editoffer_data" class="row_mar_0">
+
+
+
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+
+                          <th>Offer Type</th>
+                          <th>Applicable </th>
+                          <th>Promocode Name</th>
+                          <th>Promocode Title</th>
+                          <th>Min. Order Amount</th>
+                          <th>From Date</th>
+                          <th>To Date</th>
+                          <th>No. of Times</th>
+                          <th>Amount</th>
+                          <th>Description</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                        <tr>
+                          <td>
+                            <div style="width:150px;">
+                              <select class="form-control" id="offertype" [(ngModel)]="editoffer_data.offertype"
+                                #offertype="ngModel" name="offertype" required>
+                                <option [ngValue]="undefined" disabled selected>--Select Offertype--</option>
+                                <option *ngFor="let offer of offertypes" [ngValue]="offer">
+                                  {{offer}}
+                                </option>
+
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <select class="form-control" [(ngModel)]="editoffer_data.applicable" id="applicable"
+                                #applicable="ngModel" name="applicable" required>
+                                <option [ngValue]="undefined" disabled selected>--Select type--</option>
+                                <option *ngFor="let applicable of applicables" [ngValue]="applicable">
+                                  {{applicable}}
+                                </option>
+
+                              </select>
+
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="text" class="form-control" id="promocodename" name="promocodename"
+                                [(ngModel)]="editoffer_data.promocodename" #promocodename="ngModel" required
+                                placeholder="Enter Promocodename">
+
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="text" class="form-control" id="promo_title" name="promo_title"
+                                [(ngModel)]="editoffer_data.promo_title" #promo_title="ngModel" required
+                                placeholder="Enter Promocode title">
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="text" class="form-control" id="minorderamount" name="minorderamount"
+                                [(ngModel)]="editoffer_data.minorderamount" #minorderamount="ngModel" required
+                                placeholder="Enter Minimum Amount" (keypress)="keypress($event)">
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="date" class="form-control" [(ngModel)]="editoffer_data.fromdate" required>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="date" class="form-control" [(ngModel)]="editoffer_data.todate" required>
+                            </div>
+                          </td>
+
+                          <td>
+                            <div style="width:150px;">
+                              <input type="text" class="form-control" id="applyfor" name="applyfor"
+                                [(ngModel)]="editoffer_data.applyfor" #applyfor="ngModel" required
+                                placeholder="Enter number" (keypress)="keypress($event)">
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="text" class="form-control" id="amount" name="amount"
+                                [(ngModel)]="editoffer_data.amount" #amount="ngModel" required
+                                placeholder="Enter amount" (keypress)="keypress($event)" (input)="changeamount(editoffer_data)">
+                                <div [hidden]="errmsg==false" class="validation_msg">
+                                  Amount should not be greater than or equal to min order amount
+                                </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <textarea class="form-control rounded-0" id="remarks" rows="3" name="remarks"
+                                [(ngModel)]="editoffer_data.remarks" #remarks="ngModel"
+                                placeholder="Enter Remarks"></textarea>
+                            </div>
+                          </td>
+
+
+
+                        </tr>
+
+                      </tbody>
+
+                    </table>
+                  </div>
+
+                </div>
+
+
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-primary" data-dismiss="modal" [disabled]="errmsg==true" (click)="editoffer_submit()">Update</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="success" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Promocode/Coupon Details Updated Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

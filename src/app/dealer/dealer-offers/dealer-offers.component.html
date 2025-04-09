@@ -1,0 +1,373 @@
+<div class="container pad_t_5per pad_b_5per">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Offers</span>
+    </p>
+    <section *ngIf="loginUserData.role=='Marketing Manager'" [ngStyle]="{'padding-top':ven_POHidden === true ? '1%' : '3%','transition':'0.7s' }">
+      <div class="chose_vendr">
+        <div class="col-md-12   text-center">
+          <div class="form-group">
+            <label class="vendor_lab" for="sel1">Choose Dealer </label>
+            <span>
+              <select class="vendor_sel" [(ngModel)]="selectedObj" (ngModelChange)="dealer_chn($event)" id="sel1">
+                <option [ngValue]="undefined" disabled selected>Select Dealer</option>
+                <option *ngFor="let p of dealers" [ngValue]="p">{{p.business_name}}</option>
+              </select>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section *ngIf="ven_POHidden">
+      <div class="row o_s_d">
+        <div class="row bg-theme dash_status row_mar_0">
+          <div *ngFor="let data of offertypes">
+            <div class=" col-md-2 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':type == data.offer_type && POhidden == true}" (click)="getoffers(data.offer_type)">{{data.offer_type}}</a></div>
+          </div>
+          <div class="col-md-3 status_align" *ngIf="this.loginUserData.role=='Dealer'">
+            <a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}" (click)="do()">Dealer Offers</a>
+          </div>
+          <div class="col-md-3 status_align" *ngIf="this.loginUserData.role=='Branch Manager'">
+            <a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}" (click)="do()">Branch Offers</a>
+          </div>
+        </div>
+        <div class="reg_form mar_b_30 pad_15 ">
+          <div class="row mar_b_3">
+            <div class="col-sm-12">
+              <div class="fl pad_l_15">
+                <h4>Offer Details</h4>
+              </div>
+            </div>
+          </div>
+          <div id="offerWrap">
+            <div *ngIf="POhidden">
+              <div class="row row_mar_0">
+                <div class="row pad_10">
+                  <div class="col-md-12 mar_t_5" *ngIf="offersdata?.length>0">
+                    <div class="row offertabwrap">
+                      <div class="col-md-1  text-center">
+                        <h4>Serial No.</h4>
+                      </div>
+                      <div class="col-md-1  text-center">
+                        <h4>Product Id</h4>
+                      </div>
+                      <div class="col-md-2">
+                        <h4>Model No.</h4>
+                      </div>
+                      <div class="col-md-2 text-center hidden-xs">
+                        <h4>From Date</h4>
+                      </div>
+                      <div class="col-md-2 text-center hidden-xs">
+                        <h4>To Date</h4>
+                      </div>
+                      <div class="col-md-2 hidden-xs">
+                        <h4>Range</h4>
+                      </div>
+                      <div class="col-md-1 hidden-xs">
+                        <h4>Offer Type</h4>
+                      </div>
+                      <div class="col-md-1 hidden-xs">
+                        <h4>Offer Value</h4>
+                      </div>
+                    </div>
+  
+                    <mat-accordion *ngFor="let pi of offersdata | filter:searchText| filter:searchText| paginate: { itemsPerPage: 10, currentPage: page}; let i=index">
+  
+                      <div>
+                        <mat-expansion-panel (opened)="panelOpenState == true" (closed)="panelOpenState == false">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              <div class="col-md-1">
+                                <p class="txt_black mar_b_0">{{10*(page-1)+(i+1)}}</p>
+                              </div>
+                              <div class="col-md-1">
+                                <p class="txt_black mar_b_0">{{pi.productid}}</p>
+                              </div>
+                              <div class="col-md-2 ">
+                                <p class="txt_black mar_b_0">{{pi.modelno}}</p>
+                              </div>
+                              <div class="col-md-2  text-center hidden-xs">
+                                <p class="txt_black mar_b_0">{{pi.fromdate | date:'dd-MM-yyyy'}}
+                                </p>
+  
+                              </div>
+                              <div class="col-md-2  text-center hidden-xs">
+                                <p class="txt_black mar_b_0" style="text-align:right;width:120px">
+                                  {{pi.todate | date:'dd-MM-yyyy'}}</p>
+                              </div>
+  
+                              <div class="col-md-1.5 hidden-xs">
+                                <p class="txt_black mar_b_0">{{pi.from_range}} - {{pi.to_range}}
+                                </p>
+                              </div>
+                              <div class="col-md-2  text-center hidden-xs">
+                                <p class="txt_black mar_b_0">{{pi.offer_type}}</p>
+                              </div>
+                              <div class="col-md-1  text-center hidden-xs">
+                                <p class="txt_black mar_b_0">{{pi.offer_value}}</p>
+                              </div>
+                            </mat-panel-title>
+  
+                          </mat-expansion-panel-header>
+                          <div class="visible-sm-and-lg">
+                              <p class="txt_black mar_b_0">
+                                  <b> From Date :</b> <span>&nbsp;&nbsp;   {{pi.fromdate | date:'dd-MM-yyyy'}}
+                                  </span>
+                                </p>
+                              <p class="txt_black mar_b_0">
+                                <b> To Date :</b> <span>&nbsp;&nbsp;   {{pi.todate | date:'dd-MM-yyyy'}}
+                                </span>
+                              </p>
+                              <p class="txt_black mar_b_0">
+                                <b>Range :</b> <span>&nbsp;&nbsp;{{pi.from_range}} - {{pi.to_range}}
+                                </span>
+                              </p>
+                              <p class="txt_black mar_b_0">
+                                  <b>Offer Type :</b> <span>&nbsp;&nbsp;{{pi.offer_type}}
+                                  </span>
+                                </p>
+                                <p class="txt_black mar_b_0">
+                                    <b>Offer Value:</b> <span>&nbsp;&nbsp;{{pi.offer_value}}
+                                    </span>
+                                  </p>
+                            </div>
+                          <h4>Product Details:</h4>
+  
+                          <div class="table-responsive">
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th>Category</th>
+                                  <th>SubCategory</th>
+                                  <th>Product Name</th>
+                                  <th>SKU No.</th>
+                                  <th>GST</th>
+                                  <th>MRP</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <div class="table_pd_name" style="width:80px;text-align:center">
+                                      <p><span class="f_wt_600">{{pi.product.category}}</span></p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="row_mar_0" style="font-size: 13px !important;">
+                                      <p><span class="f_wt_600">{{pi.product.subcategory}}</span></p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="row_mar_0">
+                                      <p><span class="f_wt_600"> {{pi.product.long_name}}</span></p>
+                                    </div>
+  
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p><span class=" f_wt_600 ">{{pi.product.sku_no}} </span></p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p><span class=" f_wt_600 ">{{pi.product.gst}} </span></p>
+                                    </div>
+  
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p><span class=" f_wt_600 ">{{pi.product.mrp}} </span></p>
+                                    </div>
+  
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </mat-expansion-panel>
+                      </div>
+  
+                    </mat-accordion>
+                    <div class="pull-left mar_t_30">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </div>
+                  </div>
+                  <div class="col-md-12" *ngIf="offersdata?.length<=0">
+                    <div class="no_data">
+                      <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                      <span class="nodata_txt">No Data is Available</span>
+                    </div>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+            <div *ngIf="DOhidden">
+              <div class="row row_mar_0" style="margin:0px">
+                <div class="row pad_10">
+                  <div class="col-md-12 mar_t_5" *ngIf="dealeroffersdata?.length>0">
+  
+                    <div class="row offertabwrap">
+                      <div class="col-md-1  text-center">
+                        <h4>Product Id</h4>
+                      </div>
+                      <div class="col-md-2 ">
+                        <h4>Model No.</h4>
+                      </div>
+                      <div class="col-md-2 text-center">
+                        <h4>From Date</h4>
+                      </div>
+                      <div class="col-md-2 text-center hidden-xs">
+                        <h4>To Date</h4>
+                      </div>
+                      <div class="col-md-2 hidden-xs">
+                        <h4>Range</h4>
+                      </div>
+                      <div class="col-md-2 hidden-xs">
+                        <h4>Offer Type</h4>
+                      </div>
+                      <div class="col-md-1 hidden-xs">
+                        <h4>Offer Value</h4>
+                      </div>
+                    </div>
+  
+                    <mat-accordion *ngFor="let pi of dealeroffersdata | filter:searchText| filter:searchText| paginate: { itemsPerPage: 10, currentPage: page}; let i=index">
+  
+                      <div>
+                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              <div class="col-md-1 " *ngIf="pi.productid">
+                                <p class="txt_black mar_b_0">{{pi.productid}}</p>
+                              </div>
+                              <div class="col-md-1 text-center" *ngIf="!pi.productid">
+                                <p class="txt_black mar_b_0">-</p>
+                              </div>
+                              <div class="col-md-2" *ngIf="pi.modelno">
+                                <p class="txt_black mar_b_0">{{pi.modelno}}</p>
+                              </div>
+                              <div class="col-md-2" *ngIf="!pi.modelno">
+                                <p class="txt_black mar_b_0">-</p>
+                              </div>
+                              <div class="col-md-2  text-center">
+                                <p class="txt_black mar_b_0">{{pi.fromdate | date:'dd-MM-yyyy'}}
+                                </p>
+  
+                              </div>
+                              <div class="col-md-2  text-center hidden-xs">
+                                <p class="txt_black mar_b_0" style="text-align:right;width:120px">
+                                  {{pi.todate | date:'dd-MM-yyyy'}}</p>
+                              </div>
+  
+                              <div class="col-md-2 hidden-xs">
+                                <p class="txt_black mar_b_0">{{pi.from_range}} - {{pi.to_range}}
+                                </p>
+                              </div>
+                              <div class="col-md-2  text-center hidden-xs">
+                                <p class="txt_black">{{pi.offer_type}}</p>
+                              </div>
+                              <div class="col-md-1  text-center hidden-xs">
+                                <p class="txt_black mar_b_0">{{pi.offer_value}}</p>
+                              </div>
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <div class="visible-sm-and-lg">
+                              <p class="txt_black mar_b_0">
+                                <b> To Date :</b> <span>&nbsp;&nbsp;   {{pi.todate | date:'dd-MM-yyyy'}}
+                                </span>
+                              </p>
+                              <p class="txt_black mar_b_0">
+                                <b>Range :</b> <span>&nbsp;&nbsp;{{pi.from_range}} - {{pi.to_range}}
+                                </span>
+                              </p>
+                              <p class="txt_black mar_b_0">
+                                  <b>Offer Type :</b> <span>&nbsp;&nbsp;{{pi.offer_type}}
+                                  </span>
+                                </p>
+                                <p class="txt_black mar_b_0">
+                                    <b>Offer Value:</b> <span>&nbsp;&nbsp;{{pi.offer_value}}
+                                    </span>
+                                  </p>
+                            </div>
+                          <h4 *ngIf="pi.product">Product Details:</h4>
+                          <p align="center" *ngIf="!pi.product"><b>No Products Available</b></p>
+                          <div *ngIf="pi.product" class="table-responsive">
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th>Category</th>
+                                  <th>SubCategory</th>
+                                  <th>Product Name</th>
+                                  <th>SKU No.</th>
+                                  <th>GST</th>
+                                  <th>MRP</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <div class="table_pd_name" style="width:80px;text-align:center">
+                                      <p><span class="f_wt_600">{{pi.product.category}}</span></p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div style="margin:0px; font-size: 13px !important;">
+                                      <p><span class="f_wt_600">{{pi.product.subcategory}}</span></p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="row_mar_0">
+                                      <p><span class="f_wt_600"> {{pi.product.long_name}}</span></p>
+                                    </div>
+  
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p><span class=" f_wt_600 ">{{pi.product.sku_no}} </span></p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p><span class=" f_wt_600 ">{{pi.product.gst}} </span></p>
+                                    </div>
+  
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p><span class=" f_wt_600 ">{{pi.product.mrp}} </span></p>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </mat-expansion-panel>
+                      </div>
+  
+                    </mat-accordion>
+                    <div class="pull-left mar_t_30">
+                      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                    </div>
+                  </div>
+                  <div class="col-md-12" *ngIf="dealeroffersdata?.length<=0">
+                    <div class="no_data">
+                      <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                      <span class="nodata_txt">No Data is Available</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>

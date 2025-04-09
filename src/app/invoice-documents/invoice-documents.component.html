@@ -1,0 +1,1009 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>{{type}} Shipment List</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>{{type}} Shipment List</h4>
+        </div>
+        <div class="fr" *ngIf="supplierdata.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+
+          <div class="col-sm-12 list">
+
+            <div class="table-responsive">
+              <!-- <br>
+          <div class="fr">
+            <select class='s_s_r' style="margin-right:10px;" (change)="setFilteredItems()" [(ngModel)]="supplier"
+            name="supplier" #supplier1="ngModel">
+            <option [ngValue]="undefined"  selected>--Select Supplier--</option>
+            <option *ngFor="let m of suppliers" [ngValue]="m.business_name">
+              {{m.business_name}}
+            </option>
+          </select>
+           
+          </div><br><br> -->
+              <table class="table table-striped" *ngIf="supplierdata.length>0">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Invoice No.</th>
+                    <th>Business Name</th>
+                    <!-- <th>Description</th> -->
+                    <th>No.of cartons</th>
+                    <!-- <th>CONT. SIZE</th> -->
+                    <!-- <th>CBM</th> -->
+                    <!-- <th>DUTY APROX</th>
+                    <th>PER DAY EXP_APROP</th> -->
+                    <th>Inv Amount</th>
+                    <!-- <th style="width: 10%;">Recd. Docs</th>
+                    <th style="width: 10%;">Pen. Docs</th>
+                    <th style="width: 10%;">Other. Docs</th> -->
+                    <th *ngIf="type=='Pending'">INV</th>
+                    <th *ngIf="type=='Pending'">BL</th>
+                    <th *ngIf="type=='Pending'">PL</th>
+                    <th *ngIf="type=='Pending'">CO</th>
+                    <th *ngIf="type=='Pending'">Ins</th>
+                    <th *ngIf="type=='Pending'">Others</th>
+                    <th *ngIf="type=='Pending'">Others 2</th>
+                    <!-- <th>Remarks</th> -->
+                    <th style="width: 25%;text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierdata | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td>{{data.business_name}}</td>
+                    <!-- <td>{{data.Modelno}}</td> -->
+                    <td>{{data.ctns}}</td>
+                    <!-- <td>{{data.cont_size}}</td> -->
+                    <!-- <td>{{data.cpm}}</td> -->
+                    <!-- <td>{{data.Duty?data.Duty:'0'}}</td>
+                    <td>{{data.PDEXP?data.PDEXP:'0'}}</td> -->
+                    <td>{{data.Amount | number : '1.2-2'}}&nbsp;({{data.ctype}})</td>
+                    <!-- <td style="width: 100px;">{{getdocavailabl(data)}}</td>
+                    <td style="width: 100px;">{{getpendingdoc(data)}}</td>
+                    <td style="width: 100px;">{{getdocnotavailabl(data)}}</td> -->
+                    <td *ngIf="type=='Pending'"><a (click)="downloadINV(data.doc2, data.inv_no)"
+                      [ngStyle]="{'color': data.doc2?'green':'red'}">{{data.doc2?"Y":"N"}}</a></td>
+                  <td *ngIf="type=='Pending'"><a (click)="downloadBL(data.doc1, data.inv_no)"
+                      [ngStyle]="{'color': data.doc1?'green':'red'}">{{data.doc1?"Y":"N"}}</a></td>
+                  <td *ngIf="type=='Pending'"><a (click)="downloadPL(data.doc3, data.inv_no)"
+                      [ngStyle]="{'color': data.doc3?'green':'red'}">{{data.doc3?"Y":"N"}}</a></td>
+                  <td *ngIf="type=='Pending'"><a (click)="downloadCO(data.doc4, data.inv_no)"
+                      [ngStyle]="{'color': data.doc4?'green':'red'}">{{data.doc4?"Y":"N"}}</a></td>
+                  <td *ngIf="type=='Pending'"><a (click)="downloadInsurance(data.doc5, data.inv_no)"
+                      [ngStyle]="{'color': data.doc5?'green':'red'}">{{data.doc5?"Y":"N"}}</a></td>
+                  <td *ngIf="type=='Pending'"><a (click)="downloadOther1(data.doc6, data.inv_no)"
+                      [ngStyle]="{'color': data.doc6?'green':'red'}">{{data.doc6?"Y":"N"}}</a></td>
+                  <td *ngIf="type=='Pending'"><a (click)="downloadOther2(data.doc7, data.inv_no)"
+                      [ngStyle]="{'color': data.doc7?'green':'red'}">{{data.doc7?"Y":"N"}}</a></td>
+                    <!-- <td>{{data.Remarks}}</td> -->
+                    <!-- <td>{{data.updateon | date:'dd-MM-yyyy'}}</td> -->
+                    <!-- <td > <img src="{{data.productimage}}" (click)="selected_image(data.productimage)"
+                onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                alt=""  style="width:50px;height: 50px;cursor:pointer"> -->
+                    <!-- <span *ngIf="data.productimage" (click)="dataURLtoFile(data.productimage)" class="download_file" title="Download">
+                  <i class="fa fa-download" aria-hidden="true" style="padding-left:5px;cursor:pointer"></i>
+                </span> -->
+                    <!-- </td>
+              <td > <img src="{{data.doc1}}" (click)="selected_image(data.doc1)"
+                onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                alt=""  style="width:50px;height: 50px;cursor:pointer"> -->
+                    <!-- <span *ngIf="data.doc1" (click)="dataURLtoFile(data.doc1)" class="download_file" title="Download">
+                  <i class="fa fa-download" aria-hidden="true" style="padding-left:5px;cursor:pointer"></i>
+                </span> -->
+                    <!-- </td>
+                <td > <img src="{{data.doc2}}" (click)="selected_image(data.doc2)"
+                  onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                  alt=""  style="width:50px;height: 50px;cursor:pointer"> -->
+                    <!-- <span *ngIf="data.doc2" (click)="dataURLtoFile(data.doc2)" class="download_file" title="Download">
+                    <i class="fa fa-download" aria-hidden="true" style="padding-left:5px;cursor:pointer"></i>
+                  </span> -->
+                    <!-- </td>
+                  <td > <img src="{{data.doc3}}" (click)="selected_image(data.doc3)"
+                    onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                    alt=""  style="width:50px;height: 50px;cursor:pointer"> -->
+                    <!-- <span *ngIf="data.doc3" (click)="dataURLtoFile(data.doc3)" class="download_file" title="Download">
+                      <i class="fa fa-download" aria-hidden="true" style="padding-left:5px;cursor:pointer"></i>
+                    </span> -->
+                    <!-- </td>
+                    <td > <img src="{{data.doc4}}" (click)="selected_image(data.doc4)"
+                      onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                      alt=""  style="width:50px;height: 50px;cursor:pointer"> -->
+                    <!-- <span *ngIf="data.doc4" (click)="dataURLtoFile(data.doc4)" class="download_file" title="Download">
+                        <i class="fa fa-download" aria-hidden="true" style="padding-left:5px;cursor:pointer"></i>
+                      </span> -->
+                    <!-- </td> -->
+                    <td style="text-align: center;"> 
+                      <!-- <span *ngIf="data.doc1 && data.doc2 && data.doc3"
+                        (click)="dataURLtoFile(data.productimage,data.doc1,data.doc2,data.doc3,data.doc4,data.doc5,data.doc6,data.doc7,data.inv_no)"
+                        class="download_file" title="Download">
+                        <i class="fa fa-download" aria-hidden="true"
+                          style="padding-left:5px;padding-top:5px;cursor:pointer"></i>
+                      </span>&nbsp;&nbsp; -->
+                      <button type="button" class="btn btn-sm bg_orange" title="Download" (click)="dataURLtoFile(data.productimage,data.doc1,data.doc2,data.doc3,data.doc4,data.doc5,data.doc6,data.doc7,data.inv_no)">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                      </button>&nbsp;
+                      <!-- <span class="f_size_15 green_clr padd_right_10 cursor_pointer"
+                        (click)="editInfo1(data)">
+                        <i class="fa fa-pencil" aria-hidden="true" title="Edit"></i>
+                      </span>
+                      &nbsp; -->
+                      <button type="button" class="btn btn-sm bg_green" [disabled]="!data.doc1 || !data.doc2 || !data.doc3" title="BE Details" (click)="BeEntry(data)">BE&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></button>&nbsp;
+                      <!-- <button type="button" class="btn btn-sm bg_green" [disabled]="!data.doc1 || !data.doc2 || !data.doc3" title="BE Details" (click)="editInfo1(data,data.billofentry)">BE&nbsp;<i class="fa fa-pencil" aria-hidden="true"></i></button>&nbsp; -->
+                      <!-- <span class="f_size_15 green_clr padd_right_10 cursor_pointer" (click)="editTransport(data)">
+                        <i class="fa fa-truck" aria-hidden="true" title="transport"></i>
+                      </span>
+                      &nbsp;&nbsp; -->
+                      <button type="button" class="btn btn-sm bg_footer" [disabled]="!data.doc1 || !data.doc2 || !data.doc3" title="Transport Details" (click)="editTransport(data)">Transport</button>&nbsp;
+                      <!-- <span *ngIf="type!='Pending'" class="f_size_15 green_clr padd_right_10 cursor_pointer"
+                        (click)="chaPrint(data)">
+                        <i class="fa fa-print" aria-hidden="true" title="Print"></i>
+                      </span>&nbsp;&nbsp; -->
+                      <!-- <span *ngIf="type!='Pending'">
+                      <button *ngIf="type!='Pending'" type="button" class="btn btn-sm bg_blue" (click)="chaPrint(data)" title="Cha Print">Cha&nbsp;<i class="fa fa-print" aria-hidden="true"></i></button>&nbsp;
+                      </span> -->
+                      <!-- <span class="f_size_15 blue_clr padd_right_10 cursor_pointer"> 
+                        <i class="fa fa-print" aria-hidden="true" title="Print Details"
+                          (click)="printdatadetail(data.invqhid,'invoice')"></i>
+                      </span> -->
+                      <button type="button" class="btn btn-sm bg_blue" (click)="printdatadetail(data.invqhid,'invoice')" title="Inv Print">Inv&nbsp;<i class="fa fa-print" aria-hidden="true"></i></button>&nbsp;
+                      <button *ngIf="type=='Pending'" type="button" class="btn btn-sm light-green" [disabled]="data.be_no" (click)="correction(data)" title="Correction">Correction</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="supplierdata.length>0" class="col-md-12">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton" (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+
+           
+          </div>
+
+          <div *ngIf="supplierdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+
+<!-- <div class="modal fade" id="imageenlarge" role="dialog">
+  <div class="modal-dialog" style="margin-top:200px;">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <img src="{{image}}" style="display:block; width:100%; max-width:600px;height:300px; margin:auto" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div> -->
+<!-- Modal pop-up end here -->
+<div class="modal fade" id="editmodal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center text-white">BE Details</h4>
+      </div>
+      <h4 class="text-center">{{this.sup_name}}</h4>
+      <form (ngSubmit)="onSubmit(editdataform3)" #editdataform3="ngForm" class="pad_20">
+        <div class="modal-body">
+          <!-- ================================================ -->
+            <div class="row">
+            <div class="col-sm-4 mar_b_10_mbl">
+              <label>Inv Number</label>
+              <div class="form-group">
+                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="inv_num">
+              </div>
+            </div>
+            <div class="col-sm-4 mar_b_10_mbl">
+              <label>Inv Date</label>
+              <div class="form-group">
+                <input type="date" class="form-control" [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="inv_dt">
+              </div>
+            </div>
+            <div class="col-sm-4 mar_b_10_mbl">
+              <label>Inv Amount&nbsp;({{this.ctyp}})</label>
+              <div class="form-group">
+                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="inv_val">
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="exchange_rate">Exchange Rate&nbsp;({{this.ctyp}})
+              </label>
+              <div class="form-group">
+                <input type="number" class="form-control" id="exchange_rate" name="exchange_rate" min="0" (blur)="ex_rate(editdata.exchange_rate)"
+                  [(ngModel)]="editdata.exchange_rate" #exchange_rate="ngModel" required placeholder="Enter Exchange Rate">
+                <div [hidden]="exchange_rate.valid || exchange_rate.untouched" class="validation_msg">
+                  please enter Exchange Rate
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="asses_val">Assesment Value<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="number" class="form-control" id="asses_val" name="asses_val" min="0"
+                  [(ngModel)]="editdata.asses_val" #asses_val="ngModel" required placeholder="Enter Assesment Value">
+                <div [hidden]="asses_val.valid || asses_val.untouched" class="validation_msg">
+                  please enter Assesment Value
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label class="labl">Custom Duty</label>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label>Percentage(%)</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" [(ngModel)]="editdata.cust_pcntge">
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label>Amount</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="editdata.cust_amt">
+                </div>
+              </div>
+            </div> -->
+          <!-- ================================================ -->
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="Duty" >Duty Approximate<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="number" class="form-control" id="Duty" name="Duty" [(ngModel)]="editdata.Duty" min="0" (change)="dutyvalue(editdata.asses_val,editdata.Duty)"
+                  #Duty="ngModel" required placeholder="Enter  duty approximate">
+                <div [hidden]="Duty.valid || Duty.untouched" class="validation_msg">
+                  please enter duty approximate
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="PDEXP">Per Day Exp_Approx
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="PDEXP" name="PDEXP" [(ngModel)]="editdata.PDEXP"
+                  #PDEXP="ngModel" placeholder="Enter Per Day Exp_Approx">
+                <div [hidden]="PDEXP.valid || PDEXP.untouched" class="validation_msg">
+                  please enter Per Day Exp_Approx
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="Remarks">Remarks
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="Remarks" name="Remarks" [(ngModel)]="editdata.Remarks"
+                  #Remarks="ngModel" placeholder="Enter Remarks">
+                <div [hidden]="Remarks.valid || Remarks.untouched" class="validation_msg">
+                  please enter Remarks
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="be_no">B/E Number<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="be_no" name="be_no" [(ngModel)]="editdata.be_no"
+                  #be_no="ngModel" required placeholder="Enter B/E Number">
+                <div [hidden]="be_no.valid || be_no.untouched" class="validation_msg">
+                  please enter B/E Number
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="be_date">B/E Date<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="date" class="form-control" id="be_date" name="be_date" [(ngModel)]="editdata.be_date"
+                  #be_date="ngModel" required placeholder="Enter B/E Date">
+                <div [hidden]="be_date.valid || be_date.untouched" class="validation_msg">
+                  please enter B/E Date
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-sm-6 mar_b_10_mbl">
+              <label for="bill_no">CHA Invoice Number
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="bill_no" name="bill_no" [(ngModel)]="editdata.bill_no"
+                  #bill_no="ngModel" placeholder="Enter Bill Number">
+                <div [hidden]="bill_no.valid || bill_no.untouched" class="validation_msg">
+                  please Enter Bill Number
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="col-sm-6 mar_b_10_mbl">
+              <label for="bill_date">CHA Invoice Date
+              </label>
+              <div class="form-group">
+                <input type="date" class="form-control" id="bill_date" name="bill_date" [(ngModel)]="editdata.bill_date"
+                  #bill_date="ngModel" placeholder="Enter Bill Date">
+                <div [hidden]="bill_date.valid || bill_date.untouched" class="validation_msg">
+                  please enter Bill Date
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <!-- ====================================== -->
+          <div class="row">
+            <div class="col-sm-6 mar_b_10_mbl">
+
+              <!-- ===================image upload==================================== -->
+
+            <div class="form-group">
+              <label>BE Image<sup class="astrick">*</sup></label>
+              <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+                <img class="thumbnail img-preview" [src]="image1" title="Preview"  title="{{this.file1?this.file1.name:'Upload Files Here..'}}"  height="200" width="auto">
+              </div>
+              <div class="pull-right">
+                <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                  <span><i class="glyphicon glyphicon-upload"></i> BE Copy Upload </span>
+                  <input id="billofentry" name="billofentry" type="file" 
+                    [(ngModel)]="editdata.billofentry" (change)="productfileUpload($event)" class="attachment_upload">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-sm-6">
+            <div class="form-group">
+              <label>CHA Invoice Copy<sup class="astrick"></sup></label>
+              <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+                <img class="thumbnail img-preview" [src]="imagecha" title="Preview" title="{{this.file3?this.file3.name:'Upload Files Here..'}}" height="200" width="auto">
+              </div>
+              <div>
+
+                <div class="pull-right">
+                  <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                    <span><i class="glyphicon glyphicon-upload"></i> Image&nbsp;Upload </span>
+                    <input id="chacopy" name="chacopy" type="file" [(ngModel)]="editdata.chacopy"
+                      (change)="chacopyupload($event)" class="attachment_upload">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="submit" [disabled]="editdataform.invalid" class="btn btn-success brdr_radius_50   fr">Submit
+          </button> -->
+          <button type="submit" class="btn btn-success brdr_radius_50   fr" [disabled]="editdataform3.invalid || editdata.whapproval == '1'">Submit
+          </button>
+          <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pop-up end here -->
+<div class="modal fade" id="edittransportmodal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center">({{this.inv_tno}})-Edit Transport Details</h4>
+      </div>
+      <form (ngSubmit)="onSubmit2(editdataform2)" #editdataform2="ngForm" class="pad_20">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="transport_name">Transport Name<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="transport_name" name="transport_name"
+                  [(ngModel)]="editdata.transport_name" #transport_name="ngModel" required
+                  placeholder="Enter  Transport Name">
+                <div [hidden]="transport_name.valid || transport_name.untouched" class="validation_msg">
+                  please enter Transport Name
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="weight">Weight&nbsp;(Kgs)<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="weight" name="weight" [(ngModel)]="editdata.weight"
+                  #weight="ngModel" required placeholder="Enter weight">
+                <div [hidden]="weight.valid || weight.untouched" class="validation_msg">
+                  please enter weight
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-sm-6 mar_b_10_mbl">
+              <label for="kms">Kilometres<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="kms" name="kms" [(ngModel)]="editdata.kms" #kms="ngModel"
+                  required placeholder="Enter kms">
+                <div [hidden]="kms.valid || kms.untouched" class="validation_msg">
+                  please enter kilometres
+                </div>
+              </div>
+            </div> -->
+
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="vechile_no">Vechile Number<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="vechile_no" name="vechile_no"
+                  [(ngModel)]="editdata.vechile_no" #vechile_no="ngModel" required placeholder="Enter Vechile Number">
+                <div [hidden]="vechile_no.valid || vechile_no.untouched" class="validation_msg">
+                  please enter Vechile Number
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="lr_no">LR No.<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="lr_no" name="lr_no" [(ngModel)]="editdata.lr_no"
+                  #lr_no="ngModel" required placeholder="Enter LR No.">
+                <div [hidden]="lr_no.valid || lr_no.untouched" class="validation_msg">
+                  please enter LR No.
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="lr_date">LR Date<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="date" class="form-control" id="lr_date" name="lr_date"(change)="datechanged($event)"  [(ngModel)]="editdata.lr_date"
+                  #lr_date="ngModel" required placeholder="Enter LR Date.">
+                <div [hidden]="lr_date.valid || lr_date.untouched" class="validation_msg">
+                  please enter LR Date.
+                </div>
+              </div>
+            </div>
+
+
+            <!-- <div class="col-sm-6 mar_b_10_mbl">
+              <label for="started_date">Started Date<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="date" class="form-control" id="started_date" name="started_date"
+                  [(ngModel)]="editdata.started_date" #started_date="ngModel" required
+                  placeholder="Enter Started Date.">
+                <div [hidden]="started_date.valid || started_date.untouched" class="validation_msg">
+                  please enter Started Date.
+                </div>
+              </div>
+            </div> -->
+
+            
+            <!-- <div class="col-sm-6 mar_b_10_mbl">
+              <label for="expected_arrival_date">Expected Arrival Date<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="date" class="form-control" id="expected_arrival_date" name="expected_arrival_date"
+                  [(ngModel)]="editdata.expected_arrival_date" #expected_arrival_date="ngModel" required
+                  placeholder="Enter Expected Arrival Date.">
+                <div [hidden]="expected_arrival_date.valid || expected_arrival_date.untouched" class="validation_msg">
+                  please enter Expected Arrival Date.
+                </div>
+              </div>
+            </div> -->
+
+
+            <!-- <div class="col-sm-6 mar_b_10_mbl">
+              <label for="value">Transport Charge<sup class="astrick">*</sup>
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="value" name="value" [(ngModel)]="editdata.value"
+                  #value="ngModel" required placeholder="Enter Value">
+                <div [hidden]="value.valid || value.untouched" class="validation_msg">
+                  please enter Value
+                </div>
+              </div>
+            </div> -->
+
+
+
+            <br>
+
+
+
+          </div>
+          <div class="row">
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>LR Upload<sup class="astrick"></sup></label>
+                <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+                  <img class="thumbnail img-preview" [src]="image" title="Preview" height="200" width="auto">
+                </div>
+                <div>
+                  <div class="pull-left" *ngIf="editdata.lrcopy" title="Download File" (click)="downloadLRCopy(editdata.lrcopy,this.inv_tno)">
+                    <div class="fileUpload btn btn-warning upload-shadow btn-block">
+                      <span>Download&nbsp;<i class="fa fa-download" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                  <div class="pull-right">
+                    <div class="fileUpload btn btn-danger upload-shadow btn-block"  *ngIf="type=='Pending'">
+                      <span><i class="glyphicon glyphicon-upload"></i> Image&nbsp;Upload </span>
+                      <input id="lrcopy" name="lrcopy" type="file" [(ngModel)]="editdata.lrcopy"
+                        (change)="lrcopyupload($event)" class="attachment_upload">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Other Documents<sup class="astrick"></sup></label>
+                <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+                  <img class="thumbnail img-preview" [src]="image2" title="Preview" height="200" width="auto">
+                </div>
+                <div>
+
+                  <div class="pull-left" *ngIf="editdata.chaortherdoc" title="Download File" (click)="downloadChaOrtherdoc(editdata.chaortherdoc,this.inv_tno)">
+                    <div class="fileUpload btn btn-warning upload-shadow btn-block">
+                      <span>Download&nbsp;<i class="fa fa-download" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                  <div class="pull-right">
+                    <div class="fileUpload btn btn-danger upload-shadow" *ngIf="type=='Pending'">
+                      <span><i class="glyphicon glyphicon-upload"></i> Image&nbsp;Upload </span>
+                      <input id="chaortherdoc" name="chaortherdoc" type="file"
+                        [(ngModel)]="editdata.chaortherdoc" (change)="ortherdoc($event)" class="attachment_upload">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" [disabled]="editdataform2.invalid || this.whapproval" class="btn btn-success brdr_radius_50   fr">Submit
+          </button>
+          <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal fade" id="editmodal2" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center text-white">Edit Invoice</h4>
+      </div>
+      <form (ngSubmit)="onSubmit3(editdataform)" #editdataform="ngForm" class="pad_20">
+        <div class="modal-body">
+          <div class="row">
+            
+            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" [disabled]="editdataform.invalid" class="btn btn-success brdr_radius_50   fr">Submit
+          </button>
+          <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->
+<div class="modal fade" id="updsuccess" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{message}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" >OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Correction -->
+<div class="modal fade" id="correction" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center text-white">Correction</h4>
+      </div>
+      <form (ngSubmit)="onSubmit4(correctionform)" #correctionform="ngForm" class="pad_20">
+        <div class="modal-body">
+          
+          <div class="row">
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="inv_no">Invoice Number</label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="inv_no" name="inv_no" [(ngModel)]="crt_inv_no" disabled>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="invdate">Invoice Date</label>
+              <div class="form-group">
+                <input type="date" class="form-control" id="invdate" name="invdate" [(ngModel)]="crt_invdate" disabled>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-sm-6 mar_b_10_mbl">
+            <div class="form-group">
+              <label>Invoice Modification</label>
+              <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+                <img class="thumbnail img-preview" [src]="invmod" title="Preview"  title="Upload Files Here.."  height="200" width="auto">
+              </div>
+              <div class="pull-right">
+                <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                  <span><i class="glyphicon glyphicon-upload"></i> Invoice&nbsp;Upload </span>
+                  <input id="invmodpath" name="invmodpath" type="file"
+                    [(ngModel)]="editdata.invmodpath" (change)="invmodfileUpload($event)" class="attachment_upload">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 mar_b_10_mbl">
+            <div class="form-group">
+              <label>Packing Modification</label>
+              <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+                <img class="thumbnail img-preview" [src]="packingmod" title="Preview" height="200" width="auto">
+              </div>
+              <div>
+
+                <div class="pull-right">
+                  <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                    <span><i class="glyphicon glyphicon-upload"></i>Packing&nbsp;Upload </span>
+                    <input id="packmodpath" name="packmodpath" type="file" [(ngModel)]="editdata.packmodpath"
+                      (change)="packingmodupload($event)" class="attachment_upload">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            
+          <div class="col-sm-12 mar_b_10_mbl">
+            <label for="comments">Comments</label>
+            <div class="form-group">
+              <!-- <input type="text" class="form-control" id="comments" name="comments" [(ngModel)]="editdata.comments"
+                #comments="ngModel" placeholder="Enter Comments"> -->
+                <textarea class="form-control" rows="4" id="comments" name="comments" [(ngModel)]="editdata.comments"
+                #comments="ngModel" placeholder="Enter Comments"></textarea>
+              <div [hidden]="comments.valid || comments.untouched" class="validation_msg">
+                please enter Comments
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success brdr_radius_50   fr" >Submit
+          </button>
+          <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- CHA Invoice Modal -->
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+<div class="modal fade" id="ChaInvoiceModal" role="dialog">
+  <div class="modal-dialog modal-lg"> 
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center">Cha Invoice</h4>
+      </div>
+      <div class="modal-body">
+        <!-- ______________________________________________________________________________ -->
+            <div class="table-responsive" style="margin-top: 10px;margin-bottom: 0px;" *ngIf="invoiceData">
+              <table class="table table-bordered table-striped pending_order printTable"
+                style="margin-bottom: 10px !important;table-layout: initial;">
+                <thead>
+                  <tr>
+                    <th style="background: transparent;color:#000000;border:none !important;padding:3px !important;"
+                      colspan="9">
+                      <div class="row hr_line_botm nopadding hr_line" style="display: flex;margin:0;padding: 0;">
+                        <div class="col-md-8 col-xs-6 w-75">
+                          <div class="row">
+                            <div class="col-md-2 col-xs-6 nopadding w-18">
+                              <p>Consignee</p>
+                            </div>
+                            <div class="col-md-9 col-xs-6 nopadding txt_l fnt_size_12">
+                              <p>:&nbsp;<b>{{invoiceData[0]?.companyname}}.</b></p>
+                              <p style="margin-left: 12px !important;">
+                                {{invoiceData[0]?.companynameAdd1}},<br>
+                                {{invoiceData[0]?.companynameadd2}},
+                                {{invoiceData[0]?.companynamecity}} - {{invoiceData[0]?.companynamepin}},
+                              </p>
+                            </div>
+    
+                          </div>
+                          <div class="row">
+                            <div class="col-md-2 col-xs-6 nopadding txt_l fnt_size_12 w-18">
+                              <p>GST No</p>
+                              <p>State</p>
+                            </div>
+                            <div class="col-md-9 col-xs-6 nopadding">
+                              <p> :&nbsp;{{invoiceData[0]?.companynamegst}}</p>
+                              <p> :&nbsp;{{invoiceData[0]?.companynamestate}}</p>
+                            </div>
+                          </div>
+    
+                        </div>
+                        <div class="col-md-4 col-xs-6 w-25">
+                          <div class="row">
+                            <div class="col-md-4  col-xs-6 nopadding txt_l fnt_size_12 w-40">
+                              <p>Bill No</p>
+                              <p>Bill Date</p>
+                            </div>
+                            <div class="col-md-8 col-xs-6 nopadding txt_l fnt_size_12 w-60">
+                              <p> :&nbsp; {{invoiceData[0]?.bill_no}}</p>
+                              <p> :&nbsp; {{invoiceData[0]?.bill_date | date:'dd-MM-yyyy'}}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row hr_line_botm nopadding" style="display: flex;margin:0;padding: 0;">
+                        <div class="col-md-6 col-xs-8">
+                          <div class="row">
+                            <div class="col-md-3 col-xs-6 nopadding txt_l fnt_size_12">
+                              <p>Supplier Name</p>
+                              <p>B/E No</p>
+                              <p>MBL</p>
+                              <p>Invoice No</p>
+                              <p *ngIf="invoiceData[0]?.description">Description</p>
+                            </div>
+                            <div class="col-md-9 col-xs-6 nopadding">
+                              <p> :&nbsp; <b>{{invoiceData[0]?.supplier}}</b></p>
+                              <p> :&nbsp;<b>{{invoiceData[0]?.be_no}}</b></p>
+                              <p> :&nbsp;<b>{{invoiceData[0]?.bl_no}}</b></p>
+                              <p> :&nbsp;<b>{{invoiceData[0]?.inv_no}}</b> </p>
+                              <p *ngIf="invoiceData[0]?.description"> :&nbsp;<b>{{invoiceData[0]?.itemdes}}</b> </p>
+                            </div>
+                          </div>
+    
+                        </div>
+                        <div class="col-md-3">
+                          <div class="row">
+                            <div class="col-md-6 col-xs-6 nopadding txt_l fnt_size_12">
+                              <br>
+                              <p>BE Date &nbsp;</p>
+                              <p>BL Date &nbsp;</p>
+                               <p>Invoice Date &nbsp;</p>
+                            </div>
+                            <div class="col-md-6 col-xs-6 nopadding">
+                               <br>
+                               <p> :&nbsp;{{invoiceData[0]?.be_date | date:'dd-MM-yyyy'}} </p>
+                               <p> :&nbsp;{{invoiceData[0]?.bldate | date:'dd-MM-yyyy'}} </p>
+                               <p> :&nbsp;{{invoiceData[0]?.inv_date | date:'dd-MM-yyyy'}}</p>
+                             </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="row">
+                            <div class="col-md-6 col-xs-5 nopadding txt_l fnt_size_12">
+                              <p>No Pkgs.</p>
+                              <p>Country of Orgin</p>
+                              <!-- <p>No of Contr</p> -->
+                              <p>Gross Wt.</p>
+                              <p>Ass.Val(Rs.)</p>
+                              <p>Duty(Rs.)</p>
+                            </div>
+                            <div class="col-md-6 col-xs-7 nopadding txt_l fnt_size_12">
+                              <p> :&nbsp; {{invoiceData[0]?.ctns}}&nbsp;CTN</p>
+                              <p> :&nbsp;China</p>
+                              <!-- <p> :&nbsp;{{invoiceData[0]?.qty}} </p> -->
+                              <p> :&nbsp;{{invoiceData[0]?.gw | number : '1.2-2'}}&nbsp;KGS</p>
+                              <p> :&nbsp;{{invoiceData[0]?.asses_val}} </p>
+                              <p> :&nbsp;{{invoiceData[0]?.duty_approx}} </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+                  <!-- <tr class="ml-1 mr-1" *ngIf="invoiceData">
+                    <th class="txt_centr" style="font-size: 10px;text-align: center;width: 2%;">Sr.</th>
+                    <th class="txt_left" style="font-size: 10px;width:30%;word-break: break-all;">descrpition</th>
+                    <th class="txt_left" style="font-size: 10px;width:10%;word-break: break-all;">details</th>
+                    <th class="txt_right" style="font-size: 10px;text-align: right;">nonReceiptAmt</th>
+                    <th class="txt_right" style="font-size: 10px;text-align: right;">ReceiptAmt</th>
+                  </tr> -->
+                </thead>
+                <!-- <tbody *ngIf="invoiceData">
+                  <tr *ngFor="let item of invoiceData; let i=index">
+                    <td class="txt_centr" style="font-size: 10px;text-align: center;">{{i+1}}</td>
+                    <td class="txt_left" style="font-size: 9px;">{{item.descrpition}}
+                    </td>
+                    <td class="txt_left" style="font-size: 9px;">{{item.details}}
+                    </td>
+                    <td class="txt_right" style="text-align: right;font-size: 10px;">
+                      {{item.nonReceiptAmt | number:'1.3-3'}}</td>
+                    <td class="txt_right" style="text-align: right;font-size: 10px;">
+                      {{item.ReceiptAmt| number:'1.3-3'}}</td>
+                  </tr>
+                </tbody> -->
+              </table>
+            </div>
+        <!-- ______________________________________________________________________________ -->
+        <div class="row">
+          <div class="col-sm-3 mar_b_10_mbl">
+            <label for="bill_no">Bill No</label>
+            <div class="form-group">
+              <input type="text" class="form-control ht" [(ngModel)]="bill_no" placeholder="Enter Bill Number">
+            </div>
+          </div>
+          <div class="col-sm-3 mar_b_10_mbl">
+            <label for="bill_date">Bill Date</label>
+            <div class="form-group">
+              <input type="date" class="form-control ht" [(ngModel)]="bill_date" placeholder="Enter Bill Date">
+            </div>
+          </div>
+          <div class="col-sm-3 mar_b_10_mbl">
+            <label for="job_no">Job No</label>
+            <div class="form-group">
+              <input type="text" class="form-control ht" [(ngModel)]="job_no" placeholder="Enter Job Number">
+            </div>
+          </div>
+          <div class="col-sm-3 mar_b_10_mbl">
+            <label for="job_date">Job Date</label>
+            <div class="form-group">
+              <input type="date" class="form-control ht" id="job_date" [(ngModel)]="job_date" placeholder="Enter Job Date.">
+            </div>
+          </div>
+          <!-- <div class="col-sm-3 mar_b_10_mbl">
+            <label for="description">Description</label>
+            <div class="form-group">
+              <input type="text" class="form-control ht" [(ngModel)]="description" placeholder="Enter Description">
+            </div>
+          </div> -->
+        </div>
+        <!-- ______________________________________________________________________________ -->
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Particulars</th>
+                <th>Receipt Details</th>
+                <th style="width: 18%;">Non Receipted Amount</th>
+                <th style="width: 18%;">Receipt Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let field of fieldArray; let i = index">
+                <td>{{ field.particulars }}</td>
+                <td>{{ field.receiptdetails }}</td>
+                <td>{{ field.nonreceipted }}</td>
+                <td>{{ field.receipted }}</td>
+                <td class="i_opt text-center">
+                  <p>
+                    <i class="fa fa-trash" (click)="deleteFieldValue2(i)" style="font-size: 18px;color: #20978c;"></i>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <!-- <input type="text" class="form-control" [(ngModel)]="newAttribute1.particulars" placeholder="Enter particulars"
+                        #particulars="ngModel" [ngModelOptions]="{standalone: true}"  /> -->
+          
+                          <input autocomplete="off" type="text" class='select-option form-control' required
+                            [(ngModel)]="newAttribute1.particulars" name="particulars" #particulars="ngModel" id="particulars"
+                            list="particularsterms" placeholder="Select Particulars">
+                          <datalist id="particularsterms">
+                            <option [ngValue]="undefined" disabled selected>Select Particulars</option>
+                            <option class='option' *ngFor="let d of particulars1" [ngValue]="d.particulars">
+                              {{d.particulars}}</option>
+                          </datalist>
+                </td>
+                <td>
+                  <input type="text" class="form-control" [(ngModel)]="newAttribute1.receiptdetails" placeholder="Enter receipt details"
+                        #receiptdetails="ngModel" [ngModelOptions]="{standalone: true}" />
+                </td>
+                <td>
+                  <input  type="number" class="form-control" style="text-align: right;" name="nonreceipted"
+                      placeholder="Non Receipt Amount" [(ngModel)]="newAttribute1.nonreceipted" style="padding-left: 5px;" />
+                </td>
+                <td>
+                  <input  type="number" class="form-control" style="text-align: right;" name="receipted"
+                      placeholder="Receipt Amount" [(ngModel)]="newAttribute1.receipted" style="padding-left: 5px;" />
+                </td>
+                <td>
+                  <button class="btn btn2" type="button" [disabled]="add_disable(newAttribute1) || add"
+                  #btn  (click)="addFieldValue(newAttribute1)">
+                    Add
+                  </button>
+                </td>
+              </tr>   
+              <tr>
+                <td colspan="2" class="text-right">Totals</td>
+                <td>{{this.ToTnonreceipted | number:'1.2-2'}}</td>
+                <td>{{this.ToTreceipted | number:'1.2-2'}}</td>
+              </tr>           
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success brdr_radius_50   fr" (click)="submitInv()">Submit
+        </button>
+        <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

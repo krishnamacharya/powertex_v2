@@ -1,0 +1,616 @@
+<div class="container pad_t_5per">
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span *ngIf="poData.status">
+        <a href="javascript.void(0)" routerLink="/Warehouse Manager-PENDING PACKING LIST">Pending Packing List</a>
+      </span>
+      <span *ngIf="!poaddress && !poData.status">
+        <a href="javascript.void(0)" routerLink="/Dealer-ORDERS">Orders</a>
+      </span>
+      <span *ngIf="!poaddress">&nbsp;>&nbsp;</span>
+      <span *ngIf="poData.fromreportspage==true">
+        <a href="javascript.void(0)" routerLink="/Admin-REPORTS">Reports</a>
+      </span>
+      <span *ngIf="poData.fromreportspage==true">&nbsp;>&nbsp;</span>
+      <!-- <span *ngIf="poaddress">
+              <a href="javascript.void(0)" routerLink="/Dealer-ORDERS">Reports</a>
+          </span> <span *ngIf="poaddress">&nbsp;>&nbsp;</span> -->
+      <span>PO-Print</span>
+    </p>
+  
+    <div class="total_invoice_page" id="printSectionId" style="margin-bottom: 20px;">
+      <div class="printwrap">
+  
+  
+        <h3 style="padding-bottom: 6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;">Purchase
+          Order
+        </h3>
+        <div class="invoce_address" id="contentToConvert">
+          <div class="row hr_line_botm">
+            <div class="col-md-9 company_address padding_0 poheadLeft customwidth70" style="line-height: 1;float:left;">
+              <h5 *ngIf="!poaddress && loginUserData.role!='Marketing Manager' && loginUserData.role!='Special'"
+                style="font-weight: 700;margin-top:7px !important;margin-bottom: 3px !important;">
+                {{loginUserData.business_name}}
+              </h5>
+              <h5 *ngIf="loginUserData.role=='Marketing Manager' || loginUserData.role=='Special'"
+                style="font-weight: 700;margin-top:7px !important;margin-bottom: 3px !important;">
+                {{billingAddress.business_name}}
+              </h5>
+              <h5 *ngIf="poaddress" style="font-weight: 700;margin-top:7px !important;margin-bottom: 3px !important;">
+                {{poaddress.business_name}}
+              </h5>
+              <!-- *ngIf="loginUserData.company_address; let data" -->
+              <div class="txt_l fnt_size_12" style="line-height: 1;">
+                <div style="word-break: break-all;">
+                  <span *ngIf="!poaddress" style="line-height: 1;">{{ billingAddress.address1}},
+                    <br>
+                  </span>
+                  <span *ngIf="!poaddress && billingAddress.address2" style="line-height: 1;">{{
+                    billingAddress.address2}},
+                    <br>
+                  </span>
+                  <span *ngIf="!poaddress" style="line-height: 1;">{{ billingAddress.city}},</span>
+                  <span *ngIf="!poaddress" style="line-height: 1;">{{ poData.data.json_hdr.bill_to_party.pin}}.</span>
+                  <span *ngIf="poaddress" style="line-height: 1;">{{ poData.data.json_hdr.bill_to_party.address1}},
+                  </span>
+                  <br *ngIf="poaddress && poData.data.json_hdr.bill_to_party.address2">
+                  <span *ngIf="poaddress && poData.data.json_hdr.bill_to_party.address2" style="line-height: 1;">{{
+                    poData.data.json_hdr.bill_to_party.address2}},
+                  </span>
+                  <br *ngIf="poaddress && poData.data.json_hdr.bill_to_party.address2">
+                  <span *ngIf="poaddress" style="line-height: 1;">{{ poData.data.json_hdr.bill_to_party.city}},</span>
+                  <span *ngIf="poaddress" style="line-height: 1;">{{ poData.data.json_hdr.bill_to_party.pin}}.</span>
+                  <br>
+                  <span style="line-height: 1;">
+                    <b>Mobile&nbsp;</b>
+                  </span>
+                  <span *ngIf="!poaddress && loginUserData.role!='Marketing Manager'" style="line-height: 1;"> :
+                    {{loginUserData.mobile}},</span>
+                  <span *ngIf="loginUserData.role=='Marketing Manager'" style="line-height: 1;"> :
+                    {{billingAddress.mobile}},</span>
+                  <span *ngIf="poaddress" style="line-height: 1;"> : {{poaddress.mobile}},</span>
+                  <br>
+                  <span style="line-height: 1;">
+                    <b>State&nbsp;&nbsp;&nbsp;</b>
+                  </span>
+                  <span *ngIf="!poaddress" style="line-height: 1;"> : {{billingAddress.state | titlecase}},</span>
+                  <span *ngIf="poaddress" style="line-height: 1;"> :
+                    {{poData.data.json_hdr.bill_to_party.state | titlecase}},</span>
+                </div>
+              </div>
+              <div style="line-height: 1;">
+                <span style="line-height: 1;font-size: 9px !important;">
+                  <b>GSTIN &nbsp; </b>
+                </span>
+                <span *ngIf="!poaddress && loginUserData.role!='Marketing Manager'" class="gstspan">
+                  : {{loginUserData.gst}}</span>
+                <span *ngIf="loginUserData.role=='Marketing Manager'"
+                   class="gstspan">: {{billingAddress.gst}}</span>
+                <span *ngIf="poaddress" class="gstspan">:
+                  {{poaddress.gst}}</span>
+                <!-- <span style="line-height: 1;font-size: 9px !important;" *ngIf="!poaddress && loginUserData.role!='Marketing Manager'">&nbsp;&nbsp;<b>PAN</b>
+                            </span>
+                <span style="line-height: 1;font-size: 9px !important;" *ngIf="!poaddress && loginUserData.role!='Marketing Manager'"> : {{loginUserData.pan}}
+                                ,</span> -->
+                <!-- <span style="line-height: 1;font-size: 9px !important;" *ngIf="loginUserData.role=='Marketing Manager'">&nbsp;&nbsp;<b>PAN</b>
+                                </span>
+                    <span style="line-height: 1;font-size: 9px !important;" *ngIf="loginUserData.role=='Marketing Manager'"> : {{billingAddress.pan}}
+                                    ,</span> -->
+                <!-- <span style="line-height: 1;font-size: 9px !important;" *ngIf="poaddress">&nbsp;&nbsp;<b>PAN</b>
+                                </span>
+                    <span style="line-height: 1;font-size: 9px !important;" *ngIf="poaddress"> : {{poaddress.pan}}
+                                    ,</span> -->
+  
+                <!-- <span style="line-height: 1;font-size: 9px !important;" *ngIf="!poaddress">&nbsp;&nbsp;<b>CIN</b> </span>
+                <span style="line-height: 1;font-size: 9px !important;" *ngIf="!poaddress"> :
+                                {{loginUserData.cin}}.</span>
+                                <span style="line-height: 1;font-size: 9px !important;" *ngIf="poaddress">&nbsp;&nbsp;<b>CIN</b> </span>
+                                <span style="line-height: 1;font-size: 9px !important;" *ngIf="poaddress"> :
+                                                {{poaddress.cin}}.</span> -->
+              </div>
+  
+  
+            </div>
+            <!-- <p class="company_address" style="font-size: 13px;">
+                            <span style="line-height: 1.5;"> {{shipingAddress.address1}},</span>
+                            <br>
+                            <span style="line-height: 1.5;"></span>  <span>{{shipingAddress.city}}</span>,
+                            <br>
+                            <span>{{loginUserData.city}},</span>
+                        <br>
+                        <span>{{loginUserData.state}},</span>
+                        </p> -->
+            <div class="col-md-3 company_address padding_0 poheadRight customwidth25"
+              style="line-height: 1.5;padding-top: 10px;margin-top:5px;">
+              <div class="fnt_size_12" style="line-height: 1;">
+                <span style="line-height: 1;">PO No &nbsp;&nbsp;:</span>
+                <span style="font-weight: bold;line-height: 1;">&nbsp;{{poData.data.json_hdr.spo_no}}</span>
+              </div>
+              <div class="fnt_size_12" *ngIf="poData.data.json_hdr.import_i == 1" style="line-height: 1.5;">
+                <span>Vendor Code </span>
+                <span>: {{poData.data.json_hdr.supp_company_code}}</span>
+              </div>
+              <div class="fnt_size_12" style="line-height: 1;">
+                <span style="line-height: 1;">Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span style="line-height: 1;">: {{poData.data.json_hdr.po_date | date:'dd/MM/yyyy'}}</span>
+              </div>
+              <!-- <div class="txt_r fnt_size_12" style="font-size: 13px !important;text-decoration: underline;line-height: 1;">
+                <span><u>Credit Terms </u></span>
+              </div>
+              <div class="txt_r fnt_size_12" style="line-height: 1;">
+                <span style="line-height: 1;">Credit Period (days) </span>
+                <span style="line-height: 1;"> : {{poData.data.json_hdr.credit_period}}</span>
+              </div>
+              <div class="txt_r fnt_size_12" style="line-height: 1;">
+                <span style="line-height: 1;">Credit Limit Amount </span>
+                <span style="line-height: 1;"> : {{poData.data.json_hdr.payment_terms | currency : '&#8377;'}}</span>
+              </div> -->
+              <!-- <div class="txt_r fnt_size_12" style="line-height: 1;">
+                <span style="line-height: 1;">Due Amount</span>
+                <span style="line-height: 1;" *ngIf="this.totaloutstandingamount"> :
+                            {{this.totaloutstandingamount | currency : '&#8377;'}}</span>
+                <span style="line-height: 1;" *ngIf="!this.totaloutstandingamount"> : 0</span>
+    
+              </div> -->
+            </div>
+          </div>
+          <!-- <div class="hr_line marg_t_b_15" style="margin-bottom: 0 !important;">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="company_address" style="font-size: 14px;text-align: center;">
+                                <h4>PURCHASE ORDER</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+          <div class="row hr_line_botm">
+            <div class="col-md-9 company_address padding_0 customwidth70" style="line-height: 1.9;float: left;">
+              <div class="txt_l">
+                <h6>
+                  <b>To</b>
+                </h6>
+              </div>
+              <div class="txt_l fnt_size_12" style="line-height: 1;">
+                <h5 *ngIf="!poaddress" class="companyaddr">
+                  {{loginUserData.company_address.online_display_name}}</h5>
+                <h5 *ngIf="poaddress" class="companyaddr">
+                  {{poData.data.comp_address.business_name}}</h5>
+              </div>
+              <div class="txt_l fnt_size_12" style="line-height: 1;">
+                <span *ngIf="!poaddress" class="poaddrspan">{{loginUserData.company_address.address1}}</span>
+                <span *ngIf="poaddress"
+                  class="poaddrspan">{{poData.data.comp_address.address1}}</span>
+              </div>
+              <!-- <div class="txt_l fnt_size_12" style="line-height: 1;">
+                <span *ngIf="!poaddress" style="line-height: 1;">{{loginUserData.company_address.city}},{{loginUserData.company_address.state | titlecase}},{{loginUserData.company_address.pin}}</span>
+                <span *ngIf="poaddress" style="line-height: 1;">{{poData.data.comp_address.city}},{{poData.data.comp_address.state | titlecase}},{{poData.data.comp_address.pin}}</span>
+              </div> -->
+              <div class="txt_l fnt_size_12" style="line-height: 1;">
+                <span>Mobile&nbsp;</span>
+                <span *ngIf="!poaddress">: {{loginUserData.company_address.mobile}},&nbsp;</span>
+                <span *ngIf="poaddress">: {{poData.data.comp_address.mobile}},&nbsp;</span>
+                <span>Email</span>
+                <span *ngIf="!poaddress"> :
+                  {{loginUserData.company_address.company_email}},</span>
+                <span *ngIf="poaddress"> : {{poData.data.comp_address.company_email}},</span>
+                <br>
+                <span class="panspan">GSTIN &nbsp;</span>
+                <span *ngIf="!poaddress" class="gstspan">:
+                  {{loginUserData.company_address.gstin}},&nbsp;</span>
+                <span *ngIf="poaddress" class="gstspan">:
+                  {{poData.data.comp_address.gst}},&nbsp;</span>
+                <span class="panspan">PAN &nbsp;</span>
+                <span *ngIf="!poaddress" class="panspan">:
+                  {{loginUserData.company_address.pan}}.</span>
+                <span *ngIf="poaddress" class="panspan">:
+                  {{poData.data.comp_address.pan}}.</span>
+              </div>
+              <!-- <div class="txt_l fnt_size_12">
+                                <span *ngIf="loginUserData.company_address.cin">CIN &nbsp;</span>
+                                <span *ngIf="loginUserData.company_address.cin"> : {{loginUserData.company_address.cin}},&nbsp;&nbsp;</span> 
+                               
+                            </div> -->
+            </div>
+  
+            <div class="col-md-3 company_address padding_0 customwidth25" style="line-height: 1;padding-top: 10px;">
+              <!-- <div class="txt_r fnt_size_12">
+                                <span>PO No </span>
+                                <span>: {{poData.PO}}</span>
+                            </div>
+                            <div class="txt_r fnt_size_12" *ngIf="poData.data.json_hdr.import_i == 1">
+                                <span>Vendor Code </span>
+                                <span>: {{poData.data.json_hdr.supp_company_code}}</span>
+                            </div>
+                            <div class="txt_r fnt_size_12">
+                                <span>Date </span>
+                                <span>: {{poData.data.json_hdr.po_date | date:'dd-MM-yyyy'}}</span>
+                            </div>
+                            <div class="txt_r fnt_size_12 marg_t_b_15" style="font-size: 16px;text-decoration: underline;">
+                                <span>Credit Terms </span>
+                            </div>
+                            <div class="txt_r fnt_size_12">
+                                <span>Credit Period (days) </span>
+                                <span>: {{poData.data.json_hdr.credit_period}}</span>
+                            </div>
+                            <div class="txt_r fnt_size_12">
+                                <span>Credit Limit Amount </span>
+                                <span>: {{poData.data.json_hdr.payment_terms}}</span>
+                            </div>
+                            <div *ngIf="this.totaloutstandingamount" class="txt_r fnt_size_12">
+                                <span>Outstanding Amount</span>
+                                <span>: {{this.totaloutstandingamount}}</span>
+                              
+                            </div> -->
+              <div>
+                <div class="fnt_size_12" *ngIf="loginUserData.marketing && !poaddress"
+                  style="margin-top:1rem;line-height: 1;">
+                  <span style="line-height: 1;">Marketing Manager&nbsp;</span>
+                  <span style="line-height: 1;" *ngIf="loginUserData.marketing">: {{loginUserData.marketing}}</span>
+                  <span style="line-height: 1;" *ngIf="!loginUserData.marketing">: 0</span>
+  
+                </div>
+                <div class="fnt_size_12" *ngIf="poaddress" style="margin-top:1rem;line-height: 1;">
+                  <span style="line-height: 1;">Marketing Manager&nbsp;</span>
+  
+                  <span style="line-height: 1;" *ngIf="poaddress">: {{poaddress.marketing}}</span>
+                  <span style="line-height: 1;" *ngIf="!poaddress">: 0</span>
+                </div>
+                <div class="fnt_size_12" *ngIf="loginUserData.marketing_mobile && !poaddress"
+                  style="line-height: 1;">
+                  <span style="line-height: 1;">Marketing Mobile&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span style="line-height: 1;" *ngIf="loginUserData.marketing_mobile">:
+                    {{loginUserData.marketing_mobile}}</span>
+                  <span style="line-height: 1;" *ngIf="!loginUserData.marketing_mobile">: 0</span>
+                </div>
+                <div class="fnt_size_12" *ngIf="poaddress" style="line-height: 1;">
+                  <span style="line-height: 1;">Marketing Mobile&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span style="line-height: 1;" *ngIf="poaddress">: {{poaddress.market_mobile}}</span>
+                  <span style="line-height: 1;" *ngIf="!poaddress">: 0</span>
+                </div>
+              </div>
+  
+              <div class="fnt_size_12">
+                <div>
+                  <span style="font-size: 9px !important;line-height: 1;">
+                    <u>Special Instructions</u>
+                  </span>
+                  <br>
+                  <span *ngIf="poData.data.json_hdr.spl_instr"
+                    style="line-height:1.5;font-size: 9px !important;width: 200px;word-break: break-all;text-align: right;line-height: 1.5;">
+                    {{poData.data.json_hdr.spl_instr}}</span>
+  
+                </div>
+  
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive row" style="margin-top: 15px;">
+            <table class="table table-bordered table-striped pending_order printTable"
+              style="margin-bottom: 5px !important;table-layout: fixed;">
+              <thead>
+                <tr>
+                  <th class="txt_centr" style="font-size: 10px;width:30px;text-align: center;">Sr.</th>
+                  <!-- <th class="txt_left" style="font-size: 10px;">Subcategory</th> -->
+                  <th class="txt_left" style="font-size: 10px;width: 35%;word-break: break-all;">Product Name</th>
+                  <!-- <th class="txt_left" style="font-size: 11px;">Model Name</th> -->
+                  <!-- <th class="txt_left" style="font-size: 10px;">SKU</th> -->
+  
+                  <th class="txt_right" style="font-size: 10px;text-align: right;">MRP(&#8377;)</th>
+                  <th class="txt_right" style="font-size: 10px;text-align: right;">Disc(%)</th>
+                  <!-- <th class="txt_right" style="font-size: 11px;width:4%">Spl Disc(%)</th> -->
+                  <th class="txt_right" style="font-size: 10px;text-align: right;">N/C</th>
+                  <!-- <th class="txt_right" style="font-size: 11px;">Qty</th>
+                                <th class="txt_right" style="font-size: 11px;">Free Qty</th> -->
+                  <th class="txt_right" style="font-size: 10px;text-align: right;">P/C</th>
+                  <th class="txt_right" style="font-size: 10px;text-align: right;">T.Qty</th>
+                  <th class="txt_right tqtywidth" style="font-size: 10px;text-align: right;">Rate(&#8377;)</th>
+                  <!-- <th class="txt_right" style="font-size: 11px;">GST(%)</th>
+                                <th class="txt_right" style="font-size: 11px;">Tax Amt(&#8377;)</th> -->
+                  <th class="txt_right" style="font-size: 10px;text-align: right;">Total(&#8377;)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of poData.data.json_dtl; let i=index;">
+                  <td class="txt_centr" style="text-align: center;">{{i+1}}</td>
+                  <!-- <td class="txt_left">{{item.subcategory}}</td> -->
+                  <!-- <td class="txt_left" style="width: 200px !important; word-break: break-all;">
+                                    {{item.long_name}}&nbsp;{{item.modelno}}</td> -->
+                  <td class="txt_left" style="width: 350px !important; word-break: break-all;line-height: 1.5;">
+                    {{item.subcategory}}-&nbsp;{{item.modelno}}</td>
+                  <!-- <td class="txt_left"></td> -->
+  
+                  <!-- <td class="txt_left">{{item.sku_no}}</td> -->
+  
+                  <td class="txt_right">{{item.mrp | currency : '&nbsp;'}}</td>
+                  <td class="txt_right" *ngIf="item.offer_type!=='Clearance'">{{item.discount_eff}}</td>
+                  <td class="txt_right" *ngIf="item.offer_type=='Clearance'">-</td>
+                  <!-- <td class="txt_right" *ngIf="item.sp_discount!==0" >{{item.sp_discount}}({{item.offer_type}})</td>
+                                <td *ngIf="item.sp_discount==0"class="txt_right">-</td> -->
+                  <td class="txt_right">{{item.qty/item.piecepercarton | number : '1.2-2' }}</td>
+                  <!-- <td class="txt_right">{{item.qty}}</td>
+                                <td class="txt_right" *ngIf="item.free_qty!==0">{{item.free_qty}}</td>
+                                <td *ngIf="item.free_qty==0"class="txt_right">-</td> -->
+                  <td class="txt_right" style="word-break: break-all;width: 7%;">{{item.piecepercarton}}</td>
+                  <td class="txt_right" style="width: 100px !important;">{{ item.qty }}</td>
+                  <td class="txt_right">{{item.net_price| currency : '&nbsp;'}}</td>
+                  <!-- <td class="txt_right">{{item.gst }}</td>
+                                <td class="txt_right">{{item.gst_amount | currency : '&nbsp;':'symbol':'.3'}}</td> -->
+                  <td class="txt_right">{{item.tot_value| currency : '&nbsp;':'symbol':'.2'}}</td>
+  
+                </tr>
+                <tr>
+                  <td colspan="7" class="no-line" style="font-size: 9px;  vertical-align: middle !important;">
+                    <b *ngIf="totalsp_discountamount!=0">Special Discount : ₹
+                      {{totalsp_discountamount.toLocaleString('en-IN')}}</b>
+                  </td>
+  
+  
+                  <td class="no-line txt_right">
+                    <span style="font-size: 8px !important;">
+                      <b>TAXABLE</b>
+                    </span>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="color:#000;"></span>₹
+                    {{(this.poheaderdata.line_amount.toLocaleString('en-IN'))}}.{{decimalamount}}
+                  </td>
+                </tr>
+                <tr *ngIf="devicediscamount!=0">
+                  <td colspan="7" class="no-line">
+  
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="font-size: 8px !important;">
+                      <b>DISCOUNT</b>
+                    </span>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="color:#000;"></span>₹ {{devicediscamount.toLocaleString('en-IN') }}
+                  </td>
+  
+                </tr>
+                <!-- <tr *ngIf="this.poheaderdata.devicediscamount"> 
+                                <td colspan="14" class="no-line"> </td>
+                                <td class="no-line txt_right">
+                                    <strong>TOTAL AMOUNT</strong>
+                                </td>
+                                <td class="no-line txt_right"><span
+                                        style="color:#000;"></span>{{this.poheaderdata.line_amount-this.poheaderData.devicediscamount | currency :'&#8377;' }}</td>
+    
+                            </tr> -->
+                <tr *ngIf="promo_amount">
+                  <td colspan="7" class="no-line"> </td>
+                  <td class="no-line txt_right">
+                    <span style="font-size: 8px !important;">
+                      <b>PROMO DISCOUNT</b>
+                    </span>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="color:#000;"></span>₹
+                    {{poheaderdata.promo_amount.toLocaleString('en-IN') }}.{{promodecimalamount}}
+                  </td>
+  
+                </tr>
+                <tr *ngIf="loginUserData.company_address.state == billingAddress.state">
+                  <td colspan="7" class="no-line" style="font-size: 9px;  vertical-align: middle !important;">
+                    <b *ngIf="freeqtyarr?.length>0">Free Qty : </b>
+                    <b *ngFor="let f of freeqtyarr">
+                      <b>{{f.productname}} = {{f.free_qty}} </b>
+                    </b>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="font-size: 9px !important;">
+                      <b>CGST</b>
+                    </span>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="color:#000;"></span>₹
+                    {{(this.poheaderdata.gst_amount).toLocaleString('en-IN')}}.{{decimalgstamount}}
+                  </td>
+  
+                </tr>
+                <tr *ngIf="loginUserData.company_address.state == billingAddress.state">
+                  <td colspan="7" class="no-line">
+  
+                  </td>
+  
+                  <td class="no-line txt_right">
+                    <span style="font-size: 9px !important;">
+                      <b>SGST</b>
+                    </span>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="color:#000;"></span>₹
+                    {{(this.poheaderdata.gst_amount).toLocaleString('en-IN')}}.{{decimalgstamount}}
+                  </td>
+  
+                </tr>
+  
+                <tr *ngIf="loginUserData.company_address.state != billingAddress.state">
+                  <td colspan="7" class="no-line" style="font-size: 9px;  vertical-align: middle !important;">
+                    <b *ngIf="freeqtyarr?.length>0">Free Qty : </b>
+                    <b *ngFor="let f of freeqtyarr">
+                      <b>{{f.productname}} = {{f.free_qty}} </b>
+                    </b>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="font-size: 9px !important;">
+                      <b>IGST</b>
+                    </span>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="color:#000;"></span>₹
+                    {{this.poheaderdata.gst_amount.toLocaleString('en-IN')}}.{{decimalgstamount}}
+                  </td>
+  
+                </tr>
+  
+                <tr>
+                  <td colspan="7" class="no-line">
+                    <!-- <b>Total Cartons =</b> {{cartonqty | number : '1.2-2'}}, -->
+                    <b>Total Pieces :</b> {{totalqty}}
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="font-size: 8px !important;">
+                      <b>Round Off</b>
+                    </span>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="color:#000;"></span>₹ {{ roundoffAmt.toLocaleString('en-IN') | currency : '&nbsp;'}}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="7" class="no-line">
+                    <b *ngIf="bankdetails">Bank Details : {{bankdetails.bank_name}},&nbsp;A/C :
+                      {{bankdetails.acc_no}},&nbsp;SWIFT NO CODE:{{bankdetails.ifsc}}&nbsp;({{bankdetails.branch}})
+                    </b>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="font-size: 8.5px !important;">
+                      <b>NET AMOUNT</b>
+                    </span>
+                  </td>
+                  <td class="no-line txt_right">
+                    <span style="color:#000;"></span>₹ {{final_amount.toLocaleString('en-IN') }}.00
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- GST table -->
+          <div class="row">
+            <div class="col-md-6 gsttable">
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped pending_order printTable"
+                  style="margin-bottom: 5px !important;table-layout: initial;">
+                  <thead>
+                    <tr>
+                      <th class="alignright">GST%</th>
+                      <th class="alignright">Taxable (&#8377;)</th>
+                      <th class="alignright">CGST (&#8377;)</th>
+                      <th class="alignright">SGST (&#8377;)</th>
+                      <th class="alignright">IGST (&#8377;)</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="loginUserData.company_address.state == billingAddress.state">
+                    <tr *ngIf="first">
+                      <td class="alignright">18%</td>
+                      <td class="alignright">{{totalfirsttaxable.toLocaleString('en-IN')}}.{{decimalfirsttaxableamount}}
+                      </td>
+                      <td class="alignright">
+                        {{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}
+  
+                      </td>
+                      <td class="alignright">
+                        {{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}
+  
+                      </td>
+                      <td class="alignright">-</td>
+                    </tr>
+                    <tr *ngIf="second">
+                      <td class="alignright">5%</td>
+                      <td class="alignright">{{totalsecondtaxable.toLocaleString('en-IN')}}.{{decimalsecondtaxableamount}}
+                      </td>
+                      <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+                      <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+                      <td class="alignright">-</td>
+                    </tr>
+                    <tr *ngIf="third">
+                      <td class="alignright">12%</td>
+                      <td class="alignright">{{totalthirdtaxable.toLocaleString('en-IN')}}.{{decimalthirdtaxableamount}}
+                      </td>
+                      <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+                      <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+                      <td class="alignright">-</td>
+                    </tr>
+                    <tr *ngIf="fourth">
+                      <td class="alignright">28%</td>
+                      <td class="alignright">{{totalfourthtaxable.toLocaleString('en-IN')}}.{{decimalfourthtaxableamount}}
+                      </td>
+                      <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+                      <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+                      <td class="alignright">-</td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="loginUserData.company_address.state != billingAddress.state">
+                    <tr *ngIf="first">
+                      <td class="alignright">18%</td>
+                      <td class="alignright">{{totalfirsttaxable.toLocaleString('en-IN')}}.{{decimalfirsttaxableamount}}
+                      </td>
+                      <td class="alignright">-</td>
+                      <td class="alignright">-</td>
+                      <td class="alignright">{{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}</td>
+                    </tr>
+                    <tr *ngIf="second">
+                      <td class="alignright">5%</td>
+                      <td class="alignright">{{totalsecondtaxable.toLocaleString('en-IN')}}.{{decimalsecondtaxableamount}}
+                      </td>
+                      <td class="alignright">-</td>
+                      <td class="alignright">-</td>
+                      <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+                    </tr>
+                    <tr *ngIf="third">
+                      <td class="alignright">12%</td>
+                      <td class="alignright">{{totalthirdtaxable.toLocaleString('en-IN')}}.{{decimalthirdtaxableamount}}
+                      </td>
+                      <td class="alignright">-</td>
+                      <td class="alignright">-</td>
+                      <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+                    </tr>
+                    <tr *ngIf="fourth">
+                      <td class="alignright">28%</td>
+                      <td class="alignright">{{totalfourthtaxable.toLocaleString('en-IN')}}.{{decimalfourthtaxableamount}}
+                      </td>
+                      <td class="alignright">-</td>
+                      <td class="alignright">-</td>
+                      <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- ends GST table -->
+  
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+              <h5 style="margin-bottom: 5px;">
+                <strong class="theme_color fnt_size_12">Declaration</strong>
+              </h5>
+              <p style="font-size:9px;">1. Thanks for shopping with Powertex B2B app.</p>
+              <p style="font-size:9px;">2. Confirmation of Purchase Order doesn't guaranteed dispatch of goods.
+              </p>
+              <p style="font-size:9px;">3. Goods will be dispatched subject to availability & pass from accounts
+                department.If account overdue it can
+                be delay in dispatch,so keep track of payment.</p>
+              <p style="font-size:9px;">5. In case of any doubt,please contact marketing person as shown above or send
+                mail or contact customer care
+                (8885080111).</p>
+              <p style="font-size:9px;">6. If there is no instruction,delivery will be through standard mode.
+              </p>
+              <p style="font-size:9px;">
+                <sub class="txt_red" style="font-size:15px">*</sub> Terms and conditions apply.
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="text-align: center;">
+              <p style="font-size:9px !important;"> *This is a computer generated PO and does not require a physical
+                signature.
+  
+              </p>
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+    <div class="row pad_t_b_5" style="text-align: center;">
+      <button type="submit" class="btn btn-success" (click)="printPO()">Print PO</button>
+      <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Close</button>
+      <button type="submit" class="btn btn-success" routerLink="/Dealer-ORDERS">Shop More</button>
+    </div>
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+  </div>

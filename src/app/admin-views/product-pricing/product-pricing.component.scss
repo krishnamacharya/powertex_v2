@@ -1,0 +1,46 @@
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #0fa497 !important;
+  border-top-left-radius: 6px !important;
+  border-top-right-radius: 6px !important;
+}
+.modal-header .modal-title {
+  color:#fff !important;
+}
+   
+   
+   /* mobile styles start here */
+    @media screen and (min-width: 320px) and (max-width: 480px){
+        .mar_b_10_mbl{
+            margin-bottom: 10px;
+        }
+      }
+      
+      /* tablets styles start here */
+      @media screen and (min-width: 481px) and (max-width: 767px){
+        .mar_b_10_mbl{
+            margin-bottom: 10px;
+        }
+      }
+      
+      /* desktops styles start here */
+      @media screen and (min-width: 768px) and (max-width: 991px){
+      
+      }
+      
+      /* desktops styles start here */
+      @media screen and (min-width: 992px) and (max-width: 1023px){
+       
+      }
+      
+        /* lg-desktops styles start here */
+      @media screen and (min-width: 1024px) and (max-width: 1200px){
+       
+      }
+      .btn-default {
+        padding: 7px 15px !important;
+        color: #fff !important;
+        background-color: #0fa497 !important;
+        border-color: #0fa497 !important;
+      }

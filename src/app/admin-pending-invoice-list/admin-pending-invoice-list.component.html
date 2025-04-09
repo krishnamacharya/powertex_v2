@@ -1,0 +1,231 @@
+<div class="container pad_t_5per">
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Pending PI List</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Pending PI List</h4>
+        </div>
+        <div class="fr" *ngIf="supplierdata1.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+
+          <div class="col-sm-12 list" *ngIf="supplierdata1.length>0">
+
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Business Name</th>
+                    <th>PI No</th>
+                    <th>PI Date</th>
+                    <th>PI Approved Date</th>
+                    <th>Days</th>
+                    <th class="text-right">PI Amount</th>
+                    <th>Items</th>
+                    <th class="text-center">Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierdata; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.business_name}}</td>
+                    <td>{{data.pi_no}}</td>
+                    <td>{{data.pidate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.approveddate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.days}}</td>
+                    <td class="text-right">{{data.POAmount | number : '1.2-2'}}&nbsp;({{data.Ctype}})</td>
+                    <td>{{data.Items}}</td>
+                    <td class="text-center">
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-eye" aria-hidden="true" title="View More" (click)="viewModal(data)"></i>
+                      </span>&nbsp;&nbsp;
+                      <span class="f_size_15 red_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-close" aria-hidden="true" title="Reject" (click)="rejconfirm(data)"></i> 
+                      </span>&nbsp;&nbsp;
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-md-12" id="printPageButton">
+              <div class="pull-right" *ngIf="supplierdata.length>0">
+                <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Admin-Generate-Invoice">Generate Invoice</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary " type="button" id="printPageButton"
+                  (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+            </div>
+
+          </div>
+
+          <div *ngIf="supplierdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+<div class="modal fade" id="viewpoModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center">Product Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Product Name</th>
+                <th>Sub Category </th>
+                <th>Brand</th>
+                <th>Qty</th>
+                <th>Bal(Qty)</th>
+                <th class=" text-right">Price&nbsp;({{productdata[0]?.ctype}})</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let view_d of this.productdata;let i=index">
+                <td>
+                  <span class="table_pd_name">{{i + 1}}</span>
+                </td>
+
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key">{{view_d.productid.modelno}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key">{{view_d.productid.name1}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.productid.brand}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.qty}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.qqty}}</span> 
+                  </div>
+                </td>
+
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.price | number : '1.2-2'}}</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="f_wt_600 view_key"><b>Total</b></td>
+                <td class="f_wt_600 view_key"><b>{{this.totalqty}}</b></td>
+                <td class="f_wt_600 view_key"><b>{{this.totalbalqty}}</b></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="reject" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <h4>Do you want to cancel ?</h4>
+        <br>
+        <br>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="reject()" class="btn btn-success brdr_radius_50   fr">Confirm
+        </button>
+        <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal"  tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>PO Cancelled Sucessfully..!!</span>
+              <br>
+           
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+      
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

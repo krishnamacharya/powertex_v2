@@ -1,0 +1,138 @@
+<!-- <div class="container pad_t_5per"> -->
+<div class="container-fluid">
+
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-md-12 form-group">
+        <div class="pull-left">
+          <h4>Duty Paid Report</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <select class="form-control select-option" id="supplier" required name="supplier" [(ngModel)]="pro"
+              #supplier="ngModel">
+              <option [ngValue]="undefined" selected>Select Supplier</option>
+              <option class='option' *ngFor="let s of suppliers" [ngValue]="s.user_id">{{s.business_name}}
+              </option>
+            </select>
+            <div [hidden]="supplier.valid || supplier.untouched" class="validation_msg">
+              <small class="form-text text-muted text-danger">Select Supplier Name</small>
+            </div>
+            <div *ngIf="SNameExists" class="validation_msg">
+              <small class="form-text text-muted text-danger">Please select Supplier Name</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <!-- <label for="dischargeport">Port</label> -->
+            <select class="form-control" id="dischargeport" [(ngModel)]="dischargeprt" required
+              name="dischargeport" #dischargeport="ngModel">
+              <option [ngValue]="undefined" selected>Select Port</option>
+              <option class='option' *ngFor="let d of dischargeports" [ngValue]="d.portname">{{d.portname}}</option>
+            </select>
+          </div>
+  
+        </div>
+        <div class="col-md-1"></div>
+            <div class="col-md-2">
+              <mat-form-field color="accent">
+                <mat-label> Select From Date</mat-label>
+                <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" required  [max]="maxdate">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2 selecttodate">
+              <mat-form-field color="accent">
+                <mat-label> Select To Date</mat-label>
+                <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" required [max]="maxdate">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2 color="primary"></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="input_btn" (click)="getdata()">Get Data</button>
+            </div>
+      </div>
+      <div class="pull-right"  *ngIf="orders>0">
+        <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+        class="search_style">
+      <button type="submit" class="input_btn">Search</button>
+        </div>
+    </div>
+    <div>
+      <div *ngIf="orders" id="printsuppndng">
+        <div class="row busname text-center">
+          <h3 class="shopee_name">
+            <span>{{this.dischargeprt}} Duty Paid Report</span>
+            <br>
+          </h3>
+        </div>
+        <div class="row" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th class="text-left">Business Name</th>
+                    <th class="text-left">Invoice No</th>
+                    <th class="text-right">Invoice Amount</th>
+                    <th class="text-left">BL No</th>
+                    <th class="text-center">Ctns</th>
+                    <!-- <th class="text-right">Invoice Date</th> -->
+                    <th class="text-right">Exchange Rate</th>
+                    <th class="text-right">Ass.value </th>
+                    <th class="text-right">Duty Amount</th>
+                  </tr>
+                </thead>
+                
+                <tbody>
+                  <tr *ngFor="let data of orders | paginate: { id: 'pagination4', itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{(i+1)}}</td>
+                    <td class="text-left">{{data.business_name}}</td>
+                    <td class="text-left">{{data.inv_no}}</td>
+                    <td class="text-right">{{data.POAmount | number : '1.2-2'}}&nbsp;({{data.ctype}})</td>
+                    <td class="text-left">{{data.bl_no}}</td>
+                    <td class="text-center">{{data.ctns}}</td>
+                    <!-- <td class="text-right">{{data.Date | date:'dd-MM-yyyy'}}</td> -->
+                    <td class="text-right" >{{data.exerate}}</td>
+                    <td class="text-right" >{{data.asses_val}}</td>
+                    <td class="text-right" >&#x20B9;&nbsp;{{data.duty_approx | number : '1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right" colspan="3"><span><b>Totals</b></span></td>
+                    <td class="text-right"><span><b>{{this.totalinvoice | number : '1.2-2'}}</b></span></td>
+                    <td></td>
+                    <td class="text-center"><span><b>{{this.totalCtns}}</b></span></td>
+                    <td></td>
+                    <td class="text-right"><span><b>{{this.ToTAssV | number : '1.2-2'}}</b></span></td>
+                    <td class="text-right"><span><b>{{this.ToTDuty | number : '1.2-2'}}</b></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12" *ngIf="orders.length>0" id="printPageButton">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton" (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls id="pagination4" (pageChange)="p = $event" class="page"></pagination-controls> 
+            </div>
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

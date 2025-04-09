@@ -1,0 +1,131 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center pad_b_30">
+      <h3 class="shopee_name"><span class="shopee_name">{{loginUserData.content}}</span></h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+    <p class="bread-crumb1">
+      <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;<span>PO History</span>
+    </p>
+  </div>
+  <!-- <div class="row pad_15">
+    <div class="col-md-12">
+<div class="col-md-3">
+        <div class="form-group">
+            <select class='form-control' [(ngModel)]="branch" required name="BranchDropdown" #BranchDropdown="ngModel" (change)="getShopeeDropdown(branch)" (change)="getdealerDropdown(branch)">
+              <option [ngValue]="undefined">Select Branch</option>
+              <option class="option" *ngFor="let bnch of branchdata" [ngValue]="bnch.company_code">{{bnch.companyname}}
+              </option>
+            </select>
+          </div>
+          </div>
+  <mat-form-field color="accent" *ngIf="type!='STOCK'">
+    <mat-label> Select From Date</mat-label>
+    <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" readonly required>
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+  </div>
+  </div> -->
+  <div class="row pad_15">
+    <div class="col-md-12">
+      <div class="paymenttable">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>PO No</th>
+              <th>PO Date</th>
+              <th>Dealer</th>
+              <th>Dealer City</th>
+              <th>Branch</th>
+              <th>Branch City</th>
+              <th>PO Amount</th>
+              <th>Marketing Manager</th>
+              <th>Mobile No.</th>
+              <th>Status</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pd of response| paginate: { itemsPerPage: 10, currentPage: page}; let i=index;">
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{i+1}}</span></p>
+                </div>
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.pono_ref}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.po_date | date:'dd-MM-yyyy'}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.processes}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.processes}}</span></p>
+                </div>
+
+              </td>
+
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.processes}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.processes}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.line_amount}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.bill_to_party.mobile}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.processes}}</span></p>
+                </div>
+
+              </td>
+              <td>
+                <div style="margin:0px; font-size: 13px !important;">
+                  <p><span>{{pd.processes}}</span></p>
+                </div>
+
+              </td>
+
+
+            </tr>
+          </tbody>
+        </table>
+        <div class="pull-left mar_t_30">
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,160 @@
+<div class="container pad_t_5per pad_b_5per">
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <table>
+    <div class="container">
+      <p class="bread-crumb1 float-left">
+        <span class="float-left">
+          <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span>Supplier Product List</span>
+      </p>
+    </div>
+  </table>
+  <div class="purchasewrap">
+    <form #purchaseorderForm="ngForm">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12">
+          <h4 class="f_size_13 f_wt_600  mt_0 fl">Product list</h4>
+          <div class="fr"  *ngIf="totproductdata.length>0">
+            <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" (keyup)="searchdata(searchText)"  placeholder="Search..."
+              class="search_style">
+            <button type="submit" (click)="searchdata(searchText)" class="input_btn">Search</button>
+          </div> 
+        </div>
+      </div>
+      <div class="reg_form">
+     <div class="supplierwrap">
+      <div *ngIf="totproductdata">
+        <div class="row" *ngIf="totproductdata.length>0"> 
+          <div class="table-responsive mt_3" *ngIf="(productdata | filter :searchText) as productdata">
+            <table class="table table-bordered table-condensed">
+              <thead>
+                <th class="cellwidth20">Product Name</th>
+                <th class="cellwidth20">Sub Category</th>
+                <th class="cellwidth20">Brand</th>
+                <th class="cellwidth9 text-right">SKU</th>
+                <th class="cellwidth9 text-right">P/C</th>
+                <!-- <th class="text-right cellwidth9">Pi Qty</th>
+                <th class="text-right cellwidth9">Transit Qty</th> -->
+                <th class="text-right cellwidth9">Price({{this.loginUserData.currency}})</th>
+                <th class="text-center cellwidth9">Options</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of productdata | paginate: { itemsPerPage: 10, currentPage: p };let i=index">
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="product.product_name"
+                      #product_name="ngModel" [ngModelOptions]="{standalone: true}" />
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="product.name1"
+                      #name1="ngModel" [ngModelOptions]="{standalone: true}" />
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="product.brand" disabled
+                      #brand="ngModel" [ngModelOptions]="{standalone: true}" />
+                  </td>
+                  <td>
+                    <input type="text" class="form-control text-right" [(ngModel)]="product.sku_no"
+                      [ngModelOptions]="{standalone: true}" #sku_no="ngModel" />
+                  </td>
+                  <td>
+                    <input type="number" class="form-control text-right" min="1" [(ngModel)]="product.piecepercarton"
+                      [ngModelOptions]="{standalone: true}" #avl_balance="ngModel" />
+                  </td>
+                  <!-- <td><input type="text" class="form-control text-right" readonly [(ngModel)]="product.zpoqty"
+                      [ngModelOptions]="{standalone: true}" #zpoqty="ngModel" /></td>
+                  <td><input type="text" class="form-control text-right" readonly [(ngModel)]="product.zTransitQty"
+                      [ngModelOptions]="{standalone: true}" #zTransitQty="ngModel" /></td> -->
+                  <td><input type="text" class="form-control text-right" (keypress)="keyfloat($event)" [(ngModel)]="product.purchase_price"
+                      [ngModelOptions]="{standalone: true}" #purchase_price="ngModel" min="1" /></td>
+                  <td class="text-center">        
+                    <button type="button" class="btn btn-sm bg_green" (click)="update(product)">Update</button>&nbsp;
+                    <button type="button" class="btn btn-sm" (click)="delete(product)" title="delete">
+                      <i class="fa fa-trash" style="font-size: 18px;color: #20978c;"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls (pageChange)="p = $event" *ngIf="productdata.length>0"></pagination-controls>
+          </div>
+          <div *ngIf="productdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Details Updated Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Deleted Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

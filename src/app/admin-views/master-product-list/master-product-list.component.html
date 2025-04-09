@@ -1,0 +1,361 @@
+<!-- <ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner> -->
+<!-- <div class="container pad_t_5per pad_b_5per dash_w"> -->
+<div class="reg_form mar_b_30 pad_15"> 
+  
+  <div class="row">
+    <div style="box-shadow: 1px 1px 3px 1px lightgrey;border-radius: 20px;">
+      <h4 class="bg-theme text-center text_white P_l_1">Total Products List</h4>
+      <div class="row" style=" margin: 0px !important;">
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="category_profile" class="col-form-label">Select Category</label>
+          <div>
+            <select class='select-option form-control' (change)="sel_category($any($event.target).value)"
+              [(ngModel)]="selected.category" name="category" #category="ngModel">
+              <option [ngValue]="undefined" disabled selected>Select Category</option>
+              <option class='option' *ngFor="let data of resources" [ngValue]="data.Category">
+                {{data.Category}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="category_profile" class="col-form-label">Select Subcategory</label>
+          <div>
+            <select class='select-option form-control' (change)="sel_subcategory()" [(ngModel)]="selected.subcategory"
+              name="category" #category="ngModel" [disabled]="sub_category">
+              <option [ngValue]="undefined" disabled selected>Select Subcategory</option>
+              <option class='option' *ngFor="let data of newarr " [ngValue]="data">
+                {{data}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-2 mar_t_25 text-center">
+          <span>Showing <select class="s_s_r" [(ngModel)]="rec_page">
+              <option [ngValue]="10">10</option>
+              <option [ngValue]="20">20</option>
+              <option [ngValue]="30">30</option>
+              <option [ngValue]="40">40</option>
+              <option [ngValue]="50">50</option>
+            </select> Records</span>
+        </div>
+        <div class="col-sm-1 mar_t_25 mar_b_10_mbl">
+          <!-- <label for="category_profile" class="col-form-label">Select Arrival</label> -->
+          <div >
+            <select class='s_s_r' (change)="setFilteredItems()" [(ngModel)]="arrival" name="arrival1"
+              #arrival1="ngModel">
+              <option [ngValue]="undefined">Arrival</option>
+              <option value="o">Old</option>
+              <option value="n">New</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="fr mar_t_20 form-group">
+            <input type="text" [(ngModel)]="searchText" placeholder="Search here..." class="search_style">
+            <button type="submit" class="input_btn">Search</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="(products_list | filter :searchText) as products_list">
+        <div class="row" style=" padding: 20px; margin: 0px !important;" id="prodTable">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>S.no</th>
+                  <th>Product Name</th>
+                  <th>Product ID</th>
+                  <th>SKU No.</th>
+                  <th>MRP</th>
+                  <th>GST</th>
+                  <th>Actions</th>
+                  <th>Arrival</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let data of products_list | paginate: { itemsPerPage: rec_page, currentPage: p };  let i=index">
+                  <td>{{rec_page*(p-1)+(i+1)}}</td>
+                  <!-- <td>{{data.long_name}}</td> -->
+                  <td>{{data.modelno}}&nbsp;{{data.subcategory}}</td>
+                  <td>{{data.productid}}</td>
+                  <td>{{data.sku_no}}</td>
+                  <td>{{data.mrp}}</td>
+                  <td>{{data.gst}}</td>
+                  <td>
+                    <!-- <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" >
+                      <i class="fa fa-eye" aria-hidden="true" title="View Detail..."></i>
+                    </span>-->
+                    <span class="f_size_15 orange_clr padd_right_10 cursor_pointer">
+                      <i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit" (click)="editproduct(data)"></i>
+                    </span>
+                    <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="data.active == 1"
+                      (click)="dis_prod(data)">
+                      <i class="fa fa-check" aria-hidden="true" title="Enable"></i>
+                    </span>
+                    <span class="f_size_15 red_clr padd_right_10 cursor_pointer" *ngIf="data.active == 0"
+                      (click)="dis_prod(data)">
+                      <i class="fa fa-close" aria-hidden="true" title="Disable"></i>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="f_size_15 red_clr padd_right_10 cursor_pointer" *ngIf="data.new_arrival == 'o'"
+                      (click)="new_prod(data)">
+                      <b> Old</b>
+                    </span>
+                    <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="data.new_arrival == 'N'"
+                      (click)="new_prod(data)">
+                      <b>New </b>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="f_size_15 green_clr padd_right_10 cursor_pointer"
+                      (click)="productDtl(data)">
+                      <i class="fa fa-bars" aria-hidden="true"></i>
+                    </span>
+                  </td>
+                </tr>
+                <tr *ngIf="subtn"><button type="submit" (click)="submit()" class="input_btn">Submit</button></tr>
+              </tbody>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="success" role="dialog">
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Product Updated Successfully...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editproductmodal" role="dialog">
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading1">Edit </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 2% 0;">
+              <div class="row" *ngIf="editproduct_data" class="row_mar_0">
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Category</th>
+                          <th>Subcategory</th>
+                          <th>Modal No </th>
+                          <th>MRP</th>
+                          <th>Piece Per Cartoon</th>
+                          <th>Minimum Order</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div style="width:150px;">
+                              <select class='select-option form-control' (change)="select_category($any($event.target).value)"
+                                [(ngModel)]="editproduct_data.category" name="category" #category="ngModel">
+                                <option [ngValue]="undefined" disabled selected>Select Category</option>
+                                <option class='option' *ngFor="let data of resources" [ngValue]="data.Category">
+                                  {{data.Category}}</option>
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <select class='select-option form-control' (change)="select_subcategory()"
+                                [(ngModel)]="editproduct_data.subcategory" name="subcategory" #subcategory="ngModel">
+                                <option [ngValue]="undefined" disabled selected>Select Subcategory</option>
+                                <option class='option' *ngFor="let data of newarray " [ngValue]="data">
+                                  {{data}}</option>
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="text" class="form-control" id="brand" name="modelno"
+                                [(ngModel)]="editproduct_data.modelno" #modelno="ngModel" required
+                                placeholder="Enter Model No">
+
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="number" class="form-control mar_l_10 w-92" [(ngModel)]="editproduct_data.mrp"
+                                #unitprice="ngModel" name="unitprice" required placeholder="Enter Currency">
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="text" class="form-control" id="piecepercarton" name="piecepercarton"
+                                [(ngModel)]="editproduct_data.piecepercarton" #piecepercarton="ngModel" required
+                                placeholder="Enter piecepercarton">
+                            </div>
+                          </td>
+
+                           <td>
+                            <div style="width:150px;">
+                              <input type="text" class="form-control" id="minimumorder" name="minimumorder"
+                                [(ngModel)]="editproduct_data.minimumorder" #minimumorder="ngModel" required
+                                placeholder="Enter MinimumOrder">
+                            </div>
+                          </td>
+
+                          <td>
+                            <div style="width:150px;">
+                              <textarea cols="4" class="form-control" id="usage_description" name="usage_description"
+                                [(ngModel)]="editproduct_data.usage_description" #usage_description="ngModel"
+                                placeholder="Enter Usage Description"></textarea>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-primary" data-dismiss="modal" (click)="editproduct_submit()">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="viewprtdtlModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title-col-md-12" align="center">Product Details</h3>
+        <h5 class="modal-title-col-md-12" align="center">{{this.productdata[0]?.product_name}}</h5>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive" id="printsuppndng">
+          <div class="busname">
+              <h3 class="modal-title-col-md-12" align="center">Product Details</h3>
+              <h5 class="modal-title-col-md-12" align="center">{{this.productdata[0]?.product_name}}</h5>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Bussiness Name</th>
+                <th>Invoice No</th>
+                <th>Invoice Date</th>
+                <th class="text-right">Purchase Qty</th>
+                <th class="text-right">Sales Qty</th>
+                <th class="text-right">Price</th>
+                <!-- <th>Type</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let view_d of productdata;let i=index">
+                <td>
+                  <span class="table_pd_name">{{i + 1}}</span>
+                </td>
+
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key">{{view_d.business_name}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.inv_no}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.invdate | date:'dd-MM-yyyy'}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.pqty}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.sqty | number : '1.0-0'}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.Price | number : '1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                  </div>
+                </td>
+                <!-- <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.Type}}</span>
+                  </div>
+                </td> -->
+              </tr>
+              <tr>
+                <td colspan="4" class="text-right">Totals</td>
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{PTotalQty}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{STotalQty}}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="" style="text-align: center;padding-top: 15px;" id="printPageButton">
+            <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,622 @@
+<div class="row pad_15">
+  <!-- <div class="reg_form pad_15 mar_b_30"> -->
+  <form (ngSubmit)="onSubmit(masterDataForm)" #masterDataForm="ngForm">
+    <div class="form-group row">
+      <div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label>Category
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <select class="form-control" [(ngModel)]="masterData.category" #category="ngModel" name="category" required (change)="selectCat(masterData.category)">
+              <option [ngValue]="undefined" disabled selected>--Select--</option>
+              <option *ngFor="let item of catList | async" [ngValue]="item.category">
+                {{item.category}}
+              </option>
+            </select>
+            <div [hidden]="category.valid || category.untouched" class="validation_msg">
+              Please select category
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label>Sub-Category
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div class="form-group">
+            <input type="text" placeholder="Select or Enter subcategory" class='select-option form-control' [disabled]="sub_category" autocomplete="off"
+            [(ngModel)]="masterData.subcategory" #subCategory="ngModel" name="subCategory" required (change)="selectSubcat(masterData.subcategory)"
+            list="newarray">
+            <datalist id="newarray">
+              <option [ngValue]="undefined" disabled selected>Select Delivery Terms</option>
+              <option class='option' *ngFor="let item of newarray" [ngValue]="item.subcategory">
+                {{item.subcategory}}</option>
+            </datalist>
+            <div [hidden]="subCategory.valid ||  subCategory.untouched" class="validation_msg">
+              Please select Sub Category
+            </div>
+          </div>
+          <!-- ---------------- -->
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+            <label for="modelno" >Model No
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="text" class="form-control" id="brand" name="modelno" [(ngModel)]="masterData.modelno" #modelno="ngModel" required
+                placeholder="Enter Model No">
+              <div [hidden]="modelno.valid || modelno.untouched" class="validation_msg">
+                Model no is required
+              </div>
+            </div>
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="name1" >Name
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="text" class="form-control" id="name1" name="name1" [(ngModel)]="masterData.name1" #name1="ngModel" required
+              placeholder="Enter Name-1">
+            <div [hidden]="name1.valid ||  name1.untouched" class="validation_msg">
+              Name is required
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group row">
+      <div>
+          <div class="col-sm-3 mar_b_10_mbl">
+              <label for="brand">Brand
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <!-- <input type="text" class="form-control" id="brand" name="brand" [(ngModel)]="masterData.brand"
+                   #brand="ngModel" required
+                  placeholder="Enter Brand"> -->
+                  <select class="form-control" [(ngModel)]="masterData.brand" #brand="ngModel" 
+                  name="brand" required >
+                    <option [ngValue]="undefined" disabled selected>--Select--</option>
+                    <option *ngFor="let item of brandslist " [ngValue]="item.brand">
+                      {{item.brand}}
+                    </option>
+                  </select>
+                <div [hidden]="brand.valid || brand.untouched" class="validation_msg">
+                  brand is required
+                </div>
+              </div>
+            </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="barcode">MRP
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <div class="input-group-prepend">
+              <div class="input-group-btn">
+                <select class="form-control" [(ngModel)]="masterData.pur_curr_code" #currency="ngModel" name="currency" required>
+                  <option value="undefined" disabled selected>Select</option>
+                  <option value="INR">INR</option>
+                  <option value="RMB">RMB</option>
+                </select>
+              </div>
+              <div class="input-group-btn w-1">
+                <input type="number" class="form-control mar_l_10 w-92" [(ngModel)]="masterData.mrp" #unitprice="ngModel" name="unitprice"
+                  required placeholder="Enter Currency">
+              </div>
+            </div>
+            <div [hidden]="(unitprice.valid || unitprice.untouched) && (currency.valid || currency.untouched)" class="validation_msg">
+              currency / unitprice is required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="gst">Tax-GST %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="gst" name="gst" [(ngModel)]="masterData.gst" #gst="ngModel" required placeholder="Enter Tax">
+            <div [hidden]="gst.valid || gst.untouched" class="validation_msg">
+              GST percentage is required
+            </div>
+          </div>
+        </div>
+          <div class="col-sm-3 mar_b_10_mbl">
+              <label for="piecepercarton">Piece Per Carton
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="text" class="form-control" id="piecepercarton" name="piecepercarton" [(ngModel)]="masterData.piecepercarton" #piecepercarton="ngModel" required
+                  placeholder="Enter piecepercarton">
+                <div [hidden]="piecepercarton.valid || piecepercarton.untouched" class="validation_msg">
+                    Piece Per Carton is required
+                </div>
+              </div>
+            </div>
+        
+      </div>
+    </div>
+
+      <div class="form-group row">
+        <div>
+         
+          <div class="col-sm-3 mar_b_10_mbl">
+            <label for="lead_time">Status
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+                <select class="form-control" [(ngModel)]="masterData.active" #active="ngModel" name="active" required>
+                    <option value="undefined" disabled selected>Select</option>
+                    <option *ngFor="let item of statusdata" [ngValue]="item.value">
+                        {{item.action}}
+                      </option>
+                  </select>
+              <!-- <input type="text" class="form-control" id="active" name="active" [(ngModel)]="masterData.active" #active="ngModel" required
+                          placeholder="Enter Status"> -->
+              <div [hidden]="active.valid || active.untouched" class="validation_msg">
+                            Status Required
+              </div>
+            </div>
+          </div>
+
+
+        
+
+
+            <div class="col-sm-3 mar_b_10_mbl">
+              <label for="piecepercarton">Minimum Order
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="text" class="form-control" id="minimumorder" name="minimumorder" [(ngModel)]="masterData.minimumorder" #piecepercarton="ngModel" required
+                  placeholder="Enter Minimum Order">
+                <!-- <div [hidden]="minimumorder.valid || minimumorder.untouched" class="validation_msg">
+                  Minimum Order is required
+                </div> -->
+              </div>
+            </div>
+
+          
+        </div>
+      </div>
+
+    <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10" >Business Discounts(%):<button type="button" class="btn btn-primary" style="margin-left:20px;" (click)="showdisc()">+</button></h4>
+
+
+<div *ngIf="discounts==true">
+    <div class="form-group row" >
+      <div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="adisc">A Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div >
+            <input type="number" class="form-control" id="adisc" name="adisc" [(ngModel)]="masterData.discount_a" #adisc="ngModel" required
+              placeholder="Enter A Discount">
+            <div [hidden]="adisc.valid || adisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="bdisc" >B Disc%
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="bdisc" name="bdisc" [(ngModel)]="masterData.discount_b" #bdisc="ngModel" required
+              placeholder="Enter B Discount">
+            <div [hidden]="bdisc.valid || bdisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="cdisc" >C Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="cdisc" name="cdisc" [(ngModel)]="masterData.discount_c" #cdisc="ngModel" required
+              placeholder="Enter C Discount">
+            <div [hidden]="cdisc.valid || cdisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="ddisc" >D Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="ddisc" name="ddisc" [(ngModel)]="masterData.discount_d" #ddisc="ngModel" required
+              placeholder="Enter D Discount">
+            <div [hidden]="ddisc.valid || ddisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="edisc" >E Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="edisc" name="edisc" [(ngModel)]="masterData.discount_e" #edisc="ngModel" required
+              placeholder="Enter E Discount">
+            <div [hidden]="edisc.valid || edisc.untouched" class="validation_msg">
+              Required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="fdisc" >F Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="fdisc" name="fdisc" [(ngModel)]="masterData.discount_f" #fdisc="ngModel" required
+              placeholder="Enter F Discount">
+            <div [hidden]="fdisc.valid || fdisc.untouched" class="validation_msg">
+              Required
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div>
+        
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="gdisc" >G Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="gdisc" name="gdisc" [(ngModel)]="masterData.discount_g" #gdisc="ngModel" required
+              placeholder="Enter G Discount">
+            <div [hidden]="gdisc.valid || gdisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="hdisc" >H Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="hdisc" name="hdisc" [(ngModel)]="masterData.discount_h" #hdisc="ngModel" required
+              placeholder="Enter H Discount">
+            <div [hidden]="hdisc.valid || hdisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="idisc" >I Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="idisc" name="idisc" [(ngModel)]="masterData.discount_i" #idisc="ngModel" required
+              placeholder="Enter I Discount">
+            <div [hidden]="idisc.valid || idisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="jdisc" >J Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="jdisc" name="jdisc" [(ngModel)]="masterData.discount_j" #jdisc="ngModel" required
+              placeholder="Enter J Discount">
+            <div [hidden]="jdisc.valid || jdisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="kdisc" >K Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="kdisc" name="kdisc" [(ngModel)]="masterData.discount_k" #kdisc="ngModel" required
+              placeholder="Enter E Discount">
+            <div [hidden]="kdisc.valid || kdisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="ldisc" >L Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="ldisc" name="ldisc" [(ngModel)]="masterData.discount_l" #ldisc="ngModel" required
+              placeholder="Enter L Discount">
+            <div [hidden]="ldisc.valid || ldisc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div>
+        <div class="col-sm-2 mar_b_10_mbl">
+          <label for="mdisc">M Disc %
+              <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="mdisc" name="mdisc" [(ngModel)]="masterData.discount_m" #mdisc="ngModel" required
+                  placeholder="Enter M Discount">
+            <div [hidden]="mdisc.valid || mdisc.untouched" class="validation_msg">
+                  Required
+            </div>
+          </div>
+        </div> 
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label for="ndisc" >N Disc %
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="number" class="form-control" id="ndisc" name="ndisc" [(ngModel)]="masterData.discount_n" #ndisc="ngModel" required
+                  placeholder="Enter N Discount">
+                <div [hidden]="ndisc.valid || ndisc.untouched" class="validation_msg">
+                  required
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+                <label for="odisc" >O Disc %
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="number" class="form-control" id="odisc" name="odisc" [(ngModel)]="masterData.discount_o" #odisc="ngModel" required
+                    placeholder="Enter O Discount">
+                  <div [hidden]="odisc.valid || odisc.untouched" class="validation_msg">
+                    required
+                  </div>
+                </div>
+              </div> 
+              <div class="col-sm-2 mar_b_10_mbl">
+                <label for="pdisc" >P Disc %
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="number" class="form-control" id="pdisc" name="pdisc" [(ngModel)]="masterData.discount_p" #pdisc="ngModel" required
+                    placeholder="Enter P Discount">
+                  <div [hidden]="pdisc.valid || pdisc.untouched" class="validation_msg">
+                    required
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-2 mar_b_10_mbl">
+                  <label for="qdisc" >Q Disc %
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="number" class="form-control" id="qdisc" name="qdisc" [(ngModel)]="masterData.discount_q" #qdisc="ngModel" required
+                      placeholder="Enter Q Discount">
+                    <div [hidden]="qdisc.valid || qdisc.untouched" class="validation_msg">
+                      required
+                    </div>
+                  </div>
+                </div> 
+                <div class="col-sm-2 mar_b_10_mbl">
+                  <label for="rdisc" >R Disc %
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="number" class="form-control" id="rdisc" name="rdisc" [(ngModel)]="masterData.discount_r" #rdisc="ngModel" required
+                      placeholder="Enter R Discount">
+                    <div [hidden]="rdisc.valid || rdisc.untouched" class="validation_msg">
+                      Required
+                    </div>
+                  </div>
+                </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div>
+          <div class="col-sm-2 mar_b_10_mbl">
+              <label for="sdisc" >S Disc %
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="number" class="form-control" id="sdisc" name="sdisc" [(ngModel)]="masterData.discount_s" #sdisc="ngModel" required
+                  placeholder="Enter S Discount">
+                <div [hidden]="sdisc.valid || sdisc.untouched" class="validation_msg">
+                  Required
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label for="sdisc">T Disc %
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="number" class="form-control" id="tdisc" name="tdisc" [(ngModel)]="masterData.discount_t" #tdisc="ngModel" required
+                  placeholder="Enter T Discount">
+                <div [hidden]="tdisc.valid || tdisc.untouched" class="validation_msg">
+                  Required
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label for="sdisc">U Disc %
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="number" class="form-control" id="udisc" name="udisc" [(ngModel)]="masterData.discount_u" #udisc="ngModel" required
+                  placeholder="Enter U Discount">
+                <div [hidden]="udisc.valid || udisc.untouched" class="validation_msg">
+                  Required
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label for="sdisc" >V Disc %
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="number" class="form-control" id="vdisc" name="vdisc" [(ngModel)]="masterData.discount_v" #vdisc="ngModel" required
+                  placeholder="Enter V Discount">
+                <div [hidden]="vdisc.valid || vdisc.untouched" class="validation_msg">
+                  Required
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label for="sdisc" >W Disc %
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="number" class="form-control" id="wdisc" name="wdisc" [(ngModel)]="masterData.discount_w" #wdisc="ngModel" required
+                  placeholder="Enter W Discount">
+                <div [hidden]="wdisc.valid || wdisc.untouched" class="validation_msg">
+                  Required
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label for="sdisc" >X Disc %
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <input type="number" class="form-control" id="xdisc" name="xdisc" [(ngModel)]="masterData.discount_x" #xdisc="ngModel" required
+                  placeholder="Enter X Discount">
+                <div [hidden]="xdisc.valid || xdisc.untouched" class="validation_msg">
+                  Required
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+   
+    </div>
+
+
+    <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">End User Discounts(%):<button type="button" class="btn btn-primary" style="margin-left:20px;" (click)="showenddisc()">+</button></h4>
+    <div *ngIf="enddiscounts==true">
+    <div class="form-group row">
+      <div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="eu1disc" >EU1 Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="eu1disc" name="eu1disc" [(ngModel)]="masterData.discount_eu1" #eu1disc="ngModel"
+              required placeholder="Enter EU1 Discount">
+            <div [hidden]="eu1disc.valid || eu1disc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="eu2disc" >EU2 Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="eu2disc" name="eu2disc" [(ngModel)]="masterData.discount_eu2" #eu2disc="ngModel"
+              required placeholder="Enter EU2 Discount">
+            <div [hidden]="eu2disc.valid || eu2disc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+          <label for="eu3disc" >EU3 Disc %
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="number" class="form-control" id="eu3disc" name="eu3disc" [(ngModel)]="masterData.discount_eu3" #eu3disc="ngModel"
+              required placeholder="Enter EU3 Discount">
+            <div [hidden]="eu3disc.valid || eu3disc.untouched" class="validation_msg">
+              required
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3 mar_b_10_mbl">
+            <label for="eu3disc" >EU4 Disc %
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="number" class="form-control" id="eu4disc" name="eu4disc" [(ngModel)]="masterData.discount_eu4" #eu4disc="ngModel"
+                required placeholder="Enter EU4 Discount">
+              <div [hidden]="eu4disc.valid || eu4disc.untouched" class="validation_msg">
+                required
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- <div class="form-group row">
+      <div >
+        
+      </div>
+    </div> -->
+
+    <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10" *ngIf="attrshow">Attributes</h4>
+
+    <div class="form-group row">
+      <div class="col-sm-4 mar_b_10 mar_b_10_mbl" *ngFor="let item of attrList;let i=index;">
+        <label for="attribute" >{{item.attribute}}
+          <sub class="txt_red f_size_25">*</sub>
+        </label>
+        <div>
+          <input type="text" class="form-control" id="attribute" name="{{item.attribute}}" [(ngModel)]="attrData[item.attribute]" #attr="ngModel"
+            (blur)="myMethod(item,attrData[item.attribute])">
+        </div>
+      </div>
+    </div>
+
+    <!-- <div [hidden]="unitwt1.valid || unitwt1.untouched" class="validation_msg">
+              unit weight is required
+            </div> 
+     {{i}}{{masterData[item.attribute]}} -
+       <input type="text" class="form-control"  id="seq_no" name="{{item.seq_no}}"     
+          [(ngModel)]="item.seq_no" value="{{item.seq_no}}" > 
+       {{attrData.value}}  
+       <label for="seqno" class="col-sm-3 col-form-label" >{{item.seq_no}}</label>
+          <input type="text" class="form-control" id="seq_no" name="{{item.sr_no}}"     
+          [(ngModel)]="attrData[item.sr_no]"> -->
+
+    <div class="form-group row pad_t_b_10">
+      <div class="col-sm-12"  id="btnWrap">
+        <div class="pull-left">
+          <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_red border_red" (click)="masterDataForm.reset()">
+            <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Clear</button>
+        </div>
+        <div class="pull-right">
+          <button type="submit" [disabled]="masterDataForm.invalid" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green">Submit
+            <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  <!-- </div> -->
+</div>
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+<!-- Modal popup start here -->
+<div id="successModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center">PRODUCTS</h4>
+      </div>
+      <div class="modal-body text-center">
+        <p>
+          <span>{{productname}}</span>
+          is updated and sent for review. Please Click on Ok button to view anotherProduct</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal popup end here -->

@@ -1,0 +1,305 @@
+<div class="container pad_t_5per pad_b_5per">
+    <p class="bread-crumb1">
+        <span>
+          <a href="javascript.void(0)" routerLink="/dashboard" 
+                      >Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span>Status</span>
+      </p>
+    <div class="row tabwraper">
+    <div class="row bg-theme dash_status row_mar_0">
+      <div class="col-md-3 status_align"><a href="javascript:void(0)"  [ngClass]="{'active_tab':POhidden == true}"(click)="po()">Placed Orders</a></div>
+      <div class="col-md-3 status_align"><a href="javascript:void(0)"  [ngClass]="{'active_tab':DOhidden == true}"  (click)="do()">Delivered Orders</a></div>
+      <div class="col-md-3 status_align"><a href="javascript:void(0)"  [ngClass]="{'active_tab':PENhidden == true}" (click)="grn()">Pending Orders</a></div>
+      <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':GRNhidden == true}"  (click)="grn()">Generated GRN'S</a></div>
+    </div>
+    <!-- <button class="btn btn-primary" (click)="po()">Placed Orders</button><button class="btn btn-primary" (click)="do()">Delivered Orders</button><button class="btn btn-primary" (click)="grn()">Generated GRN'S</button> -->
+    <div class="pad_20">
+      <div *ngIf="POhidden">
+        <div class="row row_mar_0">
+              <div class="row pad_10">
+                <div class="col-md-12 mar_t_20">
+                  <div class="row offertabwrap">
+                    <div class="col-md-2 text-center">
+                      <h4>Srl. No</h4>
+                    </div>
+                    <div class="col-md-2 text-center">
+                      <h4>Order No</h4>
+                    </div>
+                    <div class="col-md-3  text-center">
+                      <h4>Ordered On</h4>
+                    </div>
+                    <div class="col-md-2  text-center hidden-xs">
+                      <h4>Product Line</h4>
+                    </div>
+                    <div class="col-md-3  text-center hidden-xs">
+                      <h4>Ordered Total</h4>
+                    </div>
+                  </div>
+                  <mat-accordion *ngFor="let p of orders | filter:searchText | paginate: { itemsPerPage: 10, currentPage: page }; let i=index">
+                    <!-- <div *ngIf="p.detail[0].status!=='Delivered'"> -->
+                    <div *ngIf="check_status(p.detail)">
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black mar_b_0"><span>&nbsp;&nbsp;{{10*(page-1)+(i+1)}}</span></p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black mar_b_0"><span>&nbsp;&nbsp;{{p.po_no
+                                  }}</span></p>
+                            </div>
+                            <div class="col-md-3  text-center">
+                              <p class="txt_black mar_b_0"><span>&nbsp;&nbsp;{{p.po_date
+                                  | date:'mediumDate'}}</span></p>
+                            </div>
+                            <div class="col-md-2  text-center hidden-xs">
+                              <p class="txt_black mar_b_0"><span>&nbsp;&nbsp;{{p.detail.length}}</span></p>
+                            </div>
+                            <div class="col-md-3  text-center hidden-xs">
+                              <p class="txt_black mar_b_0"><span
+                                  style="position: absolute;right: 30%;">{{p.amount}}</span></p>
+                            </div>
+                          </mat-panel-title>
+
+                          <!-- <mat-panel-description>
+                            <p>{{panelOpenState ? 'Collapse' : 'Expand'}}</p> 
+                          </mat-panel-description> -->
+                        </mat-expansion-panel-header>
+
+                        <div class="visible-sm-and-lg">
+                            <p class="txt_black mar_b_0">
+                                <b> Product Line :</b> <span>&nbsp;&nbsp;  {{p.detail.length}}
+                                </span>
+                              </p>
+                              <p class="txt_black mar_b_0">
+                                  <b>Ordered Total :</b> <span>&nbsp;&nbsp; {{p.amount}}
+                                  </span>
+                                </p>
+                          </div>
+                        <h4>Order Details:</h4>
+
+                        <div style="max-height: 380px;overflow: auto; " class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>S.No</th>
+                                <th>Product </th>
+                                <th>Product Description</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Net Amount</th>
+                                <th>GST</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let pd of p.detail ; let i=index;">
+                                <td>{{i + 1}} </td>
+                                <td style="width:10%;">
+                                  <div><img src="{{pd.image}}" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                                      class="img-thumbnail" style="width:70%;height: 30px;"></div>
+                                </td>
+                                <td>
+                                  <h4  class="table_pd_name">{{pd.name}}</h4>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0"> <span class="f_wt_600">{{pd.net_price}}</span></div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p><span class=" f_wt_600">{{pd.qty }}</span></p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p class="mar_b_0"><span class=" f_wt_600">{{pd.qty * pd.net_price}}</span></p>
+                                       <p class="gsttitle">(Excluding
+                                      GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p><span class=" f_wt_600">18% </span></p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <span class="f_wt_600">{{pd.tot_value}}</span>&nbsp;
+                                       <p class="gsttitle">(Including
+                                      GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p><span class=" f_wt_600">{{pd.status}} &nbsp; <button class="track_btn">Track</button></span></p>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          </div>
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-accordion>
+                  <div class="pull-left mar_t_30">
+                    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+      <div *ngIf="DOhidden">
+        <!-- <div class="row" style="margin:0px" *ngFor="let p of orders " >
+            <div *ngFor="let pd of p.detail">
+              <div *ngIf="pd.status=='Delivered'">
+                <div class="row" style="border-bottom: 2px solid lavenderblush;padding: 10px;">
+                  <div class="col-md-2">
+                    <img src="{{pd.image}}" onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';" class="img-thumbnail" style="width:100px;height: 50px;">
+                  </div>
+                  <div class="col-md-5">
+                    <h4  class="table_pd_name">{{pd.name}}</h4>
+                    <div class="row_mar_0">Price: <span class="f_wt_600">{{pd.net_price}}</span></div>
+                    <p class="mar_b_10">Quantity: <span class="f_wt_600">{{pd.qty}}</span></p>
+                  </div>
+                  <div class="col-md-3">
+                      <div class="mar_b_10">
+                        <p>Order Id: <span class=" f_wt_600">{{p.po_no}} </span></p>
+                        <p>{{p.po_date | date : ' LLL d, E, y' :'UTC'}}</p>
+                        
+                      </div>
+                  </div>
+                  <div class="col-md-2">
+                      <div class="mar_b_10">
+                        <span >Total Price : </span>
+                        <span >&#8377;&nbsp;</span>
+                        <span class="f_wt_600">{{pd.tot_value}}</span>&nbsp;
+                      </div>
+                      <button class="track_btn">Track</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        <div class="row row_mar_0">
+              <div class="row pad_10">
+                <div class="col-md-12 mar_t_20">
+                  <mat-accordion *ngFor="let p of orders | filter:searchText">
+                    <!-- <div *ngIf="p.detail[0].status!=='Delivered'"> -->
+                    <div *ngIf="check_status1(p.detail)">
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <div class="col-md-2">
+                              <p class="txt_black mar_b_0">Order
+                                No:<span class="f_wt_600">{{p.po_no }}</span></p>
+                            </div>
+                            <div class="col-md-3">
+                              <p class="txt_black">Ordered
+                                On:<span class="f_wt_600">{{p.po_date | date:'mediumDate'}}</span></p>
+                            </div>
+                            <div class="col-md-3 hidden-xs">
+                              <p class="txt_black mar_b_0">Product
+                                Line:<span class="f_wt_600">{{p.detail.length}}</span></p>
+                            </div>
+                            <div class="col-md-3 hidden-xs">
+                              <p class="txt_black mar_b_0">Ordered
+                                Total:<span class="f_wt_600">{{p.amount}}</span></p>
+                            </div>
+
+                          </mat-panel-title>
+                          <!-- <mat-panel-description>
+                            Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                          </mat-panel-description> -->
+                        </mat-expansion-panel-header>
+                        <h4>Order Details:</h4>
+                        <div class="visible-sm-and-lg">
+                            <p class="txt_black mar_b_0">
+                                <b> Product Line :</b> <span>&nbsp;&nbsp;  {{p.detail.length}}
+                                </span>
+                              </p>
+                              <p class="txt_black mar_b_0">
+                                  <b>Ordered Total :</b> <span>&nbsp;&nbsp; {{p.amount}}
+                                  </span>
+                                </p>
+                          </div>
+                        <div class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>S.No</th>
+                                <th>Product </th>
+                                <th>Product Description</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Net Price</th>
+                                <th>GST</th>
+                                <th>Total Price</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let pd of p.detail; let i=index;">
+                                <td>{{i + 1}} </td>
+
+                                <td style="width:10%;">
+                                  <div><img src="{{pd.image}}" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                                      class="img-thumbnail" style="width:70%;height: 30px;"></div>
+                                </td>
+                                <td>
+                                  <h4  class="table_pd_name">{{pd.name}}</h4>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0"> <span class="f_wt_600">{{pd.net_price}}</span></div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <p><span class=" f_wt_600">{{pd.qty }}</span></p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <p style="margin-bottom: 0px"><span class=" f_wt_600">{{pd.qty * pd.net_price}}</span></p>
+                                       <p class="gsttitle">(Excluding
+                                      GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <p><span class=" f_wt_600">18% </span></p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <span></span>
+                                    <span>&#8377;&nbsp;</span>
+                                    <span class="f_wt_600">{{pd.tot_value}}</span>&nbsp;
+                                       <p class="gsttitle">(Including
+                                      GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <p><span class=" f_wt_600">{{pd.status}} </span></p>
+                                  </div>
+                                  <button class="track_btn">Track</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-accordion>
+                </div>
+              </div>
+        </div>
+      </div>
+      <div *ngIf="GRNhidden">
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner class="loader_spinner"></ngx-spinner>

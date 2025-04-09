@@ -1,0 +1,170 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>
+      <a href="javascript.void(0)" routerLink="/Supplier-Invoicelist" style="color: #878787 !important;">Profoma
+        Invoice</a>
+    </span>&nbsp;>&nbsp;
+    <span> Profoma Invoice</span>
+  </p>
+  <!-- <div class="row o_s_d"> -->
+  <!-- <div class="row bg-theme dash_status" style="margin:0px">
+    <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':GIhidden == true}"
+        (click)="gi()">Generated Invoice</a></div>
+    <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':INhidden == true}"
+        (click)="inv()">Invoice</a></div>
+   
+  </div> -->
+
+  <div class="purchasewrap">
+
+    <form (ngSubmit)="onSubmit(productDataForm)" #productDataForm="ngForm">
+      <div class="row">
+        <div>
+          <h4 class="theme_green f_size_13 f_wt_600 txt_green mt_0 bussinesInfo">Invoice</h4>
+        </div>
+      </div>
+      <div class="shippmentwrap">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-xs-12 pl_1">
+            <div class="col-md-4 col-lg-4">
+              <div class="listgroup">
+                <!-- <p><b>Address :</b><span style="color:#515151;font-weight: bold;">Powertex Tools Company Pvt
+                    Ltd.</span><br>
+                  19-2-239/1/3/B, Chandulal Baradari,
+                  Industrial Estate, Bahadurpura.Hyderabad - 500064,
+                  Telangana, India.</p> -->
+
+                  <p><b>Address :</b><span style="color:#515151;font-weight: bold;">Powertex Tools Company Pvt
+                    Ltd.</span><br>
+                  7-3-109/B/1, Madhubhan Colony,
+                  Gagan Pahad, Katedan.Hyderabad - 500077,
+                  Telangana, India.</p>
+                <p><b>Shipment Port :</b> {{pro.shipmentport}} </p>
+                <p><b>Discharge Port :</b> {{pro.dischargeport}} </p>
+                <!-- <input type="text" class="form-control" id="shipment" [(ngModel)]="pro.shipmentport" name="shipmentport" #shipmentport="ngModel"> -->
+                <!-- <option></option>
+            </select> -->
+              </div>
+              <!-- <div class="form-group">
+                <label for="invno"><b>Invoice No <sup>*</sup></b></label>
+                <input type="text" class="form-control" id="invno" required [(ngModel)]="pro.invno" name="invno"
+                  #invno="ngModel">
+
+              </div> -->
+            </div>
+
+            <div class="pull-right">
+              <div class="listgroup">
+                <p><b>Payment Terms :</b> {{pro.payment_terms}} </p>
+                <p><b>Delivery Terms :</b> {{pro.deliveryterms}} </p>
+                <!-- <label for="discharge">Port of Discharge</label>
+              <input type="text" class="form-control" id="discharge" [(ngModel)]="pro.dischargeport" name="dischargeport" #dischargeport="ngModel"> -->
+                <!-- <option></option>
+              </select> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-11">
+            <div class="table-responsive mt_3">
+              <table class="table table-bordered table-condensed">
+                <thead>
+                  <th class="cellwidthprod">Product Name</th>
+                  <th class="cellwidth11">Brand</th>
+                  <th class="cellwidth11">Sku No</th>
+                  <th class="cellwidth8 text-right">Qty(Pcs)</th>
+                  <th class="cellwidth8">Unit Price
+                    ({{productdata[0].mappingid.currency}})
+                  </th>
+                  <th class="text-right cellwidth8">Amount ({{productdata[0].mappingid.currency}})</th>
+                  <!-- <th>Select</th> -->
+
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of productdata;let i=index">
+                    <td> <input type="text" class="form-control" readonly [(ngModel)]="product.product_name"
+                        [ngModelOptions]="{standalone: true}" #product_name="ngModel" /> </td>
+                    <td><input type="text" class="form-control" readonly [(ngModel)]="product.brand"
+                        [ngModelOptions]="{standalone: true}" #brand="ngModel" /></td>
+                        <td><input type="text" class="form-control" readonly [(ngModel)]="product.productid.sku_no"
+                          [ngModelOptions]="{standalone: true}" #sku_no="ngModel" /></td>
+                    <td><input type="text" class="form-control text-right" (keypress)="keynumber($event)" readonly
+                        (keyup)="qtychange(product)" [(ngModel)]="product.qty" [ngModelOptions]="{standalone: true}"
+                        #qty="ngModel" /></td>
+                    <td><input type="text" class="form-control text-right" readonly [(ngModel)]="product.price"
+                        [ngModelOptions]="{standalone: true}" #price="ngModel" /></td>
+                    <td><input type="text" class="form-control text-right" readonly [(ngModel)]="product.amount"
+                        [ngModelOptions]="{standalone: true}" #amount="ngModel" /></td>
+                    <!-- <td class="text-center"><input type="checkbox" name="vehicle1" [disabled]="add_disable(product)"
+                        (change)="selecteditems($event,product)"></td> -->
+                  </tr>
+                  <tr>
+                    <td colspan="5" class="text-right">
+                      <h5><b>Total<sup>*</sup></b></h5>
+                    </td>
+
+                    <td><input type="text" class="form-control text-right" required readonly [(ngModel)]="pro.poamount"
+                        name="poamount" #poamount="ngModel" /></td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <button button="submit" [disabled]="productDataForm.invalid"
+              class="btn btn-primary center-block bg_green">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Invoice Generated Sucessfully..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" (click)="updatemodal()" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+<div class="container-fluid">
+  <div class="row pad_t_5per">
+    <ngx-spinner class="custom_loder">
+      <img src="../../../assets/Loader.gif">
+    </ngx-spinner>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span> {{loginUserData.content}}</span>
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <!-- <span>Supplier Pending Payments</span> -->
+      <span>On Port Status</span>
+    </p>
+    <div class="reg_form mar_b_30">
+      <div class="row mar_b_15">
+        <div class="container-fluid">
+          <div class="fl">
+            <h4>On Port Status&nbsp;</h4>
+          </div>
+        </div>
+        <div class="container-fluid">
+          <input type="date" [(ngModel)]="searchduedate" class="search_style">&nbsp;&nbsp;
+          <button (click)="filterduedate()" class="input_btn">Due Date</button>
+          <div class="fr" *ngIf="PendingPayments.length>0">
+            <input type="text" [(ngModel)]="searchText" placeholder="Search Product" class="search_style">
+            <button type="submit" class="input_btn">Search</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="PendingPayments">
+        <div id="printsuppndng">
+        <div class="row printwrap" *ngIf="(PendingPayments | filter :searchText) as PendingPayments">
+          <div class="col-sm-12 list" *ngIf="PendingPayments.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped" >
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Year</th>
+                    <th>Supplier Name</th>
+                    <th class="text-right">Invoice Date</th>
+                    <th>Invoice No</th>
+                    <th class="text-right">Invoice Amount</th>
+                    <th class="text-right">BL Date</th>
+                    <th class="text-right">Cr Days</th>
+                    <th class="text-right">Due Date</th>
+                    <th>Status</th>
+                    <th>CTNS</th>
+                    <th>Days</th>
+                    <th class="text-center" style="width: 5%;">Option</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                  *ngFor="let data of PendingPayments | paginate: { itemsPerPage: 10, currentPage: p }; let i=index"
+                    [ngClass]="{'modified': data.days>1,'modified2': data.days>10}">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.financial_year}}</td>
+                    <td>{{data.Suplier_Name}}</td>
+                    <td class="text-right">{{data.InvDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td class="text-right" *ngIf ="data.CType == 'USD'">&#x24;&nbsp;{{data.Invoice_Amount | number : '1.2-2'}}</td>
+                    <td class="text-right" *ngIf ="data.CType == 'CNY'">&#165;&nbsp;{{data.Invoice_Amount | number : '1.2-2'}}</td>
+                    <td class="text-right">{{data.BL_Date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.No_of_Days}}</td>
+                    <td class="text-right">{{data.Due_date | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.STAUS}}</td>
+                    <td>{{data.ctns}}</td>
+                    <td>15 + {{data.days}}</td>
+                    <td class="text-center">
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-print" aria-hidden="true" title="Print Details"
+                          (click)="printdatadetail(data.INVQHID)"></i>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <td class="text-right" ><b>&#x24;&nbsp;{{this.totalinvoiceusd | number : '1.2-2'}}</b></td>
+                    <td class="text-right"><b>&#165;&nbsp;{{this.totalinvoicecny | number : '1.2-2'}}</b></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+               
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton" (click)="PortwiseProducts()">
+                  OnPort Product List</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary " type="button" id="printPageButton" (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+            </div>
+            <div class="col-md-12" *ngIf="PendingPayments.length>0" id="printPageButton">
+              <div class="pull-right">
+                <div>
+                  <!-- <div class="color-box" style="background-color: #FF850A;"></div>&nbsp;Equal to 2 days -->
+                  <div class="color-box" style="background-color: #FF850A;"></div>&nbsp;After 1 days
+                </div>
+                <div>
+                  <div class="color-box" style="background-color: #d9534f;"></div>&nbsp;After 10 days
+                </div>
+              </div>
+              <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+            </div>
+          </div>
+          <div *ngIf="PendingPayments.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+      </div>
+      <ngx-spinner class="loader_spinner"></ngx-spinner>
+    </div>
+  </div>
+</div>

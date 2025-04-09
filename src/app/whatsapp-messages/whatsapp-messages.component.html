@@ -1,0 +1,180 @@
+<ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="container pad_t_5per pad_b_5per">
+    <ngx-spinner class="custom_loder">
+      <img src="../../../assets/Loader.gif">
+    </ngx-spinner>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span>{{loginUserData.content}}</span>
+  
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <!-- <table> -->
+      <div class="row">
+        <div class="col-sm-4">
+          <p class="bread-crumb1 float-left">
+            <span>
+              <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+            </span>&nbsp;>&nbsp;
+            <span>Whatsapp Messages</span>
+          </p>
+        </div>
+      </div>
+    <!-- </table> -->
+    <div class="purchasewrap">
+      <form (ngSubmit)="onSubmit(purchaseorderForm)" #purchaseorderForm="ngForm">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-xs-12">
+            <h4 class="f_size_13 f_wt_600  mt_0 bussinesInfo">Whatsapp Messages</h4>
+          </div>
+        </div>
+        <div class="reg_form">
+          <br>
+          <div class="supplierwrap">
+  
+            <div class="row">
+  
+              <!-- <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="deliverytime">Delivery time</label>
+                  <input class="form-control" id="deliverytime" [(ngModel)]="pro.deliverytime" name="deliverytime"
+                    placeholder="Enter Delivery time" #deliverytime="ngModel">
+                </div>
+              </div> -->
+              <!-- <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea rows="2" id="description" placeholder="Enter Description" class="form-control"
+                    [(ngModel)]="pro.description" name="description" #description="ngModel"></textarea>
+                </div>
+              </div> -->
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="discharge">Type<sup>*</sup></label>
+                  <select class="form-control" id="discharge" [(ngModel)]="pro.type" required
+                    name="type" #type="ngModel">
+                    <option [ngValue]="undefined" disabled selected>Select Type</option>
+                    <option class='option' value="image">Image</option>
+                    <option class='option' value="video">Video</option>
+                    <option class='option' value="document">Document</option>
+                    <option class='option' value="text">Text</option>
+                  </select>
+                </div>
+              </div>
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="deliverytime">ID<sup>*</sup></label>
+                  <input class="form-control" id="id" [(ngModel)]="pro.id" name="id"
+                    placeholder="Enter ID" #id="ngModel" autocomplete="off">
+                </div>
+              </div>
+              
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="url">URL<sup>*</sup></label>
+                  <input type="text" id="url" placeholder="Enter URL" class="form-control"
+                    [(ngModel)]="pro.url" name="url" #url="ngModel" autocomplete="off">
+                </div>
+              </div>
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="ttype">TType<sup>*</sup></label>
+                  <select class="form-control" id="ttype" [(ngModel)]="pro.ttype" required
+                    name="ttype" #ttype="ngModel">
+                    <option [ngValue]="undefined" disabled selected>Select Type</option>
+                    <option class='option'>Testing</option>
+                    <option class='option'>Live</option>
+                  </select>
+                </div>
+              </div>
+  
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="Parameter1">Parameter&nbsp;1</label>
+                  <textarea class="form-control" rows="2" id="Parameter1" [(ngModel)]="pro.parameter1" name="Parameter1"
+                  placeholder="Enter Parameter1" #Parameter1="ngModel" autocomplete="off"></textarea>
+                  <!-- <input class="form-control" id="Parameter1" [(ngModel)]="pro.parameter1" name="Parameter1"
+                    placeholder="Enter Parameter1" #Parameter1="ngModel"> -->
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="Parameter2">Parameter&nbsp;2</label>
+                  <textarea class="form-control" rows="2" id="Parameter2" [(ngModel)]="pro.parameter2" name="Parameter2"
+                  placeholder="Enter Parameter2" #Parameter2="ngModel" autocomplete="off"></textarea>
+                  <!-- <input class="form-control" id="Parameter2" [(ngModel)]="pro.parameter2" name="Parameter2"
+                    placeholder="Enter Parameter2" #Parameter2="ngModel"> -->
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="Parameter3">Parameter&nbsp;3</label>
+                  <textarea class="form-control" rows="2" id="Parameter3" [(ngModel)]="pro.parameter3" name="Parameter3"
+                  placeholder="Enter Parameter3" #Parameter3="ngModel" autocomplete="off"></textarea>
+                  <!-- <input class="form-control" id="Parameter3" [(ngModel)]="pro.parameter3" name="Parameter3"
+                    placeholder="Enter Parameter3" #Parameter3="ngModel"> -->
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 col-xs-6">
+                <div class="form-group">
+                  <label for="Parameter4">Parameter&nbsp;4</label>
+                  <textarea class="form-control" rows="2" id="Parameter4" [(ngModel)]="pro.parameter4" name="Parameter4"
+                  placeholder="Enter Parameter4" #Parameter4="ngModel" autocomplete="off"></textarea>
+                  <!-- <input class="form-control" id="Parameter4" [(ngModel)]="pro.parameter4" name="Parameter4"
+                    placeholder="Enter Parameter4" #Parameter4="ngModel"> -->
+                </div>
+              </div>
+              
+            </div>
+            <div class="row">
+              <div class="form-group">
+                <div>
+                  <!-- [disabled]="add_disable1(pro)" -->
+                  <button type="submit" class="btn btn-primary center-block bg_green">Submit</button>
+                </div>
+              </div>
+            </div>
+  
+  
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- <div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <span>Purchase Order Created Sucessfully..!!</span>
+                <br>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+  
+          <button type="button" (click)="updatemodal()" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  

@@ -1,0 +1,44 @@
+.pad_l_10 {
+    padding-left: 104px;
+}
+.right_mark{
+    background: #fff;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 40%;
+    top: 50px;
+    box-shadow: 3px 5px 10px #ddd;
+    // box-shadow:1px 1px 1px 2px #dcdcdc;
+}
+.right_mark i{
+    font-size: 60px;
+    color: #0da550;
+}
+.content_msg span{
+    font-size: 18px;
+    font-weight: 550;
+}
+.close{
+    color: #fff !important;
+     opacity: 0 !important;
+    margin-top: -40px !important;
+    margin-right: -30px !important;
+}
+.modal-content{
+    border-radius: 15px !important;
+}
+
+.textgreen{
+color:rgba(245, 250, 243, 0.952) !important;
+background-color: rgba(38, 145, 5, 0.884) !important;
+}
+
+.textred{
+    color:rgb(230, 11, 11) !important;
+    }

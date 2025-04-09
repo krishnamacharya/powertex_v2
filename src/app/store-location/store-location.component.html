@@ -1,0 +1,71 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div class="col-md-4">
+    <!-- <div id="map"></div>
+      <div id="right-panel">
+      <div>
+      <b>Start:</b>
+      <select id="start">
+        <option value="Halifax, NS">Halifax, NS</option>
+        <option value="Boston, MA">Boston, MA</option>
+        <option value="New York, NY">New York, NY</option>
+        <option value="Miami, FL">Miami, FL</option>
+      </select>
+      <br>
+      <b>Waypoints:</b> <br>
+      <i>(Ctrl+Click or Cmd+Click for multiple selection)</i> <br>
+      <select multiple id="waypoints">
+        <option value="montreal, quebec">Montreal, QBC</option>
+        <option value="toronto, ont">Toronto, ONT</option>
+        <option value="chicago, il">Chicago</option>
+        <option value="winnipeg, mb">Winnipeg</option>
+        <option value="fargo, nd">Fargo</option>
+        <option value="calgary, ab">Calgary</option>
+        <option value="spokane, wa">Spokane</option>
+      </select>
+      <br>
+      <b>End:</b>
+      <select id="end">
+        <option value="Vancouver, BC">Vancouver, BC</option>
+        <option value="Seattle, WA">Seattle, WA</option>
+        <option value="San Francisco, CA">San Francisco, CA</option>
+        <option value="Los Angeles, CA">Los Angeles, CA</option>
+      </select>
+      <br>
+        <input type="submit" id="submit" (click)="submit()">
+      </div>
+      <div id="directions-panel"></div>
+      </div> -->
+    <a (click)="currentLocation()" class="locationn">Click to get nearby stores for current location
+      <span style="padding-left: 10px;"><i style="font-size:24px;" class="fa fa-map-marker" aria-hidden="true">
+      </i></span>
+    </a>
+    <br>
+    <br>
+
+    <div>
+
+
+      <input type="text" class="form-control" #name="ngModel" id="name" name="name" [(ngModel)]="searchPalce" placeholder="Search here..."
+        (ngModelChange)="getPlace(searchPalce)">
+      <div *ngIf="autocompleteItems.length>0" class="allstores">
+        <div *ngFor="let item of autocompleteItems" (click)="getSelectPlaceLatLng(item)" class="diffStore">{{item.description}}</div>
+      </div>
+    </div>
+
+
+    <!-- <div> <input type="text" class="input-tag" placeholder="Enter Area to find stores" [(ngModel)]="address">
+        <button type="submit" class="btn-submit" (click)="AddressSubmit(address)"> Search</button></div>   -->
+
+
+  </div>
+  <div class="col-md-8">
+    <div style="height: 600px;">
+
+      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7616.529166044314!2d78.458738!3d17.350997!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x663a94b1d0d10278!2sPowertex+Tools!5e0!3m2!1sen!2sin!4v1543299349023" width="100%" height="90%" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+   <!--  <div #longestRouteMap class="mapStyles" style="width:100%;height: 500px;"></div> -->
+    <!-- <div *ngIf="btnShow"><button type="submit" class="btn-submit" (click)="submit()">Submit</button></div> -->
+
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

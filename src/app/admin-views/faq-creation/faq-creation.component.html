@@ -1,0 +1,242 @@
+<div class="container pad_t_5per pad_b_5per" id="outstandWraper">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>FAQ Creation</span>
+  </p>
+  <div class="row pad_15">
+    <section *ngIf="createcode">
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Create New FAQ<span class="a_b_2"
+              (click)="availoffers()">
+              <button class="a_b_1 btn btn-primary pull-right"><i class="fa fa-long-arrow-left"></i>&nbsp;Available
+                FAQ's</button></span></h4>
+          <div class="row pad_15">
+            <form (ngSubmit)="onSubmit(masterDataForm)" #masterDataForm="ngForm">
+              <div class="form-group row">
+                <div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="faq_question" >Question
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div >
+                      <textarea class="form-control rounded-0" id="faq_question" rows="3" name="faq_question"
+                        [(ngModel)]="masterData.faq_question" #faq_question="ngModel" placeholder="Enter Question"
+                        required></textarea>
+                      <div [hidden]="faq_question.valid || faq_question.untouched" class="validation_msg">
+                        faq_question is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="faq_answer" >Answer
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div >
+                      <textarea class="form-control rounded-0" id="faq_answer" rows="3" name="faq_answer"
+                        [(ngModel)]="masterData.faq_answer" #faq_answer="ngModel" placeholder="Enter Answer"
+                        required></textarea>
+                      <div [hidden]="faq_answer.valid ||  faq_answer.untouched" class="validation_msg">
+                        faq_answer is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="form-group row pad_t_b_10">
+                  <div class="col-sm-12">
+                    <div class="pull-left">
+                      <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                        [disabled]="masterDataForm.invalid">Submit
+                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section *ngIf="availableoffers">
+      <div class="row">
+        <div class="col-sm-12">
+          <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Available FAQ's<span class="a_b_2"
+              (click)="createoffers()">
+              <button class="a_b_1 btn btn-primary pull-right">Create New FAQ&nbsp;<i
+                  class="fa fa-long-arrow-right"></i></button></span></h4>
+          <div class="table-responsive tabres" style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc"
+            *ngIf="getfaq?.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Question </th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let f of getfaq | paginate: { itemsPerPage: 10, currentPage: Page}; let i=index; "
+                    [ngStyle]="{'background-color':f.active == 0 ? '#c5cecd' : 'white' }"
+                    [ngStyle]="{'background-color':offer.active == 0 ? '#c5cecd' : 'white' }">
+                    <td>{{10*(Page-1)+(i+1)}}</td>
+                    <td>{{f.faq_question}}</td>
+                    <td>
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" *ngIf="f.status ==1"
+                        (click)="editoffer(f)">
+                        <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                      </span>
+                      <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="f.status ==1"
+                        (click)="enable(f)">
+                        <i class="fa fa-check" aria-hidden="true" title="Enable"></i>
+                      </span>
+                      <span class="f_size_15 red_clr padd_right_10 cursor_pointer" *ngIf="f.status ==0"
+                        (click)="enable(f)">
+                        <i class="fa fa-close" aria-hidden="true" title="Disable"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+          </div>
+          <div class="col-md-12" *ngIf="getfaq?.length==0">
+            <div class="no_data">
+              <img class="no_data_cnter" src="../assets/emptyicon.png" />
+              <span class="nodata_txt">No Data is Available</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>FAQ Details Inserted Sucessfully..!!</span>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="success" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>FAQ Updated Successfully...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editoffermodal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading1">Edit </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 2% 0;">
+              <div class="row" *ngIf="editoffer_data" class="row_mar_0">
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Question </th>
+                          <th>Answer</th>
+                          <th>Created By</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div  style="width:150px;">
+                              <textarea class="form-control rounded-0" id="remarks" rows="3" name="faq_question"
+                                [(ngModel)]="editoffer_data.faq_question" #faq_question="ngModel"
+                                placeholder="Enter Question"></textarea>
+                            </div>
+                          </td>
+                          <td>
+                            <div  style="width:150px;">
+                              <textarea class="form-control rounded-0" id="remarks" rows="3" name="faq_answer"
+                                [(ngModel)]="editoffer_data.faq_answer" #faq_answer="ngModel"
+                                placeholder="Enter Answer"></textarea>
+
+                            </div>
+                          </td>
+                          <td>
+                            <div  style="width:150px;text-align:left">
+                              {{editoffer_data.faq_created_by}}
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-primary" data-dismiss="modal" (click)="editoffer_submit()">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button> -->
+      </div>
+    </div>
+  </div>
+</div>

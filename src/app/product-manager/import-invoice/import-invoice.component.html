@@ -1,0 +1,87 @@
+<div class="container pad_t_5per pad_b_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" class="breadcrumb_clr">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Import Invoice</span>
+  </p>
+  <section>
+    <div class="chose_vendr mar_t_6per">
+      <div class="col-md-12 text-center">
+        <div class="form-group">
+          <label class="vendor_lab" for="vendor">Choose Vendor:</label>
+          <span>
+            <select class="vendor_sel" name="vendor" id="vendor" [(ngModel)]="selectedObj"
+              (ngModelChange)="getVendorCode(selectedObj)">
+              <option [ngValue]="undefined" disabled selected>Select Vendor</option>
+              <option *ngFor="let data of vendorsList | async" [ngValue]="data.vendorcode">
+                {{data.first_name}}-{{data.vendorcode}}</option>
+            </select>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="reg_form mar_b_30 pad_15" *ngIf="openProformaList">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Vendor Invoice</h4>
+        </div>
+        <div class="fr">
+          <input type="text" [(ngModel)]="searchText" placeholder="Search Here..." class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="(proformaList | filter :searchText) as proformaList">
+      <div class="col-sm-12 list" *ngIf="proformaList.length>0">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>User Name</th>
+              <th>PO No.</th>
+              <th>PO Date</th>
+              <th>Org Company Code</th>
+              <th>Make PL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of proformaList |filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+              <td>{{10*(p-1)+(i+1)}}</td>
+              <td>{{item.Username | titlecase}}</td>
+              <td>{{item.pono_ref}}</td>
+              <td>{{item.po_date }}</td>
+              <td>{{item.po_origin_company_code}}</td>
+              <td>
+                <span class="f_size_15 padd_right_10 orange_clr cursor_pointer" (click)="makeInvoice(item)">
+                  <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <div *ngIf="proformaList.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/emptyicon.png" />
+            <span class="nodata_txt">No Data is Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+
+</div>

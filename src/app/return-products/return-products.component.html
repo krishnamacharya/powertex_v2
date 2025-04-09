@@ -1,0 +1,340 @@
+<div class="container pad_t_5per pad_b_5per" id="outstandWraper">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Sales Return</span>
+  </p>
+
+  <div class="row pad_15 reg_form" id="chequeFormWrap">
+
+    <form #masterDataForm="ngForm" class="pad_20">
+      <div class="form-group row">
+
+
+        <!-- <div class="col-sm-3 mar_b_10_mbl">
+          <label>Date
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <input type="date" class="form-control" id="brand" name="date" [(ngModel)]="masterData.date" #date="ngModel" required placeholder="Enter Date">
+            <div [hidden]="date.valid || date.untouched" class="validation_msg">
+              please select date
+            </div>
+          </div>
+          </div> -->
+
+        <!-- <div class="col-sm-3 mar_b_10_mbl">
+            <label>Comment
+            
+            </label>
+            <div>
+              <textarea  class="form-control" id="comment" name="comment" [(ngModel)]="masterData.comment" #comment="ngModel"  placeholder="Enter Comment...">
+              </textarea>
+            </div>
+            </div> -->
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <label for="customername">Suppliers Name
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div>
+            <select class="form-control" id="customername" [(ngModel)]="masterData.customername" #customername="ngModel"
+              name="customername" required (change)="customerchange(masterData.customername)">
+              <option [ngValue]="undefined" disabled selected>--Select Dealer--</option>
+              <option class='option' *ngFor="let m of customerdata" [ngValue]="m.user_id">
+                {{m.business_name | titlecase }}, {{m.state | titlecase}}
+              </option>
+            </select>
+            <div [hidden]="customername.valid || customername.untouched" class="validation_msg">
+              please select customer name
+            </div>
+          </div>
+        </div>
+        <div class="col-md-10 table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Invoice Date <sub class="txt_red f_size_25">*</sub></th>
+                <th>Invoice No<sub class="txt_red f_size_25">*</sub></th>
+                <!-- <th>Taxable</th> -->
+                <!-- <th>Invoice Amount</th> -->
+                <th>Taxable(&#8377;)</th>
+                <th>Total GST Amount(&#8377;)</th>
+                <th>Final amount(&#8377;)</th>
+                <!-- <th>Actions</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of fieldArray1; let i = index">
+                <td>{{data.return_date | date:'dd-MM-yyyy'}}</td>
+                <td>{{data.return_inv_no}}</td>
+                <!-- <td>{{data.gst_amount}}</td> -->
+                <!-- <td>{{data.final_amount}}</td> -->
+                <td>{{data.invamount}}</td>
+                <td>{{data.gst_percent}}</td>
+                <!-- <td>{{(data.final_amount) + (((data.gst_field)/100)*(data.final_amount))}}</td> -->
+                <!-- <td>{{(data.gst_amount ) + (data.final_amount) }}</td>  -->
+                <td>{{(data.final_amount)}} </td>
+
+                <td class="i_opt">
+                  <p>
+                    <i class="fa fa-trash" style="font-size: 18px;color: #20978c;" (click)="deleteFieldValue3(i)"></i>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="date" class="form-control" placeholder="Enter Invoice Date" name="invdate"
+                    #invdate="ngModel" (change)="getCurrentFinancialYear()" [(ngModel)]="invoicedata.invdate" required>
+                </td>
+                <td>
+
+                  <!-- <input type="text" class="form-control prefix" id="code" [(ngModel)]="invoicedata.code" name="code" #code="ngModel" > -->
+                  <input type="text" class="form-control inv" placeholder="Enter Invoice No" name="invno"
+                    #invno="ngModel" (keypress)="keypress1($event)" [(ngModel)]="invoicedata.invno" required>
+                  {{invoicedata.code}} {{invoicedata.year}}
+                  <!-- <input type="text" class="form-control suffix" id="year" [(ngModel)]="invoicedata.year" name="year" #year="ngModel" > -->
+                </td>
+
+
+                <td>
+                  <input type="number" class="form-control" placeholder="Taxable Amount" name="invamount"
+                    #invamount="ngModel" (keypress)="keypress1($event)" [(ngModel)]="invoicedata.invamount" readonly>
+                </td>
+                <!-- ============GST======================== -->
+                <!-- <td>
+                  <input type="text" class="form-control" placeholder="Gst Percent" name="gstper" #gstper="ngModel" (keypress)="keypress($event)"
+                    [(ngModel)]="invoicedata.gstper">
+                </td> -->
+                <td>
+                  <input type="text" class="form-control" placeholder="Gst Amount" name="gstamount" #gstamount="ngModel"
+                    (keypress)="keypress1($event)" (keyup)="addamount(invoicedata,$event)"
+                    [(ngModel)]="invoicedata.gst_percent" readonly>
+                </td>
+                <!-- =========================================================== -->
+                <!-- <td>
+                
+                  <input type="text" class="form-control" placeholder="Enter taxablr Amount" name="taxable" #taxable="ngModel" (keypress)="keypress($event)"
+                    [(ngModel)]="invoicedata.taxable">
+                </td> -->
+
+                <td>
+                  <input type="text" class="form-control" placeholder="Final Amount" name="final_amount"
+                    #final_amount="ngModel" (keypress)="keypress1($event)" [(ngModel)]="invoicedata.final_amount"
+                    readonly>
+                </td>
+
+                <!-- ==================================================================== -->
+
+                <!-- <td>
+                  <button class="btn btn-primary" [disabled]="add_disable1(invoicedata)" (click)="addFieldValue1()"
+                    >Add</button>
+                </td> -->
+
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <!-- <button class="btn btn-primary" [disabled]="masterDataForm.invalid && add_disable1(invoicedata)" (click)="sub_final(masterDataForm)">Submit</button>
+          <button class="btn btn-primary" style="margin-left:10px;" (click)="reset(masterDataForm)">Clear</button> -->
+
+        </div>
+
+      </div>
+
+    </form>
+    <!-- ===================upload stock code=====starts=========================================== -->
+    <section>
+      <div class="mar_b_30 pad_15">
+        <div class="row pad_t_5per pad_15 ordertablewrap">
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>SubCategory</th>
+                  <th>Model No</th>
+                  <th>Qty</th>
+                  <!-- <th>MRP(&#8377;)</th> -->
+                  <th>Product Price(&#8377;)</th>
+                  <th>GST Percentage(&#x25;)</th>
+                  <th>Total(&#8377;)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let catg of selectedList;let j = index">
+                  <td>{{catg.category}}</td>
+                  <td>{{catg.subcategory}}</td>
+                  <td> <input type="number" class="form-control" placeholder="Enter Quantity" [(ngModel)]="catg.qty"
+                      name="quantity" (keydown)="isNumberKey($event)" (change)="onKey(catg)" (keyup)="onKey(catg)"
+                      style="padding-left: 5px;" required min="1" maxlength="4" oninput="validity.valid||(value='');" />
+                  </td>
+                  <td>{{catg.avg_pur_mrp | currency : '&nbsp;'}}</td>
+                </tr>
+                <tr *ngFor="let field of fieldArray; let i = index">
+                  <td>{{field.category}}</td>
+                  <td>{{field.subcategory}}</td>
+                  <td>{{field.modelno}}</td>
+                  <td>{{field.qty}}</td>
+                  <td>{{field.avg_pur_mrp | currency : '&nbsp;':'symbol':'.3'}}</td>
+                  <!-- <td>{{field.cost}}</td> -->
+                  <td>{{field.gstamount1}}%</td>
+                  <!-- <td>{{field.qty * field.avg_pur_mrp | currency : '&nbsp;':'symbol':'.2'}}</td> -->
+                  <!-- <td>{{(field.qty * field.avg_pur_mrp) + ((field.gstamount1 /100)*(field.qty * field.avg_pur_mrp))| currency : '&nbsp;':'symbol':'.3'}}</td> -->
+                  <td>{{field.gstinamount}}</td>
+                  <td class="i_opt">
+                    <p>
+                      <i class="fa fa-trash" (click)="deleteFieldValue2(i,field)" style="font-size: 18px;color: #20978c;"></i>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <input list="categorys" class="form-control" placeholder="Select Category"
+                      [(ngModel)]="newAttribute1.category" (input)="change_form($any($event.target).value)"
+                      style="padding-left: 5px;" required>
+                    <datalist id="categorys">
+                      <option *ngFor="let p of resources" value="{{p.Category}}">
+                    </datalist>
+                  </td>
+                  <td>
+                    <input list="subcategorys" class="form-control" placeholder="Select SubCategory"
+                      [(ngModel)]="newAttribute1.subcategory"
+                      (input)="change1($any($event.target).value,selectedCategory_form)" style="padding-left: 5px;"
+                      [disabled]="sele_sub_catg()" />
+                    <div *ngFor="let p of resources">
+                      <datalist id="subcategorys" *ngIf="selectedCategory_form==p.Category">
+                        <option *ngFor="let pd of p['detail']" value="{{pd['SubCategory']}}">
+                      </datalist>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" list="modelno" placeholder="Select Model"
+                      [(ngModel)]="newAttribute1.modelno" (change)="change2($any($event.target).value)"
+                      style="padding-left: 5px;" [disabled]="sele_model()">
+                    <div>
+                      <datalist id="modelno">
+                        <select *ngIf="selectedCategory_form!=='Powertex Spare Parts'">
+                          <option *ngFor="let data of httpdata2data" value="{{data.modelno}}">
+                        </select>
+                        <select *ngIf="selectedCategory_form=='Powertex Spare Parts'">
+                          <option *ngFor="let data of httpdata2data" value="{{data.modelno}}">{{data.name3}}
+                        </select>
+                      </datalist>
+                    </div>
+                  </td>
+                  <!-- =============================quantity========================================== -->
+                  <td>
+                    <input type="text" class="form-control" style="text-align: right;" name="newAttributequantity"
+                      placeholder="Enter Quantity" [(ngModel)]="newAttribute1.qty" style="padding-left: 5px;"
+                      (keydown)="isNumberKey($event) " (change)="onKey1(newAttribute1)" (keyup)="onKey1(newAttribute1)"
+                      min="1" maxlength="4" oninput="validity.valid||(value='');" [disabled]="sele_quan()">
+                  </td>
+                  <!-- =============================product price=================================================== -->
+                  <td>
+                    <input class="form-control txtright" name="newAttributeprice" type="number"
+                      placeholder="Product Price" [ngModel]="newAttribute1.avg_pur_mrp" (keydown)="isNumberKey($event)"
+                      (ngModelChange)="newAttribute1.avg_pur_mrp = $event" style="padding-left: 5px;"
+                      [disabled]="sele_quan()" />
+                  </td>
+                  <!-- ============================================= -->
+                  <!-- <td>
+                    <input type="text" class="form-control" placeholder="Gst Percent" name="gstamount" #gstamount="ngModel" (keypress)="keypress1($event)" (keyup)="addamount(invoicedata,$event)"
+                      [(ngModel)]="invoicedata.gstamount" required>
+                  </td> -->
+                  <!-- ==========================Gst amount===============================-->
+                  <!-- <td>
+                    <input type="text" class="form-control txtright" placeholder="Gst Amount" name="gstamount1" #gstamount1="ngModel" (keypress)="keypress1($event)" 
+                      [(ngModel)]="newAttribute1.gstamount1" (keyup)="addamount3(newAttribute1,$event)" required >
+                  </td> -->
+                  <!-- Previous code -->
+                  <!-- <td>
+                    <input type="text" class="form-control txtright" placeholder="Gst Amount" name="gstamount1"
+                      #gstamount1="ngModel" (keypress)="keypress1($event)" [(ngModel)]="newAttribute1.gstamount1"
+                      required>
+                  </td> -->
+                  <td> 
+                    <div class="form-group">
+                      <select class="select-option form-control" [(ngModel)]="newAttribute1.gstamount1" name="gstamount1">
+                        <option [ngValue]="undefined" selected>Select%</option>
+                        <option value="5">5%</option>
+                        <option value="12">12%</option>
+                        <option value="18">18%</option>
+                      </select>
+                    </div>
+                  </td>
+                  <!-- ======================total or cost================================ -->
+                  <td>
+                    <input class="form-control txtright" name="newAttributeprice" type="number" readonly
+                      placeholder="Total" [ngModel]="newAttribute1.cost" (keydown)="isNumberKey($event)"
+                      (ngModelChange)="newAttribute1.cost = $event" style="padding-left: 5px;"
+                      [disabled]="sele_quan()" />
+                  </td>
+                  <td>
+                    <button class="btn btn-default" type="button" [disabled]="add_disable(newAttribute1) || add"
+                      (click)="addFieldValue()">Add</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p style="font-weight: bold; color: #293270;">Total Items Selected : <b
+                  style="color:red">{{order_items}}</b></p>
+            </div>
+            <div class="col-md-6">
+              <!-- <input type="button" style="float:right" class="btn btn-success"
+                   value="Submit"
+                  (click)="addupd(selectedList,newAttribute1,fieldArray)"> -->
+              <div>
+                <button class="btn btn-primary" [disabled]="masterDataForm.invalid && add_disable1(invoicedata)"
+                  (click)="sub_final(masterDataForm)">Submit</button>
+                <button class="btn btn-primary" style="margin-left:10px;" (click)="reset(masterDataForm)">Clear</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ===========================upload stock code ends===================================== -->
+  </div>
+</div>
+<div class="modal fade" id="success" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Product Return Initiated Successfully...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

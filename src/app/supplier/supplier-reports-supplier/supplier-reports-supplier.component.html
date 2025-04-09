@@ -1,0 +1,500 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="pad_t_5per pad_b_5per" style="width:100%;">
+
+  <div class="pad_15 mar_b_30">
+    <div class="container">
+      <p class="bread-crumb1">
+        <span>
+          <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+        </span>&nbsp;>&nbsp;<span>Supplier Reports</span>
+      </p>
+      <div class="row t_s_1">
+        <div class="row bg-theme dash_status" style="margin:0px">
+          <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}"
+              (click)="po()">PI&nbsp;Resgister</a></div>
+          <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}"
+              (click)="do()">Invoice&nbsp;Resgister</a></div>
+          <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':SOhidden == true}"
+              (click)="so()">Packing&nbsp;Register</a></div>
+
+        </div>
+        <div style="padding:5px 20px 20px 20px">
+          <div *ngIf="POhidden">
+            <div class="fr" *ngIf="orders.length>0">
+              <input type="text" [(ngModel)]="searchText" placeholder="Search here..." class="search_style">
+              <button type="submit" class="input_btn">Search</button>
+            </div><br>
+            <div class="row">
+              <span class="col-md-3">
+                <mat-form-field color="accent">
+                  <mat-label> Select From Date</mat-label>
+                  <input matInput [matDatepicker]="picker3" [(ngModel)]="fromdate" required  [max]="maxdate">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+              </span>
+              <span class="col-md-3 selecttodate">
+                <mat-form-field color="accent">
+                  <mat-label> Select To Date</mat-label>
+                  <input matInput [matDatepicker]="picker4" [(ngModel)]="tilldate" required [max]="maxdate">
+                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                  <mat-datepicker #picker4 color="primary"></mat-datepicker>
+                </mat-form-field>
+
+              </span>
+              <span class="col-md-2">
+                <button type="submit" class="input_btn" (click)="getpidetails()">Get Data</button>
+              </span>
+            </div>
+            
+            <div *ngIf="orders">
+              <div class="row" *ngIf="(orders | filter :searchText) as orders">
+                <div class="col-sm-12 list" *ngIf="orders.length>0">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <!-- <th *ngIf="loginUserData.role=='Admin'">Business Name</th> -->
+                          <th class="text-left">PI No</th>
+                          <th class="text-right">PI Date</th>
+                          <th class="text-right">PI Amount </th>
+                          <!-- <th class="text-right">Items</th> -->
+                          <th class="text-center">Options</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                          <td>{{10*(p-1)+(i+1)}}</td>
+                          <!-- <td *ngIf="loginUserData.role=='Admin'">{{data.business_name}}
+                            </td> -->
+                          <td class="text-left">{{data.pi_no}}</td>
+                          <td class="text-right">{{data.PODate | date:'dd-MM-yyyy'}}</td>
+                          <td class="text-right">{{data.POAmount | number : '1.2-2'}}&nbsp;({{data.currency}})</td>
+                          <!-- <td class="text-right">{{data.NoOfItems}}</td> -->
+                          <td class="text-center">
+                            <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                              <i class="fa fa-print" aria-hidden="true" title="Print Details"
+                                (click)="printdatadetail(data.POQHID,'po')"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+                <div *ngIf="orders.length==0">
+                  <div class="col-md-12">
+                    <div class="no_data">
+                      <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                      <span class="nodata_txt">No Data is Available</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="DOhidden">
+            <div class="fr" *ngIf="orders.length>0">
+              <input type="text" [(ngModel)]="searchText" placeholder="Search here..." class="search_style">
+              <button type="submit" class="input_btn">Search</button>
+            </div><br>
+            <div class="row">
+              <span class="col-md-3">
+                <mat-form-field color="accent">
+                  <mat-label> Select From Date</mat-label>
+                  <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" required  [max]="maxdate">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </span>
+              <span class="col-md-3 selecttodate">
+                <mat-form-field color="accent">
+                  <mat-label> Select To Date</mat-label>
+                  <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" required [max]="maxdate">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2 color="primary"></mat-datepicker>
+                </mat-form-field>
+
+              </span>
+              <span class="col-md-2">
+                <button type="submit" class="input_btn" (click)="getinvregister()">Get Data</button> 
+              </span>
+            </div>
+            
+            <div *ngIf="orders">
+              <div class="row" *ngIf="(orders | filter :searchText) as orders">
+                <div class="col-sm-12 list" *ngIf="orders.length>0">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <!-- <th class="text-right">PI No</th> -->
+                          <th class="text-left">Invoice No</th>
+                          <th class="text-right">Invoice Date </th>
+                          <th class="text-right">InvAmount</th>
+                          <th class="text-center">Options</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                          <td>{{10*(p-1)+(i+1)}}</td>
+                          <!-- <td class="text-right">{{data.INVQHID}}</td> -->
+                          <td class="text-left">{{data.inv_no}}</td>
+                          <td class="text-right">{{data.InvDate | date:'dd-MM-yyyy'}}</td>
+                          <td class="text-right">{{data.InvAmount | number : '1.2-2'}}&nbsp;({{data.currency}})</td>
+                          <td class="text-center">
+                            <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                              <i class="fa fa-print" aria-hidden="true" title="Print Details"
+                                (click)="printdatadetail(data.INVQHID,'invoice')"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+                <div *ngIf="orders.length==0">
+                  <div class="col-md-12">
+                    <div class="no_data">
+                      <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                      <span class="nodata_txt">No Data is Available</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+<!-- Packing Register -->
+          <div *ngIf="SOhidden"> 
+            <div class="row">
+              <div class="col-md-4" *ngIf="orders.length>0">
+                <input type="text" [(ngModel)]="searchText" placeholder="Search here..." class="search_style">
+                <button type="submit" class="input_btn">Search</button>
+              </div>
+              <div class="col-md-3">
+                <mat-form-field color="accent">
+                  <mat-label> Select From Date</mat-label>
+                  <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" required  [max]="maxdate">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-3 selecttodate">
+                <mat-form-field color="accent">
+                  <mat-label> Select To Date</mat-label>
+                  <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" required [max]="maxdate">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2 color="primary"></mat-datepicker>
+                </mat-form-field>
+
+              </div>
+              <div class="col-md-1">
+                <button type="submit" class="input_btn" (click)="getpackingregister()">Get Data</button>
+              </div>
+            </div>
+            <div *ngIf="orders">
+              <div class="row" *ngIf="(orders | filter :searchText) as orders">
+                <div class="col-sm-12 list" *ngIf="orders.length>0">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <!-- <th class="text-left">PI No</th>
+                          <th class="text-right">PI Date</th> -->
+                          <th class="text-left">Invoice No</th>
+                          <th class="text-right">Invoice Date </th>
+                          <th class="text-right">Amount</th>
+                          <th class="text-center">Shipment Port</th>
+                          <th class="text-center">Discharge Port</th>
+                          <th class="text-center">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                          <td>{{10*(p-1)+(i+1)}}</td>
+                          <!-- <td class="text-left">{{data.pi_no}}</td>
+                          <td class="text-right">{{data.pidate | date:'dd-MM-yyyy'}}</td> -->
+                          <td class="text-left">{{data.inv_no}}</td>
+                          <td class="text-right">{{data.invdate | date:'dd-MM-yyyy'}}</td> 
+                          <td class="text-right">{{data.poamount | number : '1.2-2'}}&nbsp;({{data.ctype}})</td>
+                          <td class="text-center">{{data.shipmentport}}</td>
+                          <td class="text-center">{{data.dischargeport}}</td>
+                          <td class="text-center">
+                            <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                              <i class="fa fa-print" aria-hidden="true" title="Print Details"
+                                (click)="printdatadetail(data.invqhid,'packing')"></i>
+                            </span>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-sm bg_green text-white" (click)="editpacking(data)">Edit</button>&nbsp;&nbsp;
+                            <span class="f_size_15 red_clr padd_right_10 cursor_pointer">
+                              <!-- <i class="fa fa-close" aria-hidden="true" title="Delete" (click)="delinv1(data.invqhid)"></i> -->
+                              <button type="button" class="btn btn-sm" title="delete" (click)="delpack1(data.invqhid)">
+                                <i class="fa fa-trash" style="font-size: 18px;color: #a51d1d;"></i></button>
+                            </span>&nbsp;
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+                <div *ngIf="orders.length==0">
+                  <div class="col-md-12">
+                    <div class="no_data">
+                      <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                      <span class="nodata_txt">No Data is Available</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Packing Edit Modal -->
+
+<div class="modal fade" id="viewpoModaledit" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center">Packing Details(Invoice.No - {{invno}})</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Product Name</th>
+                <th>Brand</th>
+                <th>Qty</th>
+                <!-- <th>Price</th> -->
+                <!-- <th>Amount</th> -->
+                <th class="cellwidth9">CTNS&nbsp;<sup class="astrick">*</sup></th>
+                <th class="cellwidth9">G.W&nbsp;<sup class="astrick">*</sup></th>
+                <th class="cellwidth9">N.W&nbsp;<sup class="astrick">*</sup></th>
+                <!-- <th>CBM</th> -->
+                <th class="cellwidth9">Piece Per Carton&nbsp;<sup class="astrick">*</sup></th>
+                <!-- <th>Container Size</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let view_d of this.productdata;let i=index" style="width: 100%S;">
+                <td>
+                  <span class="table_pd_name">{{i + 1}}</span>
+                </td>
+
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key">{{view_d.productid.modelno}}&nbsp;{{view_d.productid.subcategory}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.productid.brand}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.qty}}</span>
+                  </div>
+                </td>
+
+                <!-- <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.price}}</span></div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.amount}}</span></div>
+                </td> -->
+                <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.ctns" name="ctns" (keyup)="totals()">
+                </td>
+                <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.gw" (keyup)="gwchange(view_d)" name="gw" (keypress)="keyfloat($event)">
+                </td>
+                <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.nw" (keyup)="nwchange(view_d)" (input)="changenw(view_d)" name="nw"
+                  (keypress)="keyfloat($event)">
+                </td>
+                <!-- <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.cpm" name="cpm">
+                </td> -->
+                <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.productid.piecepercarton" (keypress)="keynumber($event)"
+                    value="view_d.productid.piecepercarton" (change)="piecechange(view_d)" name="piecepercarton">
+                </td>
+                <!-- <td>
+                  <input type="text" class="input" [(ngModel)]="view_d.cont_size" name="cont_size">
+                </td> -->
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td><b>Total</b></td>
+                <td>{{this.totalqty}}</td>
+                <td>{{this.totalctns | number : '1.2-2'}}</td>
+                <td>{{this.totalgw | number : '1.2-2'}}</td>
+                <td>{{this.totalnw | number : '1.2-2'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="modal-footer row">
+        <!-- <div class="form-group d-flex justify-content-between"> -->
+        <div class="col-sm-2">
+          <label for="doc3"><b>Upload Packing List</b></label>
+          <input type="file" id="doc3" name="doc3" type="file" [(ngModel)]="pro.doc3" (change)="stockexcelUpload($event)"
+             title = "Upload Packing List">
+        </div>
+        <div class="col-sm-10">
+          <div class="float-left col-sm-10">
+            <label><b>CBM&nbsp;<sup class="astrick">*</sup>:</b>&nbsp;</label>
+            <input type="text" class="input" [(ngModel)]="cpm" name="cpm" required (keypress)="keyfloat($event)">
+          </div>
+          <div class="float-right col-sm-2">
+            <button type="submit" class="btn btn-primary bg_green" [disabled]="!cpm" (click)="confirmmodal()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Do you want to confirm Packing Generation</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="generatepacking()" class="btn btn-success fr"
+          data-dismiss="modal">Confirm</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Packing Generated Sucessfully..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" (click)="gotoprint()" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delpack1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <h4>Do you want to Delete ?</h4>
+        <br>
+        <br>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="delpack()" class="btn btn-success brdr_radius_50   fr">Confirm
+        </button>
+        <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="deletePack"  tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Invoice Deleted Sucessfully..!!</span>
+              <br>
+           
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+      
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+

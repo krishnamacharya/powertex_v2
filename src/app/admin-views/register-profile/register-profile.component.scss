@@ -1,0 +1,107 @@
+.f_size_15{
+    font-size: 15px;
+}
+.blue_clr{
+    color:#108ed2;
+}
+.green_clr{
+    color:#1c944f;
+}
+.red_clr{
+    color:#cf1111;
+}
+.orange_clr{
+    color:#f7a22d;
+}
+.gray_clr{
+    color:#c5c2bd;
+}
+.padd_right_10{
+    padding-right: 10px;
+}
+.padd_right_5{
+  padding-right: 5px;
+}
+.txt_center{
+    text-align: center;
+}
+.marg_l_r_10{
+    margin: 0 10px;
+}
+
+
+.view_header{
+    background: #0fa497;
+    padding: 10px 20px;
+}
+.view_header h4{
+    color:#fff !important;
+}
+
+//for delete popup styles start here
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #0fa497 !important;
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+}
+.modal-header .modal-title {
+    color:#fff !important;
+}
+
+.green_btn{
+    width:100px !important;
+}
+
+ //alert styles start here
+ .alert_heading{
+    background: #0da550;
+    margin-top: 0;
+    padding: 50px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .alert_heading span{
+    color:#fff;
+  }
+  .right_mark{
+    background: #fff;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 40%;
+    top: 50px;
+    box-shadow: 3px 5px 10px #ddd;
+  }
+  .right_mark i{
+    font-size: 60px;
+    color: #0da550;
+  }
+  .content_msg span{
+    font-size: 18px;
+    font-weight: 550;
+  }
+  .close{
+    color: #fff !important;
+     opacity: 0 !important;
+    margin-top: -40px !important;
+    margin-right: -30px !important;
+  }
+  .modal-content{
+    border-radius: 15px !important;
+  }
+  .form-control {
+    display: block;
+    width: 95% !important;
+    margin-left:5px !important ;
+    margin-bottom:8px !important ;
+
+  }

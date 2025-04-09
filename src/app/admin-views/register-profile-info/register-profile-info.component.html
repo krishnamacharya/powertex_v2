@@ -1,0 +1,524 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span><a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span  *ngIf="this.PUrl != 'A=EPr'">
+      <a href="javascript.void(0)" routerLink="/Admin-EXTERNAL USERS" style="color: #878787 !important;">
+        Users List</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="this.PUrl == 'A=EPr'">
+      <a href="javascript.void(0)" routerLink="/Admin-ACTIVE DEALERS" style="color: #878787 !important;">
+        Active Dealers</a>&nbsp;>&nbsp;
+    </span>
+    <span>register-profile-info</span>
+  </p>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="reg_form pad_15 mar_b_30">
+
+        <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Basic Info:</h4>
+        <form #updateForm="ngForm">
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="saltation" class="col-form-label">Salutation
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.salatation" name="salatation"
+                    required>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="fname" class="col-form-label">First Name
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.first_name" name="firstname"
+                    #firstname="ngModel" pattern="[a-zA-Z&. ]*" minlength="3" maxlength="30" required>
+                  <div *ngIf="firstname.invalid && (firstname.dirty || firstname.touched)" class="validation_msg">
+                    <p *ngIf="firstname.errors['required']">First Name is required</p>
+                    <p *ngIf="firstname.errors['pattern']">Enter Valid First Name</p>
+                    <p *ngIf="firstname.errors['minlength']">name should be minimum 3 characters</p>
+                    <p *ngIf="firstname.errors['maxlength']">name should be maximum 30 characters</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="lname" class="col-form-label">Last Name
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.last_name" name="lastname"
+                    #lastname="ngModel" pattern="[a-zA-Z&. ]*" minlength="1" maxlength="30" required>
+                  <div *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)" class="validation_msg">
+                    <p *ngIf="lastname.errors['required']">Last Name is required</p>
+                    <p *ngIf="lastname.errors['pattern']">Enter Valid Last Name</p>
+                    <p *ngIf="lastname.errors['minlength']">It should not be below 3 letters</p>
+                    <p *ngIf="lastname.errors['maxlength']">name should be maximum 30 characters</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="email" class="col-form-label">Email
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <!-- <input type="text" class="form-control" [(ngModel)]="profileData.email" name="email" required > -->
+                  <input type="email" class="form-control" id="email" required [(ngModel)]="profileData.email" name="email"
+                  #email="ngModel" placeholder="Enter email" (blur)="verifyUser(profileData.email,'email')"
+                  pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                  <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation_msg">
+                    <small class="form-text text-muted text-danger" *ngIf="email.errors['required'] && !mailValidation">Enter
+                      Email
+                      Id</small>
+                    <small class="form-text text-muted text-danger" *ngIf="email.errors['pattern']">Enter Valid Email
+                      Id</small>
+                  </div>
+                  <div *ngIf="mailValidation" class="validation_msg">
+                    <small class="form-text text-muted text-danger">
+                      Email Id already exist.
+                    </small>
+  
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="mobile" class="col-form-label">Mobile
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="number" class="form-control" maxlength="12" #mobile="ngModel" pattern="^[6-9][0-9]{11}$"
+                    [(ngModel)]="profileData.mobile" name="mobile" (blur)="verifyUser(profileData.mobile,'mobile')"
+                    required>
+                  <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
+                    <p *ngIf="mobile.errors['required'] && !mobileValidation">Mobile Number is required</p>
+                    <p *ngIf="mobile.errors['pattern']">Enter Valid Mobile Number</p>
+                  </div>
+                  <div *ngIf="mobileValidation" class="validation_msg">Mobile Number already exist.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Bussiness Info:</h4>
+
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="type" class="col-form-label">Type
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.user_type" name="type" required>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl" *ngIf="profileData.user_type=='Dealer'">
+                <label for="zone" class="col-form-label">Zone
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.zone" name="zone" required>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="shopname" class="col-form-label">Firm/Shop Name
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" (keypress)="keypress($event)"
+                    [(ngModel)]="profileData.business_name" name="shopname" required>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="shopaddress1" class="col-form-label">Firm/Shop Address 1
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <textarea class="form-control" [(ngModel)]="profileData.address1" name="shopaddress1"
+                    required></textarea>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="shopaddress2" class="col-form-label">Address 2</label>
+                <div>
+                  <textarea class="form-control" [(ngModel)]="profileData.address2" name="shopaddress2"></textarea>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="country" class="col-form-label">Country
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.country" name="country" required>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="state" class="col-form-label">State
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.state" name="state" required>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="state" class="col-form-label">City
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.city" name="city" required>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="zip" class="col-form-label">Postal Code
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.pin" name="pincode"
+                    #pincode="ngModel" maxlength="6" pattern="^[1-9][0-9]{5}$" required>
+                  <div *ngIf="pincode.invalid && (pincode.dirty || pincode.touched)" class="validation_msg">
+                    <p *ngIf="pincode.errors['required']"> Pincode is Required</p>
+                    <p *ngIf="pincode.errors['pattern']">Enter Valid Pincode</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-4 mar_b_10_mbl" *ngIf="profileData.user_type=='Dealer'">
+                <label for="gst" class="col-form-label">GST IN
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control uppercase" [(ngModel)]="profileData.gst" name="gst" required>
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="emails" class="col-form-label">Office Email</label>
+                <div>
+                  <input type="text" class="form-control" name="emails" id="emails" [(ngModel)]="profileData.off_email"
+                    placeholder="Enter Email" #emails="ngModel">
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="offnum" class="col-form-label">Office Number</label>
+                <div>
+                  <input type="number" class="form-control" name="offnum" id="offnum"
+                    [(ngModel)]="profileData.off_mobile" placeholder="Enter Office Number" #offnum="ngModel">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="handling_marketing_manager" class="col-form-label">Select Marketing Manager
+                  <!-- <sub class="txt_red f_size_25">*</sub> -->
+                </label>
+                <div>
+                  <select class='select-option form-control' [(ngModel)]="profileData.handling_marketing_manager"
+                    name="handling_marketing_manager" #handling_marketing_manager="ngModel">
+                    <option [ngValue]="undefined" disabled selected>Select</option>
+                    <option class='option' *ngFor="let data of market_manager_list" [ngValue]="data.user_id">
+                      {{data.first_name | titlecase}} {{data.last_name | titlecase}}-{{data.email | lowercase}}</option>
+                  </select>
+                </div>
+                <!-- <div [hidden]="category.valid ||  category.untouched" class="validation_msg">
+                    Category Profile Required
+              </div> -->
+
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="transport_name" class="col-form-label">Select Transport Name
+                  <!-- <sub class="txt_red f_size_25">*</sub> -->
+                </label>
+                <div>
+                  <select class='select-option form-control' [(ngModel)]="profileData.transport_dtl"
+                    name="transport_dtl" #transport_dtl="ngModel" id="transport_dtl">
+                    <option [ngValue]="undefined" disabled selected>Select</option>
+                    <option class='option' *ngFor="let data of transportdetails" [ngValue]="data.tranportid">
+                      {{data.transport_name}}</option>
+                  </select>
+                </div>
+                <!-- <div [hidden]="category.valid ||  category.untouched" class="validation_msg">
+                  Category Profile Required
+            </div> -->
+
+              </div>
+
+              <!--  =================image upload=========================== -->
+              <div class="row">
+                <div class="col-sm-3 mar_b_10_mbl">
+                  <label for="applicable">Select Image Type
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <select class="form-control" [(ngModel)]="product.type" id="type" #type="ngModel" name="types">
+                      <option [ngValue]="undefined" disabled selected>--Select Image Type--</option>
+                      <option *ngFor="let t of types" [ngValue]="t.name">
+                        {{t.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div><br>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="transport_name" class="col-form-label">Select image to upload
+                  <!-- <sub class="txt_red f_size_25">*</sub> -->
+                </label>
+                <div>
+                  <div class="form-group">
+                    <input id="file-upload" name="file" #file="ngModel" accept="image/x-png,image/gif,image/jpeg/jpg"
+                      (change)="productfileUpload($event)" [(ngModel)]="product.file" type="file"
+                      placeholder="Upload file..." />
+                      <div *ngIf="image">
+                        <img [src]="image" height="150" width="150">
+                      </div>
+                  </div>
+
+                
+                  <div class="row">
+                    <div></div>
+                    <div class="col-sm-3 mar_b_10_mbl">
+                      <button type="button" class="btn upload_btn" (click)="uploadData()">
+                        Upload</button>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- <div [hidden]="category.valid ||  category.untouched" class="validation_msg">
+                Category Profile Required
+          </div> -->
+
+              </div>
+              <!-- ============================showing image=============================================== -->
+              <div class="row pad_15">
+                <div class="col-md-12">
+                  <div class="paymenttable">
+                    <table class="table">
+                      <thead>
+
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let pd of response; let i=index">
+
+                          <td class="table_pd_name" style="width:80px;text-align:center">
+                            <span *ngIf="pd.image!=null">
+                              <p><img src="{{pd.image}}" width="250" height="150"></p>
+                            </span>
+
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- ==============================showing image ends============================================== -->
+
+              <!--  =================image upload=========================== -->
+
+
+
+            </div>
+          </div>
+          <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Payment Conditions:
+            <span class="glyphicon glyphicon-pencil theem_color pad_l_10"></span>
+          </h4>
+
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="turnover" class="col-form-label">Annual Turnover
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="number" required class="form-control" name="turnover" id="turnover"
+                    [(ngModel)]="profileData.turnover" placeholder="Enter Turnover" #turnover="ngModel">
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="credit_period" class="col-form-label">Credit Period Days
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="number" required class="form-control" name="credit_period" id="credit_period"
+                    [(ngModel)]="profileData.credit_period" placeholder="Enter Credit Period" #credit_period="ngModel"  min="1" max="120" 
+                    onKeyUp="if(this.value>120){this.value='120';}else if(this.value<0){this.value='0';}">
+                </div>
+              </div>
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="credit_limit" class="col-form-label">Credit Limit Amount
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" required class="form-control" name="credit_limit" id="credit_limit"
+                    [(ngModel)]="profileData.credit_limit" placeholder="Enter Credit Limit" #credit_limit="ngModel">
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-4 mar_b_10_mbl">
+                <label for="category_profile" class="col-form-label">Category Profile
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <select class='select-option form-control' required [(ngModel)]="profileData.category_profile"
+                    name="category" #category="ngModel">
+                    <option [ngValue]="undefined" disabled selected>Select</option>
+                    <option class='option' *ngFor="let data of categoryList | async" [ngValue]="data.category">
+                      {{data.category}}_{{data.avg_val }}% Discount</option>
+                  </select>
+                </div>
+                <div [hidden]="category.valid ||  category.untouched" class="validation_msg">
+                  Category Profile Required
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Bank Account Details:
+            <span class="glyphicon glyphicon-pencil theem_color pad_l_10"></span>
+          </h4>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="ACC_name" class="col-form-label">Account Holder Name</label>
+                <div>
+                  <input type="text" class="form-control" name="ACC_name" id="ACC_name"
+                    [(ngModel)]="bank_details.ACC_name" placeholder="Enter A/c Holder Name" #ACC_name="ngModel">
+                </div>
+
+              </div>
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="ACC_number" class="col-form-label">Account Number</label>
+                <div>
+                  <input type="text" class="form-control" name="ACC_number" id="ACC_number"
+                    [(ngModel)]="bank_details.ACC_number" placeholder="Enter A/C No" #ACC_number="ngModel"
+                    (keypress)="keynumber($event)">
+                </div>
+
+              </div>
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="ACC_ifsc" class="col-form-label">IFSC Code</label>
+                <div>
+                  <input type="text" class="form-control" name="ACC_ifsc" id="ACC_ifsc"
+                    [(ngModel)]="bank_details.ACC_ifsc" placeholder="Enter IFSC Code" #ACC_ifsc="ngModel">
+                </div>
+
+              </div>
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="ACC_bank_name" class="col-form-label">Bank Name</label>
+                <div>
+                  <input type="text" class="form-control" name="ACC_bank_name" id="ACC_bank_name"
+                    [(ngModel)]="bank_details.ACC_bank_name" placeholder="Enter Bank Name"
+                    onkeyup="this.value = this.value.toUpperCase();" #ACC_bank_name="ngModel">
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="ACC_branch_name" class="col-form-label">Branch Name</label>
+                <div>
+                  <input type="text" class="form-control" name="ACC_branch_name" id="ACC_branch_name"
+                    [(ngModel)]="bank_details.ACC_branch_name" placeholder="Enter Branch Name"
+                    #ACC_branch_name="ngModel">
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </form>
+        <br>
+        <div class="form-group row pad_t_b_10">
+          <div class="col-sm-12">
+
+
+            <!-- <div class="pull-left">
+              <button type="submit" class="btn green_btn" [disabled]="updateForm.invalid"
+                (click)="regProfileSave('UP')">
+                <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Save</button>
+            </div> -->
+
+            <div class="pull-right">
+              <!-- style="margin-top: -36px;" -->
+              <button type="submit" *ngIf="profileData.status=='p'" class="btn green_btn"
+                [disabled]="updateForm.invalid" (click)="regProfileapprove('A')">
+                Approve <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+              <button type="submit" *ngIf="profileData.status=='A'" class="btn green_btn"
+                [disabled]="updateForm.invalid" (click)="regProfileSave('A')">
+                Update <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+
+<!-- modal pop up start here -->
+<div class="modal fade" id="editApproveModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal"></button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{message}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoUsers()">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoUsers()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

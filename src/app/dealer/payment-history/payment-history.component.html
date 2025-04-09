@@ -1,0 +1,607 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span *ngIf="loginUserData.role!='Dealer'">
+      <a href="javascript.void(0)" routerLink="/Marketing Manager-DEALERS OUTSTANDING" style="color: #878787 !important; ">Dealer Details</a>
+      &nbsp;>&nbsp;</span>
+    <span>Payment History</span>
+   
+  
+  </p>
+  <section *ngIf="loginUserData.role=='Marketing Manager'"
+    [ngStyle]="{'padding-top':ven_POHidden === true ? '1%' : '3%','transition':'0.7s' }">
+    <div class="chose_vendr">
+      <div class="col-md-12   text-center">
+        <div class="form-group">
+          <label class="vendor_lab" for="sel1">Choose Dealer </label>
+          <span>
+            <select class="vendor_sel" [(ngModel)]="selectedObj" (ngModelChange)="dealer_chn($event)" id="sel1">
+              <option [ngValue]="undefined" disabled selected>Select Dealer</option>
+              <option *ngFor="let p of dealers" [ngValue]="p">{{p.business_name}}, {{p.city}}</option>
+            </select>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="ven_POHidden">
+    <div class="row o_s_d">
+      <div class="row bg-theme dash_status" style="margin:0px" *ngIf="loginUserData.role=='Marketing Manager'">
+        <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':MOhidden == true}"
+            (click)="mo()">Outstanding Amount</a></div>
+
+        <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}"
+            (click)="do()">Paid Amount</a></div>
+
+      </div>
+      <div class="row bg-theme dash_status" style="margin:0px" *ngIf="loginUserData.role!='Marketing Manager'">
+       
+        <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':PENhidden == true}"
+          (click)="pen()">Pending Amount</a></div>
+        <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}"
+            (click)="po()">Successfull Payments</a></div>
+
+        <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':COhidden == true}"
+            (click)="co()">Failure Payments </a></div>
+          
+
+      </div>
+      <div class="reg_form mar_b_30 pad_15 ">
+        <!-- <div class="row mar_b_3" *ngIf="loginUserData.role!='Marketing Manager'">
+          <div class="col-sm-12">
+            <div class="fl pad_l_15">
+              <h4>Payment Details</h4>
+            </div>
+
+          </div>
+        </div> -->
+        <div id="paymentWrap1">
+          <div *ngIf="MOhidden">
+
+            <div class="row" style="margin:0px">
+              <div>
+                <div>
+                  <div class="row tabcontent" style="padding: 10px;">
+
+                    <div class="col-md-12 mar_t_5 statusdata" *ngIf="paymenthistory?.length>0">
+                      <div class="row">
+
+                        <div style="float:right;padding-bottom:10px;">
+                          <span class="total">
+
+                            <b>Total Outstanding Amount = <font color="#d9534f">
+                              ₹ {{totaloutstandingamount.toLocaleString('en-IN')}}.00</font></b></span>
+                          <!-- <span class="total">
+ ₹ {{pi.due_amount.toLocaleString('en-IN')}}
+                            <b>Marketing Outstanding Amount = <font color="#d9534f">
+                                {{marketingoutstandingamount | currency : '&nbsp;'}}</font>,</b></span>
+                          <span class="total">
+
+                            <b>Dealer Outstanding Amount = <font color="#d9534f">
+                                {{dealeroutstandingamount | currency : '&nbsp;'}}</font></b></span> -->
+                        </div>
+
+                      </div>
+                      <div class="paymenttable">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Company Name</th>
+                              <!-- <th>PO No.</th>
+                              <th>PO Date</th> -->
+                              <th>Invoice No. </th>
+                              <th>Invoice Date</th>
+                              <th>Delay</th>
+                              <th  class="text-right" style="width:120px !important;">Total Amount</th>
+                              <!-- <th>Due Amount</th> -->
+                              <th>Actions</th>
+                              <!-- <th>Raised By</th> -->
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr 
+                              *ngFor="let pd of paymenthistory | paginate: { itemsPerPage: 10, currentPage: page}; let i=index;" [ngClass]="{'exceeded':pd.exceeded>0}">
+                            
+                              <td>
+                                <div class="table_pd_name" style="text-align:left">
+                                  <p><span>{{pd.name}}</span></p>
+                                </div>
+                              </td>
+                              <!-- <td>
+                                <div style="margin:0px; font-size: 13px !important;">
+                                  <p><span>{{pd.po_no}}</span></p>
+                                </div>
+                              </td> -->
+                              <!-- <td>
+                                <div class="row_mar_0">
+                                  <p><span> {{pd.po_date | date:'dd-MM-yyyy'}}</span></p>
+                                </div>
+
+                              </td> -->
+
+                              <td>
+                                <div class="mar_b_10">
+                                  <p><span>{{pd.InvoiceNumber}} </span></p>
+                                </div>
+
+                              </td>
+                              <td>
+                                <div class="mar_b_10" style="text-align:center;width:80px">
+                                  <p><span>{{pd.inv_date | date:'dd-MM-yyyy'}} </span></p>
+                                </div>
+
+                              </td>
+                              <td>
+                                <div class="mar_b_10">
+                                  <p><span>{{pd.delay}} </span></p>
+                                </div>
+
+                              </td>
+                              <td>
+                                <div class="mar_b_10" style="text-align:right;width:120px !important;">
+                                  <p><span>₹ {{pd.final_amount.toLocaleString('en-IN')}}.00 </span></p>
+                                </div>
+                              </td>
+                              <!-- <td>
+                                <div class="mar_b_10" style="width:110px" >
+                                  <p style="margin-bottom: 0px"><span>{{pd.due_amount | currency : '&nbsp;'}}</span>
+                                  </p>
+
+                                </div>
+                              </td> -->
+                              <td class="text-center">
+                                <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                                  <i class="fa fa-eye" aria-hidden="true" title="View Details" (click)="viewinvoice(pd)"></i>
+                                </span>
+                              </td>
+                              <!-- <td *ngIf="pd.self==1" class="f_wt_600" style="color:red;">(S)</td>
+                              <td *ngIf="pd.self==0" class="f_wt_600" style="color: #293271 ">(D)</td> -->                            
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+
+
+
+                      <div class="pull-left mar_t_30">
+                        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                      </div>
+                    </div>
+                    <div class="col-md-12" *ngIf="paymenthistory?.length<=0">
+                      <div class="no_data">
+                        <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                        <span class="nodata_txt">No Data is Available</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="DOhidden">
+
+            <div class="row" style="margin:0px">
+              <div>
+                <div>
+                  <div class="row" style="padding: 10px;">
+                    <span class="total pull-right">
+
+                      <b>Total PO's Paid Amount - <font color="#d9534f">
+                        ₹ {{totaloutstandingamount.toLocaleString('en-IN')}}.00</font></b>
+                        
+                        </span>
+                        <span *ngIf="loginUserData.role!='Marketing Manager' && UnadjustedAmount" class="unadjusted pull-left">
+                          <b>Un-adjusted amount  - <font color="#d9534f">
+                            ₹ {{UnadjustedAmount.toLocaleString('en-IN')}}.00</font></b>
+                            
+                            </span>
+                            <span *ngIf="loginUserData.role!='Marketing Manager' &&  !UnadjustedAmount" class="unadjusted pull-left">
+
+                              <b>Un-adjusted amount  - <font color="#d9534f">
+                                  0</font></b>
+                                
+                                </span>
+                    <div class="col-md-12 mar_t_5" *ngIf="paymenthistory?.length>0">
+                      <div class="row">
+                        <div style="padding-bottom:10px;">
+                          <!-- <span class="total pull-right">
+
+                            <b>Total PO's Paid Amount = <font color="#d9534f">
+                                {{totaloutstandingamount | currency : '&nbsp;'}}</font></b>
+                              
+                              </span>
+                              <span *ngIf="UnadjustedAmount" class="unadjusted pull-left">
+                                <b>Un-adjusted amount  = <font color="#d9534f">
+                                    {{UnadjustedAmount | currency : '&nbsp;'}}</font></b>
+                                  
+                                  </span>
+                                  <span *ngIf="!UnadjustedAmount" class="unadjusted pull-left">
+
+                                    <b>Un-adjusted amount  = <font color="#d9534f">
+                                        0</font></b>
+                                      
+                                      </span> -->
+                          <!-- <span class="total"> -->
+
+                            <!-- <b>Marketing PO's Paid Amount = <font color="#d9534f">
+                                {{marketingoutstandingamount | currency : '&nbsp;'}}</font>,</b></span>
+                          <span class="total">
+
+                            <b>Dealer PO's Paid Amount = <font color="#d9534f">
+                                {{dealeroutstandingamount | currency : '&nbsp;'}}</font></b></span> -->
+                        </div>
+                      </div>
+                      <div class="row paymcompanywrap">
+                        <div class="col-md-1 text-center hidexs">
+                          <h4>S.No</h4>
+                        </div>
+                        <div class="col-md-3  text-center" *ngIf="loginUserData.role=='Marketing Manager'">
+                          <h4>Company Name</h4>
+                        </div>
+                        <!-- <div class="col-md-1 text-center hidexs">
+                          <h4>PO No.</h4>
+                        </div>
+                        <div class="col-md-2 text-center hidexs">
+                          <h4>PO Date</h4>
+                        </div> -->
+                        <div class="col-md-2 text-center hidexs">
+                          <h4>Invoice No.</h4>
+                        </div>
+                        <div class="col-md-2 text-center hidexs">
+                          <h4>Invoice Date</h4>
+                        </div>
+                        <div class="col-md-2 text-right pr2">
+                          <h4>Total Amount</h4>
+                        </div>
+                        <div class="col-md-2  text-right pr2">
+                          <h4>Due Amount</h4>
+                        </div>
+                        <!-- <div *ngIf="loginUserData.role=='Dealer' || loginUserData.role=='Marketing Manager'"
+                          lcass="col-md-1  text-center">
+                          <h4>Raised By</h4>
+                        </div> -->
+
+                      </div>
+
+                      <mat-accordion
+                        *ngFor="let pi of paymenthistory | filter:searchText| filter:searchText| paginate: { itemsPerPage: 10, currentPage: page}; let i=index">
+
+                        <div>
+                          <mat-expansion-panel (opened)="panelOpenState == true" (closed)="panelOpenState == false"
+                            class="paymentpanelwrap">
+                            <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                <div class="col-md-1  text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">{{i+1}}</p>
+                                </div>
+                                <div class="col-md-3  text-center" *ngIf="loginUserData.role=='Marketing Manager'">
+                                  <p class="txt_black" style="margin-bottom: 0px;">{{pi.name}}</p>
+                                </div>
+                                <!-- <div class="col-md-1  text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">{{pi.po_no}}</p>
+                                </div>
+                                <div class="col-md-2  text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">{{pi.po_date | date:'dd-MM-yyyy'}}
+                                  </p>
+
+                                </div> -->
+                                <div class="col-md-2  text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">{{pi.rinv_no}}</p>
+                                </div>
+                                <div class="col-md-2  text-center hidexs">
+                                  <p class="txt_black" style="margin-bottom: 0px;">{{pi.inv_date | date:'dd-MM-yyyy'}}
+                                  </p>
+
+                                </div>
+                                <div class="col-md-2  text-right">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    ₹ {{pi.line_amount.toLocaleString('en-IN')}}.00</p>
+                                </div>
+                                <div class="col-md-2  text-right">
+                                  <p class="txt_black" style="margin-bottom: 0px;">
+                                    ₹ {{pi.due_amount.toLocaleString('en-IN')}}.00</p>
+                                </div>
+                                <!-- <div *ngIf="loginUserData.role=='Marketing Manager' " class="col-md-1  text-center">
+                                  <p *ngIf="pi.self==1" class="txt_black"
+                                    style="color:red;margin-bottom: 0px;text-align:right;">
+                                    (S)</p>
+                                  <p *ngIf="pi.self==0" class="txt_black"
+                                    style="color: #293271;margin-bottom: 0px;text-align:right;">
+                                    (D)</p>
+                                </div>
+                                <div *ngIf="loginUserData.role=='Dealer' " class="col-md-1  text-center">
+                                  <p *ngIf="pi.self==1" class="txt_black"
+                                    style="color:red;margin-bottom: 0px;text-align:right;">
+                                    (S)</p>
+                                  <p *ngIf="pi.self==0" class="txt_black"
+                                    style="color: #293271;margin-bottom: 0px;text-align:right;">
+                                    (M)</p>
+                                </div> -->
+                                <!-- <div class="col-md-2  text-center">
+                                <p class="txt_black" style="margin-bottom: 0px;text-align:right;width:140px">
+                                  {{pi.balance}}</p>
+                              </div> -->
+
+                              </mat-panel-title>
+
+                            </mat-expansion-panel-header>
+                            <div class="visible-sm-and-lg row">
+                              <div class="col-6 col-md-6">
+                                <span><b>Invoice No - </b> </span><span class="txt_black"
+                                  style="margin-bottom: 0px;">{{pi.inv_no}}</span>
+                              </div>
+                              <div class="col-6 col-md-6">
+                                <span><b>Invoice Date - </b></span><span class="txt_black"
+                                  style="margin-bottom: 0px;">{{pi.inv_date | date:'dd-MM-yyyy'}}
+                                </span>
+
+                              </div>
+                            </div>
+                            <h4>Payment Details:</h4>
+
+                            <div>
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Mode Of Payment</th>
+                                    <th>Transaction Id</th>
+                                    <th>Cheque No.</th>
+                                    <th>Cheque Date </th>
+                                    <!-- <th>Bank Name</th> -->
+                                    <th class="text-right">Total Amount</th>
+                                    <th class="text-right">Paid Amount</th>
+                                    <th class="text-right">Balance Amount</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+
+                                  <tr *ngFor="let pd of pi.detail; let i=index;"  [ngClass]="{'exceeded':pd.color==1}">
+                                    <td>
+                                      <div class="table_pd_name" style="width:80px;text-align:center">
+                                        <p><span class="f_wt_600">{{pd.mode_of_payment}}</span></p>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div *ngIf="pd.adv_no" style="margin:0px; font-size: 13px !important;">
+                                        <p><span class="f_wt_600">{{pd.adv_no}}</span></p>
+                                      </div>
+                                      <div *ngIf="!pd.adv_no" style="margin:0px;text-align:center;width:95px;">
+                                        <p><span class="f_wt_600">-</span></p>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div *ngIf="pd.cheque_no" class="row_mar_0">
+                                        <p><span class="f_wt_600"> {{pd.cheque_no}}</span></p>
+                                      </div>
+                                      <div *ngIf="!pd.cheque_no" style="margin:0px;width:80px;text-align:center">
+                                        <p><span class="f_wt_600">-</span></p>
+                                      </div>
+                                    </td>
+                                    <td>
+                                      <div *ngIf="pd.cheque_date" class="mar_b_10" style="text-align:center;width:95px">
+                                        <p><span class=" f_wt_600 ">{{pd.cheque_date | date:'dd-MM-yyyy'}} </span></p>
+                                      </div>
+                                      <div *ngIf="!pd.cheque_date" class="mar_b_10"
+                                        style="text-align:center;width:80px">
+                                        <p><span class=" f_wt_600 ">- </span></p>
+                                      </div>
+                                    </td>
+                                    <!-- <td>
+                                      <div *ngIf="pd.bank" class="mar_b_10" style="text-align:center;width:95px">
+                                        <p><span class=" f_wt_600 ">{{pd.bank}} </span></p>
+                                      </div>
+                                      <div *ngIf="!pd.bank" class="mar_b_10" style="text-align:center;width:80px">
+                                        <p><span class=" f_wt_600 ">- </span></p>
+                                      </div>
+                                    </td> -->
+                                    <td class="text-right">
+                                      <span *ngIf="pd.amount" class="mar_b_10" style="text-align:right;width:95px">
+                                        <span class=" f_wt_600 ">₹ {{pd.amount.toLocaleString('en-IN')}}.00 </span>
+                                      </span>
+                                      <span *ngIf="!pd.amount" class="mar_b_10" style="text-align:center;width:80px">
+                                        <span class=" f_wt_600 ">-</span>
+                                      </span>
+                                    </td>
+                                    
+                                    <td class="text-right">
+                                      <span class="mar_b_10" style="text-align:right;width:120px">
+                                        <span style="margin-bottom: 0px"><span
+                                            class=" f_wt_600">₹ {{pd.adj_amount.toLocaleString('en-IN')}}.00</span>
+                                        </span>
+
+                                      </span>
+                                    </td>
+                                    <td class="text-right">
+                                      <span class="mar_b_10" style="text-align:right;width:120px">
+                                        <span class=" f_wt_600">₹ {{pd.balance_amount.toLocaleString('en-IN')}}.00</span>
+                                      </span>
+                                    </td>
+
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </mat-expansion-panel>
+                        </div>
+
+                      </mat-accordion>
+                      <div class="pull-left mar_t_30">
+                        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                      </div>
+                    </div>
+                    <div class="col-md-12" *ngIf="paymenthistory?.length<=0">
+                      <div class="no_data">
+                        <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                        <span class="nodata_txt">No Data is Available</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="COhidden">
+            <div *ngIf="chequedetail?.length>0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Transaction Id</th>
+                    <th>Cheque No.</th>
+                    <th>Cheque Date </th>
+                    <th>Bank Name</th>
+                    <th class="text-right pr2">
+                      <span>Total Amount</span></th>
+                    <th>Status</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let pd of chequedetail| paginate: { itemsPerPage: 10, currentPage: page }; let i=index;">
+                    <td>{{10*(page-1)+(i+1)}}</td>
+                    <td>
+                      <div style="margin:0px; font-size: 13px !important;">
+                        <p><span>{{pd.transid}}</span></p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <p><span> {{pd.check_no}}</span></p>
+                      </div>
+
+                    </td>
+
+                    <td>
+                      <div class="mar_b_10" style="text-align:right;width:80px">
+                        <p><span>{{pd.check_date | date:'dd-MM-yyyy'}} </span></p>
+                      </div>
+
+                    </td>
+                    <td>
+                      <div class="mar_b_10" style="text-align:center;width:80px">
+                        <p><span>{{pd.giver_bank}} </span></p>
+                      </div>
+
+                    </td>
+                    <td>
+                      <div class="mar_b_10 text-right mr2">
+                        <p><span>₹ {{pd.amount.toLocaleString('en-IN')}} </span></p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mar_b_10" *ngIf="pd.status==0" style="text-align:left;width:70px">
+                        <p style="margin-bottom: 0px"><span>Bounced</span>
+                        </p>
+
+                      </div>
+                    </td>
+
+
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="chequedetail?.length<=0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="PENhidden">
+            <div *ngIf="pendinghistory?.length>0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Invoice No</th>
+                    <th>Invoice Date </th>
+                    <th class="text-right">Invoice Amount</th>
+                    <th class="text-right pr2">Due Amount</th>
+                    <th>Comments</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr
+                    *ngFor="let pd of pendinghistory| paginate: { itemsPerPage: 10, currentPage: page }; let i=index;"  [ngClass]="{'exceeded':pd.delay>0}">
+                    <td>{{10*(page-1)+(i+1)}}</td>
+                    <td>
+                      <div style="margin:0px; font-size: 13px !important;">
+                        <p><span>{{pd.sinv_no}}</span></p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mar_b_10" style="text-align:right;width:80px">
+                        <p><span>{{pd.inv_date | date:'dd-MM-yyyy'}} </span></p>
+                      </div>
+
+                    </td>
+                    <td class="text-right mr2">
+                      <div class="mar_b_10">
+                        <p><span>₹ {{pd.final_amount.toLocaleString('en-IN')}}.00 </span></p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mar_b_10 text-right mr2">
+                        <p><span>₹ {{pd.due_amount.toLocaleString('en-IN')}}.00 </span></p>
+                      </div>
+                    </td>
+                    <td>
+                      <div style="margin:0px; font-size: 13px !important;">
+                        <p *ngIf="pd.remark3"><span>{{pd.remark3}}</span></p>
+                        <p *ngIf="!pd.remark3"><span>-</span></p>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-eye" aria-hidden="true" title="View Details" (click)="viewinvoice(pd)"></i>
+                      </span>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              </div>
+              <div class="pull-right mar_t_30">
+                <b>Total Pending Amount - <font color="#d72429">₹ {{totalpending.toLocaleString('en-IN')}}.00</font></b>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="pendinghistory?.length<=0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</div>

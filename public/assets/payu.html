@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>payu</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="backgroundImg">
+    <div class="full-width">
+      <h1>Please Wait.., Your transaction is processing...</h1>
+    </div>
+    <div>
+      <form name="payuForm" id="payuForm" method="post" action="https://secure.payu.in/_payment">
+        <input type="hidden" name="key" id="key" value="" ng-model="key">
+        <input type="hidden" name="productinfo" id="productinfo" value="" ng-model="productinfo">
+        <input type="hidden" name="hash" id="hash" value="" ng-model="hash">
+        <input type="hidden" name="txnid" id="txnid" value="" ng-model="txnid">
+        <input type="hidden" name="amount" id="amount" value="" ng-model="amount">
+        <input type="hidden" name="firstname" id="firstname" value="" ng-model="firstname">
+        <input type="hidden" name="email" id="email" value="" ng-model="email">
+        <input name="phone" type="hidden" id="phone" value="" ng-model="phone">
+        <!-- <input type="hidden" name="surl" id="surl" value="https://www.powertextools.com/mobilesuccess.html" size="64">
+        <input type="hidden" name="furl" id="furl" value="https://www.powertextools.com/failure.html" size="64"> -->
+        <input type="hidden" name="surl" id="surl" value="https://www.powertextools.com/transactionsuccess" size="64">
+        <input type="hidden" name="furl" id="furl" value="https://www.powertextools.com/transactionfailure" size="64">
+        <input type="hidden" name="service_provider" id="service_provider" value="pay_paisa" size="64">
+        <input type="hidden" value="enter" />
+      </form>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <!-- <script src="../../../bower_components/crypto-js/sha512.js"></script> -->
+
+  <style type="text/css">
+    .backgroundImg {
+      background-image: url(assets/imgs/BG_IMG.png);
+      background-size: cover;
+    }
+
+    .full-width {
+      width: 100%;
+      float: left;
+      text-align: center;
+      margin-top: 50%;
+    }
+
+    h1 {
+      font-size: 50px;
+      width: 50%;
+      margin-top: 100px;
+      margin: 100px auto 0 auto;
+    }
+  </style>
+
+  <script type="text/javascript">
+
+    function findGetParameter(parameterName) {
+      var result = null,
+        tmp = [];
+      location.search
+        .substr(1)
+        .split("&")
+        .forEach(function (item) {
+          tmp = item.split("=");
+          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+        });
+      return result;
+    }
+
+    try {
+      document.getElementById("firstname").value = findGetParameter('firstname');
+      document.getElementById("email").value = findGetParameter('email');
+      document.getElementById("hash").value = findGetParameter('hash');
+      document.getElementById("phone").value = findGetParameter('phone');
+      document.getElementById("productinfo").value = findGetParameter('productinfo');
+      document.getElementById("amount").value = findGetParameter('amount');
+      document.getElementById("key").value = findGetParameter('key');
+      document.getElementById("txnid").value = findGetParameter('txnid');
+      //document.getElementById("txnid").value = findGetParameter('txnid');
+
+      // var hashtext = findGetParameter('key') + '|' + findGetParameter('txnid') + '|' + findGetParameter('amount') + '|' + findGetParameter('productinfo') + '|' +  findGetParameter('firstname')  + '|' + findGetParameter('email') + '|||||||||||' + findGetParameter('salt');
+      // document.getElementById("hash").value = sha512(hashtext);
+
+      setTimeout(function () {
+        document.payuForm.submit();
+      }, 5000);
+    } catch (e) {
+      alert(e);
+    }
+  </script>
+
+</ion-content>

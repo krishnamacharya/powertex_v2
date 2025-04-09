@@ -1,0 +1,50 @@
+.custom_loder{
+    z-index: 99999999999 !important;
+     position: absolute !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important;  }
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+  
+}
+.view_body{
+    padding: 20px 0px;
+}
+.view_headings{
+    color: #8c8c8c;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+.view_key{
+    color: #5e5c5c;
+    font-weight: 600;
+    font-size: 15px;
+}
+.view_header{
+    background: #0fa497;
+    padding: 10px 20px;
+}
+.view_header h4{
+    color:#fff !important;
+}
+.close1{
+    color: #7b5f5f !important;
+    opacity: 1;
+    float: right;
+    font-size: 30px;
+    
+    line-height: 1;
+    text-shadow: 0 1px 0 #fff;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    margin-top: -7px;
+}

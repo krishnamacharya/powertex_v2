@@ -1,0 +1,42 @@
+span{
+    font-size: 11px;
+}
+.p-1{
+    padding: 1rem;
+}
+.printwrap{
+    padding: 0 2rem;
+    border: 1.5px solid #ddd;
+}
+.ml-1{
+    margin-left:1rem;
+}
+.mr-1{
+    margin-right: 1rem;
+}
+.table-bordered{
+    border:1px solid #fff !important;
+}
+.mb-1half{
+    margin-bottom: 1.5rem;
+}
+
+   /* tablets styles start here */
+   @media screen and (min-width: 481px) and (max-width: 767px){
+       
+}
+
+/* desktops styles start here */
+@media screen and (min-width: 768px) and (max-width: 991px){
+
+}
+
+/* desktops styles start here */
+@media screen and (min-width: 992px) and (max-width: 1023px){
+ 
+}
+
+  /* lg-desktops styles start here */
+@media screen and (min-width: 1024px) and (max-width: 1200px){
+ 
+}

@@ -1,0 +1,1865 @@
+<ngx-spinner class="custom_loder">
+  <img src="../.././assets/Loader.gif">
+</ngx-spinner>
+<div class="dashboardwrap">
+  <div class="container pad_t_5per pad_b_5per dash_w">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span> {{ loginUserData.content }}</span>
+        </h3>
+        <!-- <img class="s_bpy_ctg" src=".././assets/images/Underline Shaded.svg"> -->
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <p>Role : <b *ngIf="this.loginUserData.user_type != 'cha'"> {{loginUserData.role}}</b>
+          <b *ngIf="this.loginUserData.user_type == 'cha'"> Clearing House Agent</b>
+          <!-- <span style="color: #595959 !important;font-weight: 550;">
+            ({{loginUserData.first_name | titlecase}} {{loginUserData.last_name | titlecase}} -
+            {{loginUserData.city}}).</span> -->
+          <span style="float:right;" *ngIf="this.loginUserData.user_type != 'supplier'"><b>Last Login Date & Time:</b>
+            {{loginUserData.last_login_time}}</span>
+          <span style="float:right;" *ngIf="this.loginUserData.user_type == 'supplier'"><b>Last Login Date:</b>
+            {{loginUserData.last_login_time | date:'yyyy-MM-dd'}}</span>
+        </p>
+        <p *ngIf="loginUserData.role == 'Dealer' && loginUserData.company_address">Assigned Company : <span
+            class="companyname">
+            {{loginUserData.company_address.companyname}}
+            , {{loginUserData.company_address.city}}.</span></p>
+        <!-- ({{loginUserData.company_address.company_code}}) -->
+
+        <!-- =================================notification functionality======================================================= -->
+        <!-- <div *ngIf="this.loginUserData.user_type == 'Super'" >
+          <div class="row" >
+            <div class="col-sm-12 list" style="width: 15%; margin-left: 20px; margin-top: 10px;" >
+              <div class="table-responsive" routerLink="/seepacking-list">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center;">Packing List</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="text-align: center;">{{totaal3}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 list" style="width: 15%; margin-top:-94px">
+                <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center;">payment history</th>                
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr >
+                      <td style="text-align: center;">{{getinvoicelist5.length}}</td>   
+                    </tr>
+                  </tbody>
+                 
+                </table>
+              
+                
+                
+              </div>
+              </div>
+          <div class="col-sm-12 list" style="width: 15%;margin-top: -94px;margin-left: 157px;" >
+            <div class="table-responsive" routerLink="/seependingpo-list">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Pending Po List</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="text-align: center;">{{totaal}}</td>
+                  </tr>
+                </tbody>
+
+              </table>
+
+
+
+            </div>
+          </div>
+          <div class="col-sm-12 list" style="width: 15%;margin-top: -94px; margin-left: 304px;" >
+            <div class="table-responsive" routerLink="/seeinvoice-list">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">Invoice List</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="text-align: center;">{{totaal4}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div> -->
+        <!-- ----------------------------------------------------------- -->
+
+        <!-- ===================================notification functionality ends============================================================ -->
+        <!-- =========search functionality===================== -->
+        <!-- <div  style="margin-left: 73%;">
+          <form class="navbar-form navbar-left" action="/action_page.php" style="margin-top: -42px; margin-left: 60px;">
+
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" [(ngModel)]="search_val" name="search" style="
+              border: 1px solid #0fa497 !important;">
+              <div class="input-group-btn">
+                <button class="btn btn-danger" (click)="search_btn(search_val)" type="submit">
+                  Search
+                </button>
+              </div>
+            </div>
+          </form>
+
+        </div> -->
+        <!-- ============================ -->
+        <p class="outstandamt"
+          *ngIf="totaloutstandingamount1 && (loginUserData.role=='Branch Manager' || loginUserData.role=='Shopee Manager' || loginUserData.role=='Dealer') "
+          style="float:right;"><span><b style="font-weight: 600;color: #d72429;">Purchase Outstanding Amount : </b> <b
+              style="color:#37407a">₹ {{(math.round(totaloutstandingamount1)).toLocaleString('en-IN')}}.00</b> </span>
+        </p>
+        <!-- <p  *ngIf="totaloutstandingamount &&  loginUserData.designation=='Marketing Manager' "  style="float:right;"><span ><b style="font-weight: 600;color: #d72429;">Sales Outstanding Amount :</b><b style="color:#37407a">{{totaloutstandingamount}}</b> </span></p> -->
+        <p class="outstandamt" *ngIf="
+              !totaloutstandingamount1 &&
+              (loginUserData.role == 'Branch Manager' ||
+                loginUserData.role == 'Shopee Manager' ||
+                loginUserData.role == 'Dealer')
+            " style="float:right;">
+          <span><b style="font-weight: 600;color: #d72429;">Purchase Outstanding Amount :
+            </b>
+            <!-- <b style="color:#37407a">0</b> -->
+            <b style="color:#37407a">₹ {{(math.round(totaloutstandingamount1)).toLocaleString('en-IN')}}.00</b>
+
+            <b style="color:#37407a">{{totaloutstandingamount1}}</b>
+          </span>
+        </p>
+        <!-- <p  *ngIf="!totaloutstandingamount && loginUserData.designation=='Marketing Manager' "  style="float:right;"><span ><b style="font-weight: 600;color: #d72429;">Sales Outstanding Amount :</b> <b style="color:#37407a">0</b> </span></p> -->
+      </div>
+    </div>
+    <div class="row" *ngIf="this.loginUserData.user_type == 'Super'">
+      <div class="col-md-12 col-lg-12">
+        <div class="col-md-4" style="cursor: pointer;" routerLink="/seependingpo-list">
+          <section class="card">
+            <div class="symbol yellow">
+              <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{totaal}}</h1>
+              <p>Pending Po List</p>
+            </div>
+          </section>
+          <!-- <div class="panel panel-danger" routerLink="/seependingpo-list">
+          <div class="panel-heading text-center"><h4><b>Pending Po List</b></h4></div>
+          <div class="panel-body text-center">
+            <h4><b>{{totaal}}</b></h4>
+          </div>
+        </div> -->
+        </div>
+        <div class="col-md-4" routerLink="/seepacking-list">
+          <section class="card">
+            <div class="symbol red">
+              <i class="fa fa-gift"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{totaal3}}</h1>
+              <p>Packing List</p>
+            </div>
+          </section>
+          <!-- <div class="panel panel-success" routerLink="/seepacking-list">
+          <div class="panel-heading text-center"><h4><b>Packing List</b></h4></div>
+          <div class="panel-body text-center">
+            <h4><b>{{totaal3}}</b></h4>
+          </div>
+        </div> -->
+        </div>
+
+        <div class="col-md-4" routerLink="/seeinvoice-list">
+          <section class="card">
+            <div class="symbol blue">
+              <i class="fa fa-file-text"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{totaal4}}</h1>
+              <p>Invoice List</p>
+            </div>
+          </section>
+          <!-- <div class="panel panel-primary" routerLink="/seeinvoice-list">
+          <div class="panel-heading text-center"><h4><b> Invoice List</b></h4></div>
+          <div class="panel-body text-center">
+            <h4><b>{{totaal4}}</b></h4>
+          </div>
+        </div> -->
+        </div>
+      </div>
+    </div>
+    <!-- ===============supplier====total count================== -->
+    <div class="row" *ngIf="this.loginUserData.user_type == 'supplier'">
+      <div class="col-md-12 col-lg-12">
+        <!-- <div class="row">
+          <div class="col-sm-3">
+            <tr *ngFor="let data of pendingdata">
+              <td *ngIf="data.Pending_PO == 'Supplier_PO'"><b>Pending&nbsp;PI&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td>
+            </tr>
+          </div>
+          <div class="col-sm-3">
+          </div>
+          <div class="col-sm-3">
+          </div>
+          <div class="col-sm-3 justify-content-sm-end">
+            <tr *ngFor="let data of pendingdata">
+              <td *ngIf="data.Pending_PO == 'Supplier_Inv_Due'" class="text-right mr-0"><b>Outstanding&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td>
+            </tr>
+          </div>
+          <div class="col-sm-3 center-block">
+            <tr *ngFor="let data of pendingdata">
+              <td *ngIf="data.Pending_PO == 'Outstanding'"><b>Outstanding&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td>
+            </tr>
+          </div>
+        </div> -->
+        <p>
+          <span style="float:left;">
+            <tr *ngFor="let data of pendingdata">
+              <td *ngIf="data.Pending_PO == 'Supplier_PO'"><b>Pending&nbsp;PI&nbsp;Value:</b>&nbsp;{{data.Amount |
+                number : '1.2-2'}}&nbsp;({{data.cc}})</td>
+            </tr>
+          </span>
+          <span style="float:right;" *ngIf="this.loginUserData.user_type == 'supplier'">
+            <tr *ngFor="let data of pendingdata">
+              <td *ngIf="data.Pending_PO == 'Supplier_Inv_Due'" class="text-right mr-0">
+                <b>Outstanding&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td>
+            </tr>
+          </span>
+        </p>
+        <br>
+        <div class="container">
+          <marquee width="100%" direction="left" height="23px"
+            style="background-color: rgb(19,166,154);color: white;font-size: 16px;">
+            <b>{{marque[0]?.content}}</b>
+          </marquee>
+        </div>
+        <br>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-PO">
+            <div class="symbol terques">
+              <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{suppliercount1}}</h1> -->
+              <h1 class="count3">{{this.dashcnt?.Revised_PO}}</h1>
+              <p style="font-size: x-small;">Pending PO List</p>
+            </div>
+          </section>
+        </div>
+
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/supplier-revised-pi-list">
+            <div class="symbol megenta">
+              <i class="fa fa-pencil-square-o"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{suppliercount1one}}</h1> -->
+              <h1 class="count3">{{this.dashcnt?.sup_revised_list}}</h1>
+              <p style="font-size: x-small;">Revised PO List</p>
+            </div>
+          </section>
+
+        </div>
+
+
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Invoice">
+            <div class="symbol blue">
+              <i class="fa fa-cube"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt?.Generate_Invoice[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{suppliercount}}</h1> -->
+              <p style="font-size: x-small;">Pending PI list</p>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Invoice-Edit">
+            <div class="symbol rose">
+              <i class="fa fa-pencil-square-o"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Edit Invoice</p>
+            </div>
+          </section>
+        </div> -->
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-PI-Edit">
+            <div class="symbol grey">
+              <i class="fa fa-pencil-square-o"></i>
+            </div>
+            <div class="value">
+              <br>
+              <!-- <h1 class="count3">{{supplierdatathreecount}}</h1> -->
+              <p style="font-size: x-small;">PI Edit</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Invoices-Supplier">
+            <div class="symbol grey">
+              <i class="fa fa-file-text-o"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.sup_inv_register[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{supplierinvlistcount}}</h1> -->
+              <p style="font-size: x-small;">Invoices</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Packing-List">
+            <div class="symbol yellow">
+              <i class="fa fa-gift"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.Generate_Packing[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{supplierdatathreecount}}</h1> -->
+              <p style="font-size: x-small;">Pending Packing List</p>
+            </div>
+          </section>
+
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Pending-Invoices">
+            <div class="symbol blue">
+              <i class="fa fa-cube"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{this.dashcnt.Generate_Invoice[0]?.count}}</h1> -->
+              <!-- <h1 class="count3">{{supplierdatacountfoursum}}</h1> -->
+              <p style="font-size: x-small;">Pending Invoice</p>
+            </div>
+          </section>
+
+        </div>
+
+
+
+
+        <!-- <div class="col-md-4">
+          <section class="card" routerLink="/Supplier-Invoices">
+            <div class="symbol olive">
+              <i class="fa fa-upload"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{invoicedatadoccountings}}</h1>
+              <p>Documents Upload</p>
+            </div>
+          </section>
+        </div> -->
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Pending-Doc-List">
+            <div class="symbol orange">
+              <i class="fa fa-cloud-upload"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{pendingdoclist}}</h1> -->
+              <h1 class="count3">{{this.dashcnt.Pending_docslist}}</h1>
+              <p style="font-size: x-small;">Pending Doc List</p>
+            </div>
+          </section>
+
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Generated-Supplier-Invoices">
+            <div class="symbol olive">
+              <i class="fa fa-external-link"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.documents_list[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{generatedinvoicelist}}</h1> -->
+              <p style="font-size: x-small;">Documents list</p>
+            </div>
+          </section>
+
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Pending-SupplierPayments-List">
+            <div class="symbol red">
+              <i class="fa fa-money"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.pending_payment_list[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{pendingpaylist}}</h1> -->
+              <p style="font-size: x-small;">Pending Payments</p>
+            </div>
+          </section>
+
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Correction">
+            <div class="symbol light-green">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{Correctioncount}}</h1> -->
+              <h1 class="count3">{{this.dashcnt.Correction[0]?.count}}</h1>
+              <p style="font-size: x-small;">Correction</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Reports-Supplier">
+            <div class="symbol green">
+              <i class="fa fa-tags"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{SupplierSupReports}}</h1> -->
+              <br>
+              <p style="font-size: x-small;">Supplier Reports</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Ledger">
+            <div class="symbol terques">
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{SuppliersLedger}}</h1> -->
+              <br>
+              <p style="font-size: x-small;">Ledger</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-PO-History">
+            <div class="symbol megenta">
+              <i class="fa fa-history" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <br>
+              <!-- <h1 class="count3">{{SuppliersLedger}}</h1> -->
+              <p style="font-size: x-small;">Po History</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Product-List">
+            <div class="symbol terques">
+              <i class="fa fa-list" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Product List</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Order-Summary">
+            <div class="symbol olive">
+              <i class="fa fa-history"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Order Summary</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/supplier-feedback">
+            <div class="symbol blue">
+              <!-- <i class="fa fa-tags"></i> -->
+              <i class="fa fa-comments-o" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3"></h1> -->
+              <br>
+              <p style="font-size: x-small;">Your Feedback/Suggestion</p>
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+    <!-- ================================================admin count===================================================================== -->
+
+    <div class="row" *ngIf="this.loginUserData.user_type == 'Admin'">
+      <div class="col-md-12 col-lg-12">
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Order-Summary">
+            <div class="symbol olive">
+              <i class="fa fa-history"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Order Summary</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-order-planning">
+            <div class="symbol light-green">
+              <i class="fa fa-list-alt" aria-hidden="true"></i>
+            </div>
+            <div class="value"><br>
+              <!-- <h1 class="count3">{{FeedbackList}}</h1> -->
+              <p style="font-size:x-small;">Order Planning</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-PURCHASE ORDER">
+            <div class="symbol blue">
+              <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Purchase Order</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Revised-PO">
+            <div class="symbol megenta">
+              <i class="fa fa-retweet"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{suppliercount1onetwo}}</h1> -->
+              <h1 class="count3">{{this.dashcnt?.Revised_PO}}</h1>
+              <p style="font-size: x-small;">Revised PO List</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/admin-pending-invoice-list">
+            <div class="symbol blue">
+              <i class="fa fa-cube"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt?.Generate_Invoice[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{supplierdatacountfoursum}}</h1> -->
+              <p style="font-size: x-small;">Pending PI list</p>
+            </div>
+          </section>
+
+        </div>
+
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Pending-Invoices">
+            <div class="symbol blue">
+              <i class="fa fa-cube"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{this.dashcnt.Generate_Invoice[0]?.count}}</h1> -->
+              <!-- <h1 class="count3">{{supplierdatacountfoursum}}</h1> -->
+              <p style="font-size: x-small;">Pending Invoice</p>
+            </div>
+          </section>
+
+        </div>
+
+
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Pi-Edit">
+            <div class="symbol grey">
+              <i class="fa fa-pencil-square-o"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">PI Edit</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Invoices-Supplier">
+            <div class="symbol grey">
+              <i class="fa fa-file-text-o"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.sup_inv_register[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{supplierinvlistcount}}</h1> -->
+              <p style="font-size: x-small;">Invoices</p>
+            </div>
+          </section>
+        </div>
+
+        <!-- <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Generate-Invoice">
+            <div class="symbol terques">
+              <i class="fa fa-file-text-o"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.Generate_Invoice[0]?.count}}</h1>
+              <p style="font-size: x-small;">Generate Invoice</p>
+            </div>
+          </section>
+        </div> -->
+
+        <!-- <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Generate-Packing">
+            <div class="symbol megenta">
+              <i class="fa fa-gift"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.Generate_Packing[0]?.count}}</h1>
+              <p style="font-size: x-small;">Generate Packing</p>
+            </div>
+          </section>
+        </div> -->
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-GeneratedInvoices">
+            <div class="symbol terques">
+              <i class="fa fa-file-text"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.documents_list[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{supplierdatacountthreesum}}</h1> -->
+              <p style="font-size: x-small;">Documents List</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Payment-list">
+            <div class="symbol green">
+              <i class="fa fa-money"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.suppayment_list[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{supplierpaymentsadmincount}}</h1> -->
+              <p style="font-size: x-small;">Supplier Paid List</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Pending-Payments">
+            <div class="symbol red">
+              <i class="fa fa-money"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.Supplierpen_list[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{PendingPaymentcountAdmin}}</h1> -->
+              <p style="font-size: x-small;">On Port Status</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Pending-Generated-Invoices">
+            <div class="symbol orange">
+              <i class="fa fa-file-image-o"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{PendingDocAdmin}}</h1> -->
+              <h1 class="count3">{{this.dashcnt.Pending_docslist}}</h1>
+              <p style="font-size: x-small;">Pending Doc List</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Pending-Duty-List">
+            <div class="symbol olive">
+              <i class="fa fa-superpowers"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.pendingduty_list[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{PendingDutyList}}</h1> -->
+              <p style="font-size: x-small;">Port Wise List</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Supplier-Pending-Packing-List">
+            <div class="symbol megenta">
+              <i class="fa fa-gift"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.Generate_Packing[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{SPendingPackingList}}</h1> -->
+              <p style="font-size: x-small;">Pending Packing List</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Supplier-Product-List">
+            <div class="symbol terques">
+              <i class="fa fa-list"></i>
+            </div>
+            <div class="value"><br>
+              <!-- <h1 class="count3">{{PendingDutyList}}</h1> -->
+              <p style="font-size: x-small;">Supplier Product List</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-PAYMENTS">
+            <div class="symbol yellow">
+              <i class="fa fa-money"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{this.dashcnt.pending_payment_list[0]?.count}}</h1>
+              <!-- <h1 class="count3">{{SupPaymentsAdmincount}}</h1> -->
+              <p style="font-size: x-small;">Supplier Payments</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-Reports">
+            <div class="symbol rose">
+              <!-- <i class="fa fa-tags"></i> -->
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Supplier Reports</p>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-3">
+          <section class="card" routerLink="/Supplier-PO-History">
+            <div class="symbol olive">
+              <i class="fa fa-history" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <br>
+              <!-- <h1 class="count3">{{SuppliersLedger}}</h1> -->
+              <p style="font-size: x-small;">Po History</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Supplier-ledger">
+            <div class="symbol grey">
+              <i class="fa fa-book"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Supplier ledger</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Correction">
+            <div class="symbol light-green">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <!-- <h1 class="count3">{{Correctioncount}}</h1> -->
+              <h1 class="count3">{{this.dashcnt.Correction[0]?.count}}</h1>
+              <p style="font-size: x-small;">Correction</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Feedback">
+            <div class="symbol terques">
+              <i class="fa fa-comments-o" aria-hidden="true"></i>
+            </div>
+            <div class="value"><br>
+              <p style="font-size: x-small;">Supplier Feedback</p>
+            </div>
+          </section>
+        </div>
+
+        <!-- <div class="col-md-3">
+          <section class="card" routerLink="/adminonport-summary">
+            <div class="symbol olive">
+              <i class="fa fa-superpowers"></i>
+            </div>
+            <div class="value"><br>
+              <p style="font-size: x-small;">On Port Summary</p>
+            </div>
+          </section>
+        </div> -->
+
+        <!-- <div class="col-md-3">
+          <section class="card" routerLink="/admin-track-report">
+            <div class="symbol light-green">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+            </div>
+            <div class="value"><br>
+              <p style="font-size: x-small;">Admin TrackReport</p>
+            </div>
+          </section>
+        </div> -->
+
+        <!-- <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Cha-Charges-Report">
+            <div class="symbol grey">
+              <i class="fa fa-list" aria-hidden="true"></i>
+            </div>
+            <div class="value"><br>
+              <p style="font-size: x-small;">Cha Charges Report</p>
+            </div>
+          </section>
+        </div> -->
+
+        <!-- <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Duty-Paid-Report">
+            <div class="symbol grey">
+              <i class="fa fa-list" aria-hidden="true"></i>
+            </div>
+            <div class="value"><br>
+              <p style="font-size: x-small;">Duty Paid Report</p>
+            </div>
+          </section>
+        </div> -->
+
+
+
+        <!-- <div class="col-md-3">
+          <section class="card" routerLink="/adminchaledger">
+            <div class="symbol grey">
+              <i class="fa fa-list" aria-hidden="true"></i>
+            </div>
+            <div class="value"><br>
+              <p style="font-size: x-small;">Cha Ledger</p>
+
+            </div>
+          </section>
+        </div> -->
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Cha-Payments">
+            <div class="symbol grey">
+              <i class="fa fa-money" aria-hidden="true"></i>
+            </div>
+            <div class="value"><br>
+              <p style="font-size: x-small;">Cha Payments</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Cha-Reports">
+            <div class="symbol terques">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Cha Reports</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/transitregister">
+            <div class="symbol terques">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Transit Register</p>
+            </div>
+          </section>
+        </div>
+        
+        <div class="col-md-3">
+          <section class="card" routerLink="/pendingpiregister">
+            <div class="symbol terques">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Pending Pi Register</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Pi-Status">
+            <div class="symbol olive">
+              <i class="fa fa-spinner"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">PI Status</p>
+            </div>
+          </section>
+        </div>
+
+        
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Sales-Vs-Purchase">
+            <div class="symbol grey">
+              <i class="fa fa-file-text-o"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Sales Vs Payments</p>
+            </div>
+          </section>
+        </div>
+        
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Product-Sales-Report">
+            <div class="symbol grey">
+              <i class="fa fa-file-text-o"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Product Sales Report</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Admin-Minmum-Order-Quantity">
+            <div class="symbol terques">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Minmum Order Quantity</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Dealer-Product-List">
+            <div class="symbol terques">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Dealer Product List</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Dealer-Targets">
+            <div class="symbol terques">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Dealer Targets</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Marketing Manager-PO DISPLAY">
+            <div class="symbol terques">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">PO Display</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-3">
+          <section class="card" routerLink="/Sales-Return-Report">
+            <div class="symbol terques">
+              <i class="fa fa-folder"></i>
+            </div>
+            <div class="value">
+              <br>
+              <p style="font-size: x-small;">Sales Return Report</p>
+            </div>
+          </section>
+        </div>
+
+        
+      </div>
+    </div>
+
+    <!-- =========================================CHA count====================================================================== -->
+
+
+
+    <div class="row" *ngIf="this.loginUserData.user_type == 'cha'">
+      <div class="col-md-12 col-lg-12">
+
+        <div class="col-md-4">
+          <section class="card" routerLink="/Cha-BL-Details">
+            <div class="symbol blue">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{ChaBlDetrailsEntryCount}}</h1>
+              <p>BL Detrails Entry</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-4">
+          <section class="card" [routerLink]="['/Invoice-Documents','Pending']">
+            <div class="symbol terques">
+              <i class="fa fa-file-text"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{pendinginDoc}}</h1>
+              <p>Pending Shipment List</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-4">
+          <section class="card" routerLink="/Track-Report">
+            <div class="symbol grey">
+              <i class="fa fa-list" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{ChaTrackReportCount}}</h1>
+              <p>Track Report</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-4">
+          <section class="card" routerLink="/onport-summary">
+            <div class="symbol olive">
+              <i class="fa fa-history" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{ChaOnPortSummaryCount}}</h1>
+              <p>On Port Summary</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-4">
+          <section class="card" routerLink="/Cha-Correction">
+            <div class="symbol light-green">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{ChaCorrectioncount}}</h1>
+              <p>Correction</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-4">
+          <section class="card" routerLink="/Cha-Invoice">
+            <div class="symbol blue">
+              <i class="fa fa-pencil-square"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{ChaInvoicesCount}}</h1>
+              <p>Cha Invoices</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-4">
+          <section class="card" [routerLink]="['/Invoice-Documents','Completed']">
+            <div class="symbol rose">
+              <i class="fa fa-check"></i>
+            </div>
+            <div class="value">
+              <h1 class="count3">{{CompletedinDoc}}</h1>
+              <p>Completed Shipment List</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-4">
+          <section class="card" routerLink="/chaledger">
+            <div class="symbol light-green">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+            </div>
+            <div class="value"><br>
+              <p>Ledger</p>
+            </div>
+          </section>
+        </div>
+
+
+
+
+        <!-- <div class="col-md-2 col-sm-6 col-xs-6" [routerLink]="['/Invoice-Documents','Pending']"
+        *ngIf="this.loginUserData.user_type== 'cha'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Pending Invoice Documents</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" [routerLink]="['/Invoice-Documents','Completed']"
+        *ngIf="this.loginUserData.user_type== 'cha'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Completed Invoice Documents</p>
+          </div>
+        </div>
+      </div>
+     -->
+
+
+      </div>
+    </div>
+
+
+    <!-- <hr class="hr_line"> -->
+    <div class="row dashboardrow">
+      <div class="col-md-2 col-sm-6 col-xs-6" *ngFor="let p of loginUserData.display" routerLink="/{{ p.routing }}">
+        <div *ngIf="
+            p.type == 'Admin' &&
+            token != undefined &&
+            token != '' &&
+            loginUserData.user_type != 'Customer' &&
+            loginUserData.user_type != 'Dealer' &&
+            loginUserData.designation != 'Pos cleark'
+          " routerLinkActive="class-name">
+          <span class="glyphicon glyphicon-bell" *ngIf="p.displyname == 'status' && branchstatuscount > 0"
+            class="bell-css">{{ branchstatuscount }}</span>
+        </div>
+        <div *ngIf="
+            p.type == 'Branch Manager' &&
+            token != undefined &&
+            token != '' &&
+            loginUserData.user_type != 'Customer' &&
+            loginUserData.user_type != 'Dealer' &&
+            loginUserData.designation != 'Pos cleark'
+          " routerLinkActive="class-name">
+          <span class="glyphicon glyphicon-bell" *ngIf="p.displyname == 'status' && branchstatuscount > 0"
+            class="bell-css">{{ branchstatuscount }}</span>
+          <span class="glyphicon glyphicon-bell" *ngIf="p.displyname == 'GRN' && branchgrncount > 0" class="bell-css">{{
+            branchgrncount }}</span>
+        </div>
+        <div *ngIf="
+            p.type == 'Warehouse Manager' &&
+            token != undefined &&
+            token != '' &&
+            loginUserData.user_type != 'Customer' &&
+            loginUserData.user_type != 'Dealer' &&
+            loginUserData.designation != 'Pos cleark'
+          "  routerLinkActive="class-name">
+          <span class="glyphicon glyphicon-bell" *ngIf="
+              p.displyname == 'Packing List' && wherehousepackinglistcount > 0
+            " class="bell-css">{{ wherehousepackinglistcount }}</span>
+          <span class="glyphicon glyphicon-bell" *ngIf="p.displyname == 'DC Details' && warehousepackingcount > 0"
+            class="bell-css">{{ warehousepackingcount }}</span>
+          <span class="glyphicon glyphicon-bell" *ngIf="p.displyname == 'PO Approval' && branchstatuscount > 0"
+            class="bell-css">{{ branchstatuscount }}</span>
+          <span class="glyphicon glyphicon-bell" *ngIf="p.displyname == 'Invoice' && accountsinvoicecount > 0"
+            class="bell-css">{{ accountsinvoicecount }}</span>
+          <span class="glyphicon glyphicon-bell" *ngIf="
+              p.displyname == 'DELIVERY CHALLAN' && warehousechallancount > 0
+            " class="bell-css">{{ warehousechallancount }}</span>
+        </div>
+        <div *ngIf="
+            p.type == 'Accounts Manager' &&
+            token != undefined &&
+            token != '' &&
+            loginUserData.user_type != 'Customer' &&
+            loginUserData.user_type != 'Dealer' &&
+            loginUserData.designation != 'Pos cleark'
+          "  routerLinkActive="class-name">
+          <span class="glyphicon glyphicon-bell" *ngIf="p.displyname == 'Invoice' && accountsinvoicecount > 0"
+            class="bell-css">{{ accountsinvoicecount }}</span>
+        </div>
+        <div *ngIf="
+            p.type == 'Shopee Manager' &&
+            token != undefined &&
+            token != '' &&
+            loginUserData.user_type != 'Customer' &&
+            loginUserData.user_type != 'Dealer' &&
+            loginUserData.designation != 'Pos cleark'
+          "  routerLinkActive="class-name">
+          <span class="glyphicon glyphicon-bell" *ngIf="p.displyname == 'GRN' && branchgrncount > 0" class="bell-css">{{
+            branchgrncount }}</span>
+        </div>
+
+        <div *ngIf="
+            (p.type == 'Dealer' || p.type == 'Marketing Manager') &&
+            token != undefined &&
+            token != '' &&
+            loginUserData.user_type != 'Customer' &&
+            loginUserData.designation != 'Pos cleark'
+          "  routerLinkActive="class-name">
+          <span class="glyphicon glyphicon-bell" *ngIf="p.displyname == 'GRN' && branchgrncount > 0" class="bell-css">{{
+            branchgrncount }}</span>
+        </div>
+        <div style="width:100%">
+          <div *ngIf="p.displyname == 'STATUS'"
+            style="position:absolute;z-index:101;margin-left:135px;margin-top:-17px;">
+            <!-- *ngIf="token!=undefined && token!='' && (loginUserData.user_type!='Customer' && loginUserData.user_type!='Dealer' && loginUserData.designation!='Pos cleark' )" -->
+            <li style="list-style:none"  routerLinkActive="class-name">
+              <a mat-button>
+                <!-- <span class="glyphicon glyphicon-bell"></span> -->
+                <!-- <span class="pad_l_5">Cart</span> -->
+                <span class="badge badge-danger ml-2 badgecount" *ngIf="notificationCount > 0">{{ notificationCount
+                  }}</span>
+              </a>
+            </li>
+          </div>
+          <div *ngIf="p.displyname != 'Price List'">
+            <div class="showhim">
+              <img src="{{ p.icon }}"
+                onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'"
+                class="dashbard" />
+              <div class="centered">
+                <p class="p_i_i">{{ p.displyname }}</p>
+              </div>
+            </div>
+            <!-- <div  class="d_i_i">
+           <img src="{{p.icon}}" onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/USERS.png'" /></div>
+        <p class="p_i_i">{{p.displyname}}</p> -->
+          </div>
+          <div *ngIf="p.displyname == 'Price List'" (click)="gotourl()">
+            <div class="showhim">
+              <img src="{{ p.icon }}"
+                onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+            </div>
+            <div class="centered">
+              <p class="p_i_i">{{ p.displyname }}</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-2 col-xs-6">
+      <div class="showhim">
+          <img src=".././assets/default.svg" class="dashbard">
+          <div class="centered">
+            <p>
+              Upcoming Products
+            </p>
+          </div>
+      </div>
+    </div> -->
+
+        <!-- <div class="col-md-2" style="height:120px;" routerLink="/AdminReport">
+      <div style="width:100%">
+        <div class="d_i_i"> <img src="assets/images/dashboard_icons/ic1.png"
+            onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/USERS.png'" /></div>
+        <p class="p_i_i">Reports</p>
+      </div>
+    </div> -->
+
+        <!-- <div class="col-md-2" style="height:120px;" routerLink="/Warehouse Manager-MERGEPODATA" *ngIf="this.loginUserData.role=='Warehouse Manager'">
+      <div style="width:100%">
+        <div class="d_i_i"> <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/PRIVILEGES.png"
+            onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/USERS.png'" /></div>
+        <p class="p_i_i">MERGED PO PACKING LIST</p>
+      </div>
+    </div> -->
+
+        <div class="col-md-2" style="height:120px;" routerLink="/TeleMarketing-POHISTORY"
+          *ngIf="this.loginUserData.role == 'TeleMarketing'">
+          <div style="width:100%">
+            <div class="d_i_i">
+              <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/PRIVILEGES.png"
+                onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+            </div>
+            <p class="p_i_i">PO-HISTORY</p>
+          </div>
+        </div>
+        <div class="col-md-2" style="height:120px;" routerLink="/TeleMarketing-PENDINGDEALERS"
+          *ngIf="this.loginUserData.role == 'TeleMarketing'">
+          <div style="width:100%">
+            <div class="d_i_i">
+              <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/PRIVILEGES.png"
+                onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+            </div>
+            <p class="p_i_i">PENDING DEALERS</p>
+          </div>
+        </div>
+        <div class="col-md-2" style="height:120px;" routerLink="/OnlinePurchase"
+          *ngIf="this.loginUserData.user_type == 'Online'">
+          <div style="width:100%">
+            <div class="d_i_i">
+              <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/PRODUCTMASTER.png"
+                onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+            </div>
+            <p class="p_i_i">ONLINE</p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Pending-Duty-List"
+        *ngIf="loginUserData.role=='Dealer'||loginUserData.designation=='Accounts Manager'||loginUserData.role=='Admin' ||loginUserData.designation=='Marketing Manager' || loginUserData.user_type== 'cha'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Pending Duty List</p>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/customerledger"
+        *ngIf="loginUserData.role=='Dealer'||loginUserData.designation=='Accounts Manager'||loginUserData.role=='Admin' ||loginUserData.designation=='Marketing Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Customer Ledger</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Dealer-New-Arrivals"
+        *ngIf="loginUserData.role=='Dealer' || loginUserData.designation=='Marketing Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">New Arrivals</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Product-Identification"
+        *ngIf="loginUserData.designation=='Admin' || loginUserData.designation=='Marketing Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Product Identification</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Payment-Cancellation"
+        *ngIf="loginUserData.designation=='Accounts Manager'||loginUserData.role=='Admin'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Payment Cancellation</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/cheque-details"
+        *ngIf="loginUserData.designation=='Marketing Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Add Cheque Details</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Dealer-Product-List"
+        *ngIf="loginUserData.designation=='Marketing Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Dealer Product List</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Admin-Product-Sales-Report"
+        *ngIf="loginUserData.designation=='Marketing Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Product Sales Report</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Admin-Sales-Vs-Purchase"
+        *ngIf="loginUserData.designation=='Marketing Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Sales Vs Payments</p>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Dealer-Product-List"
+        *ngIf="loginUserData.designation=='Warehouse Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Dealer Product List</p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Admin-PURCHASE ORDER"
+        *ngIf="this.loginUserData.role=='Admin'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+
+          <div class="centered">
+            <p class="p_i_i">Purchase Order</p>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Admin-Revised-PO" *ngIf="this.loginUserData.role== 'Admin'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Pending PI Approvals</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Admin-GeneratedInvoices"
+        *ngIf="this.loginUserData.role== 'Admin'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Generated Invoice</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Admin-CREATE NEW ARRIVAL"
+        *ngIf="this.loginUserData.role== 'Admin'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">New Arrivals</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Marketing Manager-PENDING PACKING LIST"
+        *ngIf="this.loginUserData.designation== 'Marketing Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Pending Packing List</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Quotation"
+        *ngIf="this.loginUserData.designation== 'Marketing Manager'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Quotation</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Payments-History-List"
+        *ngIf="this.loginUserData.designation== 'Marketing Manager' || this.loginUserData.designation== 'Admin'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Payments History</p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Supplier-PO"
+        *ngIf="this.loginUserData.user_type== 'supplier'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Pending PI List</p>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Supplier-Invoice"
+        *ngIf="this.loginUserData.user_type== 'supplier'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Pending Invoice</p>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Supplier-Invoicelist"
+        *ngIf="this.loginUserData.user_type== 'supplier'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Proforma Invoice</p>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Supplier-Packing-List"
+        *ngIf="this.loginUserData.user_type== 'supplier'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Pending Packing List</p>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Supplier-PO-History"
+        *ngIf="this.loginUserData.user_type== 'supplier'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">PO History</p>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6"  routerLink="/Supplier-Invoices"
+      *ngIf="this.loginUserData.user_type== 'supplier'">
+        <div>
+          <div class="showhim">
+            <img
+              src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'"
+            />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Invoice File upload</p>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Supplier-GeneratedInvoices"
+        *ngIf="this.loginUserData.user_type== 'supplier'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Generated Invoice List & Document Upload</p>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Supplier-Ledger"
+        *ngIf="this.loginUserData.user_type== 'supplier'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Ledger</p>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/Supplier-Product-List"
+        *ngIf="this.loginUserData.user_type== 'supplier'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Supplier-Product-List</p>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- =======================CHA========================= -->
+
+
+      <!-- <div class="col-md-2 col-sm-6 col-xs-6" [routerLink]="['/Invoice-Documents','Pending']"
+        *ngIf="this.loginUserData.user_type== 'cha'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Pending Invoice Documents</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-6 col-xs-6" [routerLink]="['/Invoice-Documents','Completed']"
+        *ngIf="this.loginUserData.user_type== 'cha'">
+        <div>
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Completed Invoice Documents</p>
+          </div>
+        </div>
+      </div> -->
+      <!-- ================================================ -->
+
+      <!-- ==============Transport charges=============================== -->
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/transport-charges"
+        *ngIf="this.loginUserData.user_type == 'Super'|| loginUserData.user_type=='Admin' || loginUserData.designation=='Accounts Manager'">
+        <div style="width:100%">
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Transport Charges</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============RETURN PRODUCTS=============================== -->
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/return-products"
+        *ngIf="this.loginUserData.user_type == 'Super'||loginUserData.user_type=='Admin'">
+        <div style="width:100%">
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Sales Return</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============Notification Status=============================== -->
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/notification-status"
+        *ngIf="this.loginUserData.user_type == 'Super'||loginUserData.user_type=='Admin'">
+        <div style="width:100%">
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Notification Status</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============Outstanding List=============================== -->
+      <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/outstanding-list"
+        *ngIf="this.loginUserData.user_type == 'Super'||loginUserData.user_type=='Admin'">
+        <div style="width:100%">
+          <div class="showhim">
+            <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Outstanding List</p>
+          </div>
+        </div>
+      </div>
+      <!-- =========================================== -->
+
+
+
+
+       <!-- ==============Outstanding List=============================== -->
+       <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/festival-sms"
+       *ngIf="this.loginUserData.user_type == 'Super'||loginUserData.user_type=='Admin'">
+       <div style="width:100%">
+         <div class="showhim">
+           <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+             onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+         </div>
+         <div class="centered">
+           <p class="p_i_i">SMS</p>
+         </div>
+       </div>
+     </div>
+     <!-- =========================================== -->
+
+  <!-- ==============Outstanding List=============================== -->
+  <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/festival-multiple-sms"
+  *ngIf="this.loginUserData.user_type == 'Super'||loginUserData.user_type=='Admin'">
+  <div style="width:100%">
+    <div class="showhim">
+      <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+        onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+    </div>
+    <div class="centered">
+      <p class="p_i_i">Multiple SMS</p>
+    </div>
+  </div>
+</div>
+<!-- =========================================== -->
+
+
+<div class="col-md-2 col-sm-6 col-xs-6" routerLink="/monthly-sms"
+*ngIf="this.loginUserData.user_type == 'Super'||loginUserData.user_type=='Admin'">
+<div style="width:100%">
+  <div class="showhim">
+    <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+      onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+  </div>
+  <div class="centered">
+    <p class="p_i_i">Monthly SMS</p>
+  </div>
+</div>
+</div>
+
+
+  <!-- ==============Outstanding Discount List=============================== -->
+  <!-- <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/outstanding-discount"
+  *ngIf="this.loginUserData.user_type == 'Super'||loginUserData.user_type=='Admin'">
+  <div style="width:100%">
+    <div class="showhim">
+      <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+        onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+    </div>
+    <div class="centered">
+      <p class="p_i_i">Outstanding Discount</p>
+    </div>
+  </div>
+</div> -->
+<!-- =========================================== -->
+
+
+    </div>
+    <div class="col-md-2 col-sm-6 col-xs-6" routerLink="/all-dealerpo-from-one-user"
+      *ngIf="this.loginUserData.user_type == 'Special'">
+      <div style="width:100%">
+        <div class="showhim">
+          <img src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+            onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'" />
+        </div>
+        <div class="centered">
+          <p class="p_i_i">All Dealer Po From one User</p>
+        </div>
+      </div>
+    </div>
+
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+  </div>
+  <!-- default -->
+  <!-- <div class="row dashboardrow">
+      <div class="col-md-2 col-sm-6 col-xs-6">
+        <div>
+          <div class="showhim">
+            <img
+              src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg"
+              onerror="this.src='https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/default_icon.svg'"
+            />
+          </div>
+          <div class="centered">
+            <p class="p_i_i">Dummy</p>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+  <!--   
+    <div class="row dashboardrow">
+     
+  </div> -->
+</div>
+<!-- ==================search modal popup======================== -->
+<div class="modal fade " id="detail" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <div class=" text-center content_msg" style="padding-top:0%">
+              <br>
+              <div class="reg_form marg_b_15 pad_l_20 pad_r_20">
+                <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;text-align:center">
+                  <b>Search Results</b>
+                </p>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th style="text-align: center;">Business name</th>
+                        <th style="text-align: center;">Spo no</th>
+                        <th style="text-align: center;">DC</th>
+                        <th style="text-align: center;">Packing no</th>
+                        <th style="text-align: center;">Invoice no</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let p of searching; let i=index;">
+                        <td>{{p.business_name}}</td>
+                        <td>{{p.spo_no}}</td>
+                        <td>{{p.DC}}</td>
+                        <td>{{p.packing_l_no}}</td>
+                        <td>{{p.refinvno}}</td>
+                        <!-- <td>{{p.refinvno}}</td> -->
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

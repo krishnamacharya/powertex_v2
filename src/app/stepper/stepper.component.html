@@ -1,0 +1,549 @@
+<div class="container pad_t_5per">
+  <div class="reg_form pad_15 mar_b_30">
+    <div >
+      <h4 style="padding-bottom: 10px;">Order Confirmation</h4>
+    </div>
+    <mat-horizontal-stepper linear #stepper>
+      <mat-step label="Address">
+        <div class="row pad_l_r_10 pad_b_3per">
+          <div class="col-md-12">
+
+            <div class="existedAddress" *ngIf="!newAddress">
+              <form>
+                <div class="custom-radios">
+                  <div style="display: flex;">
+
+                    <!-- <mat-list>
+                      <mat-list-item *ngFor="let address of shipingAddress; let i = index"> -->
+                    <div class="checkout_address pad_20">
+                      <mat-grid-list cols="2" rowHeight="20:1">
+                        <mat-grid-tile *ngFor="let address of shipingAddress; let i = index">
+                          <div>
+                            <div class="user_data_addr">
+                              <p>
+                                <span matLine>
+                                  <b class="pad_r_20">{{address.mobile}}</b>
+                                  <b>
+                                    <a href="javascript:void(0)" class="txt_red" (click)="addNewAdd(address,1)" title="Edit">
+                                      <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                  </b>
+                                </span>
+                              </p>
+                              <p matLine>
+                                <span> {{address.Contact_person}}, </span>
+                              </p>
+                              <p matLine>
+                                <span> {{address.address1}}, </span>
+                                <span> {{address.address2}}, </span>
+                              </p>
+                              <p matLine>
+                                <span> {{address.city}}, </span>
+                                <span> {{address.state}}. </span>
+                              </p>
+                            </div>
+                          </div>
+                          <mat-radio-group class="example-radio-group radio_address">
+                            <mat-radio-button name="seqno" value="{{address.default1}}" [checked]="address.default1==1" (change)="setasDefault(address)"></mat-radio-button>
+                          </mat-radio-group>
+                        </mat-grid-tile>
+                      </mat-grid-list>
+                    </div>
+                    <!-- </mat-list-item>
+                    </mat-list> -->
+
+
+                  </div>
+                </div>
+              </form>
+              <hr>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="fl">
+                    <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="addNewAdd('new',2)">
+                      <i class="fa fa-map-marker" aria-hidden="true"></i> Add New Address
+                    </button>
+                  </div>
+                  <div class="row" >
+                    <div class="custom-radios">
+                      <div class="col-md-12 pad_t_30" style="margin-left:329px; margin-top: -63px;">
+          
+                        <mat-radio-group class="example-radio-group" [(ngModel)]="checkoutModal.payment" (change)="getPaymentMode(checkoutModal.payment)">
+          
+                        
+                          <div class="col-md-6 txt_center">
+                            <mat-radio-button name="Online" value="Online" [checked]="true"></mat-radio-button>
+                            <label for="color-2">
+                              <span></span>
+                            </label>
+                            <span class="radio_text">Checkout Online Payment</span>
+                          </div>
+                          <!-- <div class="col-md-6 txt_center">
+                            <mat-radio-button name="COD" value="COD" ></mat-radio-button>
+                            <label  for="color-1">
+                              <span></span>
+                            </label>
+                            <span class="radio_text">CASH ON DELIVERY</span>
+                          </div> -->
+                        </mat-radio-group>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="fr">
+                    <!-- <button type="submit" matStepperNext class="btn btn-primary brdr_radius_50 btn_w bg_green border_green">Continue
+                      <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    </button> -->
+                    
+                    <!-- <div class="row">
+                      <div class="col-md-12 pad_b_20 pad_r_30">
+                        <div class="fr" (click)="gotoPayment()">
+                          <div *ngIf="payuShow">
+                            <form ngNoForm id="payuForm" action="https://secure.payu.in/_payment" method="post" >
+                              <input type="hidden" name="key" id="key" value="{{ payment.key }}" />
+                              <input type="hidden" name="hash" id="hash" value="{{ hash }}" />
+                              <input type="hidden" name="txnid" id="txnid" value="{{ txnid }}" />
+                              <input type="hidden" name="amount" id="amount" value="{{ payment.amount }}" />
+                              <input type="hidden" name="email" id="email" value="{{ payment.email }}" />
+                              <input type="hidden" name="firstname" id="firstname" value="{{ payment.firstname }}" />
+                              <input type="hidden" name="phone" id="phone" value="{{ payment.phone }}" />
+                              <input type="hidden" name="productinfo" id="productinfo" value="{{ payment.productinfo }}" />
+
+                              <input type="hidden" name="surl" id="surl" value="http://192.168.20.197:8000/payu/" /> 
+                              <input type="hidden" name="furl" id="furl" value="http://192.168.20.197:8000/payufail/" />
+
+                              <input type="hidden" name="surl" id="surl" value="https://www.pptshopee.in/payu/" /> 
+                              <input type="hidden" name="furl" id="furl" value="https://www.pptshopee.in/payufail/" />
+
+
+                              <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" style="margin-top:-57px ;">Continue
+                                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                              </button>
+                            </form>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div> -->
+                  <div class="row">
+                    <div *ngIf="payuShow">
+                      <button type="button" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                        routerLink="/Coming-soon">Continue
+                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="newAddress" *ngIf="newAddress">
+              <h4 *ngIf="addressId==2" class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">New Address:</h4>
+              <h4 *ngIf="addressId==1" class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Edit Address:</h4>
+              <form #newAddForm="ngForm">
+                <div class="form-group row">
+                  <div>
+                    <div class="col-sm-3">
+                      <label for="name" >Full Name
+                        <sub class="txt_red f_size_25">*</sub>
+                      </label>
+                      <div >
+                        <input type="text" class="form-control" #name="ngModel" required id="name" name="name" [(ngModel)]="edipShipAddress.Contact_person"
+                          placeholder="Enter Full Name">
+                      </div>
+                      <div [hidden]="name.valid ||  name.untouched" class="validation_msg">
+                        Name is required
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <label for="mobile">Mobile No
+                        <sub class="txt_red f_size_25">*</sub>
+                      </label>
+                      <div>
+                        <input type="text" class="form-control" #mobile="ngModel" required id="mobile" [(ngModel)]="edipShipAddress.mobile" name="mobile"
+                          placeholder="Enter Mobile Number">
+                      </div>
+                      <div [hidden]="mobile.valid ||  mobile.untouched" class="validation_msg">
+                        Mobile is required
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <label for="hno">Address 1
+                        <sub class="txt_red f_size_25">*</sub>
+                      </label>
+                      <div>
+                        <input type="text" class="form-control" #address1="ngModel" required [(ngModel)]="edipShipAddress.address1" id="address1"
+                          name="address1" placeholder="Enter House Number">
+                      </div>
+                      <div [hidden]="address1.valid ||  address1.untouched" class="validation_msg">
+                        Address is required
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <label for="street">Address 2
+                        <sub class="txt_red f_size_25">*</sub>
+                      </label>
+                      <div>
+                        <input type="text" required class="form-control" #address2="ngModel" [(ngModel)]="edipShipAddress.address2" id="address2"
+                          name="address2" placeholder="Enter Street Name">
+                      </div>
+                      <div [hidden]="address2.valid ||  address2.untouched" class="validation_msg">
+                        Address is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <div>
+
+                    <div class="col-sm-3">
+                      <label for="country">Country
+                        <sub class="txt_red f_size_25">*</sub>
+                      </label>
+                      <div>
+                        <select class='select-option form-control' required [(ngModel)]="edipShipAddress.country" name="country" #country="ngModel"
+                          (change)="onSelectCountry(edipShipAddress.country)">
+                          <option [ngValue]="undefined" disabled selected>--Select--</option>
+                          <option class='option' *ngFor="let countries of countriesList| async" [ngValue]="countries.country">{{countries.country}}</option>
+                        </select>
+                        <div [hidden]="country.valid ||  country.untouched" class="validation_msg">
+                          Country is required
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <label for="shopAddress">State
+                        <sub class="txt_red f_size_25">*</sub>
+                      </label>
+                      <div>
+                        <select class='select-option form-control' [(ngModel)]="edipShipAddress.state" required name="state" #state="ngModel" (change)="onSelectState(edipShipAddress.state)">
+                          <option [ngValue]="undefined" disabled selected>--select--</option>
+                          <option class='option' *ngFor="let states of response1" [ngValue]="states.state">{{states.state}}</option>
+                        </select>
+                        <div [hidden]="state.valid ||  state.untouched" class="validation_msg">
+                          State is required
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <label for="city">District
+                        <sub class="txt_red f_size_25">*</sub>
+                      </label>
+                      <div>
+                        <select class='select-option form-control' [(ngModel)]="edipShipAddress.district" required name="district" #district="ngModel"
+                          (change)="onSelectDistrict(edipShipAddress.district)">
+                          <option [ngValue]="undefined" disabled selected>--select--</option>
+                          <option class='option' *ngFor="let districts of response2" [ngValue]="districts.district">{{districts.district}}</option>
+                        </select>
+                        <div [hidden]="district.valid ||  district.untouched" class="validation_msg">
+                          District is required
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <label for="shopAddress">City/Region
+                        <sub class="txt_red f_size_25">*</sub>
+                      </label>
+                      <div>
+                        <select class='select-option form-control' [(ngModel)]="edipShipAddress.city" required name="city" #city="ngModel">
+                          <option [ngValue]="undefined" disabled selected>--select--</option>
+                          <option class='option' *ngFor="let cities of response3" [ngValue]="cities.city">{{cities.city}}</option>
+                        </select>
+                        <div [hidden]="city.valid ||  city.untouched" class="validation_msg">
+                          City is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+              <hr>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="fl" >
+                    <button type="submit" [disabled]="shipingAddress.length==0" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="cancelNewAdd()">
+                      <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Cancel
+                    </button>
+                  </div>
+                  <div class="fr">
+                    <button type="submit" [disabled]="newAddForm.invalid" (click)="saveAddress()" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green">Save
+                      <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- <mat-step label="Order Summary" *ngIf="routeParams==1">
+        <div class="row border_styles" *ngFor="let item of carItems">
+          <div class="col-md-12">
+            <div class="col-md-8">
+              <div class="col-md-2">
+                <img [src]="item.url" class="product_image">
+              </div>
+              <div class="col-md-8 pad_l_40">
+                <div class="mar_b_10 prod_name">{{item.subcategory}} {{ item.modelno}}</div>
+                <div class="mar_b_10">
+                  <span class="f_size_18">&#8377;&nbsp;</span>
+                  <span class="actual_price">{{item.enduserprice}}</span>&nbsp;
+                  <span class="end_user_price">&#8377;&nbsp;{{item.mrp}}</span> &nbsp;
+                  <span class="offer_price">{{item.discount_a}}% off</span>
+                </div>
+                <div class="mar_b_10">
+                  <span class="remove_btn" (click)="remove(item.productid)">REMOVE</span>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="qty-changer">
+                  <button class="qty-change" (click)="increment(item)">+</button>
+                  <input type="number" class="qty-input form-group qty-align f_wt_700 bg_f5f5f5"  [value]="item.qty"  [(ngModel)]="item.qty"
+                  disabled/>
+                  <button class="qty-change" (click)="decrement(item)">-</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mar_b_10">
+                <span class="txt_gray f_wt_600">Price(
+                  <span>{{item.qty}}</span> items):</span>
+                <span class="fr f_size_13 txt_black">{{(item.enduserprice)*(item.qty)}}</span>
+              </div>
+              <div class="mar_b_10">
+                <span class="txt_gray f_wt_600">Tax (%):</span>
+                <span class="fr f_size_13 txt_black">{{item.gst}}</span>
+              </div>
+              <div>
+                <span class="txt_gray f_wt_600">Delivery Charges:</span>
+                <span class="fr f_size_13 txt_black">Free</span>
+              </div>
+              <hr>
+              <div class="mar_b_10">
+                <span class="txt_gray f_wt_600">Amount Payable:</span>
+                <span class="fr f_size_13 txt_black">{{(item.aftergst)}}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row pad_15">
+          <div class="fl pad_t_15 pad_l_15">
+            <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="remove('All')">Remove All
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="fr pad_t_15 pad_r_15">
+            <span class="grand_total">GRAND TOTAL : </span>
+            <span class="grand_price">{{grandtotal| currency:'INR'}}</span>
+            <button type="submit" matStepperNext class="btn btn-primary brdr_radius_50 btn_w bg_green border_green mar_l_100">Continue
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </mat-step> -->
+
+      <mat-step label="Order Summary" *ngIf="routeParams!=1">
+        <div class="row border_styles">
+          <div class="col-md-12">
+            <div class="col-md-8">
+              <div class="col-md-2">
+                <img [src]="buynowItem.low_image_1" class="product_image">
+              </div>
+              <div class="col-md-8 pad_l_40">
+                <div class="mar_b_10 prod_name">{{buynowItem.subcategory }} {{ buynowItem.modelno}}</div>
+                <div class="mar_b_10">
+                  <span class="f_size_18">&#8377;&nbsp;</span>
+                  <span class="actual_price">{{buynowItem.net_price}}</span>&nbsp;
+                  <span class="end_user_price">&#8377;&nbsp;{{buynowItem.mrp}}</span> &nbsp;
+                  <span class="offer_price">{{buynowItem.discount}}% off</span>
+                </div>
+                <div class="mar_b_10">
+                  <span class="remove_btn" (click)="removebuyNowItem()">REMOVE</span>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="qty-changer">
+                  <button class="qty-change" (click)="incrementbuyNowItem(buynowItem)">+</button>
+                  <input class="qty-input form-group qty-align f_wt_700 bg_f5f5f5" type="number" [value]="buynowItem.qty"  min="1"  oninput="validity.valid||(value='');" [(ngModel)]="buynowItem.qty"
+                  />
+                  <button class="qty-change" (click)="decrementbuyNowItem(buynowItem)">-</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mar_b_10">
+                <span class="txt_gray f_wt_600">Price(
+                  <span>{{buynowItem.qty}}</span> items):</span>
+                <span class="fr f_size_13 txt_black">{{(buynowItem.net_price)*(buynowItem.qty)}}</span>
+              </div>
+              <div class="mar_b_10">
+                <span class="txt_gray f_wt_600">Tax (%):</span>
+                <span class="fr f_size_13 txt_black">{{buynowItem.gst}}</span>
+              </div>
+              <div>
+                <span class="txt_gray f_wt_600">Delivery Charges:</span>
+                <span class="fr f_size_13 txt_black">Free</span>
+              </div>
+              <hr>
+              <div class="mar_b_10">
+                <span class="txt_gray f_wt_600">Amount Payable:</span>
+                <span class="fr f_size_13 txt_black">{{(buynowItem.net_price)*(buynowItem.qty)*1.18}}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row pad_15">
+          <div class="fl pad_t_15 pad_l_15">
+            <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="removebuyNowItem()">Remove All
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="fr pad_t_15 pad_r_15">
+           
+            <button type="submit" matStepperNext class="btn btn-primary brdr_radius_50 btn_w bg_green border_green mar_l_100">Continue
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </mat-step>
+
+
+      <!-- <mat-step label="Payment">
+        <div class="row">
+          <div class="custom-radios">
+            <div class="col-md-12 pad_t_30">
+
+              <mat-radio-group class="example-radio-group" [(ngModel)]="checkoutModal.payment" (change)="getPaymentMode(checkoutModal.payment)">
+
+              
+                <div class="col-md-6 txt_center">
+                  <mat-radio-button name="Online" value="Online" ></mat-radio-button>
+                  <label for="color-2">
+                    <span></span>
+                  </label>
+                  <span class="radio_text">Check for Online Payment</span>
+                </div>
+                <div class="col-md-6 txt_center">
+                  <mat-radio-button name="COD" value="COD" ></mat-radio-button>
+                  <label  for="color-1">
+                    <span></span>
+                  </label>
+                  <span class="radio_text">CASH ON DELIVERY</span>
+                </div>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+
+
+        <hr>
+        <div class="row">
+          <div class="col-md-12 pad_b_20 pad_r_30">
+            <div class="fr" (click)="gotoPayment()">
+              <div *ngIf="payuShow">
+                <form ngNoForm action="https://secure.payu.in/_payment" method="post">
+                  <input type="hidden" name="key" value="{{ payment.key }}" />
+                  <input type="hidden" name="hash" value="{{ hash }}" />
+                  <input type="hidden" name="txnid" value="{{ txnid }}" />
+                  <input type="hidden" name="amount" value="{{ payment.amount }}" />
+                  <input type="hidden" name="email" value="{{ payment.email }}" />
+                  <input type="hidden" name="firstname" value="{{ payment.firstname }}" />
+                  <input type="hidden" name="phone" value="{{ payment.phone }}" />
+                  <input type="hidden" name="productinfo" value="{{ payment.productinfo }}" />
+                  <input type="hidden" name="surl" value="http://www.pptshopee.in/#/checkout/3" />
+                  <input type="hidden" name="furl" value="http://www.pptshopee.in/#/viewcart" />
+                  <input type="hidden" name="curl" value="http://www.pptshopee.in/#/viewcart" />
+                  <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green">Continue
+                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                  </button>
+                </form>
+              </div>
+
+              <button *ngIf="checkoutModal.payment=='COD'" type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green">Submit
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-step> -->
+
+    </mat-horizontal-stepper>
+
+  </div>
+</div>
+
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+
+<!-- success small alert -->
+<div class="smallSuccess_alert" *ngIf="alert" style="margin-left: 40%;">
+  <strong>
+    <i class="fa fa-check add_icon"></i> {{wish_alert}} </strong>
+</div>
+
+<!-- modal pop up start here -->
+<!-- <div class="modal fade" id="cartstepperModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{message}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- modal pop up start here -->
+<div class="modal fade" id="orderIdModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Your Order is Placed Successfully</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" (click)="closeModal()">Close</button>
+        <button type="button" class="btn btn-success fr" (click)="closeModal()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

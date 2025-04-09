@@ -1,0 +1,159 @@
+<div class="container pad_t_5per pad_b_5per" id="outstandWraper">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Transport Master</span>
+  </p>
+
+
+  <div class="row pad_15">
+    <section>
+      <div class="row">
+        <div class="col-sm-12">
+
+          <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Create New Transport Details
+            <!-- <span class="a_b_2"
+                  (click)="availtransport()">
+                  <button class="a_b_1 btn btn-primary pull-right"><i class="fa fa-long-arrow-left"></i>&nbsp;Available Transport Details</button>
+                </span> -->
+          </h4>
+          <div class="row pad_15" style="margin:15px;">
+
+            <form (ngSubmit)="onSubmit(masterDataForm)" #masterDataForm="ngForm">
+              <div class="form-group row">
+                <div>
+
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="transport_name" >Transport Name
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="transport_name" name="transport_name"
+                        [(ngModel)]="masterData.transport_name" #transport_name="ngModel" required
+                        placeholder="Enter Transport Name">
+                      <div [hidden]="transport_name.valid || transport_name.untouched" class="validation_msg">
+                        Transport Name is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="mobileno" >Mobile
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="mobileno" maxlength="10" name="mobileno"
+                        [(ngModel)]="masterData.mobileno" (keypress)="keypress($event)" #mobileno="ngModel"
+                        placeholder="Enter Mobileno" required>
+                      <div [hidden]="mobileno.valid ||  mobileno.untouched" class="validation_msg">
+                        Mobileno is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="addres" >Address
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <textarea type="text" class="form-control" id="addres" rows="3" name="addres"
+                        [(ngModel)]="masterData.addres" #addres="ngModel" required maxlength="1000"
+                        placeholder="Enter Transport Address..."></textarea>
+                      <div [hidden]="addres.valid || addres.untouched" class="validation_msg">
+                        Transport Address is required
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div>
+                <div class="form-group row pad_t_b_10">
+                  <div class="col-sm-12">
+
+                    <div class="pull-left">
+                      <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                        [disabled]="masterDataForm.invalid">Submit
+                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!--display details-->
+          <div class="table-responsive tabres" style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc" >
+           
+            <h4 class="f_wt_600 txt_black pad_t_b_10 ">List of Transport Details:</h4>
+            <div *ngIf="transportdetails?.length>0">
+            <div class="table-responsive" >
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Transport Name</th>
+                    <th>Mobile No</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let f of transportdetails | paginate: { itemsPerPage: 10, currentPage: Page}; let i=index; ">
+                    <td>{{10*(Page-1)+(i+1)}}</td>
+                    <td>{{f.transport_name}}</td>
+                    <td>{{f.mobileno}}</td>
+                    <td>{{f.addres}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+          </div>
+          
+          <div class="col-md-12" *ngIf="transportdetails?.length==0">
+            <div class="no_data">
+              <img class="no_data_cnter" src="../assets/emptyicon.png" />
+              <span class="nodata_txt">No Data is Available</span>
+            </div>
+          </div>
+</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Transport Details Inserted Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

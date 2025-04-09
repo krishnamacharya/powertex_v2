@@ -1,0 +1,430 @@
+<div class="container-fluid pad_t_5per pad_b_5per">
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <table>
+    <div class="container">
+      <p class="bread-crumb1 float-left">
+        <span class="float-left">
+          <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span>Order Planning</span>
+      </p>
+    </div>
+  </table>
+  <div class="purchasewrap">
+    <form #purchaseorderForm="ngForm">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12">
+          <h4 class="f_size_13 f_wt_600  mt_0 bussinesInfo">Order Planning</h4>
+        </div>
+      </div>
+      <div class="reg_form">
+        <br>
+        <div class="supplierwrap">
+          <div class="row">
+            <div>
+              <div>
+                <div class="col-sm-3">
+                  <label for="supplier1" class="control-label mt_zerosix text-right">Select Supplier<sup>*</sup></label>
+                  <input autocomplete="off" type="text" class='select-option form-control' required name="supplier"
+                      [(ngModel)]="pro.suppliername" #supplier="ngModel" id="supplier1"
+                      (change)="getsupplierproducts(pro.suppliername)"  list="suppliers"
+                      placeholder="Select Supplier">
+                    <datalist id="suppliers">
+                      <option [ngValue]="undefined" disabled selected>Select Supplier</option>
+                      <option class='option' *ngFor="let s of suppliers" [ngValue]="s">{{s.business_name}}</option>
+                    </datalist>
+                </div>
+                <!--  -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="category" class="control-label mt_zerosix text-right">Select Category</label>
+                    <select class='form-control' [(ngModel)]="pro.category" required name="Category"
+                      #Categorys="ngModel" (change)="getsubcategoryData(pro.category)">
+                      <option [ngValue]="undefined" selected disabled>Select Category</option>
+                      <option class="option" *ngFor="let resources of resources">
+                        {{resources.category}}
+                      </option>
+
+                    </select>
+                  </div>
+                </div>
+                <!-- ========================================Sub Category========================================= -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="subcategory" class="control-label mt_zerosix text-right">Select Sub Category</label>
+                    <select class='form-control' [(ngModel)]="subcategory" required name="subcategorys" #subcategorys="ngModel">
+                      <option [ngValue]="undefined" selected disabled>Sub Category</option>
+                      <option class="option" *ngFor="let resources1 of resources1">
+                        {{resources1.subcategory}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <button type="button" class="input_btn btnn" (click)="getdata()">Get
+                    Data</button>
+                </div>
+                <!--  -->
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="fr"  *ngIf="productdata1.length>0">
+              <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" (keyup)="searchdata(searchText)"  placeholder="Search Product"
+                class="search_style">
+              <button type="submit" (click)="searchdata(searchText)" class="input_btn">Search</button>
+            </div>
+          </div>
+      <div *ngIf="productdata1">
+        <div class="row" *ngIf="productdata1.length>0"> 
+          <div class="table-responsive mt_3" *ngIf="(productdata | filter :searchText) as productdata">
+            <table class="table table-bordered table-condensed">
+              <thead>
+                <th *ngIf="supname==true" class="text-left cellwidth14">Supplier</th> 
+                <th class="text-left cellwidth14">Product</th>
+                <th class="text-left cellwidth14">Sub Category</th>
+                <th class="text-left cellwidth8">Brand</th>
+                <th class="text-right cellwidth12">SKU</th>
+                <th class="text-right cellwidth9">P/C</th>
+                <th class="text-right cellwidth9">Avl Qty</th>
+                <th class="text-right cellwidth9">Last&nbsp;2 Months&nbsp;Sale</th>
+                <th class="text-right cellwidth9">Pi Qty</th>
+                <th class="text-right cellwidth9">Transit Qty</th>
+                <th class="text-right cellwidth9">Total Stock</th>
+                <th class="text-right cellwidth9">Qty</th>
+                <th class="text-center cellwidth12">Options</th>
+              </thead>
+              <tbody>
+                <!-- <tr *ngFor="let product of productdata | paginate: { itemsPerPage: 10, currentPage: p };let i=index"> --> 
+                  <tr *ngFor="let product of productdata;let i=index">
+                  <td *ngIf="supname==true"><input type="text" class="form-control" readonly [(ngModel)]="product.business_name"
+                    #business_name="ngModel" [ngModelOptions]="{standalone: true}" title="{{product.business_name}}"/></td> 
+                  <td>
+
+                    <input type="text" class="form-control" [(ngModel)]="product.product_name"
+                      #product_name="ngModel" [ngModelOptions]="{standalone: true}" />
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="product.name1"
+                      #name1="ngModel" [ngModelOptions]="{standalone: true}" />
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" [(ngModel)]="product.brand" disabled
+                      #brand="ngModel" [ngModelOptions]="{standalone: true}" />
+                  </td>
+                  <td>
+                    <input type="text" class="form-control text-right" [(ngModel)]="product.sku_no"
+                      [ngModelOptions]="{standalone: true}" #sku_no="ngModel" />
+                  </td>
+                  <td>
+                    <input type="text" class="form-control text-right" [(ngModel)]="product.piecepercarton"
+                      [ngModelOptions]="{standalone: true}" #avl_balance="ngModel" />
+                  </td>
+                  <td><input type="text" class="form-control text-right" readonly [(ngModel)]="product.avl_balance"
+                      [ngModelOptions]="{standalone: true}" #avl_balance="ngModel" /></td>
+                  <td><input type="text" class="form-control text-right" readonly [(ngModel)]="product.twomonthssale"
+                      [ngModelOptions]="{standalone: true}" #twomonthssale="ngModel" /></td>
+                  <td><input type="text" class="form-control text-right bgc" readonly (click)="piclick(product)" [(ngModel)]="product.zpoqty"
+                      [ngModelOptions]="{standalone: true}" #zpoqty="ngModel" title="view details"/></td>
+                  <td><input type="text" class="form-control text-right bgc" readonly (click)="transitclick(product)" [(ngModel)]="product.zTransitQty"
+                      [ngModelOptions]="{standalone: true}" #zTransitQty="ngModel" title="view details"/></td>
+                  <td><input type="text" class="form-control text-right" readonly [(ngModel)]="product.TotalStock"
+                      [ngModelOptions]="{standalone: true}" #TotalStock="ngModel" /></td>
+                  <td><input type="text" class="form-control text-right" [(ngModel)]="product.qty"
+                    (blur)="addd(product)" [ngModelOptions]="{standalone: true}" #qty="ngModel" /></td>
+                  <td class="text-center">        
+                    <button type="button" class="btn btn-sm bg_green" (click)="update(product)">Update</button>&nbsp;
+                    <button type="button" class="btn btn-sm" (click)="delete(product)" title="delete">
+                      <i class="fa fa-trash" style="font-size: 18px;color: #20978c;"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- <pagination-controls (pageChange)="p = $event" *ngIf="productdata.length>0"></pagination-controls> -->
+          </div>
+          <div *ngIf="productdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Details Updated Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Deleted Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="viewpiModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center">Product Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Bussiness Name</th>
+                <!-- <th>Product Name</th> -->
+                <th>Pi Number</th>
+                <th>Pi Date</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let view_d of pidata;let i=index">
+                <td>
+                  <span class="table_pd_name">{{i + 1}}</span>
+                </td>
+
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key">{{view_d.business_name}}</span>
+                  </div>
+                </td>
+                <!-- <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.long_name}}</span>
+                  </div>
+                </td> -->
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.Pi_no}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.pidate | date:'dd-MM-yyyy'}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.Poqty}}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.price | number : '1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.amount | number : '1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4" class="f_wt_600 view_key text-right blue_clr"><b>Total(Qty):</b></td>
+                <td class="f_wt_600 view_key"><b>{{this.totalqty}}</b></td>
+                <td class="f_wt_600 view_key text-right blue_clr">Total&nbsp;(USD):</td>
+                <td *ngIf="this.totPiUsdAmt" class="f_wt_600 view_key text-right"><b>{{this.totPiUsdAmt | number : '1.2-2'}}</b></td>
+                <td *ngIf="!this.totPiUsdAmt" class="f_wt_600 view_key text-right"><b>--</b></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td colspan="6" class="f_wt_600 view_key text-right blue_clr">Total&nbsp;(CNY):</td>
+                <td *ngIf="this.totPiCnyAmt" class="f_wt_600 view_key text-right"><b>{{this.totPiCnyAmt | number : '1.2-2'}}</b></td>
+                <td *ngIf="!this.totPiCnyAmt" class="f_wt_600 view_key text-right"><b>--</b></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="viewtransModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center">Product Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Bussiness Name</th>
+                <!-- <th>Product Name</th> -->
+                <th>Invoice No</th>
+                <th>Invoice Date</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let view_d of transdata;let i=index">
+                <td>
+                  <span class="table_pd_name">{{i + 1}}</span>
+                </td>
+
+                <td>
+                  <div style="margin:0px;text-align:left">
+                    <span class="f_wt_600 view_key">{{view_d.business_name}}</span>
+                  </div>
+                </td>
+                <!-- <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.long_name}}</span>
+                  </div>
+                </td> -->
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.inv_no}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.Invdate | date:'dd-MM-yyyy'}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.qty}}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.Price | number : '1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.amount | number : '1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4" class="f_wt_600 view_key text-right blue_clr"><b>Total(Qty):</b></td>
+                <td class="f_wt_600 view_key"><b>{{this.totaltqty}}</b></td>
+                <td class="f_wt_600 view_key text-right blue_clr">Total&nbsp;(USD):</td>
+                <td *ngIf="this.totTrUsdAmt" class="f_wt_600 view_key text-right"><b>{{this.totTrUsdAmt | number : '1.2-2'}}</b></td>
+                <td *ngIf="!this.totTrUsdAmt" class="f_wt_600 view_key text-right"><b>--</b></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td colspan="6" class="f_wt_600 view_key text-right blue_clr">Total&nbsp;(CNY):</td>
+                <td *ngIf="this.totTrCnyAmt" class="f_wt_600 view_key text-right"><b>{{this.totTrCnyAmt | number : '1.2-2'}}</b></td>
+                <td *ngIf="!this.totTrCnyAmt" class="f_wt_600 view_key text-right"><b>--</b></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="WarningModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>No Data is Available..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button"  class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

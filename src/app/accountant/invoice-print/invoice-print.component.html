@@ -1,0 +1,453 @@
+<div class="container pad_t_5per">
+  <p class="bread-crumb1" *ngIf="PUrl != 'W=TRP'">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" class="color8787">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span *ngIf="!invoiceaddress"><a href="javascript.void(0)" routerLink="/Accounts Manager-INVOICE" class="color8787">Invoice</a></span>
+    <span *ngIf="invoiceaddress && !invoiceData.frompendingamountpage"><a href="javascript.void(0)"
+        routerLink="/Admin-REPORTS"class="color8787">Reports</a></span>
+    <span *ngIf="invoiceData.frompendingamountpage"><a href="javascript.void(0)" routerLink="/Dealer-PAYMENT HISTORY">Payment History</a></span>
+    <span>&nbsp;>&nbsp;</span> <span>Invoice-Print</span>
+  </p>
+  <p class="bread-crumb1" *ngIf="PUrl == 'W=TRP'">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" class="color8787">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span><a href="javascript.void(0)" routerLink="/Warehouse Manager-TRANSPORT DETAILS" class="color8787">Transport</a></span>
+    <span>&nbsp;>&nbsp;</span> <span>Invoice-Print</span>
+  </p>
+
+  <div class="total_invoice_page" style="margin-bottom: 20px;" id="printSectionId">
+    <div class="printwrap">
+      <div class="invoce_address">
+        <div class="table-responsive" style="margin-top: 10px;margin-bottom: 0px;">
+          <table class="table table-bordered table-striped pending_order printTable">
+            <thead>
+              <tr>
+                <th colspan="8">
+                  <div class="row" style="margin: 0 !important;">
+                    <div class="col-xs-12">
+                      <h2 *ngIf="!invoiceaddress" class="invaddress">
+                        {{loginUserData.company_address.online_display_name}}
+                      </h2>
+                      <h2 *ngIf="invoiceaddress"  class="invaddress">
+                        {{invoiceaddress.business_name}}
+                      </h2>
+
+                    </div>
+                  </div>
+
+                </th>
+              </tr>
+              <tr>
+                <th colspan="8">
+                  <div class="hr_line marg_t_b_15" style="margin-bottom: 0 !important;margin-top:0px;">
+                    <div class="row" style="margin: 0 !important;">
+                      <div class="col-xs-12">
+                        <div class="company_address">
+                          <h5 class="estimation"><b>ESTIMATION</b></h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" style="margin: 0 !important;">
+                    <div class="col-md-6 company_address shippingaddr">
+                      <div class="txt_l fnt_size_12" *ngIf="shipingAddress.business_name && !invoiceaddress">
+                        <h5>
+                          <b>M/s
+                            {{shipingAddress.business_name}}</b>,&nbsp;{{shipingAddress.city}}</h5>
+                      </div>
+                      <div class="txt_l fnt_size_12" *ngIf="invoiceaddress">
+                        <h5>
+                          <b>M/s
+                            {{invoiceData.data.json_hdr.bill_to_party.business_name |titlecase}}</b>
+                          ,&nbsp;{{invoiceData.data.json_hdr.bill_to_party.city}}</h5>
+                      </div>
+                      <div class="txt_l fnt_size_12">
+                        <span style="font-size: 11px;line-height: 1;">Packing No :</span>
+                        <span style="font-size: 11px;line-height: 1;"> {{invoiceData.data.json_hdr.packing_l_no}}</span>
+                      </div>
+                    </div>
+                    <div class="col-md-6 company_address refinvnodiv">
+                      <div class="txt_l fnt_size_12" style="line-height: 1;">
+                        <span style="font-size: 11px;line-height: 1;"> No &nbsp;&nbsp; </span>
+                        <span style="font-size: 11px;line-height: 1;"> : {{invoiceData.data.json_hdr.refinvno}}</span>
+                      </div>
+                      <div class="txt_l fnt_size_12" style="line-height: 1;">
+                        <span style="font-size: 11px;line-height: 1;"> Date </span>
+                        <span style="font-size: 11px;line-height: 1;"> :
+                          {{invoiceData.data.json_hdr.inv_date | date:'dd/MM/yyyy' }} <br></span>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </th>
+              </tr>
+              <tr class="thbg">
+                <th class="txt_centr" style="font-size: 10px;text-align: center;width: 2%;">Sr.</th>
+                <th class="txt_left" style="font-size: 10px;width:30%;word-break: break-all;">Product Name</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;">MRP(&#8377;)</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;width: 6%;">GST(%)</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;width: 6%;">Disc(%)</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;width:5%;">T.Qty</th>
+
+                <th class="txt_right" style="font-size: 10px;text-align: right;">Rate(&#8377;)</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;">Total(&#8377;)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of invoiceData.data.json_dtl; let i=index">
+                <td class="txt_centr" style="font-size: 10px;text-align: center;">{{i+1}}</td>
+                <td class="txt_left" style="font-size: 9px;">{{item.subcategory}} &nbsp;{{item.modelno}}
+                </td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.mrp| currency : '&nbsp;'}}</td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.gst}}</td>
+                <td class="txt_right" *ngIf="item.offer_type!=='Clearance'" style="font-size: 10px;text-align: right;">
+                  {{item.discount_eff}}</td>
+                <td class="txt_right" *ngIf="item.offer_type=='Clearance'">-</td>
+                <!-- <td class="txt_right" style="text-align: right;font-size: 10px;">{{item.piecepercarton}}
+                                  </td> -->
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.inv_qty}}</td>
+                <td class="txt_right" style="font-size: 10px;text-align: right;">
+                  {{item.net_price | currency : '&nbsp;'}}
+                </td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.tot_value | currency : '&nbsp;'}}</td>
+              </tr>
+
+              <tr>
+                <td colspan="6" class="no-line" style="font-size: 9px;  vertical-align: middle !important;">
+                  <b *ngIf="totalsp_discountamount!=0">Special Discount : ₹ {{totalsp_discountamount}}</b>
+                </td>
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>TAXABLE</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">₹
+                    {{this.invheader?.line_amount.toLocaleString('en-IN')}}.{{decimalamount}}</span>
+                </td>
+              </tr>
+              <tr>
+
+                <td colspan="6" class="no-line" style="font-size: 9px;  vertical-align: middle !important;">
+                  <b *ngIf="freeqtyarr.length>0">Free Qty : </b>
+                  <b *ngFor="let f of freeqtyarr">
+                    <b>{{f.productname}} = {{f.free_qty}} </b>
+                  </b>
+                </td>
+
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>DISCOUNT</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">₹
+                    {{this.invheader?.devicediscamount | currency :'&nbsp;'}}</span>
+                </td>
+
+              </tr>
+              <tr *ngIf="invheader.promo_amount">
+                <td colspan="6" class="no-line"> </td>
+                <td class="no-line txt_right"
+                  style=" vertical-align: middle !important;font-size: 9px;text-align: right;">
+                  <strong>PROMO DISCOUNT</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">₹ {{invheader.promo_amount | currency :'&nbsp;'}}</span>
+                </td>
+
+              </tr>
+
+              <tr *ngIf="invoiceaddress && invoiceaddress.statecode == this.invheader?.bill_to_party.statecode">
+
+                <td colspan="6" class="no-line">
+
+                </td>
+
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>CGST</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span style="color:#000;">₹
+                    {{invheader?.gst_amount.toLocaleString('en-IN')}}.{{decimalgstamount}}</span></td>
+
+              </tr>
+
+
+              <tr *ngIf="!invoiceaddress && loginUserData.company_address.state_code==shipingAddress.state_code">
+
+                <td colspan="6" class="no-line">
+
+                </td>
+
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>CGST</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span style="color:#000;">₹
+                    {{invheader?.gst_amount.toLocaleString('en-IN')}}.{{decimalgstamount}}</span></td>
+
+              </tr>
+
+              <tr *ngIf="invoiceaddress && invoiceaddress.statecode == this.invheader?.bill_to_party.statecode ">
+                <td colspan="6" class="no-line">
+
+                </td>
+                <td class="no-line txt_right"
+                  style="font-size:9px;text-align: right; vertical-align: middle !important;">
+                  <strong>SGST</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span style="color:#000;">₹
+                    {{invheader?.gst_amount.toLocaleString('en-IN')}}.{{decimalgstamount}}</span></td>
+
+              </tr>
+              <tr *ngIf="!invoiceaddress && loginUserData.company_address.state_code==shipingAddress.state_code ">
+                <td colspan="6" class="no-line">
+
+                </td>
+                <td class="no-line txt_right"
+                  style="font-size:9px;text-align: right; vertical-align: middle !important;">
+                  <strong>SGST</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span style="color:#000;">₹
+                    {{invheader?.gst_amount.toLocaleString('en-IN')}}.{{decimalgstamount}}</span></td>
+
+              </tr>
+              <!-- loginUserData.company_address.state.toLowerCase() !== shipingAddress.state.toLowerCase() -->
+              <tr *ngIf="invoiceaddress && invoiceaddress.statecode != this.invheader?.bill_to_party.statecode">
+                <td colspan="6" class="no-line">
+                </td>
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>IGST</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span style="color:#000;">₹
+                    {{invheader?.gst_amount.toLocaleString('en-IN')}}.{{decimalgstamount}}</span></td>
+
+              </tr>
+              <tr *ngIf="!invoiceaddress && loginUserData.company_address.state_code != shipingAddress.state_code ">
+                <td colspan="6" class="no-line">
+                </td>
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>IGST</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span style="color:#000;">₹
+                    {{invheader?.gst_amount.toLocaleString('en-IN')}}.{{decimalgstamount}}</span></td>
+
+              </tr>
+
+              <tr>
+                <td colspan="6" class="no-line">
+
+                </td>
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>ROUND OFF</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">₹
+                    {{(roundoffAmt.toLocaleString('en-IN')) | currency:'&nbsp;'}}</span>
+                </td>
+              </tr>
+              <tr *ngIf="this.invheader.tcs_percent">
+                <td colspan="6" class="no-line">
+
+                </td>
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>TCS(%)</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">
+                    {{this.invheader.tcs_percent}}</span>
+                </td>
+              </tr>
+              <tr *ngIf="this.invheader.tcs">
+                <td colspan="6" class="no-line">
+
+                </td>
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>TCS Amount</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;"><span
+                    style="color:#000;text-align: right;">₹
+                    {{this.invheader.tcs}}</span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6" class="no-line" style="font-size: 9px;  vertical-align: middle !important;">
+                  <b>Total Cartons -</b> {{this.invheader?.totalcartoons | currency:'&nbsp;'}},
+                  <b>Total Pieces -</b> {{this.invheader?.totalqty}}
+                  <!-- <span>   <b>Bank Details: {{bankdetails.bank_name}},&nbsp;A/C :
+                                          {{bankdetails.acc_no}},&nbsp;IFSC
+                                          CODE:{{bankdetails.ifsc}}&nbsp;({{bankdetails.branch}})</b></span> -->
+                </td>
+
+                <td class="no-line txt_right"
+                  style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                  <strong>NET AMOUNT</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;font-size: 10px;font-weight: 500;"><span
+                    style="color:#000;">₹ {{this.invheader?.final_amount | number:'1.2-2'}}</span>
+                </td>
+
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <!-- GST table -->
+        <div class="row">
+          <div class="col-md-7 gsttable">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped pending_order printTable">
+                <thead>
+                  <tr class="thbg">
+                    <th class="alignright">GST%</th>
+                    <th class="alignright">Taxable (&#8377;)</th>
+                    <th class="alignright">CGST (&#8377;)</th>
+                    <th class="alignright">SGST (&#8377;)</th>
+                    <th class="alignright">IGST (&#8377;)</th>
+                  </tr>
+                </thead>
+                <tbody
+                  *ngIf="(invoiceaddress && invoiceaddress.statecode == this.invheader?.bill_to_party.statecode) || (!invoiceaddress && loginUserData.company_address.state_code==shipingAddress.state_code) ">
+                  <tr *ngIf="first">
+                    <td class="alignright">18%</td>
+                    <td class="alignright">{{totalfirsttaxable.toLocaleString('en-IN')}}.{{decimalfirsttaxableamount}}
+                    </td>
+                    <td class="alignright">
+                      {{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}
+
+                    </td>
+                    <td class="alignright">
+                      {{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}
+
+                    </td>
+                    <td class="alignright">-</td>
+                  </tr>
+                  <tr *ngIf="second">
+                    <td class="alignright">5%</td>
+                    <td class="alignright">{{totalsecondtaxable.toLocaleString('en-IN')}}.{{decimalsecondtaxableamount}}
+                    </td>
+                    <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+                    <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+                    <td class="alignright">-</td>
+                  </tr>
+                  <tr *ngIf="third">
+                    <td class="alignright">12%</td>
+                    <td class="alignright">{{totalthirdtaxable.toLocaleString('en-IN')}}.{{decimalthirdtaxableamount}}
+                    </td>
+                    <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+                    <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+                    <td class="alignright">-</td>
+                  </tr>
+                  <tr *ngIf="fourth">
+                    <td class="alignright">28%</td>
+                    <td class="alignright">{{totalfourthtaxable.toLocaleString('en-IN')}}.{{decimalfourthtaxableamount}}
+                    </td>
+                    <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+                    <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+                    <td class="alignright">-</td>
+                  </tr>
+                </tbody>
+                <tbody
+                  *ngIf="(invoiceaddress && invoiceaddress.statecode != this.invheader?.bill_to_party.statecode) || (!invoiceaddress && loginUserData.company_address.state_code!=shipingAddress.state_code )">
+                  <tr *ngIf="first">
+                    <td class="alignright">18%</td>
+                    <td class="alignright">{{totalfirsttaxable.toLocaleString('en-IN')}}.{{decimalfirsttaxableamount}}
+                    </td>
+                    <td class="alignright">-</td>
+                    <td class="alignright">-</td>
+                    <td class="alignright">{{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}</td>
+                  </tr>
+                  <tr *ngIf="second">
+                    <td class="alignright">5%</td>
+                    <td class="alignright">{{totalsecondtaxable.toLocaleString('en-IN')}}.{{decimalsecondtaxableamount}}
+                    </td>
+                    <td class="alignright">-</td>
+                    <td class="alignright">-</td>
+                    <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+                  </tr>
+                  <tr *ngIf="third">
+                    <td class="alignright">12%</td>
+                    <td class="alignright">{{totalthirdtaxable.toLocaleString('en-IN')}}.{{decimalthirdtaxableamount}}
+                    </td>
+                    <td class="alignright">-</td>
+                    <td class="alignright">-</td>
+                    <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+                  </tr>
+                  <tr *ngIf="fourth">
+                    <td class="alignright">28%</td>
+                    <td class="alignright">{{totalfourthtaxable.toLocaleString('en-IN')}}.{{decimalfourthtaxableamount}}
+                    </td>
+                    <td class="alignright">-</td>
+                    <td class="alignright">-</td>
+                    <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- ends GST table -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped pending_order printTable">
+            <tfoot>
+              <tr>
+                <td colspan="7">
+                  <div class="row" style="margin: 0 !important;">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="padding-left: 2px !important;">
+                      <h5 style="margin-bottom: 2px !important;margin-top: 2px !important;">
+                        <strong style="font-size: 11px;line-height: 1;">PO No &nbsp;:</strong>
+                        <span *ngIf="invoiceData?.data?.json_hdr?.spo_no" style="font-size: 11px;line-height: 1;">
+                          {{invoiceData?.data?.json_hdr?.spo_no}} </span>
+                        <span *ngIf="invoiceData?.data?.json_hdr?.spo" style="font-size: 11px;line-height: 1;">
+                          {{invoiceData?.data?.json_hdr?.spo}} </span>
+                        <div class="txt_l fnt_size_12">
+                          <span style="font-size: 11px;line-height: 1;"><strong>Prepared By:</strong></span>
+                          <span style="font-size: 11px;line-height: 1;"> {{loginUserData.first_name}}</span>
+
+                        </div>
+                        <br><br>
+                        <strong class="theme_color fnt_size_9">Note:-</strong>
+                      </h5>
+                      <p style="font-size:10px;line-height: 1.1;">Above information is not an invoice and only an
+                        estimate of services described above.</p>
+                      <p style="font-size:10px;line-height: 1.1;">This estimation is not any commercial values.</p>
+
+                      <p style="font-size: 9px;margin-bottom: 2px;margin-top: 2px;text-align: center;">
+                        *This is a computer generated, does not require a physical signature.
+
+                      </p>
+                    </div>
+                  </div>
+
+
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div class="row" style="text-align: center;padding-bottom: 15px;">
+    <button type="submit" class="btn btn-success" (click)="printInvoice()">Print Invoice</button>
+    <button  *ngIf="PUrl == 'W=TRP'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Warehouse Manager-TRANSPORT DETAILS">Cancel</button>
+    <button *ngIf="PUrl != 'W=TRP'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Cancel</button>
+  </div>
+</div>

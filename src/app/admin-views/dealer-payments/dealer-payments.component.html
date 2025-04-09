@@ -1,0 +1,178 @@
+<div class="container">
+  <div class="row pad_t_5per">
+
+    <ngx-spinner class="custom_loder">
+      <img src="../../../assets/Loader.gif">
+    </ngx-spinner>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span> {{loginUserData.content}}</span>
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Payment Cancellation</span>
+    </p>
+    <div class="reg_form mar_b_30">
+      <div class="row mar_b_15">
+        <div class="col-sm-12">
+          <div class="fl">
+            <h4>Payment Cancellation</h4>
+          </div>
+          <div class="fr" *ngIf="dealerpayments.length>0">
+            <input type="text" [(ngModel)]="searchText" placeholder="Search Product" class="search_style">
+            <button type="submit" class="input_btn">Search</button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="dealerpayments">
+        <div class="container">
+          <div class="col-md-3">
+            <div class="form-group">
+              <select class="form-control select-option" id="dealer" required name="dealer" [(ngModel)]="pro"
+                #dealer="ngModel">
+                <option [ngValue]="undefined" selected>Select Dealer</option>
+                <option class='option' *ngFor="let d of dealers" [ngValue]="d.user_id">{{d.business_name}}
+                </option>
+              </select>
+              <div [hidden]="dealer.valid || dealer.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Select Dealer Name</small>
+              </div>
+              <div *ngIf="SNameExists" class="validation_msg">
+                <small class="form-text text-muted text-danger">Please select Dealer Name</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <button type="submit" class="input_btn" (click)="getDealersPayments()">Get Data</button>
+          </div>
+        </div>
+        <div class="row" *ngIf="(dealerpayments | filter :searchText) as dealerpayments">
+          <div class="col-sm-12 list" *ngIf="dealerpayments.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Check No</th>
+                    <th class="text-right">Check Date</th>
+                    <th class="text-right">Paid Amount</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of dealerpayments | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.Check_no}}</td>
+                    <td class="text-right">{{data.Check_date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.amount | number : '1.2-2'}}</td>
+                    <td class="text-center"><i class="fa fa-close" (click)="delete(data)" title="Delete"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+          <div *ngIf="dealerpayments.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ngx-spinner class="loader_spinner"></ngx-spinner>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="warng" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Are you sure want to Delete ?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" (click)="confrm()" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="success" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Successfully Deleted ...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="WarningModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>No Data is Available..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button"  class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

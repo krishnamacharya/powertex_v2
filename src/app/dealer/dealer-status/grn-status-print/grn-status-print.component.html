@@ -1,0 +1,190 @@
+<div class="container pad_t_5per">
+    <p class="bread-crumb1">
+        <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span *ngIf="loginUserData.role=='Marketing Manager'"><a href="javascript.void(0)" routerLink="/Marketing Manager-STATUS">Status</a>
+        </span>
+        <span *ngIf="loginUserData.role!='Marketing Manager'"><a href="javascript.void(0)" routerLink="/Marketing Manager-STATUS">Status</a>
+        </span>&nbsp;>&nbsp;
+        <span>GRN Print</span>
+    </p>
+    <div class="total_invoice_page" style="margin-bottom: 10px;" id="printSectionId">
+        <h3 style="padding-bottom: 10px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;">Goods
+            Received Notes</h3>
+        <div class="invoce_address">
+
+            <div class="col-md-12 hr_line_botm marg_t_b_15">
+                <div class="fl">
+                    <b>GRN No:</b>{{grnPrintData.grn_no}}
+                </div>
+                <div class="fr">
+                    <b>GRN Date:</b> {{grnPrintData.grn_date | date:'dd-MM-yyyy'}}
+                </div>
+            </div>
+
+            <div class="hr_line_botm">
+                <div class="row">
+                        <div class="col-md-6 company_address" *ngIf="loginUserData.company_address; let item"
+                        style="padding: 10px 0px 30px 20px;line-height: 1.9;">
+
+                        <div class="txt_l">
+                            <h4>From</h4>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{item.companyname}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{item.address1}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{item.address2}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{item.city}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{item.state}}.</span>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 company_address" *ngIf="billingAddress"
+                        style="padding: 10px 0px 30px 20px;line-height: 1.9;">
+
+                        <div class="txt_l">
+                            <h4>To</h4>
+                        </div>
+                        <div class="txt_l fnt_size_12" *ngIf="billingAddress.business_name">
+                            <span>{{billingAddress.business_name}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{billingAddress.address1}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{billingAddress.address2}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{billingAddress.city}}, {{billingAddress.state}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Email ID </span>
+                            <span> : {{billingAddress.email}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Mobile &nbsp;</span>
+                            <span> : {{billingAddress.mobile}}.</span>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-md-6" style="padding: 10px 0px 30px 20px;line-height: 1.9;float:right;" class="company_address">
+
+                        <div class="txt_l">
+                            <h4>Shipping Address</h4>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>2-56*-585426,</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{shipingAddress.address2}},</span>
+                        </div>
+                       <div class="txt_l fnt_size_12">
+                            <span>{{shipingAddress.city}}, {{shipingAddress.state}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Email ID </span>
+                            <span> : {{shipingAddress.email}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Mobile &nbsp;</span>
+                            <span> : {{shipingAddress.mobile}}.</span>
+                        </div>
+                    </div> -->
+
+                    
+
+
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <div class="table-responsive" style="margin-top: 15px;">
+                        <table class="table table-bordered table-striped pending_order">
+                            <thead>
+                                <tr>
+                                    <th class="txt_centr" style="font-size: 11px;">S.No</th>
+                                    <th class="txt_left" style="font-size: 11px;">Product Name</th>
+                                    <!-- <th class="txt_left" style="font-size: 11px;">Model Number</th> -->
+                                    <th class="txt_right" style="font-size: 11px;">MRP(&#8377;)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Net Price(&#8377;)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Qty</th>
+                                    <th class="txt_right" style="font-size: 11px;">Discount (%)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Total(&#8377;)</th>
+                                    <th class="txt_right" style="font-size: 11px;">GST</th>
+                                    <th class="txt_right" style="font-size: 11px;">Net Value(&#8377;)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of grnPrintData.detail;let i=index;">
+                                    <td class="txt_centr" style="font-size: 11px;">{{i+1}}</td>
+                                    <td class="txt_left" style="font-size: 11px;">{{item.subcategory}} {{item.modelno}}</td>
+                                    <!-- <td class="txt_left" style="font-size: 11px;">{{item.modelno}}</td> -->
+                                    <td class="txt_right" style="font-size: 11px;">{{item.mrp | currency : '&nbsp;'}}
+                                    </td>
+                                    <td class="txt_right" style="font-size: 11px;">
+                                        {{item.net_price | currency : '&nbsp;'}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.receiving_qty}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.discount_eff}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">
+                                        {{item.tot_value | currency : '&nbsp;'}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.gst_value}}({{item.gst}}%)</td>
+                                    <td class="txt_right" style="font-size: 11px;">
+                                        {{item.final_value | currency : '&nbsp;'}}</td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="7" class="no-line"> </td>
+                                    <td class="no-line txt_right">
+                                        <strong>NET AMOUNT</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span
+                                            style="color:#000;"></span>{{grand_total| currency :'&#8377;'}}
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="f1" style="margin-left:20px;">
+                    <b>Invoice No.:</b> {{grnPrintData.sinv_no}}
+                </div>
+                </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h5>
+                        <strong class="theme_color fnt_size_12">Terms & Conditions :</strong>
+                    </h5>
+                    <p style="font-size:10px;">1. This is Computer generated Invoice and doesn't require signature.</p>
+                    <p style="font-size:10px;">2. We are not responsible for any Breakages/Damages/Shortages and
+                        Leakage in transit.</p>
+                    <p style="font-size:10px;">3. Our responsibility ceases after the goods are delivered to the
+                        carrier.</p>
+                    <p style="font-size:10px;">4. Goods once sold will not be taken back.</p>
+                    <p style="font-size:10px;">5. Interest &#64;12% p.a. will be charged, if invoice is not paid on or
+                        before due date.</p>
+                    <p style="font-size:10px;">6. All Disputes are Subject to Hyderabad Jurisdiction.</p>
+                    <p style="font-size:10px;">7. Please read all Terms and Policies on www.powertex.com for Invoices
+                        and other related issues.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row" style="text-align: center;margin-bottom: 15px;">
+        <button type="submit" class="btn btn-success" (click)="print_grn()">Print GRN</button>
+        <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Cancel</button>
+    </div>
+
+</div>

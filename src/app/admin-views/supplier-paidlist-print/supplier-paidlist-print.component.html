@@ -1,0 +1,107 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container-fluid pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+ 
+
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+
+    <span>
+      <a href="javascript.void(0)" routerLink="/Supplier-Payment-list" style="color: #878787 !important; ">Supplier Paid List</a>
+            </span>&nbsp;>&nbsp;
+    <span>Print</span>		
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Supplier Paid List</h4>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="orders">
+        <div id="printsuppndng">
+          <div class="row busname text-center">
+             <h3 class="shopee_name">
+              <span> {{loginUserData.content}}</span>
+            </h3>
+            <hr>
+          <h3 class="shopee_name text-center">
+            <span>Supplier Paid List</span>
+          </h3>
+          </div>
+        <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th>Supplier Name</th>
+                    <th class="text-right">Date</th>
+                    <th>Invoice No</th>
+                    <th class="text-right">Invoice (USD)</th>
+                    <th class="text-right">Invoice (CNY)</th>
+                    <th class="text-right">BL Date</th>
+                    <th class="text-right">No. of Days</th>
+                    <th class="text-right">Due Date</th>
+                    <th class="text-right">Paid Amount</th>
+                    <th class="text-right">Balance Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders ; let i=index">
+                    <td>{{data.financial_year}}</td>
+                    <td>{{data.Suplier_Name}}</td>
+                    <td class="text-right">{{data.InvDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td class="text-right">{{data.Invoice_USD | number : '1.2-2'}}</td>
+                    <td class="text-right">{{data.Invoice_CNY | number : '1.2-2'}}</td>
+                    <td class="text-right">{{data.BL_Date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.No_of_Days}}</td>
+                    <td class="text-right">{{data.Due_date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.PaidAmount | number : '1.2-2'}}</td>
+                    <td class="text-right">{{data.balance_amount | number : '1.2-2'}}</td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+              <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+              </button>
+            
+              <button  type="submit" style="margin:10px;"
+                class="btn btn-success" routerLink="/Supplier-Payment-list">Cancel</button>
+              </div>
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

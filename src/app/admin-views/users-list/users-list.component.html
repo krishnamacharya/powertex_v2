@@ -1,0 +1,80 @@
+<div class="container pad_t_5per">
+
+      <ngx-spinner class="custom_loder">
+        <img src="../../../assets/Loader.gif">
+        </ngx-spinner>
+
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard"  class="breadcrumb_clr">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>External Users</span>
+  </p>
+  <div class="reg_form mar_b_30">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Nav tabs -->
+        <div class="card">
+          <ul class="nav nav-tabs" role="tablist">
+            <li *ngIf="loginUserData.company_code=='HYD_MAIN'" role="presentation" class="active" (click)="activate('branchAssign')">
+              <a href="" aria-controls="list" role="tab" data-toggle="tab">Assign Dealers to Branch
+              </a>
+            </li>
+            <li role="presentation" [ngClass]="{'active':loginUserData.company_code!='HYD_MAIN'}" (click)="activate('Pending')">
+              <a href="" aria-controls="list" role="tab" data-toggle="tab">Pending Dealers List
+              </a>
+            </li>
+            <li role="presentation" (click)="activate('Active')">
+              <a href="" aria-controls="registrtion" role="tab" data-toggle="tab">Active Dealers List
+              </a>
+            </li>
+            <li role="presentation" (click)="activate('reject')">
+              <a href="" aria-controls="reject" role="tab" data-toggle="tab">Rejected Dealers List
+              </a>
+            </li>
+            <li role="presentation" (click)="activate('Inactive')">
+              <a href="" aria-controls="inactive" role="tab" data-toggle="tab">Inactive Dealers List
+              </a>
+            </li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div *ngIf="loginUserData.company_code=='HYD_MAIN'">
+              <div *ngIf="openTab=='branchAssign'">
+                <div role="tabpanel" class="tab-pane active">
+                  <app-register-profile [underProcessId]=5></app-register-profile>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="openTab=='Pending'">
+              <div role="tabpanel" class="tab-pane active">
+                <app-register-profile [underProcessId]=2></app-register-profile>
+              </div>
+            </div>
+            <div *ngIf="openTab=='underProcess'">
+              <div role="tabpanel" class="tab-pane active">
+                <app-register-profile [underProcessId]=1></app-register-profile>
+              </div>
+            </div>
+            <div *ngIf="openTab=='Active'">
+              <div role="tabpanel" class="tab-pane">
+                <app-active-users [styleId]=1></app-active-users>
+              </div>
+            </div>
+            <div *ngIf="openTab=='reject'">
+              <div role="tabpanel" class="tab-pane">
+                <app-reject-users [id]=1></app-reject-users>
+              </div>
+            </div>
+            <div *ngIf="openTab=='Inactive'">
+              <div role="tabpanel" class="tab-pane active">
+                <app-register-profile [underProcessId]=6></app-register-profile>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

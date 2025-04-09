@@ -1,0 +1,38 @@
+.container-fluid{
+    margin: 0 16px 0 16px !important;
+}
+
+
+.table  tbody  tr  td {
+    padding: 3px !important;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+    font-size: 11px;
+  }
+
+  .table  thead  tr  th {
+    padding: 3px !important;
+    vertical-align: bottom;
+    border-bottom: 2px solid #ddd;
+    font-size: 12px;
+  }
+
+  .modified{
+    // color:red;
+    background-color:#e68852 !important;
+    color: white !important;
+  }
+  .modified2{
+    // color:red;
+    background-color:#d9534f !important;
+    color: white !important;
+  }
+  .color-box {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    left: 5px;
+    top: 5px;
+    border: 1px solid rgb(95, 89, 89);
+  }   

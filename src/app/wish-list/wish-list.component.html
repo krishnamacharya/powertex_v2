@@ -1,0 +1,155 @@
+<div class="container pad_t_5per pad_b_5per">
+    <p class="bread-crumb1"><span><a href="javascript.void(0)" routerLink="/home" style="
+      color: #878787 !important;
+  " >Home</a></span>&nbsp;>&nbsp;<span>WishList</span></p>
+  <div class="reg_form pad_15 mar_b_30">
+
+    <div class="row">
+      <div class="col-sm-12 head_header">
+        <div class="fl">
+          <h4>MY WISHLIST
+            <span *ngIf="wishList.length>0">({{wishList.length}})</span>
+          </h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="row border_styles" *ngFor="let item of wishList | paginate: { itemsPerPage: 5, currentPage: p };">
+      <div class="col-md-12">
+
+        <!-- <div class="col-md-8"> -->
+        <div class="col-md-2">
+          <img [src]="item.image" class="product_image">
+        </div>
+
+        <div class="col-md-6 pad_l_40">
+          <div class="mar_b_10 prod_name">{{item.long_name}}</div>
+          <div class="mar_b_10">
+            <span class="f_size_18">&#8377;&nbsp;</span>
+            <span class="actual_price">{{item.enduser_price}}</span>&nbsp;
+            <span class="end_user_price">&#8377;&nbsp;{{item.mrp}}</span> &nbsp;
+            <span class="offer_price">{{item.discount_e}}% off</span>
+          </div>
+          <div class="mar_b_10">
+            <span class="remove_btn" (click)="remove(item)">REMOVE</span>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <a class="ad_cart_whishlist" title="Add To Cart" (click)="addtocart(item)">
+            <span class="glyphicon glyphicon-shopping-cart" style="padding-right:5px;font-size:10px;"></span> ADD TO CART
+          </a>
+        </div>
+
+        <!-- </div> -->
+
+
+      </div>
+    </div>
+    <pagination-controls *ngIf="wishList.length>0" (pageChange)="p = $event"></pagination-controls>
+
+    <div class="row" *ngIf="wishList.length==0">
+      <div class="col-md-12">
+        <div class="no_data">
+          <img class="no_data_cnter" src="../assets/empty_shopping_cart.png" />
+          <!-- <span class="nodata_txt">No Products are Available</span> -->
+        </div>
+      </div>
+      <br/>
+      <div class="col-md-12">
+        <div class="continue_shop txt_center" routerLink="/home">
+          <!-- <button class="btn btn-primary" (click)="addToCart()"> Add To Cart</button> -->
+          <button class="btn btn-success" style="margin-top: -35px;">Continue Shopping</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+  
+  <!-- success small alert -->
+  <div class="smallSuccess_alert" *ngIf="alert" style="top:10%;margin-left: 25%">
+    <strong>
+      <i class="fa fa-check add_icon"></i> {{wish_alert}} </strong>
+  </div>
+
+  <!-- delete modal pop up-->
+  <div id="confirmModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+                <span>This Item Already Added to Cart</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal pop up start here -->
+  <!-- <div class="modal fade" id="alrdyItemAddedModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+                <span>This Item Already Added to Cart</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoPrevious()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- modal pop up start here -->
+  <!-- <div class="modal fade" id="insertItemModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+                <span>Item added to cart successfully</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoPreviousInsert()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div> -->

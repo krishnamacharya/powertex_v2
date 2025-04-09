@@ -1,0 +1,40 @@
+<div style="margin-top:6%;" class="container-fluid">
+  <div class="row col-md-2">
+
+ 
+  <ul class="menu">
+    <li *ngFor="let p of resources"><a href="#">{{p.Category}}</a>
+
+      <div class=" container megadrop" style="height:300px;overflow:auto">
+        <div class="row">
+        <div class="col-md-4" style="height:200px" *ngFor="let subp of p.detail">
+          <h4>{{subp['SubCategory']}}</h4>
+          <div class="col-md-8">
+            <ul style="max-height:140px;overflow:auto; padding: 0px" >
+              <li *ngFor="let m of subp.modelno"><input type="checkbox" [checked]="selected" id="{{m}}"   style="width:20px;height:15px;margin-top: 0px; cursor: pointer">{{m}}</li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <img src="{{subp.url}}" alt="No-image" style="width: 100%">
+          </div>
+        </div>
+        </div>
+         
+        <div class="row">
+          <div>
+            <button class="btn btn-danger" style="float:left;">Cancel</button><button class="btn btn-success" style="float:right;">Apply</button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </li>
+
+
+    
+
+  </ul>
+</div>
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

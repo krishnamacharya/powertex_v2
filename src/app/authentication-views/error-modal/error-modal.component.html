@@ -1,0 +1,60 @@
+<!-- Error modal start here -->
+<div class="error_modal_content">
+  <div *ngIf="this.data.servererror">
+
+    <div class="modal-body" style="padding:0;">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="error_modal">
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            <h3>Server Down</h3>
+            <h4>Sorry for the inconvenience Powertex Services Temporarily Down</h4>
+            <button class="btn btn-success" routerLink="/home" (click)="this['dialogRef'].close()">OK, Got it</button>
+          </div>
+
+        </div> 
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="this.data.errorModal">
+
+    <div class="modal-body" style="padding:0;">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="error_modal">
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            <h3>Something went wrong.</h3>
+            <h5>Please check after some time.</h5>
+            <button class="btn btn-success" routerLink="/home" (click)="this['dialogRef'].close()">OK, Got it</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div *ngIf="this.data.emptysearcherror">
+
+    <div class="modal-body" style="padding:0;">
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="error_modal">
+            <span class="glyphicon glyphicon-warning-sign"></span>
+            <!-- <h3>Something went wrong.</h3> -->
+            <h4 style="color: #d9534f;">Please type some value or text to search !</h4>
+            <button class="btn btn-success"  (click)="this['dialogRef'].close()">OK, Got it</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<!-- Error modal end here -->

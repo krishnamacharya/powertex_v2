@@ -1,0 +1,183 @@
+<div class="container pad_t_5per pad_b_5per">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center" >
+          <h3 class="shopee_name">
+            <span>{{loginUserData.content}}</span>
+          </h3>
+          <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+        </div>
+      </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Dealers & Shopee's</span>
+  </p>
+  <div class="row t_s_c" >
+      <div class="row bg-theme dash_status" style="margin:0px">
+        <div class="col-md-3 status_align">
+          <a href="javascript:void(0)" [ngClass]="{'active_tab':Delhidden == true}" (click)="A_dealers()">Active Dealer's</a>
+        </div>
+        <div class="col-md-3 status_align">
+          <a href="javascript:void(0)" [ngClass]="{'active_tab':Shophidden == true}" (click)="A_shopees()">Active Shopee's</a>
+        </div>
+        <div class="col-md-3 status_align">
+          <a href="javascript:void(0)" [ngClass]="{'active_tab':RDelhidden == true}" (click)="R_dealers()">Rejected Dealer's</a>
+        </div>
+        <div class="col-md-3 status_align">
+          <a href="javascript:void(0)" [ngClass]="{'active_tab':RShophidden == true}" (click)="R_shopees()">Rejected Shopee's</a>
+        </div>
+      </div>
+  
+      <div class="pad_20">
+        <div *ngIf="Delhidden">
+          <div class="row" style="margin:0px">
+            <div *ngIf="avail_dealers?.length>0">
+              <table class="table">
+                <thead>
+                  <tr>
+                      <th>S.No</th>
+                      <th>Dealer Code</th>
+                      <th>Business Name</th>
+                      <th>Mobile</th>
+                      <th>Email</th>
+                      <th>City</th>
+                      <th>Discount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of avail_dealers| paginate: { itemsPerPage: 10, currentPage: page};let i=index">
+                    <td>{{10*(page-1)+(i+1)}}</td>
+                    <td>{{data.company_code}}</td>
+                    <td>{{data.business_name}}</td>
+                    <td>{{data.mobile}}</td>
+                    <td>{{data.email | lowercase}}</td>
+                    <td>{{data.city}}</td>
+                    <td>{{data.discount}}%</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pull-left mar_b_10">
+                  <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="avail_dealers?.length==0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="Shophidden">
+          <div class="row" style="margin:0px">
+            <div *ngIf="avail_shopees?.length>0">
+              <table class="table">
+                <thead>
+                  <tr>
+                      <th>S.No</th>
+                      <th>Shopee Code</th>
+                      <th>Shopee Name</th>
+                      <th>Mobile</th>
+                      <th>Email</th>
+                      <th>City</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of avail_shopees;let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{data.company_code}}</td>
+                    <td>{{data.online_display_name}}</td>
+                    <td>{{data.mobile}}</td>
+                    <td>{{data.email | lowercase}}</td>
+                    <td>{{data.city}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12" *ngIf="avail_shopees?.length==0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="RDelhidden">
+          
+          <div class="row" style="margin:0px">
+              <div *ngIf="reject_dealers?.length>0">
+                <table class="table">
+                  <thead>
+                    <tr>
+                        <th>S.No</th>
+                      <th>Dealer Code</th>
+                      <th>Business Name</th>
+                      <th>Mobile</th>
+                      <th>Email</th>
+                      <th>City</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of reject_dealers;let i=index">
+                      <td>{{i+1}}</td>
+                      <td>{{data.company_code}}</td>
+                      <td>{{data.business_name}}</td>
+                      <td>{{data.mobile}}</td>
+                      <td>{{data.email}}</td>
+                      <td>{{data.city}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-md-12" *ngIf="reject_dealers?.length==0">
+                  <div class="no_data">
+                    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                    <span class="nodata_txt">No Data is Available</span>
+                  </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div *ngIf="RShophidden">
+          
+          <div class="row" style="margin:0px">
+              <div *ngIf="reject_shopees?.length>0 && reject_shopees[0]!=null">
+                <table class="table">
+                  <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Shopee Code</th>
+                        <th>Shopee Name</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>City</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of reject_shopees;let i=index">
+                      <td>{{i+1}}</td>
+                      <td>{{data.company_code}}</td>
+                      <td>{{data.online_display_name}}</td>
+                      <td>{{data.mobile}}</td>
+                      <td>{{data.email}}</td>
+                      <td>{{data.city}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="col-md-12" *ngIf="reject_shopees[0]==null">
+                  <div class="no_data">
+                    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                    <span class="nodata_txt">No Data is Available</span>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

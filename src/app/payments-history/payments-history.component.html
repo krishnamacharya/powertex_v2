@@ -1,0 +1,162 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Payment History List</span>
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Payment History List</h4>
+        </div>
+        <div class="fr">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+      
+      <div class="row row1">
+        <div class="col-md-3" *ngIf="loginUserData.designation !='Marketing Manager'">
+          <div class="form-group">
+            <div>
+              <label for="handling_marketing_manager" class="col-form-label">Select Marketing Manager
+              </label>
+              <div>
+                <select class='select-option form-control' [(ngModel)]="marketing_manager"
+                  name="handling_marketing_manager" #handling_marketing_manager="ngModel">
+                  <option [ngValue]="undefined" disabled selected>Select</option>
+                  <option class='option' *ngFor="let data of market_manager_list" [ngValue]="data.user_id">
+                    {{data.first_name | titlecase}} {{data.last_name | titlecase}}
+                    <!-- -{{data.email | lowercase}} -->
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-3">
+          <div class="form-group">
+            <div>
+              <label for="supplier1" class="control-label mt_zerosix text-right">Select Company
+                Name<sup>*</sup>
+              </label>
+              <input autocomplete="off" type="text" class='select-option form-control' required name="giver_company_name"
+                  [(ngModel)]="giver_companyname" #giver_company_name="ngModel" id="giver_company_name1"
+                   list="givercompanynames"
+                  placeholder="Select Company">
+                <datalist id="givercompanynames">
+                  <option [ngValue]="undefined" disabled selected>Select Company Name</option>
+                  <option class='option' *ngFor="let gc of givercompanynames" [ngValue]="gc">{{gc.business_name}}</option>
+                </datalist>
+            </div>
+          </div>
+        </div> -->
+        
+        <span class="col-md-3">
+          <mat-form-field color="accent">
+            <mat-label> Select From Date</mat-label>
+            <input matInput [matDatepicker]="picker3" [(ngModel)]="fromdate" required  [max]="maxdate">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+          </mat-form-field>
+        </span>
+        <span class="col-md-3 selecttodate">
+          <mat-form-field color="accent">
+            <mat-label> Select To Date</mat-label>
+            <input matInput [matDatepicker]="picker4" [(ngModel)]="tilldate" required [max]="maxdate">
+            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+            <mat-datepicker #picker4 color="primary"></mat-datepicker>
+          </mat-form-field>
+
+        </span>
+        <!-- <div class="col-md-3">
+          <div class="form-group">
+            <label for="category_profile" class="col-form-label">Select Product</label>
+            <div>
+              <select class='select-option form-control' [(ngModel)]="subcategory" name="category" #category="ngModel">
+                <option [ngValue]="undefined" selected>Select Product</option>
+                <option class='option' *ngFor="let data of productslist " [ngValue]="data">
+                  {{data.product}}</option>
+              </select>
+            </div>
+          </div>
+        </div> -->
+        <div class="col-md-2">
+          <button type="submit" style="margin-top: 20px;" class="input_btn" (click)="getdata()">Get Data</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="orders">
+        <div class="row" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders1.length>0">
+
+            <div class="table-responsive">
+              <table class="table table-striped">
+
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th class="text-left">Business Name</th>
+                    <th class="text-left">Date </th>
+                    <th class="text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders | paginate: { itemsPerPage: 30, currentPage: p }; let i=index">
+                    <td>{{30*(p-1)+(i+1)}}</td>
+                    <td class="text-left">{{data.business_name}}</td>
+                    <td class="text-left">{{data.Date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.amount.toLocaleString('en-IN')}}.00</td>
+                  </tr>
+                  
+              <tr>
+                <td></td>
+                <td></td>
+                <td class="text-right"><b>Total</b></td>
+                <td class="text-right">{{this.totalamount?this.totalamount.toLocaleString('en-IN'):''}}.00</td>
+              </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-md-12" *ngIf="orders.length>0">
+              <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" (click)="printreport()">Print</button>
+              </div>
+            </div>
+
+            <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

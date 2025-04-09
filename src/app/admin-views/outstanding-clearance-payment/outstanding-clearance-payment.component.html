@@ -1,0 +1,54 @@
+<div class="container pad_t_5per pad_b_5per" id="outstandWraper">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Outstanding Clearance History</span>
+  </p>
+  <div class="row row_mar_0 ">
+    <div class="row pad_10">
+      <div class="col-md-12 mar_t_10" *ngIf="discountdetails?.length>0">
+        <div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <th>Business Name</th>
+               <th>Invoice No</th>
+               <th>Invoice Amount</th>
+                <th>Discount Amount </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let pd of discountdetails|filter:searchText| paginate: { itemsPerPage: 10, currentPage: page }; let i=index;">
+               <td>{{10*(page-1)+(i+1)}}</td>
+                <td>{{pd.business_name}}</td>
+                <td>{{pd.sinv_no}}</td>
+                <td style="width:130px;text-align:right;">{{pd.final_amount}}</td>
+                <td style="width:140px;text-align:right">{{pd.discount_amount}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pull-left mar_t_30">
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="discountdetails?.length<=0">
+        <div class="no_data">
+          <img class="no_data_cnter" src="../assets/emptyicon.png" />
+          <span class="nodata_txt">No Data is Available</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>

@@ -1,0 +1,140 @@
+<div class="container pad_t_5per pad_b_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>
+      <a href="javascript.void(0)" routerLink="/INTERNAL USERS" style="color: #878787 !important;">Internal Users</a>
+    </span>&nbsp;>&nbsp;
+    <span>internal-user-edit</span>
+  </p>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="reg_form pad_15 mar_b_30">
+        <form #profileDataForm="ngForm">
+          <h4 class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Basic Info:</h4>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-6 mar_b_10_mbl">
+                <label for="fname" class="col-form-label">First Name</label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.first_name" name="fname">
+                </div>
+              </div>
+              <div class="col-sm-6 mar_b_10_mbl">
+                <label for="lname" class="col-form-label">Last Name</label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.last_name" name="lname">
+                </div>
+                <!-- <div [hidden]="lname.valid ||  lname.untouched" class="alert alert-danger">
+                    Last Name Required
+                  </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-6 mar_b_10_mbl">
+                <label for="email" class="col-form-label">Email</label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.email" name="email">
+                </div>
+                <!-- <div [hidden]="email.valid ||  email.untouched" class="alert alert-danger">
+                    Email Required
+                  </div> -->
+              </div>
+              <div class="col-sm-6 mar_b_10_mbl">
+                <label for="mobile" class="col-form-label">Mobile</label>
+                <div>
+                  <input type="text" class="form-control" [(ngModel)]="profileData.mobile" name="mobile">
+                </div>
+                <!-- <div [hidden]="mobile.valid ||  mobile.untouched" class="alert alert-danger">
+                    Mobile Number Required
+                  </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="col-sm-6 mar_b_10_mbl">
+                <label for="email" class="col-form-label">Designation</label>
+                <span class="glyphicon glyphicon-pencil theem_color pad_l_10"></span>
+                <div>
+                  <select class='select-option form-control' required [(ngModel)]="profileData.designation" name="designation" #designation="ngModel">
+                    <option [ngValue]="undefined" disabled selected>--Select--</option>
+                    <option class='option' *ngFor="let data of designationsList | async" [ngValue]="data.Designation">{{data.Designation}}</option>
+                  </select>
+
+                  <div [hidden]="designation.valid ||  designation.untouched" class="alert alert-danger">
+                    designation is required
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 mar_b_10_mbl">
+                <label for="mobile" class="col-form-label">Company Code</label>
+                <span class="glyphicon glyphicon-pencil theem_color pad_l_10"></span>
+                <div>
+                  <select class='select-option form-control' required [(ngModel)]="profileData.company_code" name="assignment" #assignment="ngModel">
+                    <option [ngValue]="undefined" disabled selected>Select</option>
+                    <option class='option' *ngFor="let company of companiesList | async" [ngValue]="company.company_code">{{company.companyname}}-{{company.company_code}}</option>
+                  </select>
+                  <div [hidden]="assignment.valid ||  assignment.untouched" class="alert alert-danger">
+                    Company is required
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row pad_t_b_10">
+            <div class="col-sm-12">
+              <div class="col-sm-12">
+                <div class="pull-left">
+                  <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_red border_red" (click)="resetForm(profileDataForm)">
+                    <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Clear</button>
+                </div>
+                <div class="pull-right">
+                  <button type="submit" *ngIf="upt" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="updateProfile1(profileData)">
+                    <i class="fa fa-long-arrow-right" aria-hidden="true">Update</i></button>
+                     <button type="submit" *ngIf="!upt" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" routerLink="/INTERNAL USERS">
+                      <i class="fa fa-long-arrow-right" aria-hidden="true">Done</i></button> 
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+<!--  -->
+<div class="modal fade" id="updsuccess" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{message}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal" routerLink="/INTERNAL USERS">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" routerLink="/INTERNAL USERS">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

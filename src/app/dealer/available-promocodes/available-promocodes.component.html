@@ -1,0 +1,67 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+<p class="bread-crumb1">
+  <span>
+    <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+  </span>&nbsp;>&nbsp;
+  <span>Promocodes</span>
+</p>
+<div class="row mar_b_15" style="margin-left:8px;margin-right:8px;">
+  <div class="col-sm-12">
+    <div class="fl">
+      <h4>Promocodes</h4>
+    </div>
+   
+  </div>
+</div>
+<div class="branchtable" *ngIf="promocodedata?.length>0">
+  <div  class="table-responsive"  >
+   <table class="table table-striped" >
+     <thead>
+       <tr>
+         <th>S.No</th>
+         <th>Promocode Name</th>
+         <th>Promocode Title</th>
+         <th>Min. Order Amount</th>
+         <th>From Date</th>
+         <th>To Date</th>
+         <th>Count</th>
+         <th>Amount</th>
+         <th>Description</th>
+      
+       </tr>
+     </thead>
+     <tbody>
+       <tr *ngFor="let offer of promocodedata | paginate: { itemsPerPage: 10, currentPage: Page}; let i=index;" >
+         <td>{{10*(Page-1)+(i+1)}}</td>
+         <td *ngIf="offer.promocodename">{{offer.promocodename}}</td>
+         <td align="center" *ngIf="offer.promocodename==null">-</td>
+         <td *ngIf="offer.promo_title">{{offer.promo_title}}</td>
+         <td align="center" *ngIf="offer.promo_title==null">-</td>
+         <td>{{offer.minorderamount}}</td>
+         <td>{{offer.fromdate | date:'dd-MM-yyyy'}}</td>
+         <td>{{offer.todate | date:'dd-MM-yyyy'}}</td>
+         <td>{{offer.applyfor}}</td>
+         <td>{{offer.amount}}</td>
+         <td *ngIf="offer.remarks">{{offer.remarks}}</td>
+         <td  *ngIf="!offer.remarks">-</td>
+     
+       </tr>
+     </tbody>
+   </table>
+   </div>
+   <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+   
+ </div>
+ <div class="col-md-12" *ngIf="promocodedata?.length==0">
+  <div class="no_data">
+    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+    <span class="nodata_txt">No Data is Available</span>
+  </div>
+</div>
+ </div>

@@ -1,0 +1,165 @@
+<div class="container pad_t_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" >Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>
+      <a href="javascript.void(0)" routerLink="/import-invoice-print" style="
+                            color: #878787 !important;
+                        ">Import Invoice</a>
+    </span>&nbsp;>&nbsp;
+    <span>Import Invoice Preparation</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row text-center">
+      <div class="col-sm-12">
+        <span class="header_pages">Capture Vendor Invoice</span>
+      </div>
+    </div>
+    <div class="row mar_b_15">
+      <div class="col-sm-6">
+        <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;">
+          <b>PO Details </b>
+        </p>
+        <h4>PO Number : {{importPoData.po_no}}</h4>
+        <h4>PO Date : {{importPoData.po_date}}</h4>
+        <h4>Company Code : {{importPoData.po_origin_company_code}}</h4>
+      </div>
+      <div class="col-sm-6">
+        <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;">
+          <b>Credit Terms </b>
+        </p>
+        <div class="col-md-6">
+          <h4>Credit Period (days) : {{importPoData.credit_period}}</h4>
+          <h4>Payment terms : {{importPoData.payment_terms}}</h4>
+        </div>
+      </div>
+    </div>
+
+    <form name="packForm" #packForm="ngForm">
+      <div class="row">
+        <div class="row pad_t_20">
+          <div class="form-group">
+            <div class="col-md-12">
+              <div class="col-md-3">
+                <label for="inv_no">Vendor Invoice No.
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" name="inv_no" [(ngModel)]="packingListModel.inv_no"
+                    #inv_no="ngModel" required placeholder="Enter Invoice Number">
+                  <div [hidden]="inv_no.valid ||  inv_no.untouched" class="validation_msg">
+                    Invoice Number is required
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="inv_date">Vendor Invoice Date
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <mat-form-field>
+                  <input matInput required [matDatepicker]="picker" placeholder="Choose a date"
+                    [(ngModel)]="packingListModel.inv_date" #inv_date="ngModel" name="inv_date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <div [hidden]="inv_date.valid ||  inv_date.untouched" class="validation_msg">
+                  inv_date is required
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row pad_t_20">
+        <div class="col-sm-12 list">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="txt_centr">S.No</th>
+                  <th class="txt_left">Product name</th>
+                  <th class="txt_left">Model No.</th>
+                  <th class="txt_right">Mrp(&#8377;)</th>
+                  <th class="txt_right">Discount(%)</th>
+                  <th class="txt_right">Net Price(&#8377;)</th>
+                  <th class="txt_right">Quantity</th>
+                  <th class="txt_right">Total Value(&#8377;)</th>
+                  <th class="txt_centr">Invoice Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let item of poPackingListData | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                  <td class="txt_centr">{{10*(p-1)+(i+1)}}</td>
+                  <td class="txt_left">{{item.long_name}}</td>
+                  <td class="txt_left">{{item.modelno}}</td>
+                  <td class="txt_right">{{item.forex_mrp | currency : '&nbsp;'}}</td>
+                  <td class="txt_right">{{item.discount_eff}}</td>
+                  <td class="txt_right">{{item.fr_effectiveprice | currency : '&nbsp;'}}</td>
+                  <td class="txt_right">{{item.balance_qty}}</td>
+                  <td class="txt_right">{{item.forex_value | currency : '&nbsp;'}}</td>
+                  <td class="txt_centr">
+                    <span class="f_size_15 blue_clr padd_right_10">
+                      <input type="text" class="form-control txt_right" required name="{{item.po_srl_no}}"
+                        #packqty="ngModel" [(ngModel)]="packingListModel[item.po_srl_no]"
+                        (ngModelChange)="checkQty(item.balance_qty,packingListModel[item.po_srl_no])">
+                      {{packingListModel['option']}}
+                    </span>
+                    <!-- <div *ngIf="packqty.errors?.max" class="validation_msg">
+                    Packing Qty should not be grater than Actual Qty.
+                  </div> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pull-left">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+          <div *ngIf="approveBtn" class="text-center validation_msg">
+            Invoice Qty should not be grater than Actual Qty.
+          </div>
+          <div class="pull-right">
+            <button type="submit" [disabled]="packForm.invalid"
+              class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="makePackingLiat()">
+              Approve
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+
+<!-- modal pop up start here -->
+<div class="modal fade" id="makeinvoiceModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Your Invoice generated Successfully..!!</span>
+              <!-- <span>Your Packing No : {{packingListNo}}</span> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button> -->
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="print_invoice()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

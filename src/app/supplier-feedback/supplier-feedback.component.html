@@ -1,0 +1,138 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Feedback</span>
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+
+    <!-- <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Feedback</h4>
+        </div>
+        <div class="fr">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div> -->
+<!-- ==================================== -->
+<div class="row">
+  <!-- <div class="col-sm-6" *ngIf=" loginUserData.user_type == 'supplier' ">
+    <b>Subject</b>
+   
+    <textarea class="form-control rounded-0" rows="1" name="title" [(ngModel)]="title" style="width:60%;"
+      placeholder="Subject" minlength="3" maxlength="1000" required></textarea>
+    <br>
+    <textarea class="form-control rounded-0" rows="3" name="description" [(ngModel)]="description" style="width:60%;"
+      placeholder="Give your comments" minlength="3" maxlength="1000" required></textarea><br>
+  
+    <button type="submit" class="input_btn" (click)="PostFeedback(title,description)">Submit</button>
+  
+  </div> -->
+
+  <div class="col-xs-12">
+    <div class="row">
+      <div class="col-sm-12 list">
+        <div class="row text-center chat_head"><b>Queries, Suggestions, Feedback</b></div>
+          <div class="table-responsive scrollit">
+          <table class="table table-striped" *ngIf="details != 0">
+              <tr *ngFor="let data of details; let i=index" [ngClass]="{'Admincls':data.returnby == '1'}">
+                <!-- <tr *ngFor="let data of details | paginate: { itemsPerPage: 10, currentPage: p }; let i=index"> -->
+                <td class="text-left icon" *ngIf="data.returnby=='1'">
+                  <small style="background-color:#0fa497;border-radius: 30px 30px 0px 30px;">PPT Desk</small>
+                  <br>{{data.comment}}</td>
+                <td class="text-right icon" *ngIf="data.returnby !='1'">
+                  <small style="background-color:#49d7f0;border-radius: 30px 30px 30px 0px;">You</small>
+                  <br>{{data.comment}}
+                </td>
+              </tr>
+          </table>
+          <div *ngIf="details.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">Your Feedback Is Valuable To Us </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid send">
+            <div class="col-sm-9">
+              <input type="text" class="form-control rounded-0" rows="3" name="description" [(ngModel)]="description" style="width:100%;" 
+              placeholder="Give your comments" minlength="3" maxlength="1000">
+            </div>
+            <div class="col-sm-3">
+               <button type="submit" class="btn btn-sm bg_green" style="border-radius: 15px;border-collapse:collapse;" (click)="PostFeedback(title,description)">Send&nbsp;<i class="fa fa-paper-plane" style="color: #49d7f0;" aria-hidden="true"></i></button>
+            </div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
+
+</div>
+
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>supplier Comment posted Successfully</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- =============================== -->
+    <!-- <div>
+      <div *ngIf="details">
+        <div class="row" *ngIf="(details | filter :searchText) as details">
+         
+          <div *ngIf="details.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">Your Feedback Is Valuable To Us </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

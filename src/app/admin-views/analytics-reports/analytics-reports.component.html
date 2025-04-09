@@ -1,0 +1,162 @@
+ <script src="https://code.highcharts.com/stock/highstock.js"></script>
+ <ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Analytics Reports</span>
+  </p>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group col-md-3 mar_b_10_mbl">
+
+ 
+            <label for="month" class="col-form-label">Select Report Type
+           
+            </label>
+            <div class="form-group">
+              <select class='form-control col-md-2' [(ngModel)]="sales.reporttype" required name="reporttype" #report="ngModel"  (change)="onchangereporttype(sales.reporttype)">
+                <option [ngValue]="undefined" select>select report type</option>
+              
+                <option class="option" selected *ngFor="let data of reporttypes " [ngValue]="data">
+                  {{data}}
+                </option>
+              </select>
+            </div>
+        </div>
+        <div class="form-group col-md-3 mar_b_10_mbl" *ngIf="this.loginUserData.user_type=='Admin'">
+     
+      
+          <label for="month" class="col-form-label">Select Branch
+      
+          </label>
+          <div class="form-group">
+            <select class='form-control col-md-2' [(ngModel)]="sales.branch" required name="branch1" #branch1="ngModel" (change)="onbranchselect(sales.branch)" >
+              <option [ngValue]="undefined" select>select branch</option>
+              <option class="option" *ngFor="let data of branchesList | async" [ngValue]="data.company_code">
+                 {{data.companyname}}-{{data.company_code}}
+              </option>
+            </select>
+          </div>
+      </div>
+      <div class="form-group col-md-3 mar_b_10_mbl" *ngIf="this.sales.reporttype!='Stock' && this.loginUserData.role!='Marketing Manager'" >
+     
+      
+        <label for="month" class="col-form-label">Select Marketing Manager
+       
+        </label>
+        <div class="form-group">
+          <select class='form-control col-md-2' [(ngModel)]="sales.marketingmanager" required name="mmanager" #mmanager="ngModel" >
+            <option [ngValue]="undefined" select>select marketing manager</option>
+            <option class="option" *ngFor="let mm of market_manager_list " [ngValue]="mm.user_id">
+               {{mm.first_name | titlecase}} {{mm.last_name | titlecase}}
+            </option>
+          </select>
+        </div>
+    </div>
+      <div class="form-group col-md-3 mar_b_10_mbl" >
+     
+      
+        <label for="month" class="col-form-label">Select Brand
+      
+        </label>
+        <div class="form-group">
+          <select class='form-control col-md-2' [(ngModel)]="sales.brand" required name="brand1" #brand1="ngModel" >
+            <option [ngValue]="undefined" select>select brand</option>
+            <option class="option" *ngFor="let data of brands | async" [ngValue]="data.brand">
+               {{data.brand}}
+            </option>
+          </select>
+        </div>
+    </div>
+        <div class="form-group col-md-3 mar_b_10_mbl" *ngIf="this.sales.category">
+
+ 
+            <label for="month" class="col-form-label">Select Subcategory
+      
+            </label>
+            <div class="form-group">
+              <select class='form-control col-md-2' [(ngModel)]="sales.subcategory" required name="subcateg" #subcateg="ngModel">
+                <option [ngValue]="undefined" select>select subcategory</option>
+              
+                <option class="option"  *ngFor="let type of subcategories" [ngValue]="type.subcategory">
+                  {{type.subcategory}}
+                </option>
+              </select>
+            </div>
+        </div>
+ <div class="form-group col-md-3 mar_b_10_mbl">
+
+ 
+    <label for="month" class="col-form-label">Select Year
+   
+    </label>
+    <div class="form-group">
+      <select class='form-control col-md-2' [(ngModel)]="sales.year" required name="year" #yea="ngModel">
+        <option [ngValue]="undefined" select>select year</option>
+        <option class="option" *ngFor="let years of years" [ngValue]="years">
+          {{years}}
+        </option>
+      </select>
+    </div>
+ </div>
+  <div class="form-group col-md-3 mar_b_10_mbl">
+      
+    <label for="month" class="col-form-label">Select Chart Type
+    </label>
+    <div class="form-group">
+      <select class='form-control ' [(ngModel)]="sales.charttype" required name="charttype1" #charttype1="ngModel" (change)="onchangecharttype(sales.charttype)">
+        <option [ngValue]="undefined" select>select chart type</option>
+        <option class="option" *ngFor="let data of charttypes" [ngValue]="data.name">
+           {{data.name}}
+        </option>
+      </select>
+    </div>
+</div>
+<div class="form-group col-md-3" style="margin-top:27px;">
+    <div class="form-group">
+  <button type="submit" class="input_btn" (click)="getreport(sales)">Get Reports</button>
+</div>
+</div>
+</div>
+
+
+    
+   
+    
+     </div>
+
+     <div class="row">
+<div class="col-md-12">
+   
+   
+    <div class=" col-md-12" style="margin-top:20px;" id="chart" *ngIf="this.salesdatas?.length>0"  #chart>
+<highcharts-chart
+   [Highcharts] = "highcharts" 
+   [options] = "chartOptions" 
+
+   style = " display: block;">
+</highcharts-chart>
+</div>
+<div class="col-md-12" *ngIf="this.salesdatas?.length<=0">
+  <div class="no_data">
+    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+    <span class="nodata_txt">No Data is Available</span>
+  </div>
+</div>
+<div>
+
+</div>
+</div>
+</div>
+</div>

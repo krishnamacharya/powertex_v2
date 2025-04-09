@@ -1,0 +1,363 @@
+<div class="container pad_t_5per">
+    <p class="bread-crumb1">
+        <span>
+            <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span>
+                <a href="javascript.void(0)" routerLink="/Warehouse Manager-TRANSPORT DETAILS" style=" color: #878787 !important;">Transport</a>
+              </span>&nbsp;>&nbsp;
+        <span>Transport Detail Print</span>
+    </p>
+    <div class="total_invoice_page" style="margin-bottom: 20px;">
+        <h3 style="padding-bottom: 10px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;">Transport Details
+        </h3>
+        <div class="invoce_address" id="printSectionId">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 style="text-align: center;font-size: 20px;font-weight: 700;">
+                        {{loginUserData.company_address.online_display_name}}
+                    </h2>
+                </div>
+            </div>
+            <!-- <div class="row" *ngIf="loginUserData.company_address; let data">
+                <div class="col-xs-12" style="text-align:center;">
+                    <p class="company_address" style="font-size: 13px;">
+                        <span> {{data.address1}},</span>
+                        <br>
+                        <span>{{data.address2}},</span>
+                        <br>
+                        <span>{{data.city}},</span>
+                        <br>
+                        <span>{{data.state}},</span>
+                    </p>
+                </div>
+                <div class="col-xs-12 company_address" style="font-size: 11px;text-align: center;">
+                    <span>CITY </span>
+                    <span style="font-weight: normal;">: {{data.city}}</span>,&nbsp;&nbsp;
+                    <span>STATE </span>
+                    <span style="font-weight: normal;">: {{data.state}}</span>,&nbsp;&nbsp;
+                    <span>GSTIN </span>
+                    <span style="font-weight: normal;">: {{data.gstin}}</span>,&nbsp;&nbsp;
+                    <span>PAN </span>
+                    <span style="font-weight: normal;">: {{data.pan}}</span>,&nbsp;&nbsp;
+                    <span>CIN </span>
+                    <span style="font-weight: normal;">: {{data.cin}}</span>.
+                </div>
+            </div> -->
+            <!-- <div class="hr_line marg_t_b_15" style="margin-bottom: 0 !important;">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="company_address" style="font-size: 14px;text-align: center;">
+                            <h4>CHALLAN ORDER</h4>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- <div class="hr_line_botm" style="padding: 5px;">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="company_address">
+                            <span class="f_left fnt_size_12">
+                                <span>Challan No </span>
+                                <span>: {{challanData.challan_no}}</span>
+                            </span>
+                            <span class="f_right fnt_size_12">
+                                <span>Date </span>
+                                <span>: {{challanPrint.del_challan_date | date:'dd-MM-yyyy'}}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="hr_line_botm">
+                <div class="row">
+                    <!-- <div class="col-md-6 company_address" *ngIf="shipingAddress"
+                        style="line-height: 1.9;float:left;">
+                        <div class="txt_l">
+                            <h4>Shipping Address</h4>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{shipingAddress.business_name}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{shipingAddress.address1}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{shipingAddress.address2}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{shipingAddress.city}}, {{shipingAddress.state}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Email ID </span>
+                            <span> : {{shipingAddress.email}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Mobile &nbsp;</span>
+                            <span> : {{shipingAddress.mobile}}.</span>
+                        </div>
+                    </div> -->
+                    <div class="col-md-3 company_address" style="line-height: 1.5;margin:10px 0px;">
+                        <!-- border-left: 1px dashed #37475a; -->
+                        <!-- <div class="txt_l fnt_size_12">
+                            <span>Challan No </span>
+                            <span> : {{challanData.challan_no}}</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Challan Date </span>
+                            <span> : {{challanPrint.del_challan_date | date:'dd-MM-yyyy'}}</span>
+                        </div> -->
+                        <!-- <div class="txt_l fnt_size_12">
+                            <span>Due On :</span>
+                        </div> -->
+                        <!-- <div class="txt_l fnt_size_12">
+                            <span>PO No :</span>
+                            <span>  {{challanPrint.po_no}}</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>PO Date :</span>
+                            <span> {{challanPrint.po_date |  date:'dd-MM-yyyy'}}</span>
+                        </div> -->
+                        <div class="txt_l fnt_size_12">
+                            <span>Estimation No :</span>
+                            <span> {{challanPrint.sinv_no}}</span>
+                           
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Estimation Date :</span>
+                            <span> {{challanPrint.inv_date |  date:'dd-MM-yyyy'}}</span>
+                           
+                        </div>
+                        <div *ngIf="challanPrint.estdeldate" class="txt_l fnt_size_12">
+                            <span>Arrival Expected Date :</span>
+                            <span> {{challanPrint.estdeldate |  date:'dd-MM-yyyy'}}</span>
+                           
+                        </div>
+                    </div>
+                        <div class="col-md-3 company_address" style="line-height: 1.5;margin:10px 0px;">
+                        <div class="txt_l fnt_size_12">
+                            <span>Transport Type:</span>
+                            <span> {{challanPrint.del_mode}}</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Transport Name:</span>
+                            <span> {{challanPrint.transportname}}</span>
+                        </div>
+                        </div>
+                        <div class="col-md-3 company_address" style="line-height: 1.5;margin:10px 0px;">
+                        <div class="txt_l fnt_size_12">
+                            <span>Invoice No :</span>
+                            <span> {{challanPrint.refinvno}}</span>
+                           
+                        </div>
+                        <!-- <div class="txt_l fnt_size_12">
+                            <span>Vehicle No :</span>
+                            <span> {{challanPrint.del_vehicle_no}}</span>
+                           
+                        </div> -->
+                        <div class="txt_l fnt_size_12">
+                            <span>L.R. No :</span>
+                            <span> {{challanPrint.lrno}}</span>
+                        </div>
+                        </div>
+                        <div class="col-md-3 company_address" style="line-height: 1.5;margin:10px 0px;">
+                        <div class="txt_l fnt_size_12">
+                            <span>L.R. Date :</span>
+                            <span> {{challanPrint.lrdate}}</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Total Carton Qty :</span>
+                            <span> {{challanPrint.npc}}</span>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-6" style="padding: 10px 0px 20px 20px;line-height: 1.9;float:right;" class="company_address">
+    
+                            <div class="txt_l">
+                                <h4>Billing Address</h4>
+                            </div>
+                            <div class="txt_l fnt_size_12">
+                                <span>{{billingAddress.address1}},</span>
+                            </div>
+                            <div class="txt_l fnt_size_12">
+                                <span>{{billingAddress.address2}},</span>
+                            </div>
+                            <div class="txt_l fnt_size_12">
+                                <span>{{billingAddress.city}}, {{billingAddress.state}},</span>
+                            </div>
+                            <div class="txt_l fnt_size_12">
+                                <span>Email ID </span>
+                                <span> : {{billingAddress.email}},</span>
+                            </div>
+                            <div class="txt_l fnt_size_12">
+                                <span>Mobile &nbsp;</span>
+                                <span> : {{billingAddress.mobile}}.</span>
+                            </div>
+                        </div> -->
+
+                </div>
+            </div>
+            <!-- <div class="table-responsive" style="margin-top: 15px;">
+                <table class="table table-bordered table-striped pending_order printTable"
+                    style="margin-bottom: 0px !important;">
+                    <thead>
+                        <tr> 
+                                <th class="txt_left" style="font-size: 11px;">Subcategory</th>
+                            </tr>
+                            </thead>
+                            </table>
+                            </div> -->
+           
+                    <!-- <div class="table-responsive" style="margin-top: 15px;">
+                        <table class="table table-bordered table-striped pending_order printTable"
+                            style="margin-bottom: 0px !important;">
+                            <thead>
+                                <tr> -->
+                                    <!-- <th class="txt_centr" style="font-size: 11px;">S.No</th>
+                                    <th class="txt_left" style="font-size: 11px;">Subcategory</th>
+                                    <th class="txt_left" style="font-size: 11px;">Product Name</th>
+                                    <th class="txt_left" style="font-size: 11px;">Model Number</th>
+                                    <th class="txt_left" style="font-size: 11px;">Sku No.</th>
+                                    <th class="txt_right" style="font-size: 11px;">Po Qty</th>
+                                    <th class="txt_right" style="font-size: 11px;">Free Qty</th>
+                                    <th class="txt_right" style="font-size: 11px;">Packing Qty</th> -->
+                                    <!-- <th class="txt_right" style="font-size: 11px;">MRP(&#8377;)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Discount</th>
+                                    <th class="txt_right" style="font-size: 11px;">Price(&#8377;)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Total(&#8377;)</th>
+                                    <th class="txt_right" style="font-size: 11px;">GST(%)</th>
+                                    <th class="txt_right" style="font-size: 11px;">Net Value(&#8377;)</th> -->
+                                <!-- </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of challantableData; let i=index;">
+                                    <td class="txt_centr" style="font-size: 11px;">{{i+1}}</td>
+                                    <td class="txt_left" style="font-size: 11px;">{{item.subcategory}}</td>
+                                    <td class="txt_left" style="font-size: 11px;">{{item.long_name}}</td>
+                                    <td class="txt_left" style="font-size: 11px;">{{item.modelno}}</td>
+                                    <td class="txt_left" style="font-size: 11px;">{{item.sku_no}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.packing_qty}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.free_qty}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.packing_qty + item.free_qty}}</td> -->
+                                    <!-- <td class="txt_right" style="font-size: 11px;">{{item.mrp  | currency : '&nbsp;'}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.discount_eff}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.net_price  | currency : '&nbsp;'}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.tot_value  | currency : '&nbsp;'}}</td>
+                                    <td class="txt_right" style="font-size: 11px;">18</td>
+                                    <td class="txt_right" style="font-size: 11px;">{{item.net_value  | currency : '&nbsp;'}}</td> -->
+                                <!-- </tr> -->
+                                <!-- <tr>
+                                    <td colspan="9"></td>
+                                    <td class="no-line txt_right">
+                                        <strong>Grand Total</strong>
+                                    </td>
+                                    <td class="no-line txt_right"><span style="color:#000;"></span>{{Sum | currency :'&#8377;'}}
+                                    </td>
+                                </tr> -->
+                                <!-- <tr>
+                                    <td colspan="4" class="no-line">
+                                        <strong>
+                                            <b>Amount in words : </b>
+                                        </strong>
+                                        <span>four thousand two hundread five rupees only.</span>
+                                    </td>
+                                </tr> -->
+
+                            <!-- </tbody>
+                        </table>
+                    </div>
+               -->
+
+            <!-- <div class="hr_line_botm">
+                <div class="row marg_t_b_15">
+                    <div class="col-md-12">
+                        <p style="font-size: 16px;text-decoration: underline;">
+                            <b>Delivery Details</b>
+                        </p>
+                        <div class="col-md-6">
+                            <p>
+                                <b>Delivery Mode :</b> {{challanPrint.del_mode}}</p>
+                            <p>
+                                <b>Delivery Consin No :</b> {{challanPrint.del_consin_no}}</p>
+                            <p>
+                                <b>Driver Name :</b> {{challanPrint.del_driver_name}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                <b>Contact Number :</b> {{challanPrint.del_contact_no}}</p>
+                            <p>
+                                <b>Vehicle Number :</b> {{challanPrint.del_vehicle_no}}</p>
+                            <p>
+                                <b>Licence Number :</b> {{challanPrint.del_license_no}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- <div class="hr_line_botm">
+                <div class="row marg_t_b_15">
+                    <div class="col-md-12">
+                        <p style="font-size: 16px;text-decoration: underline;">
+                            <b>Bank Details</b>
+                        </p>
+                        <div class="col-md-6">
+                            <p>
+                                <b>Account Name : </b> golden sun technologies</p>
+                            <p>
+                                <b>A/C No : </b> 123467894552</p>
+                            <p>
+                                <b>Bank : </b> HDFC</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                <b>IFSC Code : </b> HDFC0002068</p>
+                            <p>
+                                <b>UPI : </b> 2132564664</p>
+                            <p>
+                                <b>MICR Code : </b> 545454</p>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h5>
+                        <strong class="theme_color fnt_size_12">Declaration</strong>
+                    </h5>
+                    <p style="font-size:11px;">We Declare that this invoice shows the actual price of the goods
+                        described above and that all particulars
+                        are true and correct.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h5>
+                        <strong class="theme_color fnt_size_12">Terms & Conditions :</strong>
+                    </h5>
+                    <p style="font-size:10px;">1. It is the sole responsibility of Supplier to deliver items upon the
+                        order by Purchase Manager.</p>
+                    <p style="font-size:10px;">2. All charges inclusive delivery / logistics are to be paid prior to
+                        delivery.</p>
+                </div>
+            </div> -->
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="text-align: center;">
+                    <h6>
+                        <strong> *This is a computer generated transport details and does not require a physical signature.
+                        </strong>
+                    </h6>
+                </div>
+            </div>
+
+        </div>
+        <div class="row" style="text-align: center;padding-top: 15px;" (click)="printChallan()">
+            <button type="submit" class="btn btn-success">Print Transport Detail</button>
+            <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Cancel</button>
+        </div>
+    </div>
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

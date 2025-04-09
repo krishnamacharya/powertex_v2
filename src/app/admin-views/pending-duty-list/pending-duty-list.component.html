@@ -1,0 +1,107 @@
+<div class="container pad_t_5per">
+
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span> Port Wise List</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h5><b>Port Wise List</b></h5>
+        </div>
+        <div class="fr" *ngIf="orders.length>0">
+          <input type="text" [(ngModel)]="searchText" placeholder="Search Port" class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="orders">
+
+      <div id="printsuppndng">
+
+        <div class="row busname text-center">
+          <h3 class="shopee_name text-center">
+            <!-- {{this.loginUserData.shipment_point}} On Port Summary (Clearing House Agent) -->
+            <h4>Admin Port Wise List</h4>
+          </h3>
+        </div>
+
+        <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+
+          <!-- <div class="row" *ngIf="(orders | filter :searchText) as orders"> -->
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="col-md-1">Port</th>
+                    <th class="col-md-3">Supplier Name</th>
+                    <th class="col-md-2">Invoice No</th>
+                    <th class="col-md-1">Invoice Date</th>
+                    <th class="col-md-1">BL Date</th>
+                    <!-- <th class="col-md-1">Expected Date</th> -->
+                    <th class="col-md-1">CTNS</th>
+                    <th class="text-center col-md-1">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p };">
+                    <td class="col-md-1">{{data.port}}</td>
+                    <td class="col-md-3">{{data.Suplier_Name}}</td>
+                    <td class="col-md-2">{{data.inv_no}}</td>
+                    <td class="col-md-1">{{data.InvDate | date:'dd-MM-yyyy'}}</td>
+                    <td class="col-md-1">{{data.BL_Date | date:'dd-MM-yyyy'}}</td>
+                    <!-- <td class="col-md-1">{{data.exptdate | date:'dd-MM-yyyy'}}</td> -->
+                    <td class="col-md-1">{{data.ctns}}</td>
+                    <td class="text-center col-md-1">
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-print" aria-hidden="true" title="Print Details"
+                          (click)="printdatadetail(data.INVQHID,'invoice')"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-md-12">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton"
+                  (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+              <!-- <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls> -->
+            </div>
+
+
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+  </div>
+</div>

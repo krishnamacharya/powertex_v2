@@ -1,0 +1,168 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center pad_b_30">
+      <h3 class="shopee_name"><span class="shopee_name">{{loginUserData.content}}</span></h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+    <p class="bread-crumb1">
+      <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;<span>Productdata Upload</span>
+    </p>
+  </div>
+  <div class="row o_s_d">
+    <div class="row bg-theme dash_status" style="margin:0px">
+      <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}"
+          (click)="po()">Product Upload</a></div>
+      <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':SOhidden == true}"
+          (click)="so()">Status</a></div>
+    </div>
+    <div *ngIf="POhidden">
+      <div class="row pad_15">
+        <div class="col-md-12">
+          <!-- <h4 class="upload_heading">Products Upload</h4> -->
+          <div class="row">
+            <div class="col-sm-3 mar_b_10_mbl">
+              <label for="applicable">Select Type
+                <sub class="txt_red f_size_25">*</sub>
+              </label>
+              <div>
+                <select class="form-control" [(ngModel)]="product.type" id="type" #type="ngModel" name="types" required>
+                  <option [ngValue]="undefined" disabled selected>--Select type--</option>
+                  <option *ngFor="let t of types" [ngValue]="t.name">
+                    {{t.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div><br>
+         
+          <div class="row">
+              <div class="col-md-12">
+                  <h5 class="upload_heading"><b>Order Details</b> <sub class="txt_red f_size_25">*</sub></h5>
+            <div class="col-sm-3 mar_b_10_mbl">
+              <div>
+                <label for="file-upload">
+                  Select Order file
+                  <!-- <sub class="txt_red f_size_25">*</sub> -->
+                </label>
+                <input id="file-upload" name="file" #file="ngModel" accept='image/*'
+                  (change)="productfileUpload($event)" [(ngModel)]="product.file" type="file"
+                  placeholder="Upload file..." />
+              </div><br>
+              <div *ngIf="image">
+                <img [src]="image" height="150" width="150">
+              </div>
+            </div>
+            <div class="col-sm-1 mar_b_10_mbl" style="color:red;margin-top:10px;"><b>(OR)</b></div>
+            <div class="col-sm-3 mar_b_10_mbl">
+              <label for="comment">Enter Order Details Here
+                <!-- <sub class="txt_red f_size_25">*</sub> -->
+              </label>
+              <div>
+                <textarea class="form-control" [(ngModel)]="product.order" (keypress)="keypress($event)"
+                  placeholder="Enter order" id="comment" #comment="ngModel" name="comments"></textarea>
+              </div>
+            </div>
+          </div></div>
+      <br>
+          <div class="row">
+            <div class="col-sm-3 mar_b_10_mbl">
+              <button type="button" class="btn upload_btn" (click)="uploadData()">
+                Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="SOhidden">
+      <div class="row pad_15">
+        <div class="col-md-12">
+          <div class="paymenttable" >
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Order Details</th>
+                  <th>Type</th>
+                  <th>Comment</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pd of response| paginate: { itemsPerPage: 10, currentPage: page}; let i=index;">
+                  <td>
+                    <div style="margin:0px; font-size: 13px !important;">
+                      <p><span>{{i+1}}</span></p>
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="pd.image!=null" class="table_pd_name" style="width:80px;text-align:center">
+                      <p><img src="{{pd.image}}" width="100" height="100"></p>
+                    </div>
+                    <div *ngIf="pd.descripts" style="margin:0px; font-size: 13px !important;">
+                      <p><span>{{pd.descripts}}</span></p>
+                    </div>
+                  </td>
+                  <td>
+                    <div style="margin:0px; font-size: 13px !important;">
+                      <p><span>{{pd.processes}}</span></p>
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="pd.comment" style="margin:0px; font-size: 13px !important;">
+                      <p><span>{{pd.comment}}</span></p>
+                    </div>
+                    <div *ngIf="pd.comment==null" style="margin:0px;padding-left:50px; font-size: 13px !important;">
+                      <p><span>-</span></p>
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="pd.status" class="row_mar_0">
+                      <p><span> {{pd.status}}</span></p>
+                    </div>
+                    <div *ngIf="pd.status==null" class="row_mar_0">
+                      <p><span>Pending</span></p>
+                    </div>
+
+                  </td>
+
+
+
+                </tr>
+              </tbody>
+            </table>
+            <div class="pull-left mar_t_30">
+              <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="succModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Uploaded Successfully..!!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<!-- <div style="margin-top:50px">
+  <app-catg-menu></app-catg-menu>
+</div> -->
+<!-- <div class="container-fluid">
+    <p class="bread-crumb"><span><a href="javascript.void(0)" routerLink="/home" style="
+      color: #878787 !important;
+  " >Home</a></span>&nbsp;>&nbsp;<span>{{category}}</span></p>
+</div> -->
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+<div class="container" style="padding:30px 0px; margin-top:3%;">
+  <p class="bread-crumb"><span><a href="javascript.void(0)" routerLink="/home" style="
+      color: #878787 !important;
+  "> Home</a></span>&nbsp;>&nbsp;<span>All
+      Categories</span></p>
+  <div class="row prod_catg row_mar_0">
+    <img  class="img-fluid" src="../../../assets/main-banner.png" style="width:100%">
+  </div>
+  <div class="row prod_catg" class="row_mar_0">
+    <br>
+    <!-- <div class="col-md-3 col-sm-4 col-xs-6 text-center " style="padding:5px;" *ngFor="let p of resources;let i=index">
+      <div class="img-thumbnail" (click)="selected_Cat(p.Category)">
+        <div>
+            <img  class="catg_img all_images_cat" src="../../../assets/Artboard 1.png" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+            alt="{{p.subcategory}}" style="width:100%">
+            <img  class="catg_img all_images_cat" src="../../../assets/Artboard 2.png" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+            alt="{{p.subcategory}}" style="width:100%">
+
+        </div>
+      </div>
+    </div> -->
+    <!-- //kd// -->
+    <div class="col-md-3" *ngFor="let p of resources;let i=index">
+      <section class="card" (click)="selected_Cat(p.Category)">
+        <div class="value">
+          <br>
+          <br>
+          <p>{{p.Category}}</p>
+        </div>
+        <div class="symbol terques">
+          <img  class="catg_img all_images_cat" src="{{p.icon}}" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+            alt="{{p.subcategory}}">  
+        </div>
+      </section>
+    </div>
+
+  </div>
+  <!-- <div style="padding:20px;">
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+  </div> -->
+
+  <div>
+    <!-- <p *ngFor="let p of resources2 | unique">
+      {{p.subcategory}}- <img src="{{p.image}}" alt="{{p.subcategory}}">
+    </p> -->
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

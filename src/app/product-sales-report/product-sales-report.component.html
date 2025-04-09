@@ -1,0 +1,428 @@
+.<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+      &nbsp;>&nbsp;</span>
+
+    <span *ngIf="POhidden">
+      <span>Product Sales Report</span>
+    </span>
+
+    <span *ngIf="DOhidden">
+      <span>
+        <a (click)="getData()" style="color: #878787 !important; ">Category Wise</a>
+        &nbsp;>&nbsp;</span>
+      <span>Sub-Category Wise</span>
+    </span>
+
+    <span *ngIf="MOhidden">
+      <span>
+        <a (click)="getData()" style="color: #878787 !important; ">Category Wise</a>
+        &nbsp;>&nbsp;</span>
+      <span>
+        <a (click)="getData()" style="color: #878787 !important; ">Sub-Category Wise</a>
+        &nbsp;>&nbsp;</span>
+      <span>Product Wise</span>
+    </span>
+    
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-md-12 form-group">
+        <div class="pull-left">
+          <h4>Product Sales Report</h4>
+        </div>
+        <!-- <div class="col-md-3">
+          <label for="category_profile" class="col-form-label">Select Type</label>
+          <div>
+            <select class="select-option form-control" [(ngModel)]="type" name="type" #Type="ngModel" (change)="getData()">
+                  <option [ngValue]="undefined" selected disabled>Select Type</option>
+                  <option value="1">Table View</option>
+                  <option value="2">Bar Chart</option>
+                </select>
+          </div>
+        </div> -->
+        <div class="pull-right"  *ngIf="orders.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+          class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+          </div>
+      </div>
+      <div class="col-md-12" *ngIf="loginUserData.designation !='Marketing Manager'">
+        <div class="col-md-3">
+          <div class="form-group">
+            <div>
+              <label for="handling_marketing_manager" class="col-form-label">Select Marketing Manager
+              </label>
+              <div>
+                <select class='select-option form-control' [(ngModel)]="marktngid"
+                  name="handling_marketing_manager" #handling_marketing_manager="ngModel">
+                  <option [ngValue]="undefined" disabled selected>Select</option>
+                  <option class='option' *ngFor="let data of market_manager_list" [ngValue]="data.user_id">
+                    {{data.first_name | titlecase}} {{data.last_name | titlecase}}
+                    <!-- -{{data.email | lowercase}} -->
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" style="margin-top: 20px;" class="input_btn" (click)="getData()">Get Data</button>
+        </div>
+      </div>
+        <!-- <div class="col-md-3">
+          <label for="category_profile" class="col-form-label">Select Category</label>
+          <div>
+            <select class='select-option form-control'
+              [(ngModel)]="category" name="category" #Category="ngModel">
+              <option [ngValue]="undefined" disabled selected>Select Category</option>
+              <option class='option' *ngFor="let data of resources" [ngValue]="data.Category">
+                {{data.Category}}</option>
+            </select>
+          </div>
+        </div>
+          <div class="col-md-3">
+            <mat-form-field color="accent">
+              <mat-label> Select From Date</mat-label>
+              <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" required  [max]="maxdate">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 selecttodate">
+            <mat-form-field color="accent">
+              <mat-label> Select To Date</mat-label>
+              <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" required [max]="maxdate">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2 color="primary"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="input_btn" (click)="getData()">Get Data</button>
+          </div> -->
+    </div>
+    <div>
+      <div *ngIf="orders">
+<!-- POhidden -->
+        <div id="printsuppndng" *ngIf="POhidden && type=='1'">
+        <div class="row busname text-center">
+          <h3 class="shopee_name text-center">
+            <h4>Product Sales Report (Category Wise)</h4>
+          </h3>
+        </div>
+
+
+        <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped" *ngIf="orders.length>0">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th style="width: 18%;">Category</th>
+                   
+                    <th class="text-center">April</th>
+                    <th class="text-center">May</th>
+                    <th class="text-center">June</th>
+                    <th class="text-center">July</th>
+                    <th class="text-center">August</th>
+                    <th class="text-center">September</th>
+                    <th class="text-center">October</th>
+                    <th class="text-center">November</th>
+                    <th class="text-center">December</th>
+                    <th class="text-center">January</th>
+                    <th class="text-center">February</th>
+                    <th class="text-center">March</th>
+                    <th class="text-center"><b>Total</b></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{i+1}}</td>
+                    <td class="text-left link-txt" style="width: 18%;" (click)="CatClick(data)">{{data.category}}</td>
+                    
+                    <td class="text-right">{{data.APRIL.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.MAY.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.JUN.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.JULY.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.AUG.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.SEP.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.OCT.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.NOV.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.DECE.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.JAN.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.FEB.toLocaleString('en-IN')}}</td>
+                    
+                    <td class="text-right">{{data.MAR.toLocaleString('en-IN')}}</td>
+
+                    <td class="text-right">{{data.rowTot.toLocaleString('en-IN')}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-md-12 dishide">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton"
+                  (click)="printreport()">Print</button>
+              </div>
+              <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+            </div>
+
+          
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+<!-- DOhidden -->
+        <div id="printsuppndng" *ngIf="DOhidden">
+          <div class="row busname text-center">
+            <h3 class="shopee_name text-center">
+              <h4>Product Sales Report (Sub-Category Wise)</h4>
+            </h3>
+          </div>
+  
+  
+          <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+            <div class="col-sm-12 list" *ngIf="orders.length>0">
+              <div class="table-responsive">
+                <table class="table table-striped" *ngIf="orders.length>0">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th style="width: 18%;">Sub-Category</th>
+                     
+                      <th class="text-center">April</th>
+                      <th class="text-center">May</th>
+                      <th class="text-center">June</th>
+                      <th class="text-center">July</th>
+                      <th class="text-center">August</th>
+                      <th class="text-center">September</th>
+                      <th class="text-center">October</th>
+                      <th class="text-center">November</th>
+                      <th class="text-center">December</th>
+                      <th class="text-center">January</th>
+                      <th class="text-center">February</th>
+                      <th class="text-center">March</th>
+                      <th class="text-center"><b>Total</b></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                      <td>{{10*(p-1)+(i+1)}}</td>
+                      <td class="text-left link-txt" style="width: 18%;" (click)="SubCatClick(data)">{{data.subcategory}}</td>
+                      
+                      <td class="text-right">{{data.APRIL.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.MAY.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.JUN.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.JULY.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.AUG.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.SEP.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.OCT.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.NOV.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.DECE.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.JAN.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.FEB.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.MAR.toLocaleString('en-IN')}}</td>
+  
+                      <td class="text-right">{{data.rowTot.toLocaleString('en-IN')}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+              <div class="col-md-12 dishide">
+                <div class="pull-right">
+                  <button class="btn btn-primary " type="button" id="printPageButton"
+                    (click)="printreport()">Print</button>
+                </div>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+              </div>
+  
+            
+            </div>
+            <div *ngIf="orders.length==0">
+              <div class="col-md-12">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <!-- MOhidden -->
+        <div id="printsuppndng" *ngIf="MOhidden">
+          <div class="row busname text-center">
+            <h3 class="shopee_name text-center">
+              <h4>Product Sales Report (Model No Wise)</h4>
+            </h3>
+          </div>
+  
+  
+          <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+            <div class="col-sm-12 list" *ngIf="orders.length>0">
+              <div class="table-responsive">
+                <table class="table table-striped" *ngIf="orders.length>0">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th style="width: 18%;">Model No</th>
+                     
+                      <th class="text-center">April</th>
+                      <th class="text-center">May</th>
+                      <th class="text-center">June</th>
+                      <th class="text-center">July</th>
+                      <th class="text-center">August</th>
+                      <th class="text-center">September</th>
+                      <th class="text-center">October</th>
+                      <th class="text-center">November</th>
+                      <th class="text-center">December</th>
+                      <th class="text-center">January</th>
+                      <th class="text-center">February</th>
+                      <th class="text-center">March</th>
+                      <th class="text-center"><b>Total</b></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                      <td>{{10*(p-1)+(i+1)}}</td>
+                      <td class="text-left" style="width: 18%;">{{data.modelno}}</td>
+                      
+                      <td class="text-right">{{data.APRIL.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.MAY.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.JUN.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.JULY.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.AUG.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.SEP.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.OCT.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.NOV.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.DECE.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.JAN.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.FEB.toLocaleString('en-IN')}}</td>
+                      
+                      <td class="text-right">{{data.MAR.toLocaleString('en-IN')}}</td>
+  
+                      <td class="text-right">{{data.rowTot.toLocaleString('en-IN')}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+              <div class="col-md-12 dishide">
+                <div class="pull-right">
+                  <button class="btn btn-primary " type="button" id="printPageButton"
+                    (click)="printreport()">Print</button>
+                </div>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+              </div>
+  
+            
+            </div>
+            <div *ngIf="orders.length==0">
+              <div class="col-md-12">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div *ngIf="POhidden && type=='2'">
+            <div class=" col-md-12" style="margin-top:20px;" id="chart" *ngIf="this.orders?.length>0"  #chart>
+              <highcharts-chart
+                 [Highcharts] = "highcharts"
+                 [options] = "chartOptions"
+              
+                 style = " display: block;">
+              </highcharts-chart>
+            </div>
+          </div>         
+
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+<div class="modal fade" id="WarningModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>No Data is Available..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button"  class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,197 @@
+<div class="container pad_t_5per">
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="
+                      color: #878787 !important;">Dashboard</a></span>
+      <span *ngIf="!plData.data.address && !poData.financial_year && !plData.fromreportspage">&nbsp;>&nbsp;
+        <a href="javascript.void(0)" routerLink="/Warehouse Manager-PACKINGLIST"
+          style="color: #878787 !important;">Proforma
+          / PackingList</a>
+      </span>
+      <span *ngIf="(plData.data.address || poData.financial_year) && !plData.fromreportspage ">&nbsp;>&nbsp;
+        <a href="javascript.void(0)" routerLink="/Warehouse Manager-PACKING HISTORY"
+          style="color: #878787 !important;">Packing History</a>
+      </span>
+      <span *ngIf="plData.fromreportspage">&nbsp;>&nbsp;
+          <a href="javascript.void(0)" routerLink="/Admin-REPORTS"
+            style="color: #878787 !important;">Reports</a>
+        </span>&nbsp;>&nbsp;
+      <span>Print</span>
+    </p>
+  
+    <div class="total_invoice_page" style="margin-bottom: 20px;" id="printSectionId">
+      <!-- <h3 style="padding-bottom: 10px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;">Packing-List
+      </h3> -->
+      <div class="invoce_address printwrap">
+        <div class="table-responsive" style="margin-top: 10px;">
+          <table class="table table-bordered table-striped pending_order printTable">
+            <thead>
+              <tr class="hr_line_botm noBorder">
+                <th colspan="6" style="background:transparent;color:#000000;">
+                  <h3 class="hr_line_botm"
+                    style="padding-bottom:10px;margin-bottom:6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 5px;">
+                    {{loginUserData.company_address.online_display_name}}
+                  </h3>
+                  <h3 style="margin-bottom:3px;text-align: center;font-weight: 600;font-size: 18px;margin-top: 0px;">
+                    Packing List
+                  </h3>
+                </th>
+              </tr>
+              <tr class="noBorder">
+                <th colspan="6" style="background: transparent;">
+                  <div>
+                    <div class="row" style="margin-right:0px">
+                      <div class="col-md-8 company_address pull-left" style="float:left;line-height: 0;">
+                        <p  style="line-height: 15px;margin-bottom: 3px;font-size:10px;text-align: initial;font-weight: bold;">
+                        
+                          <span class="fl fnt_size_12" >DC No :&nbsp;</span>
+                          <span class="fl fnt_size_12" *ngIf="poData">{{poData.print}},&nbsp;</span>
+                          <span class="fl fnt_size_12" *ngIf="!poData">{{plData.data.json_hdr.dcno}},&nbsp;</span>
+                          <span class="fl fnt_size_12" >DC Date :&nbsp;</span>
+                          <span class="fl fnt_size_12" *ngIf="poData">{{poData.printdate}}</span>
+                          <span class="fl fnt_size_12" *ngIf="!poData">{{plData.data.json_hdr.dcdate}}</span>
+                          <br>
+                          <span  class="fl fnt_size_12">Name &nbsp;: 
+                            <span *ngIf="billingAddress"> {{billingAddress.business_name}},&nbsp;
+                            {{billingAddress.city}}. </span></span>
+                        </p>
+                        <br>
+                          <!-- <br *ngIf="plData.data.transport_name" class="hidebr"> -->
+                          <p *ngIf="plData.data.transport_name" style="line-height: 10px;margin-bottom: 3px;font-size:10px;text-align: initial;"><b>
+                            <span  class="fl fnt_size_12">Transport Name &nbsp;: 
+                              <span *ngIf="plData.data.transport_name">{{plData.data.transport_name}}</span>
+                              <span *ngIf="plData.data.Tmobileno">,&nbsp;{{plData.data.Tmobileno}}.</span></span></b>
+                            </p><br>
+                          
+                        <!-- <h4 class="txt_l"><u>To</u></h4> -->
+  
+                        <!-- <b class="fl fnt_size_12">{{billingAddress.business_name}},</b>&nbsp; -->
+  
+  
+                        <!-- <b class="fl fnt_size_12">{{shipingAddress.city}}.</b>&nbsp; -->
+                        <!-- <b class="fl fnt_size_12" *ngIf="shipingAddress.email">{{shipingAddress.email}},</b>&nbsp;
+              <b class="fl fnt_size_12">{{shipingAddress.mobile}}.</b> -->
+                        <!-- <div class="txt_l fnt_size_12">
+                <b>To : </b> <span>{{billingAddress.business_name}}{{shipingAddress.Contact_person}},{{shipingAddress.address1}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <b>City : </b> <span>{{shipingAddress.city}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <b>Mobile : </b> <span>{{shipingAddress.mobile}} .</span>
+              </div> -->
+                      </div>
+                      <div class="col-md-4 company_address pull-right" style="float:right;line-height: 1;">
+                        <p style="line-height: 15px;margin-bottom: 3px;font-size:10px;text-align: initial;font-weight: bold;" class="printbtm">
+                          <span  class="fl fnt_size_12">Packing List No &nbsp;: 
+                            <span> {{plData.data.json_hdr.packing_l_no}}
+                          </span></span>
+                          <br>
+                          <span  class="fl fnt_size_12">Date &nbsp;: 
+                            <span>  {{plData.data.json_hdr.packing_l_date | date:'dd-MM-yyyy'}}
+                          </span></span>
+                          </p>
+                          <br>
+                        <!-- <div class="txt_r fnt_size_12">
+                          <span style="line-height: 1;">Marketing Manager </span>
+                          <span style="line-height: 1;" *ngIf="!plData.data.json_hdr.marketing">: {{poData.marketing}}</span>
+                          <span style="line-height: 1;" *ngIf="plData.data.json_hdr.marketing">: {{plData.data.json_hdr.marketing}}</span>
+                        </div>
+                        <div class="txt_r fnt_size_12">
+                          <span style="line-height: 1;">Marketing Mobile </span>
+                          <span style="line-height: 1;" *ngIf="!plData.data.json_hdr.marketing_mobile">: {{poData.marketing_mobile}}</span>
+                          <span style="line-height: 1;" *ngIf="plData.data.json_hdr.marketing_mobile">:
+                            {{plData.data.json_hdr.marketing_mobile}}</span>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <th class="txt_centr" style="font-size: 11px;width: 4%;">Sr.</th>
+                <th class="txt_left" style="font-size: 11px;width: 50%;word-break:break-all;">Product Name</th>
+                <!-- <th class="txt_left" style="font-size: 11px;">SKU</th>
+                <th class="txt_right" style="font-size: 11px;text-align: right;">N/C</th> -->
+                <th class="txt_right" style="font-size: 11px;text-align: right;">P/C</th>
+                <!-- <th class="txt_right" style="font-size: 11px;text-align: right;">Free Qty</th> -->
+                <th class="txt_right" style="font-size: 11px;text-align: right;">P.Qty</th>
+                <th class="txt_right" style="font-size: 11px;text-align: right;">N/C</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of plData.data.json_dtl; let i=index;">
+                <td class="txt_centr" style="font-size: 11px;width: 2%;">{{i+1}}</td>
+                <td class="txt_left" style="font-size: 11px;width: 30%;word-break: all;">{{item.subcategory}}
+                  {{item.modelno}}</td>
+                <!-- <td class="txt_left" style="font-size: 11px;">{{item.sku_no}}</td>
+                <td class="txt_right" style="font-size: 11px;text-align: right;">{{item.packing_qty/item.piecepercarton  | currency:'&nbsp;'}}</td> -->
+                <td class="txt_right" style="font-size: 11px;text-align: right;">{{item.piecepercarton}}</td>
+                <!-- <td class="txt_right" style="font-size: 11px;text-align: right;" *ngIf="item.free_qty">{{item.free_qty}} -->
+                <!-- </td> -->
+                <!-- <td class="txt_right" style="font-size: 11px;text-align: right;" *ngIf="!item.free_qty">0</td> -->
+                <td class="txt_right" style="font-size: 11px;text-align: right;">{{item.packing_qty }}
+                </td>
+                <td class="txt_right" style="font-size: 11px;text-align: right;">{{item.npc | currency:'&nbsp;' }}
+                  <td></td>
+              </tr>
+              <tr *ngIf="freeqtyarr?.length>0">
+                <td colspan="2" class="no-line" style="font-size: 10px;  vertical-align: middle !important;">
+                  <b *ngIf="freeqtyarr?.length>0">Free Qty : </b>
+                  <b *ngFor="let f of freeqtyarr">
+                   <b> {{f.productname}} = {{f.free_qty}}&nbsp; </b>
+                 </b>
+                </td>
+                <td></td>
+                <td class="no-line txt_right" style="text-align: right;">{{totalfreeqty}}</td>
+             
+                <td class="no-line txt_right" style="text-align: right;">{{totalfreecartoons | number : '1.2-2'}}</td>
+  <td></td>
+              </tr>
+              <tr>
+                <td colspan="2"></td>
+                <td  class="no-line txt_right" style="text-align: right;">
+                  <strong>Total</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;"><span style="color:#000;"></span>{{plData.data.json_hdr.totalqty | currency:'&nbsp;'}}</td>
+                <td class="no-line txt_right" style="text-align: right;"><span style="color:#000;"></span>{{plData.data.json_hdr.totalcartoons | currency:'&nbsp;'}}</td>
+              <td></td>
+              </tr>
+  
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="6">
+                    <strong class="fl fnt_size_12">PO No&nbsp;:&nbsp;</strong>
+                            <span class="fl fnt_size_12" *ngIf="plData.data.json_hdr.spo_no">{{plData.data.json_hdr.spo_no}}</span>
+                            <span class="fl fnt_size_12" *ngIf="plData.data.json_hdr.spo"> {{plData.data.json_hdr.spo}}</span>
+                            <strong class="fl fnt_size_12"> &nbsp; Date </strong>
+                            <span class="fl fnt_size_12">: {{plData.data.json_hdr.po_date | date:'dd-MM-yyyy'}}</span> <br>
+                  <div class="row" style="margin-right:0px;margin-bottom:20px;">
+                    
+                    <div class="col-md-6 " style="line-height: 1.5;float:left;padding-top: 10px">
+                      <p><b>Prepared By : </b>{{loginUserData.first_name}}</p>
+                    </div>
+                    <div class="col-md-6 company_address" style="line-height: 1.5;float:right;padding-top: 10px">
+                      <p><b>Work Assigned To</b></p>
+                    </div>
+                  </div>
+                  <br>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+  
+        </div>
+  
+      </div>
+    </div>
+    <div class="row" style="text-align: center;padding-top: 15px;">
+      <button type="submit" class="btn btn-success" (click)="printPL()" style="letter-spacing:1px;">Print Packing Note
+      </button>
+      <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Cancel</button>
+    </div>
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+  
+  </div>

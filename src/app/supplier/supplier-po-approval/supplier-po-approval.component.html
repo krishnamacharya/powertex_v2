@@ -1,0 +1,552 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+
+    <!-- <span *ngIf="loginUserData.role!='Admin'">
+      <a href="javascript.void(0)" routerLink="/Supplier-PO">Orders</a>
+    </span> -->
+    <span *ngIf="this.PUrl != 'S=Apv' && loginUserData.role!='Admin'">
+      <a href="javascript.void(0)" routerLink="/Supplier-PO">Pending&nbsp;PO&nbsp;List</a>
+    </span>
+    <span *ngIf="this.PUrl == 'S=Apv' && loginUserData.role!='Admin'">
+      <a routerLink="/supplier-revised-pi-list" style="color: #878787 !important;">
+        Revised PO List</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="loginUserData.role=='Admin'">
+      <a href="javascript.void(0)" routerLink="/Admin-Revised-PO">Revised PO List</a>
+    </span>&nbsp;>&nbsp;
+    <span>Purchase Order Approval</span>
+  </p>
+  <div class="purchasewrap">
+    <form (ngSubmit)="onSubmit(purchaseorderForm)" #purchaseorderForm="ngForm">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12">
+          <h4 class="f_size_13 f_wt_600  mt_0 bussinesInfo text-center" *ngIf="loginUserData.role=='Admin'">PURCHASE
+            ORDER</h4>
+          <h4 class="f_size_13 f_wt_600  mt_0 bussinesInfo text-center" *ngIf="loginUserData.user_type=='supplier'">
+            PROFORMA INVOICE</h4>
+        </div>
+      </div>
+      <div class="reg_form">
+
+        <div class="supplierwrap">
+          <div class="row" style="margin-top:10px;">
+            <div class="col-md-5 col-lg-5 col-xs-12">
+              <h4>To</h4>
+              <h5> <span *ngIf="loginUserData.role=='Admin'"><b>{{pro.lastname}}</b></span>
+                <span *ngIf="loginUserData.user_type=='supplier'"><b>Powertex Tools Company Pvt
+                    Ltd</b></span>
+              </h5>
+              <div *ngIf="pro.address1=='' || loginUserData.user_type=='supplier'">
+                <span>Address -
+                  <!-- <b>
+      <span style="color:#515151;font-weight: bold;">Powertex Tools Company Pvt
+    Ltd.</span><br></b> -->
+                </span>
+                <!-- <span>
+                  <small>
+                    19-2-239/1/3/B, Chandulal Baradari,<br>
+                    Industrial Estate, Bahadurpura</small> <br>
+                  City: Hyderabad, State: Telangana-500064<br>
+                  Email: info&#64;powertextools.com,Mobile: 8885080111<br>
+                  IEC Code: 0911005650</span> -->
+
+                  <span>
+                    <small>
+                      7-3-109/B/1, Madhubhan Colony,<br>
+                      Gagan Pahad, Katedan</small> <br>
+                    City: Hyderabad, State: Telangana-500077<br>
+                    Email: info&#64;powertextools.com,Mobile: 8885080111<br>
+                    IEC Code: 0911005650</span>
+  
+
+              </div>
+              <div *ngIf="pro.address1!='' && loginUserData.user_type!='supplier'">
+                <span>Address -
+
+                </span>
+                <span>
+                  <small>{{pro.address1}}</small><br>
+                  <b>City</b>&nbsp;:<small>&nbsp;{{pro.city}}</small>&nbsp;
+                  <b>State&nbsp;:</b>&nbsp;<small>{{pro.state}}</small>&nbsp;
+                  <b>Email&nbsp;:</b>&nbsp;<small>{{pro.email}}</small></span>
+              </div>
+              <!-- <p><small><b>Business Name </b></small></p> -->
+
+            </div>
+            <div class="col-md-4 col-lg-4 col-xs-12">
+              <tr *ngFor="let data of pendingdata">
+                <td *ngIf="data.Pending_PO == 'Supplier_PO'"><b>Proforma&nbsp;Inv&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td>
+                <!-- <td *ngIf="data.Pending_PO == 'Supplier_Inv_Due'"><b>In&nbsp;Transit&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td> -->
+                <!-- <a routerLink="/supplier-revised-pi-list" style="color: #878787 !important;"></a> -->
+                <td *ngIf="data.Pending_PO == 'Supplier_Inv_Due'"><b><a routerLink="/Admin-Generate-Packing">In&nbsp;Transit&nbsp;Value:</a></b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td>
+                <td *ngIf="data.Pending_PO == 'Outstanding'"><b>Outstanding&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td>
+              </tr>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-12 text-left">
+              <p>
+                <span><small><b>PO No &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;</b> </small><small> -
+                    &nbsp;{{pro.pono_ref}} </small>
+                </span>
+              </p>
+              <p>
+                <span><small><b>PO Date </b> </small><small> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;- &nbsp;{{pro.podate |
+                    date:'dd-MM-yyyy'}}
+                  </small></span>
+              </p>
+              <div class="form-inline">
+                <div class="form-group text-left" *ngIf="loginUserData.role!='Admin'">
+                  <label for="pino"><b>PI No <sup>*</sup></b>&nbsp;&nbsp;&nbsp;</label>
+                  <input type="text" class="form-control w-68" id="pino" [(ngModel)]="pro.pino" name="pino" required
+                    #pino="ngModel" placeholder="Enter PI No" (keyup)="requote=true;approve=false">
+                </div>
+                <div class="form-group text-left" *ngIf="loginUserData.role!='Admin'">
+                  <label for="pidate"><b>PI Date <sup>*</sup></b>&nbsp;&nbsp;</label>
+                  <input type="date" class="form-control" id="pidate" name="pidate" [(ngModel)]="pro.pidate"
+                    #pidate="ngModel" required placeholder="Enter Cheque Date" [max]="today">
+                  <div [hidden]="pidate.valid || pidate.untouched" class="validation_msg">
+                    Cheque Date is required
+                  </div>
+                </div>
+                <p *ngIf="loginUserData.role=='Admin'">
+                  <span><small><b>PI No &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b> </small><small> -
+                      &nbsp;{{pro.pino}} </small>
+                  </span>
+                </p>
+                <p *ngIf="loginUserData.role=='Admin'">
+                  <span><small><b>PI Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b> </small><small> -
+                      &nbsp;{{pro.pidate}} </small>
+                  </span>
+                </p>
+                <p *ngIf="supplierdata.revised">
+                  <span><small><b>Revised &nbsp;&nbsp; &nbsp;&nbsp; </b> </small><small> -
+                      &nbsp;{{supplierdata.revised}} </small>
+                  </span>
+                </p>
+                <div class="form-group  text-left">
+                  <label for="currency"><b>Currency</b>&nbsp;&nbsp;</label>
+                  <select class="form-control" id="currency" [(ngModel)]="pro.currency" name="currency"
+                    [disabled]="loginUserData.role=='Admin'" (change)="onSelect(currency.value)" #currency="ngModel">
+                    <option [ngValue]="undefined" selected>Select Currency</option>
+                    <option class='option' *ngFor="let c of currencies" [ngValue]="c.currency">{{c.currency}}</option>
+                  </select>
+                  <div [hidden]="currency.valid ||  currency.untouched" class="validation_msg">
+                    <small class="form-text text-muted text-danger">Select Currency</small>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="form-group text-left">
+                <label for="pino"><b>PI No <sup>*</sup></b></label>
+                <input type="text" class="form-control" id="pino" [(ngModel)]="pro.pino" name="pino" required
+                  [disabled]="loginUserData.role=='Admin'" #pino="ngModel" placeholder="Enter PI No"
+                  (keyup)="requote=true;approve=false">
+                <input type="date" class="form-control" id="pidate" name="pidate" [(ngModel)]="pro.pidate"
+                  [disabled]="loginUserData.role=='Admin'" #pidate="ngModel" required placeholder="Enter Cheque Date"
+                  [max]="today">
+                <div [hidden]="pidate.valid || pidate.untouched" class="validation_msg">
+                  Cheque Date is required
+                </div>
+              </div> -->
+            </div>
+          </div>
+          <div class=" table-responsive mt_3" *ngIf="productdata.length>0">
+            <table class="table table-bordered table-condensed">
+              <thead>
+                <th>Product Name</th>
+                <th>Sub Category</th>
+                <th class="cellwidth9 text-right">P/C</th>
+                <th class="text-right cellwidth9" *ngIf="loginUserData.role=='Admin'">Avl Qty</th>
+                <th class="text-right cellwidth9" *ngIf="loginUserData.role=='Admin'">2 Months Sale</th>
+                <th class="text-right cellwidth9">Qty</th>
+                <th class="text-right cellwidth12">Price <small>({{productdata[0].ctype}})</small></th>
+                <th class="text-right cellwidth12">Amount <small>({{productdata[0].ctype}})</small></th>
+                <th class="text-center cellwidth9"> <small>Design Change</small></th>
+                <th class="text-center cellwidth9"> <small>Packing Change</small></th>
+                <th class="text-center">Options</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of productdata;let i=index"
+                  [ngClass]="{'modified':loginUserData.role=='Admin' && product.modified==1}">
+
+                  <td> <input type="text" class="form-control" readonly [(ngModel)]="product.product_name"
+                      #product_name="ngModel" [ngModelOptions]="{standalone: true}" title="{{product.product_name}}" /> </td>
+                  <td> <input type="text" class="form-control" readonly [(ngModel)]="product.sub_category"
+                      #sub_category="ngModel" [ngModelOptions]="{standalone: true}" title="{{product.sub_category}}" /> </td>
+                  <td>
+                    <input type="text" class="form-control text-right" readonly
+                      [(ngModel)]="product.productid.piecepercarton" [ngModelOptions]="{standalone: true}"
+                      #avl_balance="ngModel" />
+                  </td>
+                  <td *ngIf="loginUserData.role=='Admin'"><input type="text" class="form-control text-right" readonly
+                      [(ngModel)]="product.aviqty" [ngModelOptions]="{standalone: true}" #aviqty="ngModel" /></td>
+                  <td *ngIf="loginUserData.role=='Admin'"><input type="text" class="form-control text-right" readonly
+                      [(ngModel)]="product.mothsqty" [ngModelOptions]="{standalone: true}" #mothsqty="ngModel" /></td>
+                  <td><input type="text" class="form-control text-right" (keypress)="keynumber($event)"
+                      (keyup)="qtychange(product)" [(ngModel)]="product.qty" [ngModelOptions]="{standalone: true}"
+                      #qty="ngModel" /></td>
+                  <td><input type="text" class="form-control text-right" (keypress)="keyfloat($event)"
+                      (keyup)="qtychange(product)" [(ngModel)]="product.price" [ngModelOptions]="{standalone: true}"
+                      #purchase_price="ngModel" /></td>
+                  <td><input type="text" class="form-control text-right" (keypress)="keyfloat($event)"
+                      [ngModel]="product.amount | number : '1.2-2'" readonly [ngModelOptions]="{standalone: true}"
+                      #amount="ngModel" />
+                  </td>
+                  <td class="text-center mt-1" *ngIf="product.design==1"
+                    (click)="uploadImg('d',imgUrl+product.poqhid.image1,i)">
+                    <img src="{{product.poqhid.image1!=null?imgUrl+product.poqhid.image1:''}}" id="image1"
+                      onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                      alt="" style="width:50px;height: 50px;cursor:pointer">
+                    <p id="td1">{{product.poqhid.image1!=null?'':'Upload File'}}</p>
+                  </td>
+                  <td class="text-center mt-1" *ngIf="product.design==0">N</td>
+                  <td id="td2" class="text-center mt-1" *ngIf="product.packing==1"
+                    (click)="uploadImg('p',imgUrl+product.poqhid.images2,i)">
+                    <img src="{{product.poqhid.images2!=null?imgUrl+product.poqhid.images2:''}}" id="image2"
+                      onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                      alt="" style="width:50px;height: 50px;cursor:pointer">
+                    <p id="td2">{{product.poqhid.images2!=null?'':'Upload File'}}</p>
+                  </td>
+                  <td class="text-center mt-1" *ngIf="product.packing==0">N</td>
+                  <td class="text-center">
+                    <!-- <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="viewMore(product)">
+                      <i class="fa fa-eye" aria-hidden="true" title="View Ledger"></i>
+                    </span> -->
+                    <button type="button" class="btn btn-sm bg_blue" title="View Details" (click)="viewMore(product)">View</button>&nbsp;
+                  </td>
+                  <!-- <td class="text-center"><input type="checkbox"  name="vehicle1" checked disabled></td> -->
+                </tr>
+
+
+                <tr>
+                  <td colspan="5" *ngIf="loginUserData.role!='Admin'" class="text-right">
+                    <h5><b>Total ({{productdata[0].ctype}})</b></h5>
+                  </td>
+                  <td colspan="7" *ngIf="loginUserData.role=='Admin'" class="text-right">
+                    <h5><b>Total ({{productdata[0].ctype}})</b></h5>
+                  </td>
+                  <td><input type="text" class="form-control text-right" readonly
+                      [ngModel]="pro.poamount | number : '1.2-2'" name="poamount" #poamount="ngModel" /></td>
+
+                </tr>
+
+              </tbody>
+            </table>
+
+          </div>
+          <br>
+
+          <div class="row">
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label for="payment_terms">Payment Terms<sup>*</sup></label>
+                <input type="text" id="payment_terms" placeholder="Enter Payment Terms" required class="form-control"
+                  [(ngModel)]="pro.payment_terms" name="payment_terms" #payment_terms="ngModel">
+                <!-- <div>
+          <small class="form-text text-muted text-danger">Payment Terms</small>
+        </div> -->
+              </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label for="deliveryterms">Delivery Terms<sup>*</sup></label>
+                <!-- <input type="text" id="deliveryterms" class="form-control" required placeholder="Enter Delivery Terms"
+                  [(ngModel)]="pro.deliveryterms" name="deliveryterms" #deliveryterms="ngModel"> -->
+
+                <input autocomplete="off" type="text" class='select-option form-control' required
+                  [(ngModel)]="pro.deliveryterms" name="deliveryterm" #deliveryterms="ngModel" id="deliveryterm"
+                  list="deliveryterms" placeholder="Select Delivery Terms">
+                <datalist id="deliveryterms">
+                  <option [ngValue]="undefined" disabled selected>Select Delivery Terms</option>
+                  <option class='option' *ngFor="let d of deliverytermlist" [ngValue]="d.shoert">{{d.shoert}}</option>
+                </datalist>
+                <!-- <div>
+          <small class="form-text text-muted text-danger">Payment Terms</small>
+        </div> -->
+              </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label for="shipment">Shipment Port<sup>*</sup></label>
+
+
+                <input autocomplete="off" type="text" class='select-option form-control' required
+                  [(ngModel)]="pro.shipmentport" name="shipmentport" #shipmentport="ngModel" id="shipment"
+                  list="shipmentports" placeholder="Select Shipment Port">
+
+                <datalist id="shipmentports">
+                  <option [ngValue]="undefined" disabled selected>Select Shipment Port</option>
+                  <option class='option' *ngFor="let s of shipmentports" [ngValue]="s.portname">{{s.portname}}</option>
+                </datalist>
+                <!-- <input class="form-control" id="shipment" [(ngModel)]="pro.shipmentport" required name="shipmentport"
+                  #shipmentport="ngModel"> -->
+                <!-- <option [ngValue]="undefined"  selected>Select Shipment Port</option>
+                  <option class='option' *ngFor="let s of shipmentports" [ngValue]="s.portname">{{s.portname}}</option>
+                </select> -->
+              </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label for="discharge">Discharge Port<sup>*</sup></label>
+                <!-- <input class="form-control" id="discharge" [(ngModel)]="pro.dischargeport" name="dischargeport"
+                  #dischargeport="ngModel"> -->
+                <input autocomplete="off" type="text" class='select-option form-control' required
+                  [(ngModel)]="pro.dischargeport" name="dischargeport" #dischargeport="ngModel" id="discharge"
+                  list="dischargeports" placeholder="Select Discharge Port">
+                <datalist id="dischargeports">
+                  <option [ngValue]="undefined" disabled selected>Select Discharge Port</option>
+                  <option class='option' *ngFor="let d of dischargeports" [ngValue]="d.portname">{{d.portname}}</option>
+                </datalist>
+                <!-- </select> -->
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label for="deliverytime">Delivary time</label>
+                <input class="form-control" id="deliverytime" [(ngModel)]="pro.deliverytime" name="deliverytime"
+                  placeholder="Enter Delivery time" #deliverytime="ngModel">
+              </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label for="description">Note 1</label>
+                <textarea rows="2" id="description" placeholder="Enter Description" class="form-control"
+                  [(ngModel)]="pro.description" name="description" #description="ngModel"></textarea>
+              </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label for="description2">Note 2</label>
+                <textarea rows="2" id="description2" placeholder="Enter Description" class="form-control"
+                  [(ngModel)]="pro.description2" name="description2" #description2="ngModel"></textarea>
+              </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label for="description3">Note 3</label>
+                <textarea rows="2" id="description" placeholder="Enter Description" class="form-control"
+                  [(ngModel)]="pro.description3" name="description3" #description3="ngModel"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <div>
+                <div *ngIf="loginUserData.role=='Admin'">
+                  <label for="picopy"><b>Upload PI Copy</b></label>
+                  <input type="file" id="picopy" name="picopy" type="file" [(ngModel)]="pro.picopy" (change)="PICopyUpload($event)"
+                  title = "Upload PI Copy">
+                </div>
+                <!-- [disabled]="add_disable1(pro)" -->
+                <button button="submit" *ngIf="requote==true" [disabled]="add_disable1(pro)"
+                  class="btn btn-primary center-block bg_green">Requote</button>
+                <button button="submit" *ngIf="approve==true&&loginUserData.role=='Admin'"
+                  [disabled]="add_disable1(pro)" class="btn btn-primary center-block bg_green">Approve</button>
+                <button button="submit" *ngIf="approve==true&&loginUserData.role!='Admin'"
+                  [disabled]="add_disable1(pro)" class="btn btn-primary center-block bg_green">Submit</button>
+              </div>
+              <!-- <div>
+           
+            <button button="submit"  [disabled]="add_disable1(pro) && approve==true" class="btn btn-primary center-block bg_green">Approve</button>
+          </div> -->
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div *ngIf="this.requote==true" class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span *ngIf="loginUserData.role!='Admin'">PI Revised Sucessfully..!!</span>
+              <span *ngIf="loginUserData.role=='Admin'">PO Revised Sucessfully..!!</span>
+              <br>
+
+            </div>
+            <div *ngIf="this.approve==true" class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span *ngIf="loginUserData.role!='Admin'">PI Approved Sucessfully..!!</span>
+              <span *ngIf="loginUserData.role=='Admin'">PI Approved Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" (click)="updatemodal()" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="uploadModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Upload Image</h4>
+      </div>
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12 pad_15">
+            <div class="content_msg pad_15">
+              <div class="content_msg">
+                <div class="form-group selectwrap">
+                  <label for="exampleFormControlFile1">Select Image</label>
+                  <input type="file" class="form-control-file" id="file"
+                    (change)="getFileDetails($event)">
+                </div>
+              </div>
+              <div class="text-center content_msg pad_15">
+                <img id="preview" height="280" width="auto">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="uploadImg2()" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="viewproductModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center" style="color:white">Product Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table" *ngIf="productreviseddata?.length>0">
+            <thead>
+              <tr>
+                <th>S.no</th>
+                <th>Po No</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th class="text-right">Amount</th>
+                <!-- <th>Currency</th> -->
+                <th>Revised</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let view_d of this.productreviseddata | paginate: { itemsPerPage: 10, currentPage: page };let j=index">
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{j+1}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.POQHID}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.Qty}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.price | number:'1.2-2'}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="row_mar_0 text-right">
+                    <span class="f_wt_600 view_key">{{view_d.amount | number:'1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                  </div>
+                </td>
+                <!-- <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.CType}}</span>
+                  </div>
+                </td> -->
+                <td>
+                  <div class="row_mar_0">
+                    <span class="f_wt_600 view_key">{{view_d.revised==null?'0':view_d.revised}}</span>
+                  </div>
+                </td>
+
+
+              </tr>
+
+            </tbody>
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          </table>
+          <div *ngIf="productreviseddata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Do you want to Confirm</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="confirmmodal()" class="btn btn-success fr" data-dismiss="modal">Confirm</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>

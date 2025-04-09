@@ -1,0 +1,208 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container">
+  <div style="margin-top: 100px;" class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+
+
+
+
+    <p class="bread-crumb1">
+      <!-- <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+      </span>&nbsp;>&nbsp; -->
+
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+  
+      <!-- <span *ngIf="this.PUrl != 'A=OSD'">
+
+     
+      <span *ngIf="loginUserData.role!='Dealer'">
+        <a href="javascript.void(0)" routerLink="/Accounts Manager-OUTSTANDING POSITION" style="color: #878787 !important; ">Outstanding Position</a>
+      </span>&nbsp;>&nbsp;
+      </span> -->
+
+
+      <span *ngIf="this.PUrl == 'A=OSD'">
+        <a href="javascript.void(0)" routerLink="/outstanding-list" style="color: #878787 !important;">
+          Outstanding List</a>&nbsp;>&nbsp;
+      </span>
+
+      <span>Customer Ledger</span>
+    </p>
+    <div class="reg_form mar_b_30 mar_t_30 pad_t_10 row">
+      <div class="col-lg-4 col-md-4 col-sm-4" *ngIf="loginUserData.role != 'Dealer'">
+        <label for="giver_company_name" >Dealers Name
+          <sub class="txt_red f_size_25">*</sub>
+        </label>
+        <div >
+          <!-- =========================for marketing manager======without scss===================================== -->
+          <section>
+
+            <div *ngIf="loginUserData.role == 'Marketing Manager'">
+              <input autocomplete="off" class='select-option form-control' [(ngModel)]="ledger.giver_company_namee"
+                (change)="onChange(giver_company_namee.value)" required type="text" name="giver_company_namee"
+                #giver_company_namee="ngModel" id="giver_company_name" list="companynames"
+                placeholder="Select Company Name">
+              <datalist id="companynames">
+                <option [ngValue]="undefined" disabled selected>Company Name</option>
+                <option *ngFor="let gc of companylist" [ngValue]="gc.company_code">
+                  {{gc.business_name| titlecase}}-({{gc.company_code}})
+                </option>
+              </datalist>
+            </div>
+
+          </section>
+          <!-- ============================for other=================================== -->
+          <div *ngIf="loginUserData.role != 'Marketing Manager'">
+            <input autocomplete="off" class='select-option form-control' [(ngModel)]="ledger.giver_company_namee"
+              (change)="onChange(giver_company_namee.value)" required type="text" name="giver_company_namee"
+              #giver_company_namee="ngModel" id="giver_company_name" list="companynames"
+              placeholder="Select Company Name">
+            <datalist id="companynames">
+              <option [ngValue]="undefined" disabled selected>Company Name</option>
+              <option *ngFor="let gc of companylist" [ngValue]="gc.company_code">
+                {{gc.name| titlecase}}-({{gc.company_code}})
+              </option>
+            </datalist>
+          </div>
+          <!-- <div [hidden]="giver_company_name.valid ||  giver_company_name.untouched" class="validation_msg">
+        Company name is required
+      </div> -->
+        </div>  
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3">
+        <mat-form-field color="accent" class="mar_t_20">
+          <mat-label> Select From Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdates" name="fromdates" fromdates="ngModel"
+            readonly required>
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3">
+        <mat-form-field color="accent" class="mar_t_20">
+          <mat-label> Select To Date</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldates" name="tilldates" tilldates="ngModel"
+            readonly required>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2 color="primary"></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 mar_b_10">
+        <div class="mar_t_24">
+          <button type="submit" class="input_btn" (click)="getopeningbalancedetails()">Get Ledger</button>
+        </div>
+      </div>
+
+      <div class="reportstable row">
+        <div align="center" class="col-md-12">
+          <!-- <div *ngIf="nodata" style="margin:20px;">
+            <h4> No Data Available </h4>
+          </div> -->
+          <div class="row">
+            <div class="col-md-6 text-left">
+              <!-- <b>Total Debits  :  ₹ {{DrTotal.toLocaleString('en-IN')}}.00</b> -->
+            </div>
+            <div class="col-md-6 text-right">
+
+              <!-- <b *ngIf="obdetails[0].Amount!=null && obdetails[0].credit==true">Opening Balance : ₹
+                {{obdetails[0].Amounts.toLocaleString('en-IN') | number : '1.2-2'}} CR</b>
+              <b *ngIf="obdetails[0].Amount!=null && obdetails[0].credit==false">Opening Balance : ₹
+                {{obdetails[0].Amount.toLocaleString('en-IN') | number : '1.2-2'}} DR</b> -->
+              <b>Opening Balance : ₹ {{obdetails[0].Amount.toLocaleString('en-IN')}}&nbsp;{{credit1}}</b>
+              <!-- <b>Opening Balance : ₹
+                {{obdetails[0].Amount.toLocaleString('en-IN') | number : '1.2-2'}}&nbsp;{{obdetails[0].Amount
+                <0?'CR':'DR'}}>
+              </b> -->
+              <b *ngIf="obdetails[0].Amount==null">Opening Balance : ₹ 0</b>
+            </div>
+          </div>
+          <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+          </div>
+          <!-- <div *ngIf="dealerdetails.length > 1"> -->
+            <div [ngClass]="{ 'hidden': balanceTotal!=0}" *ngIf="dealerdetails.length<0">
+          <!-- <div *ngIf="dealerdetails?.length <= 0"> -->
+            <h4 [ngClass]="{ 'text-danger': balanceTotal==0}">No Data Available</h4>
+          </div>
+          <div class="table-responsive" *ngIf="balanceTotal!=0">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Invoice No/Transaction Id</th>
+                  <th>Invoice Date</th>
+                  <th>Type</th>
+                  <th class="text-right">DR</th>
+                  <th class="text-right">CR</th>
+                  <th class="text-right">Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let res of dealerdetails | paginate: { itemsPerPage: itemsPerPage, currentPage: page };let j = index">
+                  <td>{{10*(page-1)+(j+1)}}</td>
+                  <td style="text-align:left">{{res.inv_no}}</td>
+                  <td style="text-align:left">{{res.inv_date | date:'dd-MM-yyyy'}}</td>
+                  <td style="text-align:left" *ngIf="res.TType == 'RTGS/NET BANKING'">Paid</td>
+                  <td style="text-align:left" *ngIf="res.TType != 'RTGS/NET BANKING'">{{res.TType}}</td>
+                  <td class="text-right">₹ {{(math.round(res.DR)).toLocaleString('en-IN')}}.00</td>
+                  <td class="text-right">₹ {{(math.round(res.CR)).toLocaleString('en-IN')}}.00</td>
+                  <!-- <td  class="text-right">₹ {{(math.round(res.balance)).toLocaleString('en-IN')}}.00</td> -->
+                  <td *ngIf="res.credit==true" class="text-right">₹
+                    {{(math.round(res.balance)).toLocaleString('en-IN')}}.00 CR</td>
+                  <td *ngIf="res.credit==false" class="text-right">₹
+                    {{(math.round(res.balance)).toLocaleString('en-IN')}}.00 DR</td>
+                </tr>
+                <tr>
+
+                  <td colspan="3"></td>
+                  <td style="text-align:right">Total : </td>
+                  <td style="text-align:right">
+                    ₹ {{DrTotal.toLocaleString('en-IN')}}.00
+                  </td>
+                  <td style="text-align:right">
+                    ₹ {{CrTotal.toLocaleString('en-IN')}}.00
+                  </td>
+                  <td *ngIf="credit==true && balanceTotal!=0" style="text-align:right">
+                    ₹ {{balanceTotal.toLocaleString('en-IN')}}.00 CR
+                  </td>
+                  <td *ngIf="credit==false && balanceTotal!=0" style="text-align:right">
+                    ₹ {{balanceTotal.toLocaleString('en-IN')}}.00 DR
+                  </td>
+                  <td *ngIf="balanceTotal==0" style="text-align:right">
+                    <!-- ₹ {{obdetails[0].Amount?obdetails[0].Amount.toLocaleString('en-IN'):0}}.00 -->
+                    ₹ {{balanceTotal.toLocaleString('en-IN')}}.00
+                  </td>
+
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="balanceTotal!=0">
+            <div class="col-md-12 form-group">
+              <button class="btn btn-primary" style="float:right" type="button" (click)="printreport()">Print</button>
+            </div>
+            <br>
+          </div>
+
+          <div *ngIf="dealerdetails.length>0">
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

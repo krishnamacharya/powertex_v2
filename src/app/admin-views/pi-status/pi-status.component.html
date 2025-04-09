@@ -1,0 +1,94 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div> 
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>PI Status</span>
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>PI Status</h4>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-md-3">
+        <div class="form-group">
+          <input type="text" class="form-control" [(ngModel)]="pro" placeholder="Enter PI Number">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="input_btn" (click)="getdata()">Get Data</button>
+      </div>
+    </div>
+
+    <div>
+      <div *ngIf="orders">
+        <div class="row" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <!-- <th class="text-left">Supplier Name</th> -->
+                    <th class="text-left">Product Name</th>
+                    <th class="text-left">PI No</th>
+                    <th class="text-left">PI Date</th>
+                    <th class="text-left">PI Qty</th>
+                    <th class="text-left">Inv Qty</th>
+                    <th class="text-left">Invoice Number</th>
+                    <th class="text-left">Invoice Date</th>
+                    <th class="text-left">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <!-- <td class="text-left">{{data.business_name}}</td> -->
+                    <td class="text-left">{{data.modelno}} </td>
+                    <td class="text-left">{{data.pi_no}} </td>
+                    <td class="text-left">{{data.pidate}} </td>
+                    <td class="text-left">{{data.QTY}} </td>
+                    <td class="text-left">{{data.invqty?data.invqty:'--'}} </td>
+                    <td class="text-left">{{data.inv_no?data.inv_no:'--'}} </td>
+                    <td class="text-left">{{data.invdate?data.invdate:'--'}} </td>
+                    <td class="text-left">{{data.status1}} </td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

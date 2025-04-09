@@ -1,0 +1,41 @@
+.track_btn {
+    color:#fff;
+    border:1px solid #0fa497;
+    background-color: #0fa497;
+    border-radius:4px;
+}
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+    border-radius: 5px;
+}
+table tbody tr td {
+    text-align: center;
+}
+table thead tr th {
+    text-align: center;
+    font-family: sans-serif;
+}
+table {
+    border: 1px solid #d3d3d361;
+}
+// tbody {
+//     display:block;
+//     height:50px;
+//     overflow:auto;
+// }
+.offertabwrap{
+    padding:0 !important;
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) {
+.tabwraper{
+    .pad_10{
+    margin: 0 !important;
+    padding:5px !important;
+    }
+}
+}

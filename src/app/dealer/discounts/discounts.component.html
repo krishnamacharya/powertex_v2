@@ -1,0 +1,182 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+    <h3 class="shopee_name">
+      <span> {{loginUserData.content}}</span>
+    </h3>
+    <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Dealers List</span>
+  </p>
+
+  <!-- <div class="row bg-theme dash_status" style="margin:0px">
+    <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':PENhidden == true}"
+        (click)="pen()">Pending Dealers</a></div>
+
+    <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':AChidden == true}"
+        (click)="ac()">Active Dealers</a></div>
+
+        <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':INhidden == true}"
+          (click)="in()">Inactive Dealers</a></div>
+
+  </div> -->
+  <div class="reg_form mar_b_30 pad_15">
+
+
+    <div class="row" style="margin:0px">
+      <div>
+        <div>
+          <div class="row" style="padding: 10px;" >
+            <div class="row mar_b_15" style="margin-left:8px;margin-right:8px;">
+              <div class="col-sm-12">
+                <div class="fl">
+                  <h4>Dealer Details</h4>
+                </div>
+                <div class="fr" *ngIf="discounts?.length>0">
+                  <input type="text" placeholder="Search Dealer" [(ngModel)]="searchText" class="search_style">
+                  <button type="submit" class="input_btn">Search</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 mar_t_5" *ngIf="discounts?.length>0">
+
+              <div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <!-- <th>Dealer Code</th> -->
+                      <th>Dealer Name</th>
+                     
+                      <th>Discount </th>
+                      <!-- <th>Status</th> -->
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let pd of discounts|filter:searchText| paginate: { itemsPerPage: 10, currentPage: page }; let i=index;">
+                     <td>{{10*(page-1)+(i+1)}}</td>
+                      <!-- <td>{{pd.company_code}}</td> -->
+                      <td>{{pd.business_name}}</td>
+                      
+                      <td>{{pd.discount}}%</td>
+                      <!-- <td>{{pd.status}}</td> -->
+                      <td>
+                         <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="viewInfo(pd)">
+                        <i class="fa fa-eye" aria-hidden="true" title="View More"></i>
+                      </span>
+                    </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="discounts?.length<=0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="viewpoModal1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header view_header v_h">
+        <button type="button" class="close1" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title-col-md-12" align="center">Dealer Details</h4>
+      </div>
+      <div class="modal-body view_body">
+        <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+          <div class="col-md-7 col-lg-7 col-sm-12 col-xs-12">
+            <div class="col-md-5 col-lg-5 col-sm-5 col-xs-5">
+              <p class="view_headings" >Business Name</p>
+            </div>
+            <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7">
+              <p class="mar_b_15" >
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{dealerdata.business_name}}</span>
+              </p>
+            </div>
+            <div class="col-md-5 col-lg-5 col-sm-5 col-xs-5">
+              <p class="view_headings" >Address</p>
+            </div>
+            <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7">
+              <p class="mar_b_15" >
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{dealerdata.address1}}</span>
+              </p>
+            </div>
+            <div class="col-md-5 col-lg-5 col-sm-5 col-xs-5">
+              <p class="view_headings" >City</p>
+            </div>
+            <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7">
+               <p class="mar_b_15" >
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{dealerdata.city}}</span>
+              </p>
+            </div>
+            <div class="col-md-5 col-lg-5 col-sm-5 col-xs-5">
+              <p class="view_headings" >Mobile</p>
+            </div>
+            <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7">
+              <p class="mar_b_15" >
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{dealerdata.mobile}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="col-md-5 col-lg-5 col-sm-12 col-xs-12">
+            <div class="col-md-5 col-lg-5 col-sm-5 col-xs-5">
+              
+              <p class="view_headings" >GST IN</p>
+              <p class="view_headings" >Credit Limit</p>
+              <p class="view_headings" >Credit Period</p>
+              <p class="view_headings" >Outstanding Amount</p>
+            </div>
+            <div class="col-md-7 col-lg-7 col-sm-7 col-xs-7">
+             
+              <p class="mar_b_15" >
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{dealerdata.gst}}</span>
+              </p>
+              <p class="mar_b_15" >
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{dealerdata.credit_limit}}</span>
+              </p>
+              <p class="mar_b_15" >
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{dealerdata.credit_period}}</span>
+              </p>
+              <p class="mar_b_15" >
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{dealerdata.outstanding_amount}}</span>
+              </p>
+              
+              
+            </div>
+          </div>
+          </div>
+         </div>
+      </div>
+    
+    </div>
+  </div>
+</div>

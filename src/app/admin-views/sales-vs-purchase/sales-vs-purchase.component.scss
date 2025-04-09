@@ -1,0 +1,38 @@
+html, body, #app {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+html {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+body {
+  padding: 1rem;
+  overflow: auto;
+}
+.example-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#myGrid {
+  flex: 1 1 0px;
+  width: 100%;
+}
+
+table, th, td, tr{
+  border: 1px solid #DDDDDD !important;
+  border-collapse: collapse !important;
+}
+.reg_form {
+  overflow-x: scroll !important;
+}

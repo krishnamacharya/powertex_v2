@@ -1,0 +1,97 @@
+<div class="row mar_b_15" *ngIf="internalUsersList.length>0">
+  <div class="col-sm-12">
+    <div class="fl">
+      <h4>Users</h4>
+    </div>
+    <div class="fr">
+      <input type="text" [(ngModel)]="searchText" placeholder="Search Product" class="search_style">
+      <button type="submit" class="input_btn">Search</button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div *ngIf="(internalUsersList | filter :searchText) as internalUsersList">
+    <div class="row">
+      <div class="col-sm-12 list" *ngIf="internalUsersList.length>0">
+        <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <!-- <th>User ID</th> -->
+              <th>User Name</th>
+              <!-- <th>Last Name</th> -->
+              <th>Email</th>
+              <th>Mobile No</th>
+              <th>Designation</th>
+              <th>Company</th>
+              <!-- <th>User Type</th>
+          <th>Status</th> -->
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of internalUsersList | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+              <td>{{10*(p-1)+(i+1)}}</td>
+              <!-- <td>{{reg.user_id}}</td> -->
+              <td>{{data.first_name | titlecase}} {{data.last_name | titlecase}}</td>
+              <!-- <td>{{data.last_name}}</td> -->
+              <td>{{data.email}}</td>
+              <td>{{data.mobile}}</td>
+              <td>{{data.designation}}</td>
+              <td>{{data.company_code}}</td>
+              <td>
+                <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                  <i class="fa fa-eye" aria-hidden="true" title="View More" (click)="viewMore(data)"></i>
+                </span>
+                <span class="f_size_15 red_clr padd_right_10 cursor_pointer" (click)="reject(data)">
+                  <i class="fa fa-close" aria-hidden="true" title="Reject"></i>
+                </span>
+                <span class="f_size_15 orange_clr padd_right_10 cursor_pointer" (click)="editInfo(data)">
+                  <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <div *ngIf="internalUsersList.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/emptyicon.png" />
+            <span class="nodata_txt">No Data is Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+
+
+<!-- Modal pop-up start here -->
+<div id="confirmModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header view_header">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center">Delete</h4>
+      </div>
+      <div class="modal-body text-center">
+        <p>Are you Sure?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" (click)="confirm()">Yes</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal pop-up end here -->
+
+
+<app-view-more></app-view-more>

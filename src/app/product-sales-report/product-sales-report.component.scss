@@ -1,0 +1,18 @@
+// .link-txt:hover{
+//     color: blue;
+// }
+.busname {
+    display: none;
+  }
+  .link-txt {
+    background-color: #d4effa;
+  }
+  
+  .link-txt:hover {
+    background-color: #a6e3dd;
+    cursor: pointer;
+  }
+  #chart {
+    height: 500px;
+    width: 1200px;
+}

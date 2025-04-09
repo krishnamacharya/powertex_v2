@@ -1,0 +1,177 @@
+<div class="container pad_t_5per">
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span *ngIf="loginUserData.role=='Admin'">Revised PO List</span>
+    <span *ngIf="loginUserData.role=='supplier'">Pending PO List</span>
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="col-sm-2 fl">
+          <h4 *ngIf="loginUserData.role=='Admin'">Revised&nbsp;PO&nbsp;List</h4>
+          <h4 *ngIf="loginUserData.role=='supplier'">Pending&nbsp;PO&nbsp;List</h4>
+        </div>
+        <div class="col-sm-3">
+          <tr *ngFor="let data of pendingdata">
+            <!-- <td *ngIf="data.Pending_PO == 'Supplier_PO'"><b>Pending&nbsp;PI&nbsp;Val:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td> -->
+            <!-- <td *ngIf="data.Pending_PO == 'Supplier_Inv_Due'"><b>In&nbsp;Transit&nbsp;Val:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td> -->
+          </tr>
+        </div>
+        <div class="col-sm-3">
+          <tr *ngFor="let data of pendingdata">
+            <td *ngIf="data.Pending_PO == 'Outstanding'"><b>Outstanding&nbsp;Val:</b>&nbsp;{{data.Amount | number :
+              '1.2-2'}}&nbsp;({{data.cc}})</td>
+          </tr>
+        </div>
+        <!-- <div class="col-sm-4 row fr" *ngIf="orders.length>0"> -->
+        <div class="fr" *ngIf="orders.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div *ngIf="orders">
+        <div class="row" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th *ngIf="loginUserData.role=='Admin'" class="customwidth">Business Name</th>
+                    <th class="text-left">PO No</th>
+                    <th class="text-center">PO Date</th>
+                    <th class="text-center" *ngIf="loginUserData.role=='Admin'">PI No</th>
+                    <th class="text-right" *ngIf="loginUserData.role=='Admin'">PI Date</th>
+                    <th class="text-right">PO Amount </th>
+                    <th class="text-right">PI Amount </th>
+                    <!-- <th>PI No</th> -->
+                    <th>RSD</th>
+                    <th class="text-right">Items</th>
+                    <th class="text-center" style="width: 126px;">Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td *ngIf="loginUserData.role=='Admin'">{{data.supplierid.userprofiledtl.business_name}}
+                    </td>
+                    <td class="text-left">{{data.pono_ref}}</td>
+                    <td class="text-center">{{data.podate}}</td>
+                    <td *ngIf="loginUserData.role=='Admin'">{{data.pi_no}}</td>
+                    <td class="text-right" *ngIf="loginUserData.role=='Admin'">{{data.pidate | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.poamount | number : '1.2-2'}}&nbsp;({{data.details[0].ctype}})</td>
+                    <td class="text-right">{{data.poamount | number : '1.2-2'}}&nbsp;({{data.details[0].ctype}})</td>
+                    <!-- <td *ngIf="data.description">{{data.description}}</td>
+                    <td *ngIf="!data.description">-</td> -->
+                    <!-- <td>{{data.pi_no}}</td> -->
+                    <td>{{data.revised!=null?data.revised:''}}</td>
+                    <td class="text-right">{{data.noofitems}}</td>
+                    <td class="text-center">
+                      <!-- <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-edit" aria-hidden="true" title="View More"
+                          (click)="viewMore(data,data.revised)"></i>
+                      </span> -->
+                      <button type="button" class="btn btn-sm bg_blue"
+                        (click)="viewMore(data,data.revised)">Edit</button>&nbsp;
+                      <!-- <span class="f_size_15 red_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-close" aria-hidden="true" title="Reject" (click)="confirm(data)"></i>
+                      </span> -->
+                      <button type="button" class="btn btn-sm bg_red" (click)="confirm(data)">Cancel</button>
+                      <!-- <span class="f_size_15 orange_clr padd_right_10 cursor_pointer" (click)="editInfo(data)">
+                  <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                </span> -->
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="text-center">Total</td>
+                    <td class="text-right">{{this.totpoamount | number : '1.2-2'}}</td>
+                    <td colspan="5"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div id="reject" class="modal fade" role="dialog"> data-toggle="modal" data-target="#reject"
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header alert_heading">
+          <button type="button" class="close" data-dismiss="modal"></button>
+          <h4 class="modal-title text-center"></h4>
+          <div class="right_mark">
+            <i class="fa fa-question" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="modal-body text-center">
+          <h4>Are you sure want to Cancel ?</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" (click)="reject(data)" data-dismiss="modal">Yes</button>
+          <button type="reset" class="btn btn-danger" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="modal fade" id="reject" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header alert_heading">
+          <button type="button" class="close" data-dismiss="modal"></button>
+          <h4 class="modal-title text-center"></h4>
+          <!-- <div class="right_mark">
+                <i class="fa fa-question" aria-hidden="true"></i>
+              </div> -->
+        </div>
+
+        <div class="modal-body text-center">
+          <h4>Do you want to cancel ?</h4>
+          <br>
+          <br>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="reject()" class="btn btn-success brdr_radius_50   fr">Confirm
+          </button>
+          <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+            Cancel
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

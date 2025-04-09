@@ -1,0 +1,243 @@
+<div class="container pad_t_5per">
+    <p class="bread-crumb1">
+        <span>
+            <a href="javascript.void(0)" routerLink="/dashboard" style="
+                    color: #878787 !important;
+                ">Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span><a href="javascript.void(0)" routerLink="/Accounts Manager-INVOICE"
+                style="color: #878787 !important;">Invoice</a></span>
+        &nbsp;>&nbsp; <span>Invoice-Print</span>
+    </p>
+
+    <div class="total_invoice_page" style="margin-bottom: 20px;" id="printSectionId">
+        <h3 style="padding-bottom: 10px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;">Invoice
+        </h3>
+        <div class="invoce_address">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 style="text-align: center;font-size: 20px;font-weight: 700;">
+                        {{loginUserData.company_address.online_display_name}}
+                    </h2>
+                </div>
+            </div>
+            <div class="row" *ngIf="loginUserData.company_address; let data">
+                <div class="col-xs-12" style="text-align:center;">
+                    <p class="company_address" style="font-size: 13px;">
+                        <span> {{data.address1}},</span>
+                        <br>
+                        <span>{{data.address2}},</span>
+                        <br>
+                        <span>{{data.city}},</span>
+                        <br>
+                        <span>{{data.state}},</span>
+                    </p>
+                </div>
+                <div class="col-xs-12 company_address" style="font-size: 11px;text-align: center;">
+                    <span>CITY </span>
+                    <span style="font-weight: normal;">: {{data.city}}</span>,&nbsp;&nbsp;
+                    <span>STATE </span>
+                    <span style="font-weight: normal;">: {{data.state}}</span>,&nbsp;&nbsp;
+                    <span>GSTIN </span>
+                    <span style="font-weight: normal;">: {{data.gstin}}</span>,&nbsp;&nbsp;
+                    <span>PAN </span>
+                    <span style="font-weight: normal;">: {{data.pan}}</span>,&nbsp;&nbsp;
+                    <span>CIN </span>
+                    <span style="font-weight: normal;">: {{data.cin}}</span>.
+                </div>
+            </div>
+            <div class="hr_line marg_t_b_15" style="margin-bottom: 0 !important;">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="company_address" style="font-size: 14px;text-align: center;">
+                            <h4>INVOICE</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hr_line_botm">
+                <div class="row">
+                    <div class="col-md-6 company_address" style="line-height: 1.9;float:left;">
+                        <div class="txt_l">
+                            <h4>Shipping Address</h4>
+                        </div>
+                        <div class="txt_l fnt_size_12" *ngIf="shipingAddress.business_name">
+                            <span>{{shipingAddress.business_name}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{shipingAddress.address1}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{shipingAddress.address2}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>{{shipingAddress.city}}, {{shipingAddress.state}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Email ID </span>
+                            <span> : {{shipingAddress.email}},</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span>Mobile &nbsp;</span>
+                            <span> : {{shipingAddress.mobile}}.</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 company_address" style="line-height: 1.5;float:right;">
+                        <div class="txt_l fnt_size_12">
+                            <span style="font-weight: normal;">Invoice No </span>
+                            <span> : {{invoiceData.Invoice}}</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span style="font-weight: normal;">Invoice Date </span>
+                            <span> : {{invoiceData.data.json_hdr.inv_date | date:'dd-MM-yyyy' }}</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span style="font-weight: normal;">Due On :</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span style="font-weight: normal;">Order No </span>
+                            <span> : {{invoiceData.data.json_hdr.po_no }}</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span style="font-weight: normal;">Order Dt </span>
+                            <span> : {{invoiceData.data.json_hdr.po_date | date:'dd-MM-yyyy' }}</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span style="font-weight: normal;">Transport :</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span style="font-weight: normal;">Vehicle :</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span style="font-weight: normal;">L.R. No :</span>
+                        </div>
+                        <div class="txt_l fnt_size_12">
+                            <span style="font-weight: normal;">Total CTN Qty :</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive" style="margin-top: 15px;">
+                <table class="table table-bordered table-striped pending_order printTable"
+                    style="margin-bottom: 0px !important;">
+                    <thead>
+                        <tr>
+                            <th class="txt_centr" style="font-size: 11px;">S.No</th>
+                            <th class="txt_left" style="font-size: 11px;">Product Name</th>
+                            <th class="txt_left" style="font-size: 11px;">Model Number</th>
+                            <th class="txt_left" style="font-size: 11px;">Sku No.</th>
+                            <!-- <th class="txt_right" style="font-size: 11px;">Piece per corton</th> -->
+                            <th class="txt_right" style="font-size: 11px;">
+                                MRP({{invoiceData.data.json_hdr.currency_code }})</th>
+                            <th class="txt_right" style="font-size: 11px;">Discount(%)</th>
+                            <th class="txt_right" style="font-size: 11px;">Net
+                                Price({{invoiceData.data.json_hdr.currency_code }})</th>
+                            <th class="txt_right" style="font-size: 11px;">Qty</th>
+
+                            <!-- <th class="txt_right" style="font-size: 11px;">Tax Amount(&#8377;)</th> -->
+                            <th class="txt_right" style="font-size: 11px;">
+                                Total({{invoiceData.data.json_hdr.currency_code }})</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of invoiceData.data.json_dtl; let i=index">
+                            <td class="txt_centr">{{i+1}}</td>
+                            <td class="txt_left">{{item.product_name}}</td>
+                            <td class="txt_left">{{item.modelno}}</td>
+                            <td class="txt_left">{{item.sku_no}}</td>
+                            <!-- <td class="txt_right">{{item.piecepercarton}}</td> -->
+                            <td class="txt_right">{{item.mrp| currency : '&nbsp;'}}</td>
+                            <td class="txt_right">{{item.discount_eff}}</td>
+                            <td class="txt_right">{{item.net_price | currency : '&nbsp;'}}</td>
+                            <td class="txt_right">{{item.inv_qty}}</td>
+
+                            <!-- <td class="txt_right">{{item.gst_amount | currency : '&nbsp;'}}</td> -->
+                            <td class="txt_right">{{item.tot_value | currency : '&nbsp;'}}</td>
+                        </tr>
+                        <!-- <tr>
+                                  <td colspan="10"></td>
+                                  
+                                  <td class="no-line txt_right"><span
+                                          style="color:#000;"></span>{{grand_total | currency:'&#8377;'}}</td>
+                              </tr> -->
+                        <!-- <tr *ngIf="loginUserData.company_address.state == shipingAddress.state">
+                                     
+                                  <td colspan="9" class="no-line"> </td>
+                                 
+                                  <td class="no-line txt_right">
+                                      <strong>CGST</strong>
+                                  </td>
+                                  <td class="no-line txt_right"><span
+                                          style="color:#000;"></span>{{taxAmount/2 | currency :'&#8377;'}}</td>
+
+                              </tr> -->
+                        <!-- <tr *ngIf="loginUserData.company_address.state == shipingAddress.state">
+                                  <td colspan="9" class="no-line"> </td>
+                                  <td class="no-line txt_right">
+                                      <strong>SGST</strong>
+                                  </td>
+                                  <td class="no-line txt_right"><span
+                                          style="color:#000;"></span>{{taxAmount/2 | currency : '&#8377;'}}</td>
+
+                              </tr> -->
+                        <!-- <tr *ngIf="loginUserData.company_address.state != shipingAddress.state">
+                                  <td colspan="9" class="no-line"> </td>
+                                  <td class="no-line txt_right">
+                                      <strong>IGST</strong>
+                                  </td>
+                                  <td class="no-line txt_right"><span
+                                          style="color:#000;"></span>{{taxAmount | currency : '&#8377;'}}</td>
+
+                              </tr> -->
+                        <tr>
+                            <td colspan="7" class="no-line"> </td>
+                            <td class="no-line txt_right">
+                                <strong>NET AMOUNT</strong>
+                            </td>
+                            <td class="no-line txt_right"><span style="color:#000;"></span>{{grand_total |
+                                currency :invoiceData.data.json_hdr.currency_code}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h5>
+                        <strong class="theme_color fnt_size_12">Declaration</strong>
+                    </h5>
+                    <p style="font-size:11px;">We Declare that this invoice shows the actual price of the goods
+                        described above and that all particulars
+                        are true and correct.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <h5>
+                        <strong class="theme_color fnt_size_12">Terms & Conditions :</strong>
+                    </h5>
+                    <p style="font-size:10px;">1. We are not responsible for any Breakage/Damage/Shortage/Leakage in
+                        transist.</p>
+                    <p style="font-size:10px;">2. Our responsiblity ceases when the goods are delivered to the carrier.
+                    </p>
+                    <p style="font-size:10px;">3. Goods once sold will not be taken back.</p>
+                    <p style="font-size:10px;">4. Interest &#64;12% p.a. will be charged, if invoice is not paid on or
+                        before due date.</p>
+                    <p style="font-size:10px;">5. All Disputes are Subject to Hyderabad Jurisdiction.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="text-align: center;">
+                    <h6>
+                        <strong> *This is a computer generated invoice and does not require a physical signature.
+                        </strong>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="text-align: center;padding-bottom: 15px;">
+        <button type="submit" class="btn btn-success" (click)="printInvoice()">Print Invoice</button>
+        <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">Cancel</button>
+    </div>
+</div>

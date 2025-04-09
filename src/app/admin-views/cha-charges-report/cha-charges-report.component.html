@@ -1,0 +1,139 @@
+<!-- <div class="container pad_t_5per"> -->
+<div class="container-fluid">
+
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-md-12 form-group">
+        <div class="pull-left">
+          <h4>CHA Charges Report</h4>
+        </div>
+        <div class="pull-right">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+          class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+          </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label for="dischargeport">Port</label>
+          <select class="form-control" id="dischargeport" [(ngModel)]="dischargeprt" required
+            name="dischargeport" #dischargeport="ngModel">
+            <option [ngValue]="undefined" selected>Select Port</option>
+            <option class='option' *ngFor="let d of dischargeports" [ngValue]="d.portname">{{d.portname}}</option>
+          </select>
+        </div>
+      </div>
+      <!-- -- -->
+      <div class="col-md-2">
+        <div class="form-group">
+          <label for="particulrs">Category</label>
+          <select class="form-control" id="particulrs" [(ngModel)]="Category" required
+            name="particulrs" #particulrs="ngModel">
+            <option [ngValue]="undefined" selected>Select Port</option>
+            <option class='option' *ngFor="let d of particulars1" [ngValue]="d.particulars">{{d.particulars}}</option>
+          </select>
+        </div>
+      </div>
+      <!-- -- -->
+          <div class="col-md-2">
+            <mat-form-field color="accent">
+              <mat-label> Select From Date</mat-label>
+              <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" required  [max]="maxdate">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 selecttodate">
+            <mat-form-field color="accent">
+              <mat-label> Select To Date</mat-label>
+              <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" required [max]="maxdate">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2 color="primary"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="input_btn" (click)="getdata()">Get Data</button>
+          </div>
+    </div>
+    <div>
+      <div *ngIf="orders" id="printsuppndng">
+        <div class="row busname text-center">
+          <h3 class="shopee_name">
+            <span>{{this.dischargeprt}} CHA Charges Report</span>
+            <br>
+          </h3>
+        </div>
+        <div class="row" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders1.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th class="text-left">Business Name</th>
+                    <th class="text-left">Invoice No</th>
+                    <th class="text-right">Invoice Amount</th>
+                    <th class="text-left">BL No</th>
+                    <th class="text-center">Ctns</th>
+                    <!-- <th class="text-right">Invoice Date</th> -->
+                    <th class="text-right"  *ngIf="this.Cat">{{this.Cat}} <br>Non-Receipted</th>
+                    <th class="text-right"  *ngIf="this.Cat">{{this.Cat}} <br>Receipted</th>
+                    <th class="text-right" *ngIf="!this.Cat">Cha Inv Amt.</th>
+                    <th class="text-right" *ngIf="!this.Cat">DischargePort</th>
+                    <th class="text-center page" *ngIf="!this.Cat">Options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders | paginate: { id: 'pagination3',itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{(i+1)}}</td>
+                    <td class="text-left">{{data.business_name}}</td>
+                    <td class="text-left">{{data.inv_no}}</td>
+                    <td class="text-right">{{data.POAmount | number : '1.2-2'}}&nbsp;({{data.currency}})</td>
+                    <td class="text-left">{{data.bl_no}}</td>
+                    <td class="text-center">{{data.ctns}}</td>
+                    <!-- <td class="text-right">{{data.Date | date:'dd-MM-yyyy'}}</td> -->
+                    <td class="text-right"  *ngIf="this.Cat">{{data.nonreceipted}}</td>
+                    <td class="text-right"  *ngIf="this.Cat">{{data.receipted}}</td>
+                    <td class="text-right" *ngIf="!this.Cat && data.chainvamount">&#x20B9;&nbsp;{{data.chainvamount | number : '1.2-2'}}</td>
+                    <td class="text-right" *ngIf="!this.Cat && !data.chainvamount">&#x20B9;&nbsp;0.00</td>
+                    <td class="text-right" *ngIf="!this.Cat">{{data.dischargeport}}</td>
+                    <td class="text-center page" *ngIf="!this.Cat">
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer"> 
+                        <i class="fa fa-print" aria-hidden="true" title="Print Details"
+                          (click)="printdatadetail(data.INVQHID)"></i>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr *ngIf="orders.length>0">
+                    <td class="text-right" colspan="3"><span><b>Totals</b></span></td>
+                    <td class="text-right"><span><b>{{this.totalinvoice | number : '1.2-2'}}</b></span></td>
+                    <td></td>
+                    <td class="text-center"><span><b>{{this.totalCtns}}</b></span></td>
+                    <td class="text-right" *ngIf="!this.Cat"><span><b>{{this.ToTchaInv | number : '1.2-2'}}</b></span></td>
+                    <td class="text-right" *ngIf="this.Cat"><span><b>{{this.ToTnonreceipted | number : '1.2-2'}}</b></span></td>
+                    <td class="text-right" *ngIf="this.Cat"><span><b>{{this.ToTreceipted | number : '1.2-2'}}</b></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12" *ngIf="orders.length>0" id="printPageButton">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton" (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls id="pagination3" (pageChange)="p = $event" class="page"></pagination-controls> 
+            </div>
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

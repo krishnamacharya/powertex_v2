@@ -1,0 +1,110 @@
+.<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>
+    <span>&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Admin-Cha-Reports" style="color: #878787 !important;">Cha-Reports&nbsp;>&nbsp;Duty Paid Report</a>
+    </span>
+    &nbsp;>&nbsp;
+    <span>Print</span>					
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-md-12 form-group">
+        <div class="pull-left">
+          <h4>Duty Paid Report</h4>
+        </div>
+      </div>
+      <div class="pull-right"  *ngIf="orders>0">
+        <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+        class="search_style">
+      <button type="submit" class="input_btn">Search</button>
+        </div>
+    </div>
+    <div>
+      <div *ngIf="orders" id="printsuppndng">
+        <div class="row busname text-center">
+
+          <h3 class="shopee_name">
+            <span> {{loginUserData.company_address.companyname}}</span>
+          </h3>
+          <hr>
+          <h3 class="shopee_name">
+            <span>{{this.dischargeprt}} Duty Paid Report</span>
+            <br>
+          </h3>
+        </div>
+        <div class="row" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th class="text-left">Business Name</th>
+                    <th class="text-left">Invoice No</th>
+                    <th class="text-right">Invoice Amount</th>
+                    <th class="text-left">BL No</th>
+                    <th class="text-center">Ctns</th>
+                    <!-- <th class="text-right">Invoice Date</th> -->
+                    <th class="text-right">Exchange Rate</th>
+                    <th class="text-right">Ass.value </th>
+                    <th class="text-right">Duty Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders; let i=index">
+                    <td>{{(i+1)}}</td>
+                    <td class="text-left">{{data.business_name}}</td>
+                    <td class="text-left">{{data.inv_no}}</td>
+                    <td class="text-right">{{data.POAmount | number : '1.2-2'}}&nbsp;({{data.ctype}})</td>
+                    <td class="text-left">{{data.bl_no}}</td>
+                    <td class="text-center">{{data.ctns}}</td>
+                    <!-- <td class="text-right">{{data.Date | date:'dd-MM-yyyy'}}</td> -->
+                    <td class="text-right" >{{data.exerate}}</td>
+                    <td class="text-right" >{{data.asses_val}}</td>
+                    <td class="text-right" >&#x20B9;&nbsp;{{data.duty_approx | number : '1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-right" colspan="3"><span><b>Totals</b></span></td>
+                    <td class="text-right"><span><b>{{this.totalinvoice | number : '1.2-2'}}</b></span></td>
+                    <td></td>
+                    <td class="text-center"><span><b>{{this.totalCtns}}</b></span></td>
+                    <td></td>
+                    <td class="text-right"><span><b>{{this.ToTAssV | number : '1.2-2'}}</b></span></td>
+                    <td class="text-right"><span><b>{{this.ToTDuty | number : '1.2-2'}}</b></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+        <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+        </button>
+        <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Admin-Cha-Reports">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

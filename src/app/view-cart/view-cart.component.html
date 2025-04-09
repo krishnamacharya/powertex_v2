@@ -1,0 +1,469 @@
+<div *ngIf="carItems.length > 0">
+    <div>
+      <div class="container pad_t_5per pad_b_5per">
+        <p class="bread-crumb1">
+          <span>
+            <a href="javascript.void(0)" routerLink="/home" style="
+            color: #878787 !important;
+        ">Home</a>
+          </span>&nbsp;>&nbsp;
+          <span>Cart</span>
+        </p>
+      <div class="row">
+  <div class="col-xs-12 col-md-8">
+    <div class="reg_form pad_15 mar_b_30">
+      <div class="row">
+        <div class="col-sm-12 head_header">
+          <div>
+            <h4>MY CART
+              <span *ngIf="carItems.length>0">({{carItems.length}})</span>
+            </h4>
+          </div>
+          <!-- <div class="fr">
+            <label for="pincode" class="delivery-txt-color mar_r_15">Delivery</label>
+            <input type="text" id="pincode" placeholder="Enter Pincode" class="search_style">
+            <button type="submit" class="input_btn">CHECK</button>
+          </div> -->
+        </div>
+      </div>
+      <div *ngIf="carItems.length>0">
+        <div class="viewcartProds">
+          <div class="row border_styles" *ngFor="let item of carItems">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-2">
+                  <img [src]="item.url" class="product_image">
+                </div>
+  
+                <div class="col-md-7">
+                  <div class="mar_b_10 prod_name">{{item.subcategory}} {{ item.modelno}}</div>
+                  <div class="mar_b_10">
+                    <span class="f_size_18">&#8377;&nbsp;</span>
+                    <span class="actual_price">{{item.enduserprice}}</span>&nbsp;
+                    <span class="end_user_price">&#8377;&nbsp;{{item.mrp}}</span> &nbsp;
+                    <span class="offer_price">{{item.discount_a}}% off</span>
+                  </div>
+                  <div class="mar_b_10">
+                    <span class="remove_btn" (click)="remove(item.productid)">REMOVE</span>
+                  </div>
+                </div>
+  
+                <div class="col-md-3">
+                  <div class="qty-changer">
+                    <button class="qty-change" (click)="decrement(item)">-</button>
+                    <input class="qty-input form-group qty-align f_wt_700" type="text" maxlength="6"
+                      [value]="item.qty" (change)="select_qty(item)" min="1" pattern="\d{1,6}"
+                      oninput="validity.valid||(value='');" [(ngModel)]="item.qty" />
+                      <button class="qty-change" (click)="increment(item)">+</button>
+                    <div *ngIf="item.qty===''">
+                      <p>{{item.qty}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <!--   <div class="col-md-4">
+                <div class="mar_b_10">
+                  <span class="txt_gray f_wt_600">Price(
+                    <span>{{item.qty}}</span> items):</span>
+                  <span class="fr f_size_13 txt_black">{{(item.enduserprice)*(item.qty)}}</span>
+                </div>
+                <div class="mar_b_10">
+                  <span class="txt_gray f_wt_600">Tax (%):</span>
+                  <span class="fr f_size_13 txt_black">{{item.gst}}</span>
+                </div>
+                <div>
+                  <span class="txt_gray f_wt_600">Delivery Charges:</span>
+                  <span class="fr f_size_13 txt_black">Free</span>
+                </div>
+                <hr>
+                <div class="mar_b_10">
+                  <span class="txt_gray f_wt_600">Amount Payable:</span>
+                  <span class="fr f_size_13 txt_black">{{(item.aftergst)}}</span>
+                </div>
+              </div> -->
+              <br>
+            </div>
+          </div>
+  
+        </div>
+  
+        <div class="row pad_15" style="border-top: 3px solid #f6f6f6;">
+          <div class="pull-left pad_t_15">
+            <button type="submit" class="btn btn-primary brdr_radius_50  bg_green border_green"
+              (click)="remove('All')">Remove All
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="pull-right pad_t_15">
+            <button type="submit" class="btn btn-primary brdr_radius_50  bg_green border_green "
+              (click)="change()">Add More
+              <i class="fa fa-cart-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+          <!--  <div class="fr pad_t_15">
+            <span class="grand_total">GRAND TOTAL : </span>
+            <span class="grand_price">{{grandtotal | currency:'INR'}}</span>
+            <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green mar_l_100" (click)="gotoCheckout()">Proceed To Purchase 
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div> -->
+        </div>
+  
+      </div>
+  
+      <div class="row" *ngIf="carItems.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/empty_shopping_cart.png" />
+          </div>
+        </div>
+        <!--  <div class="col-md-12">
+          <div class="continue_shop txt_center">
+            <button type="submit" class="btn btn-success" routerLink="/home" style="margin-top:-35px;">Continue Shopping</button>
+          </div>
+        </div> -->
+      </div>
+  
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-4">
+    <div class="reg_form pad_15 mar_b_30" *ngIf="carItems.length > 0">
+      <div class="row">
+        <div class="col-sm-12 head_header">
+          <div>
+            <h4>CART TOTAL
+            </h4>
+          </div>
+          <!-- <div class="fr">
+            <label for="pincode" class="delivery-txt-color mar_r_15">Delivery</label>
+            <input type="text" id="pincode" placeholder="Enter Pincode" class="search_style">
+            <button type="submit" class="input_btn">CHECK</button>
+          </div> -->
+        </div>
+      </div>
+      <div *ngIf="carItems.length>0">
+        <div class="row">
+          <!-- <div > -->
+          <!-- <div >
+          <span class="grand_total">TAXABLE AMOUNT&nbsp;:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span style="text-align:right" class="grand_price"  >{{pricedetails.price| currency:'INR'}}</span>
+          </div> -->
+          <div class="col-md-6 col-xs-6">
+            <p class="grand_total">TAXABLE AMOUNT</p>
+            <p class="grand_total">EXTRA DISCOUNT</p>
+            <p class="grand_total">GST AMOUNT(18%)</p>
+            <p class="grand_total">Transport Charges</p>
+            <p class="grand_total">GRAND TOTAL</p>
+          </div>
+          <div class="col-md-1 col-xs-1">
+            <p class="grand_total">:</p>
+            <p class="grand_total">:</p>
+            <p class="grand_total">:</p>
+            <p class="grand_total">:</p>
+            <p class="grand_total">:</p>
+          </div>
+          <div class="col-md-4 col-xs-4">
+            <p class="grand_price text-right">{{cartdata.endusergrandtotal | currency:'INR'}}</p>
+            <p class="grand_price text-right">{{pricedetails.devicediscamount| currency:'INR'}}</p>
+            <p class="grand_price text-right">{{cartdata.grand_tax| currency:'INR'}}</p>
+            <p class="grand_price text-right">{{pricedetails.trasnport_charges| currency:'INR'}}</p>
+            <p class="grand_price text-right">{{grandtotal + ( pricedetails.trasnport_charges) | currency:'INR'}}
+            </p>
+          </div>
+          <!-- <div>
+            <span class="grand_total">TAXABLE AMOUNT&nbsp;:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            
+            </div> -->
+          <!-- <div >
+          <span class="grand_total">EXTRA DISCOUNT&nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="grand_price" style="text-align:right" >{{pricedetails.devicediscamount| currency:'INR'}}</span>
+          </div>
+          <div>
+          <span class="grand_total">GST AMOUNT(18%)&nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span class="grand_price" style="text-align:right">{{cartdata.grand_tax| currency:'INR'}}</span>
+          </div>
+          <div>
+            <span class="grand_total">Transport Charges&nbsp;:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="grand_price" style="text-align:right">{{pricedetails.trasnport_charges| currency:'INR'}}</span>
+            </div> -->
+          <!-- </div> -->
+        </div>
+        <!-- <div class="viewcartProds"> -->
+        <!-- <div class="row border_styles" *ngFor="let item of carItems"> -->
+        <!-- <div class="col-md-12"> -->
+  
+        <!--   <div class="col-md-8">
+                <div class="col-md-2">
+                  <img [src]="item.url" class="product_image">
+                </div>
+  
+                <div class="col-md-8 pad_l_40">
+                  <div class="mar_b_10 prod_name">{{item.subcategory}} {{ item.modelno}}</div>
+                  <div class="mar_b_10">
+                    <span class="f_size_18">&#8377;&nbsp;</span>
+                    <span class="actual_price">{{item.enduserprice}}</span>&nbsp;
+                    <span class="end_user_price">&#8377;&nbsp;{{item.mrp}}</span> &nbsp;
+                    <span class="offer_price">{{item.discount_a}}% off</span>
+                  </div>
+                  <div class="mar_b_10">
+                    <span class="remove_btn" (click)="remove(item.productid)">REMOVE</span>
+                  </div>
+                </div>
+  
+                <div class="col-md-2">
+                  <div class="qty-changer">
+                    <button class="qty-change" (click)="increment(item)">+</button>
+                    <input class="qty-input form-group qty-align f_wt_700" type="number" [value]="item.qty"  min="1"  oninput="validity.valid||(value='');" [(ngModel)]="item.qty" />
+                    <button class="qty-change" (click)="decrement(item)">-</button>
+                    <div *ngIf="item.qty===''">
+                      <p>{{item.qty}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+  
+        <!--  <div class="col-md-4">
+                <div class="mar_b_10">
+                  <span class="txt_gray f_wt_600">Price(
+                    <span>{{item.qty}}</span> items):</span>
+                  <span class="fr f_size_13 txt_black">{{(item.enduserprice)*(item.qty)}}</span>
+                </div>
+                <div class="mar_b_10">
+                  <span class="txt_gray f_wt_600">Tax (%):</span>
+                  <span class="fr f_size_13 txt_black">{{item.gst}}</span>
+                </div>
+                <div>
+                  <span class="txt_gray f_wt_600">Delivery Charges:</span>
+                  <span class="fr f_size_13 txt_black">Free</span>
+                </div>
+                <hr>
+                <div class="mar_b_10">
+                  <span class="txt_gray f_wt_600">Amount Payable:</span>
+                  <span class="fr f_size_13 txt_black">{{(item.aftergst)}}</span>
+                </div>
+              </div> -->
+  
+        <!-- </div> -->
+        <!-- </div> -->
+  
+        <!-- </div> -->
+  
+        <div class="row pad_15" style="border-top: 3px solid #f6f6f6;">
+          <!--  <div class="fl pad_t_15">
+            <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="remove('All')">Remove All
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div> -->
+          <div class="fr pad_t_15">
+            <!-- <span class="grand_total">GRAND TOTAL : </span>
+            <span class="grand_price">{{grandtotal + ( pricedetails.trasnport_charges) | currency:'INR'}}</span> -->
+            <button type="submit" class="btn btn-primary brdr_radius_50  bg_green border_green mar_l_100"
+              (click)="gotoCheckout()">Proceed To Purchase
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+  
+      </div>
+  
+      <div class="row" *ngIf="carItems.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/empty_shopping_cart.png" />
+            <!-- <span class="nodata_txt">No Products are Available</span> -->
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="continue_shop txt_center">
+            <button type="submit" class="btn btn-success" routerLink="/home" style="margin-top:-35px;">Continue
+              Shopping</button>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+    <div class="reg_form pad_15 mar_b_30" *ngIf="carItems.length > 0">
+      <div class="row">
+        <div class="col-sm-12 head_header">
+          <div>
+            <h4>Promocode
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="col-sm-6">
+          <!-- <label for="promocode">Promocode</label> -->
+          <div class="form-group">
+            <input type="text" class="form-control" #promocode1="ngModel" id="promocode" name="promocode1" [(ngModel)]="promocode" 
+                placeholder="Enter Promocode"/>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <button class="btn btn-success" (click)="applycode(promocode)" title="apply" style="background: #0fa497 !important;">Appy</button>&nbsp;&nbsp;
+          <button class="btn btn-danger" (click)="deletecode()" title="Delete">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          </button>
+        </div>
+  
+      </div>
+      <div class="row">
+        <div style="margin-left:25px;" *ngIf="this.applycodedetails && messagep == true">
+          <b> Promocode Applied Successfully. You have saved 
+            <span style="color:red;">{{applycodedetails.promo_amount | currency: "&nbsp;"}}</span></b>
+        </div>
+        <br />
+        <div style="margin-left:25px;color:red;" *ngIf="this.applycodedetails && messagep == false" [hidden]="applycodedetails.length == 0">
+          <b>This Promocode is not applicable</b>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+      </div>
+      
+        <!-- <div class="row" *ngIf="carItems.length==0">
+          <div class="col-md-12">
+            <div class="no_data">
+              <img class="no_data_cnter" src="../assets/empty_shopping_cart.png" />
+              <span class="nodata_txt">No Products are Available</span>
+            </div>
+            <div class="continue_shop txt_center">
+              <button type="submit" class="btn btn-success" routerLink="/home">Continue Shopping</button>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  
+    <div>
+      <div class="container pad_t_5per pad_b_5per">
+        <p class="bread-crumb1">
+          <span>
+            <a href="javascript.void(0)" routerLink="/home" style="
+            color: #878787 !important;
+        "></a>
+          </span>&nbsp;&nbsp;
+          <span></span>
+        </p>
+        <!-- <div class="row" *ngIf="carItems.length==0">
+          <div class="col-md-12">
+            <div class="no_data">
+              <img class="no_data_cnter" src="../assets/empty_shopping_cart.png" />
+              <span class="nodata_txt">No Products are Available</span>
+            </div>
+            <div class="continue_shop txt_center">
+              <button type="submit" class="btn btn-success" routerLink="/home">Continue Shopping</button>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <!-- success small alert -->
+  <div class="smallSuccess_alert" *ngIf="alert">
+    <strong>
+      <i class="fa fa-check add_icon"></i> {{wish_alert}} </strong>
+  </div>
+  
+  
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+  
+  
+  <!-- delete modal pop up-->
+  <div id="confirmModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header view_header">
+          <button type="button" class="close" data-dismiss="modal"></button>
+          <h4 class="modal-title text-center">Delete</h4>
+        </div>
+        <div class="modal-body text-center">
+          <p>Are you Sure?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success fr" (click)="deleteConfirm()">Yes</button>
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- modal pop up start here -->
+  <!-- <div class="modal fade" id="cartUpdatedModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:0;">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="alert_heading">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </h4>
+                <div class="right_mark">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </div>
+                <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+                  <span>{{message}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  <!-- ===============when cart item is empty=========================== -->
+  
+  <div class="container pad_t_5per pad_b_5per" *ngIf="carItems.length==0">
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/home" style="
+          color: #878787 !important;
+      ">Home</a>
+      </span>&nbsp;>&nbsp;
+      <span>Cart</span>
+    </p>
+    <div class="reg_form pad_15 mar_b_30">
+  
+      <div class="row">
+        <div class="col-sm-12 head_header">
+          <div class="fl">
+            <h4>MY CART
+            </h4>
+          </div>
+          <!-- <div class="fr">
+              <label for="pincode" class="delivery-txt-color mar_r_15">Delivery</label>
+              <input type="text" id="pincode" placeholder="Enter Pincode" class="search_style">
+              <button type="submit" class="input_btn">CHECK</button>
+            </div> -->
+        </div>
+      </div>
+      <div class="row" *ngIf="carItems.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/empty_shopping_cart.png" />
+  
+          </div>
+          <span class="nodata_txt">No Products are Available In your Cart</span>
+        </div>
+        <div class="col-md-12">
+          <div class="continue_shop txt_center">
+            <button type="submit" class="btn btn-success" routerLink="/home" style="margin-top:-35px;">Continue
+              Shopping</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ========================================== -->

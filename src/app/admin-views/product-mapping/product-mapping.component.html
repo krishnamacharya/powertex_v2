@@ -1,0 +1,379 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span  *ngIf="this.PUrl == 'A=APO'">
+      <a href="javascript.void(0)" routerLink="/Admin-PURCHASE ORDER" style="color: #878787 !important;">Purchase Order</a>&nbsp;>&nbsp;
+    </span>
+    <span style="color: #DB534F !important;">Product Mapping</span>
+    <button type="button" class="btn btn-success fr" (click)="createProduct()">Create Product</button>
+</p>
+  <div>
+    <form (ngSubmit)="onSubmit(productDataForm)" #productDataForm="ngForm">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12">
+          <h4 class="f_size_13 f_wt_600 mt_0 bussinesInfo">Product Mapping</h4>
+        </div>
+      </div>
+      <div class="reg_form">
+        <div class="row ">
+          <div class="col-md-3 col-lg-3 col-xs-6">
+            <div class="form-group">
+              <label for="supplier" class="col-form-label">Supplier Name<sup>*</sup></label>
+              <input autocomplete="off" type="text" class='select-option form-control' required name="supplier"
+                  [(ngModel)]="pro.supplier" #supplier="ngModel" id="supplier1"
+                  (change)="getsku(pro.supplier)"  list="suppliers"
+                  placeholder="Select Supplier">
+                <datalist id="suppliers">
+                  <option [ngValue]="undefined" disabled selected>Select Supplier</option>
+                  <option class='option' *ngFor="let s of suppliers" [ngValue]="s">{{s.business_name}}</option>
+                </datalist>
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-3 col-xs-6">
+            <div class="form-group">
+              <label for="prodName" class="col-form-label">Product Name <sup>*</sup></label>
+              <input autocomplete="off" type="text" class='select-option form-control' required name="product_name"
+                [(ngModel)]="productdata.product_name" #product_name="ngModel"
+                (change)="getsubcategory(productdata.product_name)" id="prodName" list="productnames"
+                placeholder="Product Name">
+              <datalist id="productnames">
+                <option [ngValue]="undefined" disabled selected>Select Product Name</option>
+                <option class='option' *ngFor="let s of productnames" [ngValue]="s">{{s.productname}}</option>
+              </datalist>
+              <div [hidden]="product_name.valid || product_name.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Enter Product Name</small>
+              </div>
+              <div *ngIf="PNameExists" class="validation_msg">
+                <small class="form-text text-muted text-danger">Product Already Assigned</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="subCategory" class="col-form-label">Sub Category<sup>*</sup></label>
+              <input type="text" class="form-control" id="subCategory" required placeholder="Enter Sub Category"
+                name="subcategory" readonly [(ngModel)]="productdata.subcategory" #subcategory="ngModel">
+
+              <div [hidden]="subcategory.valid || subcategory.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Enter Sub Category</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="brand" class="col-form-label">Brand<sup>*</sup></label>
+              <input type="text" class="form-control" id="brand" required placeholder="Enter Brand" name="brand"
+                readonly [(ngModel)]="pro.brand" #brand="ngModel">
+
+              <div [hidden]="brand.valid || brand.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Enter Brand</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="skuNo" class="col-form-label">SKU No<sup>*</sup></label>
+              <div class="input-group">
+                <span class="input-group-addon" name="sku_prefix" *ngIf="!pro.sku_prefix">Prefix</span>
+                <span class="input-group-addon" name="sku_prefix" *ngIf="pro.sku_prefix">{{pro.sku_prefix}}</span>
+                <input type="text" class="form-control" id="skuNo" required
+                  placeholder="SKU No" minlength="4" maxlength="5" name="sku" [(ngModel)]="productdata.sku_no"
+                  (keyup)="keypress($any($event.target).value)" #sku="ngModel" style="width: 70%;">
+
+              </div>
+              <div *ngIf="skuExists" class="validation_msg">
+                <small class="form-text text-muted text-danger">SKU Already Assigned</small>
+              </div>
+              <div [hidden]="sku.valid || sku.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Enter SKU No</small>
+
+                <!-- <p *ngIf="sku.errors.maxlength || sku.errors.minlength">sku should be 6 numbers</p> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="purchasePrice" class="col-form-label">Purchase Price<sup>*</sup></label>
+              <input type="text" class="form-control" id="purchasePrice" required placeholder="Enter Purchase Price"
+                name="purchase_price" [(ngModel)]="productdata.purchase_price" #purchase_price="ngModel">
+              <div [hidden]="purchase_price.valid || purchase_price.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Enter Purchse Price</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="currency" class="col-form-label">Currency Type<sup>*</sup></label>
+              <input type="text" class="form-control" id="currency" name="currency" required [(ngModel)]="productdata.currency"
+              disabled #currency="ngModel" placeholder="Enter Currency">
+              <div [hidden]="currency.valid || currency.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Select Currency Type</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="piecepercarton" class="col-form-label">Piece per Carton<sup>*</sup></label>
+              <input type="text" class="form-control" id="piecepercarton" required placeholder="Enter Piece per Carton"
+                name="piecepercarton" readonly [(ngModel)]="pro.piecepercarton" #piecepercarton="ngModel">
+
+              <div [hidden]="piecepercarton.valid || piecepercarton.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Enter Piece per Carton</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1 col-lg-1 col-xs-6">
+            <div class="form-group">
+              <label class="visbhidden" class="col-form-label">More</label>
+              <input type="button" value="+"  class="btn btn-danger" (click)="viewmore()">
+                
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="viewdetails==true">
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="packing" class="col-form-label">Packing<sup>*</sup></label>
+              <select class="form-control select-option" id="packing" name="packing" [(ngModel)]="productdata1.packing"
+                #packing="ngModel">
+                <option [ngValue]="undefined" selected>Select Packing</option>
+                <option class='option' *ngFor="let i of packingtypes" [ngValue]="i">{{i}}</option>
+
+              </select>
+              <!-- <div [hidden]="packing.valid || packing.untouched" class="validation_msg">
+            <small class="form-text text-muted text-danger">Select Packing</small>
+          </div> -->
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="unitQty" class="col-form-label">Unit Qty<sup>*</sup></label>
+              <input type="text" class="form-control" id="unitQty" placeholder="Enter Unit Qty" name="qty"
+                [(ngModel)]="productdata1.qty" #qty="ngModel">
+              <!-- <div [hidden]="qty.valid || qty.untouched" class="validation_msg">
+            <small class="form-text text-muted text-danger">Enter Unit Qty</small>
+          </div> -->
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="noofPcs" class="col-form-label">No Of Pcs/ Set<sup>*</sup></label>
+              <input type="text" class="form-control" id="noofPcs" name="piecepercartoon"
+                [(ngModel)]="productdata1.piecepercartoon" #piecepercartoon="ngModel"
+                placeholder="Enter No Of Pcs/ Set">
+              <!-- <div [hidden]="piecepercarton.valid || piecepercarton.untouched" class="validation_msg">
+            <small class="form-text text-muted text-danger">Enter No Of Pcs/ Set</small>
+          </div> -->
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="mrp" class="col-form-label">MRP<sup>*</sup></label>
+              <!-- <input type="text" class="form-control" id="mrp" placeholder="Enter MRP"  name="sku" [(ngModel)]="productdata.sku_no" #sku="ngModel"> -->
+              <div class="input-group-prepend">
+                <div class="input-group-btn w-1">
+                  <input type="number" id="mrp" class="form-control mar_l_10 w-92" [(ngModel)]="productdata1.mrp"
+                    #unitprice="ngModel" name="unitprice" placeholder="MRP">
+                </div>
+              </div>
+              <!-- <div [hidden]="(unitprice.valid || unitprice.untouched) && (currencycode.valid || currencycode.untouched)" class="validation_msg">
+            <small class="form-text text-muted text-danger">Enter Currency/MRP</small>
+          </div> -->
+              <!-- <div [hidden]="sku.valid || sku.untouched" class="validation_msg">
+            <small class="form-text text-muted text-danger">Enter MRP</small>
+          </div> -->
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xs-6">
+            <div class="form-group">
+              <label for="barcode" class="col-form-label">Barcode<sup>*</sup></label>
+              <input type="text" class="form-control" id="barcode" placeholder="Enter Barcode" name="barcode"
+                [(ngModel)]="productdata1.barcode" #barcode="ngModel">
+              <!-- <div [hidden]="barcode.valid || barcode.untouched" class="validation_msg">
+            <small class="form-text text-muted text-danger">Enter Barcode</small>
+          </div> -->
+            </div>
+          </div>
+          <div class="col-md-1 col-lg-1 col-xs-6">
+            <div class="form-group">
+              <label class="visbhidden" class="col-form-label">Add</label>
+              <button button="submit" class="btn btn-primary bg_green" (click)="addFieldValue()"
+                [disabled]="add_disable(productdata1)">Add</button>
+                
+            </div>
+          </div>
+         
+      
+        </div>
+       
+        <div class="row" class="table-responsive" *ngIf="fieldArray.length>0 && viewdetails==true">
+          <div class="col-md-10 col-lg-10 col-xs-10">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Packing</th>
+                  <th>Quantity</th>
+                  <th>No. of Pcs/Set</th>
+                  <th>Mrp</th>
+                  <th>Barcode</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of fieldArray; let i = index">
+
+                  <td>{{data.packing}}</td>
+                  <td>{{data.qty }}</td>
+                  <td>{{data.piecepercartoon}}</td>
+                  <td>{{data.piecepercartoon}} {{data.mrp}}</td>
+                  <td>{{data.barcode}}</td>
+                  <td class="i_opt">
+                    <p>
+                      <i class="fa fa-trash" style="font-size: 18px;color: #20978c;" (click)="deleteFieldValue2(i)"></i>
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row mt_3">
+          <div class="col-md-12 col-lg-12 col-xs-12">
+            <h4 class="theme_green f_size_13 f_wt_600 txt_green mt_0">Export Carton Details</h4>
+          </div>
+
+          <div class="col-md-3 col-lg-3 col-xs-6">
+            <div class="form-group">
+              <label for="exportcartonNW" class="col-form-label">N.W /export carton</label>
+              <input type="number" class="form-control" id="exportcartonNW" name="exportcartonnw"
+                [(ngModel)]="productdata.exportcartonnw"
+                placeholder="Enter N.W /export carton">
+              <!-- <div [hidden]="exportcartonnw.valid || exportcartonnw.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Enter N.W /export carton</small>
+              </div> -->
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-3 col-xs-6">
+            <div class="form-group">
+              <label for="exportcartonGW" class="col-form-label">G.W/export carton</label>
+              <input type="number" class="form-control" id="exportcartonGW" name="exportcartongw"
+                [(ngModel)]="productdata.exportcartongw"
+                placeholder="Enter G.W/export carton">
+              <!-- <div [hidden]="exportcartongw.valid || exportcartongw.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Enter G.W/export carton</small>
+              </div> -->
+            </div>
+          </div>
+          <div class="col-md-3 col-lg-3 col-xs-6">
+            <div class="form-group">
+              <label for="exportcartonCBN" class="col-form-label">CBM/export carton</label>
+              <input type="number" class="form-control" id="exportcartonCBN" name="exportcartoncbn"
+                [(ngModel)]="productdata.exportcartoncbn"
+                placeholder="Enter CBM /export carton">
+              <!-- <div [hidden]="exportcartoncbn.valid || exportcartoncbn.untouched" class="validation_msg">
+                <small class="form-text text-muted text-danger">Enter CBN/export carton</small>
+              </div> -->
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-xs-12">
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label class="col-form-label">Product Image</label>
+                <div>
+                  <img class="thumbnail img-preview" [src]="image" title="Product Image">
+                </div>
+                <div>
+                  <!-- <input id="productImage" class="form-control upload-shadow" placeholder="Choose File" disabled="disabled"> -->
+                  <div class="pull-right">
+                    <div class="fileUpload btn btn-danger upload-shadow">
+                      <span><i class="glyphicon glyphicon-upload"></i> Upload Image</span>
+                      <input id="productImg" name="productimage" #productimage="ngModel" type="file"
+                        [(ngModel)]="pro.productimage" accept="image/x-png,image/gif,image/jpeg/jpg"
+                        (change)="productfileUpload($event)" class="attachment_upload">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-6">
+              <div class="form-group">
+                <label class="col-form-label">Packing Image</label>
+                <!-- class="main-img-preview" -->
+                <div>
+                  <img class="thumbnail img-preview" [src]="image1" title="Packing Image">
+                </div>
+                <div>
+                  <!-- <input id="fakeUploadLogo" class="form-control upload-shadow" placeholder="Choose File" disabled="disabled"> -->
+                  <div class="pull-right">
+                    <div class="fileUpload btn btn-danger upload-shadow">
+                      <span><i class="glyphicon glyphicon-upload"></i> Upload Image</span>
+                      <input name="packingimage" #packingimage="ngModel" type="file" [(ngModel)]="pro.packingimage"
+                        accept="image/x-png,image/gif,image/jpeg/jpg" (change)="packingimagefileUpload($event)"
+                        class="attachment_upload">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <div>
+              <button button="submit" [disabled]="productDataForm.invalid"
+                class="btn btn-primary center-block bg_green mt_3">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Product Mapping Created Sucessfully..!!</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

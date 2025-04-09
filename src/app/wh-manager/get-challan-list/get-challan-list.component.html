@@ -1,0 +1,267 @@
+<p>get-challan-list works!</p>
+<ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="container pad_t_5per">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span>{{loginUserData.content}}</span>
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Transport</span>
+    </p>
+    <div class="row o_s_d">
+      <div class="row bg-theme dash_status" style="margin:0px">
+        <div class=" col-md-3 status_align">
+          <a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}" (click)="po()">Transport Generation</a>
+        </div>
+        <div class="col-md-3 status_align">
+          <a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}" (click)="do()">Transport List</a>
+        </div>
+       
+      </div>
+      <div *ngIf="POhidden">
+    <div class="reg_form mar_b_30 pad_15">
+  
+      <div class="row mar_b_15">
+        <div class="col-sm-12">
+          <div class="fl">
+            <h4>Transport </h4>
+          </div>
+          <div class="fr">
+            <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchdata(searchText)"  placeholder="Search..."
+            class="search_style">
+          <button type="submit" (click)="searchdata(searchText)" class="input_btn">Search</button>
+        </div>
+        </div>
+      </div>
+      <!-- *ngIf="(challanList | filter :searchText) as challanList" -->
+      <div >
+        <div class="row" *ngIf="challanList.length>0">
+          <div class="col-sm-12 list">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Invoice No</th>
+                    <th>Invoice Date</th>
+                    <!-- <th>Packing No</th>
+                    <th>Packing Date</th> -->
+                    <th>Invoice Amount</th>
+                    <th>Ship to Company Name</th>
+                    <th>Financial Year</th>
+                    <th>Add Transport</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let item of challanList  | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{item.refinvno}}</td>
+                    <td>{{item.inv_date | date:'dd-MM-yyyy'}}</td>
+                    <td>{{item.final_amount.toLocaleString('en-IN')}}.00</td>
+                    <!-- <td>{{item.packing_l_no}}</td>
+                    <td>{{item.packing_l_date | date:'dd-MM-yyyy'}}</td> -->
+  
+                    <td>{{item.company_name}}</td>
+                    <td>{{item.financial_year}}</td>
+                    <td>
+                      <span class="f_size_15 padd_right_10 orange_clr cursor_pointer" (click)="makeInvoice(item)">
+                        <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                      </span>
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                        <i class="fa fa-print" aria-hidden="true" title="Print Details" (click)="print(item.seq_no)"></i>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+        </div>
+  
+        <div class="row" *ngIf="challanList.length==0">
+          <div class="col-md-12">
+            <div class="no_data">
+              <img class="no_data_cnter" src="../assets/emptyicon.png" />
+              <span class="nodata_txt">No Data is Available</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="DOhidden">
+    <div class="reg_form mar_b_30 pad_15">
+  
+      <div class="row mar_b_15">
+        <div class="col-sm-12">
+          <div class="fl">
+            <h4>Transport List</h4>
+          </div>
+          <div class="fr">
+            <input type="text" class="form-control" [(ngModel)]="searchText"  placeholder="Search..."
+            class="search_style">
+          <button type="submit"  class="input_btn">Search</button>
+        </div>
+        </div>
+      </div>
+      
+        <!-- //////////////////////////// -->
+          <div class="container">
+            <span class="col-md-2" style="margin-top: 10px;">
+              <mat-form-field color="accent">
+                <mat-label> Select From Date</mat-label>
+                <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" readonly required>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </span>
+            <span class="col-md-2 selecttodate" style="margin-left: 50px; margin-top: 10px;">
+              <mat-form-field color="accent">
+                <mat-label> Select To Date</mat-label>
+                <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" readonly required>
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2 color="primary"></mat-datepicker>
+              </mat-form-field>
+      
+            </span>
+            <span class="col-md-2" style=" margin-left: 50px; margin-top: 10px;float: right;">
+              <button type="submit" class="input_btn " (click)="gettransportList()">Get Reports
+              </button>
+            </span>
+          </div>
+        <!-- /////////////////////////// -->
+      <!-- *ngIf="(challanList | filter :searchText) as challanList" -->
+      <div >
+        <div class="row" *ngIf="transportlist.length>0">
+          <div class="col-sm-12 list">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Business Name</th>
+                    <th>Invoice No</th>
+                    <th>Invoice Date</th>
+                    <th>Invoice Amount</th>
+                    <th>Financial Year</th>
+                    <th>Delivery Mode</th>
+                    <th>Cartoons</th>
+                    <th>View Transport</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let item of transportlist | filter:searchText | paginate: { itemsPerPage: 10, currentPage: q }; let i=index">
+                    <td>{{10*(q-1)+(i+1)}}</td>
+                    <td>{{item.business_name}}</td>
+                    <td>{{item.refinvno}}</td>
+                    <td>{{item.inv_date | date:'dd-MM-yyyy'}}</td>
+                    <td>{{item.final_amount.toLocaleString('en-IN')}}.00</td>
+                    <td>{{item.financial_year}}</td>
+                    <td>{{item.del_mode}}</td>
+                    <td>{{item.totalcartoons}}</td>
+                    <td>
+                      <span class="f_size_15 padd_right_10 blue_clr cursor_pointer" (click)="view(item)">
+                        <i class="fa fa-eye" aria-hidden="true" title="View"></i>
+                      </span>
+                      <span class="f_size_15 padd_right_10 orange_clr cursor_pointer" (click)="edittransport(item)">
+                          <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                        </span>
+                        <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                          <i class="fa fa-print" aria-hidden="true" title="Print Details" (click)="print(item.seq_no)"></i>
+                        </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pagination-controls (pageChange)="q = $event"></pagination-controls>
+          </div>
+        </div>
+  
+        <div class="row" *ngIf="transportlist.length==0">
+          <div class="col-md-12">
+            <div class="no_data">
+              <img class="no_data_cnter" src="../assets/emptyicon.png" />
+              <span class="nodata_txt">No Data is Available</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+  
+  </div>
+  
+  <div class="modal fade " id="detail" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+               
+              <div class=" text-center content_msg" style="padding-top:0%">
+                <br>
+                <div class="reg_form marg_b_15 pad_l_20 pad_r_20">
+                  <p class="pad_t_10" style="font-size: 16px;text-decoration: underline;text-align:center">
+                    <b>Transport Details</b>
+                  </p>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                            <th>Transport Name</th>
+                          <th>LR.No</th>
+                          <th>LR Date</th>
+                          <th>Consin No</th>
+                          <th>Contact No</th>
+                          <th>Estimated Delivery Date</th>
+                          <th>Transport Cost</th>
+                         
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngFor="let p of transportlistdetail; let i=index;">
+                          <td>{{p.transportname}}</td>
+                          <td *ngIf="p.lrno">{{p.lrno}}</td>
+                          <td *ngIf="!p.lrno">-</td>
+                          <td *ngIf="p.lrdate">{{p.lrdate | date:'dd-MM-yyyy'}}</td>
+                          <td *ngIf="!p.lrdate">-</td>
+                          <td *ngIf="p.del_consin_no">{{p.del_consin_no}}</td>
+                          <td *ngIf="!p.del_consin_no">-</td>
+                          <td *ngIf="p.del_contact_no">{{p.del_contact_no}}</td>
+                          <td *ngIf="!p.del_contact_no">-</td>
+                       
+                          <td *ngIf="p.estDelDate">{{p.estDelDate | date:'dd-MM-yyyy'}}</td>
+                          <td *ngIf="!p.estDelDate">-</td>
+                          <td *ngIf="p.transport_cost">{{p.transport_cost}}</td>
+                          <td *ngIf="!p.transport_cost">-</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+               
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>

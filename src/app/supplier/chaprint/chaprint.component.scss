@@ -1,0 +1,27 @@
+.nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+ }
+ p{
+     margin:0;
+     line-height: 1.5;
+ }
+ .hr_line{
+    border-bottom: 1px solid #37475a;
+    border-top: 1px solid #37475a;
+}
+.w-33{
+    width: 33.666667%;
+}
+.shiptitle{
+    padding-bottom: 6px;text-align: center;font-weight: 600;font-size: 25px;margin-top: 0px;padding-top: 8px;margin-bottom: 5px;
+  }
+@media (min-width: 992px){
+// .w-33{
+//     width: 33.666667%;
+// }
+}
+td table tr, td table tr{
+    border: 1 px solid grey;
+    // border-collapse: collapse;
+}

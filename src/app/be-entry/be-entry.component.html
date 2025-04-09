@@ -1,0 +1,330 @@
+<div class="container-fluid pad_t_5per pad_b_5per">
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+<table>
+  <div class="container">
+      <p class="bread-crumb1 float-left">
+        <span class="float-left">
+          <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+        </span>&nbsp;>&nbsp;        
+        <span *ngIf="this.PUrl == 'C=PSL'">
+          <a href="javascript.void(0)" [routerLink]="['/Invoice-Documents','Pending']" style="color: #878787 !important;">
+            Pending Shipment List</a>&nbsp;>&nbsp;
+        </span>
+        <span *ngIf="this.PUrl == 'C=CSL'">
+          <a href="javascript.void(0)" [routerLink]="['/Invoice-Documents','Completed']" style="color: #878787 !important;">
+            Completed Shipment List</a>&nbsp;>&nbsp;
+        </span>
+        <span>BE Entry</span>
+      </p>
+  </div>
+</table>
+  <div class="purchasewrap">
+    <form (ngSubmit)="onSubmit(purchaseorderForm)" #purchaseorderForm="ngForm" onkeydown="return event.key != 'Enter';">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12">
+          <h4 class="f_size_13 f_wt_600  mt_0 bussinesInfo">BE Entry</h4>
+        </div>
+      </div>
+      <div class="reg_form">
+        <br>
+        <div class="supplierwrap">
+          <div class="row">
+            <div class="col-sm-3 mar_b_10_mbl">
+              <label>Supplier Name</label>
+              <div class="form-group">
+                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="pro.sup_name">
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label>Inv Number</label>
+              <div class="form-group">
+                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="pro.inv_num">
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label>Inv Date</label>
+              <div class="form-group">
+                <input type="date" class="form-control" [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="pro.inv_dt">
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label>Inv Amount&nbsp;({{this.productdata[0]?.CType}})</label>
+              <div class="form-group">
+                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" readonly [(ngModel)]="pro.inv_val">
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label for="exchange_rate">Exchange Rate&nbsp;({{this.productdata[0]?.CType}})
+              </label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="exchange_rate" name="exchange_rate" min="0" (blur)="ex_rate(pro.exchange_rate)"
+                  [(ngModel)]="pro.exchange_rate" #exchange_rate="ngModel" required placeholder="Enter Exchange Rate">
+                <div [hidden]="exchange_rate.valid || exchange_rate.untouched" class="validation_msg">
+                  please enter Exchange Rate
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label>BE Number</label>
+              <div class="form-group">
+                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="pro.be_no">
+              </div>
+            </div>
+            <div class="col-sm-2 mar_b_10_mbl">
+              <label>BE Date</label>
+              <div class="form-group">
+                <input type="date" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="pro.be_date">
+              </div>
+            </div>
+            <!-- <div class="col-sm-2">
+              <label>BE Image</label>
+              <div>
+                <input type="file" [ngModelOptions]="{standalone: true}" [(ngModel)]="pro.billofentry"
+                (change)="productfileUpload($event)">&nbsp;&nbsp;
+                  <span *ngIf="pro.billofentry">{{this.file1?this.file1.name:''}}
+                    <i class="fa fa-download" aria-hidden="true" title="Download File"></i>
+                  </span>
+              </div>
+            </div> -->
+            <div class="col-sm-2 mar_b_10_mbl">
+
+              <!-- ===================image upload==================================== -->
+
+            <div class="form-group" style="display: flex;">
+              <label>BE Image<sup class="astrick">*</sup></label>
+              <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+                <img class="thumbnail img-preview" [src]="image1" title="Preview"  height="70" width="auto">
+                <!-- title="{{this.file1?this.file1.name:'Upload Files Here..'}}" -->
+              </div>&nbsp;&nbsp;&nbsp;
+              <div class="">
+                <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                  <!-- <div class="fileUpload btn btn-danger upload-shadow btn-block" *ngIf="!this.invoiceData.lr_no"> -->
+                  <span><i class="glyphicon glyphicon-upload"></i> BE Copy Upload </span>
+                  <input id="billofentry" name="billofentry" type="file" 
+                    [(ngModel)]="pro.billofentry" (change)="productfileUpload($event)" class="attachment_upload">
+                </div>
+                <!-- {{this.file1?this.file1.name:''}} -->
+                <div class="fileUpload btn btn-warning upload-shadow btn-block" *ngIf="pro.billofentry" title="Download File" (click)="downloadBEimage(pro.billofentry,pro.inv_num)">
+                  <span>Download
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          <!-- <div class="fl" *ngIf="productdata1.length>0">
+            <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" (keyup)="searchdata(searchText)"  placeholder="Search Product Name"
+              class="search_style">
+            <button type="submit" (click)="searchdata(searchText)" class="input_btn">Search</button>
+          </div><br> -->
+          <div class="row">
+            <div class="table-responsive mt_3">
+              <table class="table table-bordered table-condensed">
+                <thead>
+                  <th class="cellwidth12">Product</th>
+                  <th class="text-right cellwidth5">Qty</th>
+                  <th class="text-right cellwidth5">Price({{this.productdata[0]?.CType}})</th>
+                  <th class="text-right cellwidth5">Ass.Value(INR)</th>
+                  <th class="text-right cellwidth5">Cus. Duty</th>
+                  <th class="text-right cellwidth5">Cus. Duty .Amt</th>
+                  <!-- <th class="text-right cellwidth5">Exe. Duty</th>
+                  <th class="text-right cellwidth5">Edu Cess</th>
+                  <th class="text-right cellwidth5">H.Edu Cess</th>
+                  <th class="text-right cellwidth5">Cus Edu Cess</th>
+                  <th class="text-right cellwidth5">H.Cus Edu Cess</th> -->
+                  <th class="text-right cellwidth5">Social Surcharge</th>
+                  <th class="text-right cellwidth5">Social Surcharge .Amt</th>
+                  <th class="text-right cellwidth5">IGST</th>
+                  <th class="text-right cellwidth5">IGST .Amt</th>
+                  <th class="text-right cellwidth6">Amounts</th>
+                  <!-- <th class="text-center cellwidth5">Option</th> -->
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of productdata;let i=index">
+                    <td>
+  
+                      <input type="text" class="form-control" readonly [(ngModel)]="product.product_name"
+                        #product_name="ngModel" [ngModelOptions]="{standalone: true}" title="{{product.product_name}}" />
+                    </td>
+                    <td><input type="text" class="form-control" readonly [(ngModel)]="product.qty	"
+                      #qty="ngModel" [ngModelOptions]="{standalone: true}" title="{{product.qty	}}" />
+                    </td>
+                    <td><input type="text" class="form-control" readonly [(ngModel)]="product.price"
+                      #price="ngModel" [ngModelOptions]="{standalone: true}" />
+                    </td>
+                    <td><input type="text" class="form-control text-right" readonly [(ngModel)]="product.amount"
+                      [ngModelOptions]="{standalone: true}" #amount="ngModel" /></td>
+                    <td>
+                      <input type="text" class="form-control text-right" (blur)="CusDuty(product)" [(ngModel)]="product.Cus_duty"
+                      [ngModelOptions]="{standalone: true}" #Cus_duty="ngModel" />
+                        <!-- <input type="text" class="form-control text-right gap" readonly [(ngModel)]="product.Cus_amount"
+                        [ngModelOptions]="{standalone: true}" #Cus_amount="ngModel" /> -->
+                    </td>
+                    <td>
+                        <input type="text" class="form-control text-right gap" readonly [(ngModel)]="product.Cus_amount"
+                        [ngModelOptions]="{standalone: true}" #Cus_amount="ngModel" />
+                    </td>
+                    <!-- <td><input type="text" class="form-control text-right" [(ngModel)]="product.Exe_duty"
+                        [ngModelOptions]="{standalone: true}" #Exe_duty="ngModel" (blur)="ExeDuty(product)"/>
+                        <input type="text" class="form-control text-right gap" readonly [(ngModel)]="product.Exe_amount"
+                        [ngModelOptions]="{standalone: true}" #Exe_amount="ngModel" /></td>
+                    <td><input type="text" class="form-control text-right" [(ngModel)]="product.Edu_cess"
+                        [ngModelOptions]="{standalone: true}" #Edu_cess="ngModel" (blur)="EduCess(product)" />
+                        <input type="text" class="form-control text-right gap" readonly [(ngModel)]="product.Edu_amount"
+                        [ngModelOptions]="{standalone: true}" #Edu_amount="ngModel" /></td>
+                    <td><input type="text" class="form-control text-right" [(ngModel)]="product.H_Edu_cess"
+                        [ngModelOptions]="{standalone: true}" #H_Edu_cess="ngModel" (blur)="HEduCess(product)"/>
+                        <input type="text" class="form-control text-right gap" readonly [(ngModel)]="product.H_Edu_cess_amout"
+                        [ngModelOptions]="{standalone: true}" #H_Edu_cess_amout="ngModel"/></td>
+                    <td><input type="text" class="form-control text-right" [(ngModel)]="product.Cus_Edu_cess"
+                        [ngModelOptions]="{standalone: true}" #Cus_Edu_cess="ngModel" (blur)="CusEduCess(product)"/>
+                        <input type="text" class="form-control text-right gap" readonly [(ngModel)]="product.Cus_Edu_cess_amount"
+                        [ngModelOptions]="{standalone: true}" #Cus_Edu_cess_amount="ngModel"/></td>
+                    <td><input type="text" class="form-control text-right" [(ngModel)]="product.H_cus_Edu_cess"
+                        [ngModelOptions]="{standalone: true}" #H_cus_Edu_cess="ngModel" (blur)="HCusEduCess(product)" />
+                        <input type="text" class="form-control text-right gap" readonly [(ngModel)]="product.H_cus_Edu_cess_amout"
+                        [ngModelOptions]="{standalone: true}" #H_cus_Edu_cess_amout="ngModel" /></td> -->
+                    <td><input type="text" class="form-control text-right" (keypress)="keynumber($event)"
+                        (blur)="SWCess(product)" [(ngModel)]="product.S_W_Cess" [ngModelOptions]="{standalone: true}"
+                        #S_W_Cess="ngModel" />
+                        <!-- <input type="text" class="form-control text-right gap" [(ngModel)]="product.S_W_Cess_amount" 
+                        [ngModelOptions]="{standalone: true}" readonly
+                        #S_W_Cess_amount="ngModel" /> -->
+                    </td>
+                    <td>
+                        <input type="text" class="form-control text-right gap" [(ngModel)]="product.S_W_Cess_amount" 
+                        [ngModelOptions]="{standalone: true}" readonly
+                        #S_W_Cess_amount="ngModel" />
+                    </td>
+                    <td><input type="text" class="form-control text-right" (keypress)="keyfloat($event)"
+                        (blur)="iGSTt(product)" [(ngModel)]="product.iGST"
+                        [ngModelOptions]="{standalone: true}" #iGST="ngModel" />
+                        <!-- <input type="text" class="form-control text-right gap" readonly
+                        [(ngModel)]="product.IGSTAmount" readonly [ngModelOptions]="{standalone: true}" #IGSTAmount="ngModel" /> -->
+                      </td>
+                      <td>
+                        <input type="text" class="form-control text-right gap" readonly
+                        [(ngModel)]="product.IGSTAmount" readonly [ngModelOptions]="{standalone: true}" #IGSTAmount="ngModel" />
+                      </td>
+                    <td><input type="text" class="form-control text-right" (keypress)="keyfloat($event)"
+                        [(ngModel)]="product.tamounts" readonly [ngModelOptions]="{standalone: true}" #tamounts="ngModel" />
+                    </td>
+                  </tr>
+                  <tr  *ngIf="productdata.length>0">
+                    <td colspan="3"  class="text-right">
+                      <h5><b>Total Ass.Value:</b></h5>
+                    </td>
+                    <td><input type="text" class="form-control text-right" readonly [ngModel]="pro.assvalue  | number:'1.2-2'"
+                      name="assvalue" #assvalue="ngModel" (keypress)="keyfloat($event)" /></td>
+                    <td colspan="6" class="text-right">
+                      <h5><b>Duty Amounts:</b></h5>
+                      <!-- <h5><b>Total({{pro.suppliername.currency}}):</b></h5> -->
+                    </td>
+                    <td><input type="text" class="form-control text-right" readonly [ngModel]="pro.dutyvalue  | number:'1.2-2'"
+                        name="dutyvalue" #dutyvalue="ngModel" (keypress)="keyfloat($event)" /></td>
+  
+                  </tr>
+  
+                </tbody>
+              </table>
+              <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+            </div>
+            <div *ngIf="productdata.length==0">
+              <div class="col-md-12">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br>
+          <div class="row" *ngIf="productdata.length>0">
+            <div class="form-group">
+              <div>
+                <!-- <button type="submit" [disabled]="this.invoiceData.whapproval || this.invoiceData.lr_no" -->
+                <button type="submit"
+                  class="btn btn-primary center-block bg_green">Submit</button>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="viewpoModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Do you want to confirm</span>
+              <br>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="confirmmodal()" class="btn btn-success fr" data-dismiss="modal">Confirm</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="succModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <!-- <span>Updated Successfully..!!</span> -->
+              <span>{{this.postD}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn btn-success fr" (click)="goto()" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,171 @@
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Correction</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Correction</h4>
+        </div>
+        <div class="fr" *ngIf="supplierdata.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+
+          <div class="col-sm-12 list">
+
+            <div class="table-responsive">
+              <table class="table table-striped" *ngIf="supplierdata.length>0">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Business Name</th>
+                    <th>Invoice No.</th>
+                    <th *ngIf="this.loginUserData.user_type=='Admin'">Business Name</th>
+                    <th class="text-center">INV Modified</th>
+                    <th class="text-center">Packing Modified</th>
+                    <th style="width: 14%;" class="text-center">Comments</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierdata | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.business_name}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td *ngIf="this.loginUserData.user_type=='Admin'">{{data.business_name}}</td>
+                    <td class="text-center"><a (click)="downloadInvMod(data.invmodpath, data.inv_no)"
+                      [ngStyle]="{'color': data.invmodpath?'green':'red'}">{{data.invmodpath?"Y":"N"}}</a></td>
+                    <td class="text-center"><a (click)="downloadPackMod(data.packmodpath, data.inv_no)"
+                        [ngStyle]="{'color': data.packmodpath?'green':'red'}">{{data.packmodpath?"Y":"N"}}</a></td>
+                    <td>{{data.comment}}</td>
+                    <td *ngIf="data.status1=='0'" [ngStyle]="{'color':'orange'}">Pending</td>
+                    <td *ngIf="data.status1=='1'" [ngStyle]="{'color':'green'}">Completed</td>
+                    <!-- <td><button type="button" class="btn btn-sm bg_green" (click)="correction(data)" title="Correction">Update</button></td> -->
+                </tbody>
+              </table>
+            </div>
+            <pagination-controls *ngIf="supplierdata.length>0" (pageChange)="p = $event"></pagination-controls>
+          </div>
+
+          <div *ngIf="this.supplierdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+
+
+<!-- Correction -->
+<div class="modal fade" id="correction" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center text-white">Correction</h4>
+      </div>
+      <form (ngSubmit)="onSubmit4(correctionform)" #correctionform="ngForm" class="pad_20">
+        <div class="modal-body">
+          
+          <div class="row">
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="inv_no">Invoice Number</label>
+              <div class="form-group">
+                <input type="text" class="form-control" id="inv_no" name="inv_no" [(ngModel)]="crt_inv_no" disabled>
+              </div>
+            </div>
+            <div class="col-sm-6 mar_b_10_mbl">
+              <label for="invdate">Invoice Date</label>
+              <div class="form-group">
+                <input type="date" class="form-control" id="invdate" name="invdate" [(ngModel)]="crt_invdate" disabled>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-sm-6 mar_b_10_mbl">
+            <div class="form-group">
+              <label>Invoice Modification</label>
+              <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+                <img class="thumbnail img-preview" [src]="invmod" title="Preview"  title="Upload Files Here.."  height="200" width="auto">
+              </div>
+              <div class="pull-right">
+                <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                  <span><i class="glyphicon glyphicon-upload"></i> Invoice&nbsp;Upload </span>
+                  <input id="invmodpath" name="invmodpath" type="file" [(ngModel)]="editdata.invmodpath1"
+                     (change)="invmodfileUpload($event)" class="attachment_upload">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 mar_b_10_mbl">
+            <div class="form-group">
+              <label>Packing Modification</label>
+              <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+                <img class="thumbnail img-preview" [src]="packingmod" title="Preview" height="200" width="auto">
+              </div>
+              <div>
+
+                <div class="pull-right">
+                  <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                    <span><i class="glyphicon glyphicon-upload"></i>Packing&nbsp;Upload </span>
+                    <input id="packmodpath" name="packmodpath" type="file" [(ngModel)]="editdata.packmodpath1"
+                      (change)="packingmodupload($event)" class="attachment_upload">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            
+          <div class="col-sm-12 mar_b_10_mbl">
+            <label for="comments">Comments</label>
+            <div class="form-group">
+                <textarea class="form-control" rows="4" id="comments" name="comments" [(ngModel)]="editdata.comments"
+                #comments="ngModel" placeholder="Enter Comments"></textarea>
+              <div [hidden]="comments.valid || comments.untouched" class="validation_msg">
+                please enter Comments
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success brdr_radius_50   fr" >Submit
+          </button>
+          <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

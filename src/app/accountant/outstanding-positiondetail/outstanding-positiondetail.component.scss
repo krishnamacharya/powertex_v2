@@ -1,0 +1,172 @@
+.dealers {
+    margin-bottom: 0;
+    padding: 5px;
+    color: white;
+    float: right;
+    margin-right: 27px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  td {
+    word-break: break-all;
+  }
+  .green_clr{
+    color:green;
+  }
+  .active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+  }
+  .exceeded {
+    background-color: rgb(207, 61, 61) !important;
+    p{
+    color: #e2d4d4 !important;
+    }
+  }
+  .alert_heading {
+    background: #0da550;
+    margin-top: 0;
+    padding: 50px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .modal-content {
+    border-radius: 15px !important;
+  }
+  
+  .right_mark {
+    background: #fff;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 40%;
+    top: 70px;
+    box-shadow: 3px 5px 10px #ddd;
+  }
+  
+  .right_mark i {
+    font-size: 21px;
+    color: #0da550;
+  }
+  
+  .o_s_d {
+    margin: 0px;
+    box-shadow: 1px 1px 2px 1px lightgray;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+  
+  .amount {
+    float: right;
+  }
+  
+  .total {
+    margin-right: 10px;
+    // font-weight: bold;
+  }
+  
+  .bankdisplay {
+    max-height: calc(100vh - 210px) !important;
+    overflow-y: scroll !important;
+  }
+  
+  .content {
+    width: 800px !important;
+  }
+  
+  .close1 {
+    color: red !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    cursor: pointer !important;
+  }
+  
+  .outstandwrap {
+    padding: 5px 20px 20px 20px;
+  }
+  .mat-accordion .mat-expansion-panel:last-of-type {
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 important;
+}
+.mat-accordion .mat-expansion-panel:first-of-type {
+  border-top-right-radius: 0 !important;
+   border-top-left-radius: 0 important;
+}
+  @media only screen and (min-width: 320px) and (max-width: 520px) {
+    .btn_w {
+      width: 132px !important;
+  }
+    .pad_15 {
+         padding: 0 !important;
+         margin-left: 2px !important;
+         margin-right: 2px !important;
+    }
+      .modal-header{
+          border-bottom: none !important;
+      }
+      .payment{
+          padding:5px 10px !important;
+          margin-top: -1rem;
+      }
+    .total {
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .outstandwrap {
+      padding: 0px 1px 1px 4px;
+    }
+    .p_s_1 {
+      div {
+        float: left;
+      }
+    }
+    .mat-expansion-panel-header {
+      padding: 0 10px !important;
+      p {
+        font-size: 11px !important;
+        margin: 1px !important;
+        line-height: 16px !important;
+        font-weight: bold;
+      }
+      .mat-expansion-panel-header-title {
+        margin-right: 0px !important;
+        div {
+          padding-left: 0 !important;
+        }
+      }
+    }
+    .ponomobwrap {
+      width: 65px;
+      padding-right: 5px;
+    }
+    .content {
+      width: 92% !important;
+      .col-md-12 {
+        padding-left: 7px !important;
+        padding-right: 9px !important;
+      }
+      table {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .custom_loder{
+    z-index: 99999999999 !important;
+     position: fixed !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important;  }
+  

@@ -1,0 +1,20 @@
+
+
+<div class="navbar">
+    <div *ngFor="let p of resources | slice:0:10" class="dropdown" (click)=selected_catg(p.Category)>
+      <button class="dropbtn">{{p.Category }}
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-content over_catg_menu">
+        <ul class="row menu">
+          <li *ngFor="let subp of p.detail" (click)="selected_Sub(p.Category,subp.SubCategory)" class="column">
+              <a href="javascript:void(0)">{{subp['SubCategory'] }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <button class="btn btn-white btn-xs" style="margin: 14px 0px; font-weight: 700;" routerLink="/all-Category">Explore All..</button>
+    </div>
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+  </div>

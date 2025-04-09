@@ -1,0 +1,154 @@
+
+<div class="container pad_t_5per pad_b_5per">
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+    </ngx-spinner>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span>{{loginUserData.content}}</span>
+  
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Stock</span>
+    </p>
+  <!-- <div class="row prod_catg" class="row_mar_0">
+    <div class="col-md-2 col-sm-4 col-xs-6 text-center " style="padding:5px;" *ngFor="let p of resources;let i=index">
+      <div class="img-thumbnail" (click)="selected_Cat(p.Category)">
+        <div>
+          <img  class="catg_img all_images_cat" src="{{p.cat}}" onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+            alt="{{p.subcategory}}" >
+            <div><img src="../../../assets/count.svg" style="position: absolute;top: 15px;right: 6px;width: 170px;">
+            <p class="s_c"><span>300</span> Items Available</p></div>
+        </div>
+        <h4 class="prod_head">{{p.Category}}</h4>
+      </div>
+    </div>
+  </div> -->
+  <!-- <div style="padding:20px;">
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+  </div> -->
+  <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Stock</h4>
+        </div>
+        <div class="fr">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style" (change)="changedata()">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div>
+          <div>
+            <!-- <div class="col-sm-3">
+              <label for="supplier1" class="control-label mt_zerosix text-right">Select Supplier<sup>*</sup></label>
+              <input autocomplete="off" type="text" class='select-option form-control' required name="supplier"
+                  [(ngModel)]="pro.suppliername" #supplier="ngModel" id="supplier1"
+                  (change)="getsupplierproducts(pro.suppliername)"  list="suppliers"
+                  placeholder="Select Supplier">
+                <datalist id="suppliers">
+                  <option [ngValue]="undefined" disabled selected>Select Supplier</option>
+                  <option class='option' *ngFor="let s of suppliers" [ngValue]="s">{{s.business_name}}</option>
+                </datalist>
+            </div> -->
+            
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="brand" class="control-label mt_zerosix text-right">Brand</label>
+                <select class='form-control' [(ngModel)]="brand" required name="brandDropdown" #brandDropdown="ngModel">
+                  <option [ngValue]="undefined">Select Brand</option>
+                  <option class="option" *ngFor="let bnch of brands" [ngValue]="bnch.brand">{{bnch.brand}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="category" class="control-label mt_zerosix text-right">Select Category</label>
+                <select class='form-control' [(ngModel)]="category" required name="Category"
+                  #Categorys="ngModel" (change)="getsubcategoryData()">
+                  <option [ngValue]="undefined" selected disabled>Select Category</option>
+                  <option class="option" *ngFor="let resources of resources6">
+                    {{resources.category}}
+                  </option>
+
+                </select>
+              </div>
+            </div>
+            <!-- ========================================Sub Category========================================= -->
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="subcategory" class="control-label mt_zerosix text-right">Select Sub Category</label>
+                <select class='form-control' [(ngModel)]="subcategory" required name="subcategorys" #subcategorys="ngModel">
+                  <option [ngValue]="undefined" selected>Sub Category</option>
+                  <option class="option" *ngFor="let resources5 of resources5">
+                    {{resources5.subcategory}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <br>
+              <button type="button" class="input_btn btnn" (click)="getdata()">Get
+                Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row"  *ngIf="(resources2 | filter :searchText) as resources2">
+  <div class="col-sm-12 list"  *ngIf="resources2.length>0" >
+    
+      <div class="table-responsive" >
+        <table class="table">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <!-- <th>Category</th> -->
+              <th>Product Name</th>
+              <th>Brand</th>
+              <th style="text-align:right">Last 2month sales</th>
+              <th style="text-align:right">Pi Qty</th>
+              <th style="text-align:right">Transit Qty</th>
+              <!-- <th>Opening Balance Quantity</th> -->
+              <th style="text-align:right">Closing Balance Qty</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let res of resources2|filter:searchText  | paginate: { itemsPerPage: 20, currentPage: page };let j = index">
+              <td>{{20*(page-1)+(j+1)}}</td>
+              <!-- <td style="text-align:left">{{res.category}}</td> -->
+              <td style="text-align:left">{{res.subcategory}} {{res.modelno}}</td>
+              <td style="text-align:left">{{res.Brand}}</td>
+              <td style="text-align:right">{{res.saleQty}}</td>
+              <td style="text-align:right">{{res.zpoqty}}</td>
+              <td style="text-align:right">{{res.zTransitQty}}</td>
+              <!-- <td style="text-align:left">{{res.opening_bal_qty}} -->
+              <td style="text-align:right">{{res.closing_bal_qty}}</td>
+             
+            </tr>
+          </tbody>
+        </table>
+        <div>
+            <div class="col-md-12" >
+              <button class="btn btn-primary" style="float:right"  type="button" (click)="print()">Print</button>
+            </div>
+          </div>
+      </div>
+     
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+    </div>
+ 
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

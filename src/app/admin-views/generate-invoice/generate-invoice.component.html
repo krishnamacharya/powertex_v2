@@ -1,0 +1,178 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="pad_t_5per pad_b_5per" style="width:100%;">
+
+  <div class="pad_15 mar_b_30">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+          <h3 class="shopee_name">
+            <span> {{loginUserData.content}}</span>
+          </h3>
+          <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+        </div>
+      </div>
+      <div class="container-fluid">
+        <p class="bread-crumb1 fl">
+          <span>
+            <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+          </span>&nbsp;>&nbsp;
+          <span>
+            <a href="javascript.void(0)" routerLink="/admin-pending-invoice-list" style="color: #878787 !important;">Pending PI List</a>
+          </span>&nbsp;>&nbsp;<span>Generate Invoice</span>
+        </p>
+        <div class="col-sm-4">
+          <tr *ngFor="let data of pendingdata">
+            <!-- <td *ngIf="data.Pending_PO == 'Supplier_PO'"><b>Pending&nbsp;PI&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td> -->
+            <!-- <td *ngIf="data.Pending_PO == 'Supplier_Inv_Due'"><b>In&nbsp;Transit&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td> -->
+          </tr>
+        </div>
+        <div class="col-sm-3">
+          <tr *ngFor="let data of pendingdata">
+            <td *ngIf="data.Pending_PO == 'Outstanding'"><b>Outstanding&nbsp;Value:</b>&nbsp;{{data.Amount | number : '1.2-2'}}&nbsp;({{data.cc}})</td>
+          </tr>
+        </div>
+      </div>
+       
+      <div class="row t_s_1">
+        <div class="row bg-theme dash_status" style="margin:0px">
+          <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}"
+              (click)="po()">Pending PI List</a></div>
+          <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':EOhidden == true}"
+              (click)="eo()">Consolidated PI List</a></div>
+          <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':PAhidden == true}"
+            (click)="pa()">Consolidated Packing List</a></div>
+
+        </div>
+        <div style="padding:5px 20px 20px 20px">
+          <div *ngIf="POhidden">
+            <div class="fr" *ngIf="supplierdata.length>0">
+              <input type="text" [(ngModel)]="searchText" placeholder="Search here..." class="search_style">
+              <button type="submit" class="input_btn">Search</button>
+            </div><br>
+            <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+
+              <div class="col-sm-12 list" *ngIf="supplierdata.length>0">
+    
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Business Name</th>
+                        <th>PI No</th>
+                        <th>PI Date</th>
+                        <th>PI Approved Date</th>
+                        <th>PI Amount</th>
+                        <th>Items</th>
+                        <th>Options</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of supplierdata | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                        <td>{{10*(p-1)+(i+1)}}</td>
+                        <td>{{data.business_name}}</td>
+                        <td>{{data.pi_no}}</td>
+                        <td>{{data.pidate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.approveddate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{data.POAmount |number : '1.2-2'}}&nbsp;({{data.Ctype}})</td>
+                        <td>{{data.Items}}</td>
+                        <td>
+                          <button type="button" class="btn btn-sm bg_green" (click)="InvEdit(data)">Invoice</button>
+                          &nbsp;
+                          <button type="button" class="btn btn-sm bg_red" (click)="rejconfirm(data)">Delete</button>&nbsp;
+                          <span>
+                            <button type="button" class="btn btn-sm bg_green" [disabled]="!data.picopy" (click)="Pidownload(data.picopy, data.pi_no)">Pi&nbsp;Copy
+                              <i class="fa fa-download" aria-hidden="true" style="padding-left:5px;padding-top:5px;cursor:pointer"></i>
+                            </button>
+                          </span>&nbsp;
+                          <span class="f_size_15 orange_clr padd_left_10 cursor_pointer">
+                            <button type="submit" class="btn btn-sm bg_green"
+                              (click)="PackingEdit(data)" title="Generate Packing">Packing</button>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+              </div>
+    
+              <div *ngIf="supplierdata.length==0">
+                <div class="col-md-12">
+                  <div class="no_data">
+                    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                    <span class="nodata_txt">No Data is Available</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="deleteModal"  tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>PO Cancelled Sucessfully..!!</span>
+              <br>
+           
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+      
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="reject" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body text-center">
+        <h4>Do you want to cancel ?</h4>
+        <br>
+        <br>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="reject()" class="btn btn-success brdr_radius_50   fr">Confirm
+        </button>
+        <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+

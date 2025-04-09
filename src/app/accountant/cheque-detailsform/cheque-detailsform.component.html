@@ -1,0 +1,764 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row" *ngIf="loginUserData.role == 'Marketing Manager'">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1" *ngIf="loginUserData.role == 'Marketing Manager'">
+    <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Cheque Details Form</span>
+  </p>
+
+  <div class="row pad_15" id="chequeFormWrap">
+
+    <form (ngSubmit)="onSubmit(masterDataForm)" #masterDataForm="ngForm" class="pad_20">
+      <div class="form-group row">
+        <div>
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label for="prodid" >Mode of Payment
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div  *ngIf="loginUserData.role != 'Marketing Manager'">
+              <select class="form-control" [(ngModel)]="masterData.mode_of_payment" #mode_of_payment="ngModel"
+                name="mode_of_payment" (change)="onSelect(mode_of_payment.value)" required>
+                <option [ngValue]="undefined" disabled selected>--Select Mode--</option>
+                <option *ngFor="let m of paymentmodes | async" [ngValue]="m.mode_of_payment">
+                  {{m.mode_of_payment}}
+                </option>
+              </select>
+              <div [hidden]="mode_of_payment.valid || mode_of_payment.untouched" class="validation_msg">
+                please select payment mode
+              </div>
+            </div>
+            <div  *ngIf="loginUserData.role == 'Marketing Manager'">
+              <select class="form-control" [(ngModel)]="masterData.mode_of_payment" #mode_of_payment="ngModel"
+                name="mode_of_payment" (change)="onSelect(mode_of_payment.value)" required>
+                <option [ngValue]="undefined" disabled selected>--Select Mode--</option>
+                <option>CHEQUE/DD</option>
+                <option>RTGS/NET BANKING</option>
+              </select>
+              <div [hidden]="mode_of_payment.valid || mode_of_payment.untouched" class="validation_msg">
+                please select payment mode
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label>Date
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="date" class="form-control" id="brand" name="date" [(ngModel)]="masterData.date"
+                #date="ngModel" required placeholder="Enter Date">
+              <div [hidden]="date.valid || date.untouched" class="validation_msg">
+                please select date
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label for="remarks" >Remarks
+              <!-- <sub class="txt_red f_size_25">*</sub> -->
+            </label>
+            <div>
+              <textarea class="form-control rounded-0" id="remarks" rows="2" name="remarks"
+                [(ngModel)]="masterData.remarks" #remarks="ngModel" placeholder="Enter Remarks"></textarea>
+              <!-- <div [hidden]="remarks.valid || remarks.untouched" class="validation_msg">
+                Remarks is required
+            </div> -->
+            </div>
+          </div>
+          <!-- <div class="col-sm-4 mar_b_10_mbl">
+          <label >Currency
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div >
+            <input class="form-control" [(ngModel)]="masterData.currency_code" #currency_code="ngModel" name="currency_code" required
+              readonly>
+            <div [hidden]="currency_code.valid ||  currency_code.untouched" class="validation_msg">
+              please select currency
+            </div>
+          </div>
+        </div> -->
+        </div>
+      </div>
+      <h4 class="f_wt_600 txt_decr_undl pdd txt_black pad_t_b_10">Customer Details:
+        <span class="pull-right">
+          <button type="button" *ngIf="masterData.mode_of_payment!='CASH' && managebank"
+            class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="showbankdetailss()">
+            <span *ngIf="showBankdetail"> Hide Bankdetails</span>
+            <span *ngIf="!showBankdetail"> Show Bankdetails</span>
+          </button>
+          &nbsp; &nbsp;
+          <button type="button" *ngIf="masterData.mode_of_payment!='CASH' && managebank"
+            class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+            (click)="displaygiverbanks(masterData.giver_company_code)">
+            Add Account
+          </button>
+        </span>
+      </h4>
+      <div class="form-group row">
+        <div>
+          <div class="col-sm-4 mar_b_10_mbl" *ngIf="loginUserData.role != 'Marketing Manager'">
+            <label for="giver_company_name">Company Name
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input autocomplete="off" class='select-option form-control' [(ngModel)]="masterData.giver_company_name"
+                (change)="onChange(giver_company_name.value)" required type="text" name="giver_company_name"
+                #giver_company_name="ngModel" id="giver_company_name" list="companynames" placeholder="Company Name">
+              <datalist id="companynames">
+                <option [ngValue]="undefined" disabled selected>Company Name</option>
+                <option *ngFor="let gc of givercompanynames" [ngValue]="gc.company_code">
+                  {{gc.name| titlecase}}-({{gc.company_code}})
+                </option>
+              </datalist>
+              <div [hidden]="giver_company_name.valid ||  giver_company_name.untouched" class="validation_msg">
+                Company name is required
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl" *ngIf="loginUserData.role == 'Marketing Manager'">
+            <label for="giver_company_name">Company Name
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input autocomplete="off" class='select-option form-control' [(ngModel)]="masterData.giver_company_name"
+                (change)="onChange(giver_company_name.value)" required type="text" name="giver_company_name"
+                #giver_company_name="ngModel" id="giver_company_name" list="companynames" placeholder="Company Name">
+              <datalist id="companynames">
+                <option [ngValue]="undefined" disabled selected>Company Name</option>
+                <option *ngFor="let gc of dealerslist" [ngValue]="gc.company_code">
+                  {{gc.business_name| titlecase}}-({{gc.user_id}}&#64;{{gc.company_code}})
+                </option>
+                <!-- value = value.business_name + '-' + value.user_id + '@' + value.company_code; -->
+
+              </datalist>
+              <div [hidden]="giver_company_name.valid ||  giver_company_name.untouched" class="validation_msg">
+                Company name is required
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-sm-4 mar_b_10_mbl" *ngIf="masterData.mode_of_payment=='CASH'">
+            <label for="amount">Amount
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="text" class="form-control" id="amount" name="amount" [(ngModel)]="masterData.amount"
+                #amount="ngModel" required placeholder="Enter Amount" (keypress)="keypress($event)"
+                (keyup)="adustinvAmount(masterData.amount)">
+              <div [hidden]="amount.valid || amount.untouched" class="validation_msg">
+                Amount is required
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-sm-4 mar_b_10_mbl">
+            <label for="status" >Status
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <select class="form-control" id="status" [(ngModel)]="masterData.status" #status="ngModel" name="status"
+                required>
+                <option [ngValue]="undefined" disabled selected>--Select--</option>
+                <option *ngFor="let s of paymentstatus1 " [ngValue]="s.value">
+                  {{s.status}}
+                </option>
+              </select>
+              <div [hidden]="status.valid || status.untouched" class="validation_msg">
+                status is required
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+      <div class="form-group row">
+        <div>
+          <div class="col-sm-4 mar_b_10_mbl" *ngIf="masterData.mode_of_payment!='CASH'&& showBankdetail">
+            <label for="giver_advice_name">Account Holder Name
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="text" class="form-control" id="giver_advice_name" name="giver_advice_name"
+                [(ngModel)]="masterData.giver_advice_name" #giver_advice_name="ngModel" required
+                placeholder="Enter Name" readonly>
+              <div [hidden]="giver_advice_name.valid ||  giver_advice_name.untouched" class="validation_msg">
+                Name is required
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl" *ngIf="masterData.mode_of_payment!='CASH' && showBankdetail">
+            <label for="giver_bank">Bank
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="text" class="form-control" readonly id="giver_bank" name="giver_bank"
+                [(ngModel)]="masterData.giver_bank" #giver_bank="ngModel" required placeholder="Enter Bank Name">
+              <div [hidden]="giver_bank.valid || giver_bank.untouched" class="validation_msg">
+                Bank is required
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl" *ngIf="masterData.mode_of_payment!='CASH'&& showBankdetail">
+            <label for="giver_branch">Branch
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="text" class="form-control" id="giver_branch" readonly name="giver_branch"
+                [(ngModel)]="masterData.giver_branch" #giver_branch="ngModel" required placeholder="Enter Branch">
+              <div [hidden]="giver_branch.valid || giver_branch.untouched" class="validation_msg">
+                Branch is required
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- =========================================== -->
+      <div class="form-group row">
+        <div>
+          <div class="col-sm-4 mar_b_10_mbl" *ngIf="masterData.mode_of_payment!='CASH'">
+            <label for="check_no">
+              <span *ngIf="masterData.mode_of_payment=='RTGS/NET BANKING'">Ref No</span>
+              <span *ngIf="masterData.mode_of_payment !='RTGS/NET BANKING'">Cheque No</span>
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="text" class="form-control" id="check_no" name="check_no" [(ngModel)]="masterData.check_no"
+                #check_no="ngModel" required placeholder="Cheque no.">
+              <div [hidden]="check_no.valid || check_no.untouched" class="validation_msg">
+                Cheque no. is required
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl" *ngIf="masterData.mode_of_payment!='CASH'">
+            <label for="check_date">
+              <span *ngIf="masterData.mode_of_payment=='RTGS/NET BANKING'"> Ref Date</span>
+              <span *ngIf="masterData.mode_of_payment!='RTGS/NET BANKING'"> Cheque Date</span>
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="date" class="form-control" id="check_date" name="check_date"
+                [(ngModel)]="masterData.check_date" #check_date="ngModel" required placeholder="Enter Cheque Date">
+              <div [hidden]="check_date.valid || check_date.untouched" class="validation_msg">
+                Cheque Date is required
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 mar_b_10_mbl" *ngIf="masterData.mode_of_payment!='CASH'">
+            <label for="amount" >Amount
+              <sub class="txt_red f_size_25">*</sub>
+            </label>
+            <div>
+              <input type="text" class="form-control" id="amount" name="amount" [(ngModel)]="masterData.amount"
+                #amount="ngModel" required placeholder="Enter Amount" (keypress)="keypress($event)"
+                (keyup)="adustinvAmount(masterData.amount)">
+              <div [hidden]="amount.valid || amount.untouched" class="validation_msg">
+                Amount is required
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<div class="col-md-12 mar_t_10 text-center" *ngIf="this.loginUserData.role != 'Marketing Manager'&& masterData.giver_company_code && invdetail.length<=0 && masterData.status!='p'">
+<h3><b> No  Pending Bills Available</b></h3>  
+</div>
+<!-- <div class="row"> -->
+  <div class="col-sm-3 pdd pull-left" *ngIf="masterData.giver_company_code">
+  
+      <div>
+        <b *ngIf="creditamount.UnadjustedAmount!=null">Credit Amount:  &#8377;&nbsp;{{creditamount.UnadjustedAmount}}</b>
+        <b *ngIf="creditamount.UnadjustedAmount==null">Credit Amount: &#8377;&nbsp; 0</b>
+      </div>
+</div>
+    <div class="col-sm-2 pdd pull-right" *ngIf="masterData.giver_company_code && invdetail.length>0 && masterData.status!='p'">
+      <label for="prodid">Adjust Type
+      </label>
+      <div>
+
+        <select class="form-control" [(ngModel)]="Adjusttype" #mode_of_payment="ngModel" name="Adjust" (change)="adjusttype(Adjusttype)"
+          required>
+          <option [ngValue]="undefined" disabled selected>--Select--</option>
+          <option> Auto </option>
+          <option> Manual </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-2 pdd pull-right" *ngIf="masterData.giver_company_code && invdetail.length>0 && masterData.status!='p'">
+        <label for="prodid" class="text-center">View Ledger
+          </label>
+          <div class="f_size_15 theme_clr  padd_right_10 cursor_pointer" (click)="gotoledger()">
+              <i class="fa fa-bars" aria-hidden="true" title="Ledger"></i>
+          </div>
+    </div>
+  <!-- </div> -->
+   
+    <div class="col-md-12 mar_t_10" *ngIf="masterData.giver_company_code && invdetail.length>0 && masterData.status!='p'">
+      <div class="row">
+        <div class="col-sm-4 pdd pull-right">
+          <span class="total">
+            <b>Total Due Amount = &#8377;&nbsp;{{totaldueamount.toLocaleString('en-IN')}}.00</b>
+          </span>
+         
+          </div></div>
+          <div class="row">
+      <div  style="padding:10px 25px;box-shadow: 2px 2px 8px #dcdcdc">
+        
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr style="font-size:12px;">
+                <th *ngIf="Adjusttype=='Manual'">Select</th>
+                <th *ngIf="Adjusttype!='Manual'">S.No</th>
+                <th>Invoice No.</th>
+                <th>&#8377;&nbsp;Total Amount</th>
+                <th>&#8377;&nbsp;Due Amount</th>
+                <th>&#8377;&nbsp;Adjusted Amount</th>
+                <th>&#8377;&nbsp;Balance Amount</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pd of invdetail;let i=index;">
+               
+                 <td *ngIf="Adjusttype=='Manual'">
+                  <input type="checkbox" [disabled]="amounttt==0&&!pd.adjustedAmount" (change)="checkValue(10*(page-1)+(i),$event)" />
+                </td>
+                <td *ngIf="Adjusttype!='Manual'">
+                  {{10*(page-1)+(i+1)}}
+                </td>
+                <td> {{pd.sinv_no}}</td>
+
+                <td *ngIf="!pd.final_amount"> {{pd.line_amount.toLocaleString('en-IN')}}.00 </td>
+                <td *ngIf="pd.final_amount"> {{pd.final_amount.toLocaleString('en-IN')}}.00 </td>
+                <td *ngIf="pd.due_amount"> {{pd.due_amount.toLocaleString('en-IN') }}.00</td>
+                <td *ngIf="pd.adjustedAmount">  {{pd.adjustedAmount.toLocaleString('en-IN') }}.00</td>
+                <td> 
+                  <span *ngIf="pd.balanceamount>0"> {{pd.balanceamount.toLocaleString('en-IN') }}.00</span>
+                  <span *ngIf="pd.balanceamount<=0"> 0</span>
+                </td>
+
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="pull-left mar_t_30">
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          </div>
+        </div>
+      </div>
+      </div>
+    <!-- </div> -->
+
+      <div class="form-group row pad_t_b_10">
+        <div class="col-sm-12">
+          <div class="pull-left">
+            <button type="reset" class="btn btn-primary brdr_radius_50 btn_w bg_red border_red" (click)="clear()">
+              <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Clear</button>
+          </div>
+          <div class="pull-right">
+            <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+              [disabled]="masterDataForm.invalid || masterData.amount<1">Submit
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <span>Payment Details Inserted Sucessfully..!!</span>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="showbankdetails" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body bankdisplay">
+          <mat-grid-list cols="2" rowHeight="2:1.5" *ngIf="showbank">
+            <h4 align="center">
+              <span matLine>
+                <b>Bank Details</b>
+              </span>
+              <span style="float:right;">
+                <button type="button" class="close1" data-dismiss="modal">&times;</button>
+              </span>
+            </h4>
+            <button type="button" class="btn btn-primary addbank brdr_radius_50 btn_w bg_green border_green"
+              (click)="addnewbank(bankdetails,companycode)" style="margin-top: 20px;">
+              Add New Bank
+            </button>
+            <mat-grid-tile *ngFor="let cd of bankdetails; let i = index">
+              <div class="mat_addr_styles">
+                <div class="user_data_addr">
+                  <mat-radio-group class="example-radio-group mat_rad radio-btn">
+                    <mat-radio-button name="seqno" value="{{cd.default_1}}" [checked]="cd.default_1==1"
+                      (change)="setasDefault(cd)"></mat-radio-button>
+                  </mat-radio-group>
+                  <p matLine>
+                    <span>
+                      <b>{{cd.bank_name}}</b>, </span>
+                  </p>
+                  <p matLine>
+                    <span>{{cd.acc_no}}, </span>
+                  </p>
+                  <p matLine>
+                    <span>{{cd.ifsc}}, </span>
+                  </p>
+                  <p matLine>
+                    <span>{{cd.branch}} . </span>
+                  </p>
+                </div>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <div class="modal fade" id="newbankdetails" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+
+
+          <div class="newAddress" *ngIf="newbank">
+
+            <h4>
+              <u>Add New Bank Details:</u>
+            </h4>
+            <form #newAddForm="ngForm">
+              <div class="form-group row">
+                <div>
+                  <div class="col-sm-12 mar_b_10_mbl">
+                    <input type="checkbox" name="default_1" [(ngModel)]="masterData1.default_1" #default_1="ngModel">
+                    <b> Would you like to make this as default bank?</b>
+
+
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+
+                <div >
+                  <div class="col-sm-4 mar_b_10_mbl">
+                    <label for="giver_advice_name" >Account Holder Name
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div >
+                      <input type="text" class="form-control" id="giver_advice_name" name="giver_advice_name"
+                        [(ngModel)]="masterData1.giver_advice_name" #giver_advice_name="ngModel" required
+                        placeholder="Enter Name">
+                      <div [hidden]="giver_advice_name.valid ||  giver_advice_name.untouched" class="validation_msg">
+                        Name is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4 mar_b_10_mbl">
+                    <label for="name" >Bank
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div >
+                      <input type="text" class="form-control" id="giver_bank" name="giver_bank"
+                        [(ngModel)]="masterData1.giver_bank" #giver_bank="ngModel" required
+                        placeholder="Enter Bank Name">
+                      <div [hidden]="giver_bank.valid || giver_bank.untouched" class="validation_msg">
+                        Bank is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4 mar_b_10_mbl">
+                    <label for="mobile" >Branch
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div >
+                      <input type="text" class="form-control" id="giver_branch" name="giver_branch"
+                        [(ngModel)]="masterData1.giver_branch" #giver_branch="ngModel" required
+                        placeholder="Enter Branch">
+                      <div [hidden]="giver_branch.valid || giver_branch.untouched" class="validation_msg">
+                        Branch is required
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="form-group row">
+                <div>
+                  <div class="col-sm-4">
+                    <label for="hno" >IFSC Code
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="giver_ifsc" name="giver_ifsc"
+                        [(ngModel)]="masterData1.giver_ifsc" #giver_ifsc="ngModel" required
+                        placeholder="Enter IFSC Code" maxlength="11">
+                      <div [hidden]="giver_ifsc.valid || giver_ifsc.untouched" class="validation_msg">
+                        IFSC Code is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <label for="street">Account No.
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="giver_accno" name="giver_accno"
+                        [(ngModel)]="masterData1.giver_accno" #giver_accno="ngModel" required
+                        placeholder="Enter Account no." (keypress)="keypress($event)">
+                      <div [hidden]="giver_accno.valid || giver_accno.untouched" class="validation_msg">
+                        Account no. is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </form>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="fl">
+                  <button type="button" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                    (click)="cancelbankdetails()">
+                    <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Cancel
+                  </button>
+                </div>
+                <div class="fr">
+                  <button type="button" (click)="savegiverbankdetails()"
+                    class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                    [disabled]="newAddForm.invalid">Save
+                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="receivernewbankdetails" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+
+
+          <div class="newAddress" *ngIf="receivernewbank">
+
+            <h4>
+              <u>Add New Bank Details:</u>
+            </h4>
+            <form #newAddForm1="ngForm">
+              <div class="form-group row">
+                <div>
+                  <div class="col-sm-12 mar_b_10_mbl">
+                    <input type="checkbox" name="default_1" [(ngModel)]="masterData1.default_1" #default_1="ngModel">
+                    <b> Would you like to make this as default bank?</b>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+
+                <div>
+                  <div class="col-sm-4 mar_b_10_mbl">
+                    <label for="receiver_advice_name" >Account Holder Name
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="receiver_advice_name" name="receiver_advice_name"
+                        [(ngModel)]="masterData1.receiver_advice_name" #receiver_advice_name="ngModel" required
+                        placeholder="Enter Name">
+                      <div [hidden]="receiver_advice_name.valid ||  receiver_advice_name.untouched"
+                        class="validation_msg">
+                        Name is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4 mar_b_10_mbl">
+                    <label for="receiver_bank" >Bank
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="receiver_bank" name="receiver_bank"
+                        [(ngModel)]="masterData1.receiver_bank" #receiver_bank="ngModel" required
+                        placeholder="Enter Bank Name">
+                      <div [hidden]="receiver_bank.valid || receiver_bank.untouched" class="validation_msg">
+                        Bank is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4 mar_b_10_mbl">
+                    <label for="receiver_branch" >Branch
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="receiver_branch" name="receiver_branch"
+                        [(ngModel)]="masterData1.receiver_branch" #receiver_branch="ngModel" required
+                        placeholder="Enter Branch">
+                      <div [hidden]="receiver_branch.valid || receiver_branch.untouched" class="validation_msg">
+                        Branch is required
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div>
+                  <div class="col-sm-4 mar_b_10_mbl">
+                    <label for="receiver_ifsc" >IFSC Code
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="receiver_ifsc" name="receiver_ifsc"
+                        [(ngModel)]="masterData1.receiver_ifsc" #receiver_ifsc="ngModel" required
+                        placeholder="Enter IFSC Code" maxlength="11">
+                      <div [hidden]="receiver_ifsc.valid || receiver_ifsc.untouched" class="validation_msg">
+                        IFSC Code is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4 mar_b_10_mbl" *ngIf="masterData.mode_of_payment!='CASH'">
+                    <label for="receiver_accno" >Account no.
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="receiver_accno" name="receiver_accno"
+                        [(ngModel)]="masterData1.receiver_accno" #receiver_accno="ngModel" required
+                        placeholder="Enter Account no." (keypress)="keypress($event)">
+                      <div [hidden]="receiver_accno.valid || receiver_accno.untouched" class="validation_msg">
+                        Account no. is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </form>
+            <hr>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="fl">
+                  <button type="button" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                    (click)="cancelreceiverbankdetails()">
+                    <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Cancel
+                  </button>
+                </div>
+                <div class="fr">
+                  <button type="button" (click)="savereceiverbankdetails()"
+                    class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                    [disabled]="newAddForm1.invalid">Save
+                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addbanksuccessModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <span>Bank Details Inserted Sucessfully..!!</span>
+                <br>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-success fr" (click)="insertbanksuccess()"
+            data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirmation" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h3 class="alert_heading">
+                <b text-center>Confirmation</b>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h3>
+              <div>
+                <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <span><b>Company : {{masterData.giver_name}}</b></span><br>
+                <span><b>Amount : {{masterData.amount}}</b></span>
+                <br>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger " data-dismiss="modal">Cancel</button>
+
+          <button type="button" class="btn btn-success fr" data-dismiss="modal"
+            (click)="atributesData(formdataa)">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>

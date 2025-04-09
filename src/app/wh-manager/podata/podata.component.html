@@ -1,0 +1,200 @@
+<div class="container pad_t_5per pad_b_5per">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+          <h3 class="shopee_name">
+            <span>{{loginUserData.content}}</span>
+           
+          </h3>
+          <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+        </div>
+      </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span >PO List</span>
+  </p>
+  
+  <div class="reg_form mar_b_30 pad_15">
+  
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>PO List</h4>
+        </div>
+        <div class="fr">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..." class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row" *ngIf="(poList | filter :searchText) as poList">
+      <div class="col-sm-12 list" *ngIf="poList.length>0">
+        <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>User Name</th>
+              <th>PO No.</th>
+              <th>PO Date</th>
+           
+              <th>Business Name</th>
+              <th>City</th>
+              <th>Make PL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of poList |filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+              <td>{{10*(p-1)+(i+1)}}</td>
+              <td>{{item.Username | titlecase}}</td>
+              <td>{{item.spo}}</td>
+              <td>{{item.po_date | date:'dd-MM-yyyy' }}</td>
+           
+              <td>{{item.business_name}}</td>
+              <td>{{item.b_city}}</td>
+              <td>
+                  <span class="f_size_15 padd_right_10 orange_clr cursor_pointer"  (click)="makePackingList(item)">
+                      <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                    </span>
+                <span class="f_size_15 padd_right_10 blue_clr cursor_pointer" (click)="openpopup(item)">
+                  <i class="fa fa-truck custom " aria-hidden="true" title="Transport Details"></i>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  
+      </div>
+  
+      <div *ngIf="poList.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter" src="../assets/emptyicon.png" />
+            <span class="nodata_txt">No Data is Available</span>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+  
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+  </div>
+  
+  <div class="modal fade" id="openmodal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+        <!-- <div class="right_mark">
+              <i class="fa fa-question" aria-hidden="true"></i>
+            </div> -->
+      </div>
+      <div class="modal-body ">
+        <h4 style="text-align:center;">Transport details</h4>
+        <br>
+        <br>
+         <div class="row ">
+          <div>
+            <div class="col-sm-4 mar_b_10_mbl">
+              <label for="category_profile" class="col-form-label">Delivery mode
+  
+              </label>
+              <div>
+                <select class="form-control" [(ngModel)]="transport.delivery_type" #delivery_type="ngModel" required name="delivery_type">
+                  <option [ngValue]="undefined" disabled selected>Select</option>
+                  <option value="Vehicle" selected>Vehicle</option>
+                  <option value="Courier" selected>Courier</option>
+                </select>
+                <!-- <div [hidden]="del_mode.valid || del_mode.untouched" class="validation_msg">
+                  please select Delivery Mode.
+                </div> -->
+              </div>
+  
+  
+            </div>
+            <div class="col-sm-4 mar_b_10_mbl" *ngIf="transport.delivery_type=='Vehicle'">
+              <label for="category_profile" class="col-form-label">Vehicle Name
+  
+              </label>
+              <div>
+                <input type="text" class="form-control" id="remark" [(ngModel)]="transport.remark"
+                name="remark" #remark="ngModel" placeholder="Enter Name" required>
+             
+              </div>
+  
+  
+            </div>
+              <div class="col-sm-4 mar_b_10_mbl" *ngIf="transport.delivery_type=='Courier'">
+              <label for="category_profile" class="col-form-label">Courier Name
+  
+              </label>
+              <div>
+                <input type="text" class="form-control" id="remark" [(ngModel)]="transport.remark"
+                name="remark" #remark="ngModel" placeholder="Enter Name" required>
+             
+              </div>
+  
+  
+            </div>
+            <div class="col-sm-4 mar_b_10_mbl">
+              <label for="category_profile" class="col-form-label">Amount
+              </label>
+              <div>
+                <input type="text" class="form-control" id="service_amount" [(ngModel)]="transport.service_amount"
+                name="service_amount" #service_amount="ngModel" placeholder="Enter Amount" required>
+              <!-- <div [hidden]="service_amount.valid ||  service_amount.untouched" class="validation_msg">
+                Amount is required
+              </div> -->
+              </div>
+  
+  
+            </div>
+  
+          </div>
+        </div> <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="submit()" class="btn btn-success brdr_radius_50   fr">Submit
+        </button>
+        <button type="button" class="btn btn-danger fl brdr_radius_50 " data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  <div class="modal fade" id="successModal"  tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                <span>Transport Details Inserted Sucessfully..!!</span>
+                <br>
+             
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,41 @@
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+  }
+
+  .o_s_d {
+    margin: 0px;
+    box-shadow: 1px 1px 2px 1px lightgray;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+
+//   input[type="file"] {
+//     display: none !important;
+// }
+.upload_btn{
+    background: #0da550;
+    border:1px solid #0da550;
+    color:#fff;
+    width: 115px;
+}
+
+.upload_file{
+    border: 1px dashed #c5c5c5;
+    background: #f5f5f5;
+    width: 200px;
+    height: 150px;
+}
+.upload_file span{
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+  
+  

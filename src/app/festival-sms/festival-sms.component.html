@@ -1,0 +1,83 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Festival SMS</span>
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+
+
+    <!-- ==================================== -->
+    <div class="row">
+
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-sm-12 list">
+            <div class="row text-center chat_head"><b>Festival SMS</b></div>
+            <br>
+            <div class="container-fluid send">
+              <div class="col-sm-6">
+                <input type="text" class="form-control rounded-0" rows="5" name="description" [(ngModel)]="description"
+                  style="width:100%;" placeholder="Give your comments-it supports up to 30 characters" minlength="3"
+                  maxlength="30">
+              </div>
+              <div class="col-sm-3"></div>
+              <div class="col-sm-3">
+                <button type="submit" class="btn btn-sm bg_green" style="border-radius: 15px;border-collapse:collapse;"
+                  (click)="PostFeedback(description)">Send&nbsp;<i class="fa fa-paper-plane" style="color: #49d7f0;"
+                    aria-hidden="true"></i></button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+
+
+    <div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:0;">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="alert_heading">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </h4>
+                <div class="right_mark">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </div>
+                <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+                  <span>SMS posted Successfully</span>
+                  <br>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+
+            <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

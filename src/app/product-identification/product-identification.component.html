@@ -1,0 +1,222 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Product Identification</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Product Identification</h4>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="col-sm-3 fl" style="padding-left: 0px;">
+          &nbsp;&nbsp;&nbsp;
+          <label for="state1" class="col-form-label">Select State<sup>*</sup></label>
+          <input autocomplete="off" type="text" class='select-option form-control' required name="state1"
+              [(ngModel)]="state" #state1="ngModel" id="state1" 
+              (change)="setFilteredItems()"  list="states"
+              placeholder="Select State">
+            <datalist id="states">
+              <option [ngValue]="undefined" disabled selected>Select State</option>
+              <option class='option' *ngFor="let s of states" [ngValue]="s">{{s.state}}</option>
+            </datalist>
+  
+        </div>
+
+        <div class="col-md-3 col-lg-3 col-xs-6">
+          <div class="form-group">
+            <label for="prodName" class="col-form-label">Product Name <sup>*</sup></label>
+            <input autocomplete="off" type="text" class='select-option form-control' required name="product_namee"
+              [(ngModel)]="product_name" #product_namee="ngModel"
+              (change)="getsubcategory(product_name)" id="prodName" list="productnames"
+              placeholder="Product Name">
+            <datalist id="productnames">
+              <option [ngValue]="undefined" disabled selected>Select Product Name</option>
+              <option class='option' *ngFor="let s of productnames" [ngValue]="s">{{s.productname}}</option>
+            </datalist>
+            <!-- <div [hidden]="product_namee.valid || product_namee.untouched" class="validation_msg">
+              <small class="form-text text-muted text-danger">Enter Product Name</small>
+            </div>
+            <div *ngIf="PNameExists" class="validation_msg">
+              <small class="form-text text-muted text-danger">Product Already Assigned</small>
+            </div> -->
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="input_btn" (click)="getData()" style="margin-top: 23px;">Get Data</button>
+        </div>
+
+
+        <div class="fr form-group" *ngIf="productData.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+
+
+      </div>
+    </div>
+    <div>
+      <div>
+        <div class="row" *ngIf="(productData | filter :searchText) as productData">
+
+          <div class="col-sm-12 list">
+            <div class="table-responsive">
+              <!-- <br *ngIf="this.loginUserData.role=='Admin'"> -->
+              <table class="table table-striped" *ngIf="productData.length>0">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th class="width150">Business Name</th>
+                    <th>Model no</th>
+                    <th>Invoice Date</th>
+                    <th class="text-right">Inv Qty</th>
+                    <!-- <th>Actions</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of productData | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.business_name}}</td>
+                    <td>{{data.invdtals[0]?.modelno}}</td>
+                    <td>{{data.invdtals[0]?.inv_date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.invdtals[0]?.inv_qty}}</td>
+                    <!-- <td>
+                      <button type="button" class="btn btn-sm bg_green" (click)="InvEdit(data)">Invoice</button>
+                    </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- <div class="col-md-12" *ngIf="productData.length>0">
+              <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" (click)="printreport()">Print</button>
+              </div>
+            </div> -->
+            <pagination-controls *ngIf="productData.length>0" (pageChange)="p = $event"></pagination-controls>
+          </div>
+
+          <div *ngIf="productData.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Invoice Documents Approved Sucessfully..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" (click)="updatemodal()" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="successModal1" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Invoice Commented Sucessfully..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" (click)="updatemodal()" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="WarningModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>No Data is Available..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

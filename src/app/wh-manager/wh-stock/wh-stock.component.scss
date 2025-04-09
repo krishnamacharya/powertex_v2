@@ -1,0 +1,33 @@
+.prod_head {
+    font-size: 15px !important;
+}
+.all_images_cat{
+    width: 100%;
+    height: auto;
+}
+.prod_head{
+    height: 15px;
+    font-size: 13px !important;
+    cursor: pointer;
+    color: #525252 !important;
+}
+.prod_head:hover{
+    color: #0fa497 !important;
+}
+.s_c{
+    color:#fff;
+    position: absolute;
+    top: 15px;
+    right: 0px;
+     left: 15px;
+     span {
+         font-weight: 700;
+     }
+}
+
+.custom_loder{
+    z-index: 99999999999 !important;
+     position: fixed !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important;  }

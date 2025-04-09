@@ -1,0 +1,34 @@
+.custom_loder{
+    z-index: 99999999999 !important;
+     position: fixed !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important;  }
+.chose_vendr{
+    // background: #0fa497;
+    text-align: center;
+    padding: 18px 0 0 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    overflow: hidden;
+}
+.vendor_sel{
+    width: 300px;
+    padding: 5px;
+    color:black !important;
+    border: 1px solid #20978c;
+    border-radius: 5px;
+}
+
+.vendor_lab{
+    color:#0fa497 !important;
+    font-weight: 700 !important;
+    font-size:18px;
+    padding-right: 15px;
+}
+/* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 520px){
+    #grnWrap {
+        overflow: scroll !important;
+    }
+    }

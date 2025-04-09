@@ -1,0 +1,192 @@
+<div class="container pad_t_5per pad_b_5per dash_w">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <!-- <span><a href="javascript.void(0)" routerLink="/grn">GRN</a>
+    </span>&nbsp;>&nbsp; -->
+    <span>Schemes</span>
+</p>
+<section>
+  <div class="row"
+    style="margin:0px;box-shadow: 1px 1px 2px 2px lightgray;border-top-left-radius: 20px;border-top-right-radius: 20px;">
+    <div class="row bg-theme dash_status" style="margin:0px">
+      <div class="col-md-6 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':AvailSch == true}" (click)="getschema_list()">Available Scheme's</a>
+      </div>
+      <div class="col-md-6 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':AppSch == true}" (click)="App_sch()">Applied Scheme's</a>
+      </div>
+    </div>
+    <div class="pad_20">
+        <div *ngIf="AvailSch">
+          <div class="row" style="margin:0px" *ngIf="schemes_data.length>0">
+              <table class="table">
+                  <thead >
+                    <tr>
+                        <th>S.No</th>
+                        <th>Scheme Type</th>
+                        <th>Turnover</th>
+                        <th>Scheme Period</th>
+                        <th>Applied On</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of schemes_data; let i=index;">
+                      <td>Scheme {{i+1}}</td>
+                      <td>{{data.scheme_type}}</td>
+                      <td *ngIf="data.scheme_type=='Target Based'">{{data.scheme_value}}</td>
+                      <td *ngIf="data.scheme_type=='Product Based'">{{data.scheme_value}} Pcs.</td>
+                      <td>{{data.fromdate}} to {{data.todate}}</td>
+                      <!-- <th style="width: 20%">{{data.model}}</th> -->
+                      <td *ngIf="data.spec=='All'">All Products</td>
+                      <td style="width: 20%" *ngIf="data.model">{{data.model}}</td>
+                      <td style="width: 20%" [innerHTML]="data.message"></td>
+                      <td><span (click)="view_sch_det(data)"><i class="fa fa-eye" title="View More" style="font-size:20px;color:#0fa497"></i></span>&nbsp;&nbsp;<span><button class="app btn" *ngIf="data.status==1" (click)="app_scheme(data)">Apply</button></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+          </div>
+          <div class="row">
+            <div class="col-md-12" *ngIf="schemes_data.length==0">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Scheme's Available  At This Period</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="AppSch">
+            <div class="row" style="margin:0px" *ngIf="app_schemes_data.length>0">
+              
+                <table class="table">
+                    <thead >
+                      <tr>
+                          <th>S.No</th>
+                          <th>Scheme Type</th>
+                          <th>Turnover</th>
+                          <th>Scheme Period</th>
+                          <th>Applied On</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of app_schemes_data; let i=index;">
+                        <td>{{i+1}}</td>
+                        <td>{{data.scheme_type}}</td>
+                        <td *ngIf="data.scheme_type=='Target Based'">{{data.scheme_value}}</td>
+                        <td *ngIf="data.scheme_type=='Product Based'">{{data.scheme_value}} Pcs.</td>
+                        <td>{{data.fromdate}} to {{data.todate}}</td>
+                        <!-- <th style="width: 20%">{{data.model}}</th> -->
+                        <td *ngIf="data.spec=='All'">All Products</td>
+                        <td style="width: 20%" *ngIf="data.model">{{data.model}}</td>
+                        <td style="width: 20%" [innerHTML]="data.message"></td>
+                        <td><span (click)="view_sch_det(data)"><i class="fa fa-eye" style="font-size:20px;color:#0fa497"></i></span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                 
+            </div>
+            <div class="row">
+              <div class="col-md-12" *ngIf="app_schemes_data.length==0">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">You Don't Have Any Applied Scheme's</span>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+  <!-- <div class="row">
+    <div class="col-md-12">
+      <h3 class="sch_h_1">Available Scheme's</h3>
+    </div>
+    
+  </div> -->
+</section>
+</div>
+<div class="modal fade" id="schemeModal1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading1">
+                  Scheme Details
+              </h4>
+              <div class="pad_15 text-center content_msg" style="padding: 3% 0;">
+               <div class="row">
+                 <!-- <h1>nooo</h1> -->
+                 <div class="col-md-5 view_s">
+                   <table class="table" style="margin:0px 10px;" *ngIf="scheme_modal">
+                      <tr><th >Scheme Type :</th><td>{{scheme_modal.scheme_type}}</td></tr>
+                      <tr><th>Turn Over :</th><td>{{scheme_modal.scheme_value}}</td></tr>
+                      <tr><th>From Date :</th><td>{{scheme_modal.fromdate}}</td></tr>
+                      <tr><th>To Date :</th><td>{{scheme_modal.todate}}</td></tr>
+                      <!-- <tr><th>To Date :</th><td>{{scheme_modal.todate}}</td></tr> -->
+                   </table>
+                 </div>
+                 <div class="col-md-7 view_s">
+                    <table class="table" style="margin:0px 10px;" *ngIf="scheme_modal">
+                        <tr><th >Scheme Benfits :</th><td>{{scheme_modal.scheme_benfit1}} &nbsp; {{scheme_modal.scheme_benfit2}}</td></tr>
+                        <tr><th>Applied On :</th><td *ngIf="scheme_modal.spec=='All'">All Products</td><td  *ngIf="scheme_modal.model">{{scheme_modal.model}}</td></tr>
+                        <tr><th>Total Inv Amount :</th><td>{{scheme_modal.total_inv}}</td></tr>
+                        <tr><th>Status :</th><td [innerHTML]="scheme_modal.message"></td></tr>
+                        <!-- <tr><th>To Date :</th><td>{{scheme_modal.todate}}</td></tr> -->
+                     </table>
+                 </div>
+               </div>
+              </div>
+              <div class="row" *ngIf="scheme_modal">
+                  <div class="col-md-12 text-center">
+                    <p style="color:#222964"><b>{{scheme_modal.scheme_remarks1}}</b> </p>
+                    <p style="color:#222964"> <b>{{scheme_modal.scheme_remarks2}}</b></p>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="schemeSuccess" tabindex="-1" data-backdrop="static" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body" style="padding:0;">
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <h4 class="alert_heading">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </h4>
+                <div class="right_mark">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </div>
+                <div class="text-center content_msg">
+                    <p style="padding-top: 9%;" class="alert_order_no">Scheme Applied Successfully..!!</p>
+                  <p style="padding: 3% 0;" class="alert_order_no">Our Team Will Contact you Very Soon...</p>
+                  <p class="m_p_t"> Thank You, For Choosing Powertex</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success fr" data-dismiss="modal" >OK</button>
+          </div>
+        </div>
+      </div>
+    </div>

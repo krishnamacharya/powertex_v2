@@ -1,0 +1,138 @@
+// @media print {
+    .total_invoice_page {
+        background: #fff;
+        padding: 10px;
+        box-shadow: 0px 3px 12px 0px #cccccc;
+    }
+    p{
+        margin-bottom: 5px !important;
+    }
+    .invoce_address {
+        padding: 0 20px;
+        border: 1px dashed #37475a;
+    }
+    
+    .company_address{
+        font-weight: 700;
+        font-size: 12px;
+        padding-right: 5px;
+        color: #232f3e;
+        text-align: left;
+        margin-bottom: 5px !important;
+    }
+    
+    .hr_line{
+        border-bottom: 1px dashed #37475a;
+        border-top: 1px dashed #37475a;
+    }
+    .marg_t_b_15{
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .hr_line_botm{
+        border-bottom: 1px dashed #37475a;
+    }
+    
+    .f_left{
+        float:left;
+    }
+    .f_right{
+        float:right;
+    }
+    
+    .fnt_size_12{
+        font-size: 12px;
+    }
+    .fnt_size_12 span{
+        line-height:1.5 !important;
+        font-size:10px !important;
+    }
+    .pad_r_15{
+        padding-right: 15px;
+    }
+    .pad_l_15{
+        padding-left: 15px;
+    }
+    
+    .theme_bgclr {
+        font-size: 11px !important;
+        padding: 3px 12px !important;
+      }
+      .mar_b_30{
+        margin-bottom: 30px;
+    }
+    
+    .marg_t_15{
+        margin-top: 15px;
+    }
+    .printTable tbody tr td{
+        font-size: 10px;
+        padding: 3px !important;
+    }
+    .padding_0{
+        padding: 0 !important;
+    }
+    // .poheadRight span{
+    //     color:gray;
+    // }
+    // }
+    
+    .alignright{
+        text-align:right !important;
+        // padding-right:15px;
+      }
+      th{
+          font-size: 10px;
+          padding:5px;
+      }
+      .gsttable{
+    padding-left: 0 !important;
+      }
+    .gstspan{
+        line-height: 1;font-size: 9px !important;margin-left: 1px;
+    }
+    .companyaddr{
+        margin-top: 1px;margin-bottom: 1px;font-weight: 600;line-height: 1;
+    }
+    .gstspan{
+        line-height: 1;font-size: 10px !important;margin-left: 2px;
+    }
+    .panspan{
+        line-height: 1;font-size: 9px !important;
+    }
+    span{
+        line-height: 1;
+        display:inline-block;
+    }
+    h6{
+        text-decoration:underline;margin-top: 2px;margin-bottom: 2px;
+    }
+    /* mobile styles start her */
+    @media screen and (min-width: 320px) and (max-width: 480px){
+        // .print_bill{
+        //     float:none !important;
+        // }
+        // .print_ship{
+        //     float:none !important;
+        // }
+      }
+    
+    /* tablets styles start here */
+    @media screen and (min-width: 481px) and (max-width: 767px){
+       
+      }
+    
+    /* desktops styles start here */
+    @media screen and (min-width: 768px) and (max-width: 991px){
+     
+      }
+    
+      /* desktops styles start here */
+    @media screen and (min-width: 992px) and (max-width: 1023px){
+       
+      }
+    
+        /* lg-desktops styles start here */
+    @media screen and (min-width: 1024px) and (max-width: 1200px){
+       
+      }

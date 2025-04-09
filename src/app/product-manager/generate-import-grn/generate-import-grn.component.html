@@ -1,0 +1,152 @@
+<div class="container pad_t_5per pad_b_5per" id="printSectionId">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard"  class="breadcrumb_clr">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>
+      <a href="javascript.void(0)" routerLink="/product-manager-GRN" style="color: #878787 !important;">Import GRN</a>
+    </span>
+    &nbsp;>&nbsp;
+    <span>GRN Detail</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row pad_b_10">
+      <div class="col-md-12">
+        <div>
+          <p>
+            <b>Invoice No:</b>{{grnGetData.inv_no}}</p>
+          <p>
+            <b>Invoice Date:</b> {{grnGetData.inv_date}}</p>
+        </div>
+      </div>
+      <hr style="border:1px solid #00000017;" />
+      <!-- <div class="grn_header">
+
+        <div class="col-md-3">
+          <p>
+            <b>Shipping Address</b>
+          </p>
+          <p>{{shipingAddress.Contact_person}}</p>
+          <p>{{shipingAddress.mobile}}</p>
+          <p>{{shipingAddress.address1}}</p>
+          <p>{{shipingAddress.address2}}</p>
+          <p>{{shipingAddress.city}}</p>
+        </div>
+        <div class="col-md-3">
+          <p>
+            <b>Billing Address</b>
+          </p>
+          <p>{{billingAddress.Contact_person}}</p>
+          <p>{{billingAddress.mobile}}</p>
+          <p>{{billingAddress.address1}}</p>
+          <p>{{billingAddress.address2}}</p>
+          <p>{{billingAddress.city}}</p>
+        </div>
+        <div class="col-md-3">
+          <p>
+            <b>Sold By</b>
+          </p>
+          <p>Powertex</p>
+          <!-- <p>{{data.inv_origin_company_code}}</p> 
+      </div> -->
+
+
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <p>
+            <b>Credit Period (days):</b>{{grnGetData.credit_period}}</p>
+          <p>
+            <b>payment terms:</b> {{grnGetData.payment_terms}}</p>
+          <p>
+            <b>Special Instructions:</b>{{grnGetData.spl_instr}}</p>
+        </div>
+        <div class="col-md-6">
+          <p *ngIf="grnGetData.remarks1!=''">
+            <b>remarks 1:</b> {{grnGetData.remarks1}}</p>
+          <p *ngIf="grnGetData.remarks2!=''">
+            <b>remarks 2:</b> {{grnGetData.remarks2}}</p>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row pad_15">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="txt_centr">Sr.No</th>
+            <th class="txt_left">Product ID</th>
+            <th class="txt_left">Model No</th>
+            <th class="txt_right">Quantity</th>
+            <th class="txt_right">Mrp(&#8377;)</th>
+            <th class="txt_right">Discount(%)</th>
+            <!-- <th class="txt_right">GST(%)</th> -->
+            <th class="txt_right">Total(&#8377;)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of grn_details;let j = index">
+            <td class="txt_centr">{{j+1}}</td>
+            <td class="txt_left">{{data.productid}}</td>
+            <td class="txt_left">{{data.modelno}}</td>
+            <td class="txt_right">{{data.inv_qty}}</td>
+            <td class="txt_right">{{data.net_price | currency :'&nbsp;'}}</td>
+            <td class="txt_right">{{data.discount}}</td>
+            <!-- <td class="txt_right">18</td> -->
+            <td class="txt_right">{{data.tot_value | currency :'&nbsp;'}}</td>
+          </tr>
+          <tr>
+            <td colspan="5" class="no-line"> </td>
+            <td class="no-line txt_right">
+              <strong>GRAND TOTAL</strong>
+            </td>
+            <td class="no-line txt_right"><span style="color:#000;"></span>{{Sum | currency :'&#8377;'}}</td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="fr pad_t_15">
+
+        <button class="btn btn-primary mar_l_100" (click)="Generate_GRN(grn_details)">Generate GRN</button>
+      </div>
+
+      <!-- <button id="printpagebutton" class="btn input_btn" (click)="Generate_GRN('printSectionId')">
+      <i class="fa fa-print" aria-hidden="true"></i> &nbsp;&nbsp;print</button> -->
+
+      <!-- <div id="printpagebutton" *ngIf="showbtn" class="fr">
+        <button class="btn btn-primary" (click)="Generate_GRN(grn_details,grndata)">Generate GRN</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+<!-- modal pop up start here -->
+
+
+<div class="modal fade" id="grnSuccessfulModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Your GRN Generated Successfully.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button> -->
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="confirm_grn()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

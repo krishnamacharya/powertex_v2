@@ -1,0 +1,103 @@
+<div class="container-fluid">
+  <div class="row pad_t_5per">
+    <ngx-spinner class="custom_loder">
+      <img src="../../../assets/Loader.gif">
+    </ngx-spinner>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span> {{loginUserData.content}}</span>
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Supplier Paid List</span>
+    </p>
+    <div class="reg_form mar_b_30">
+      <div class="row mar_b_15">
+        <div class="col-sm-12">
+          <div class="fl">
+            <h4>Supplier Paid List</h4>
+          </div>
+          <div class="fr" *ngIf="supplierpayments.length>0">
+            <input type="text" [(ngModel)]="searchText" placeholder="Search by Supplier name" class="search_style">
+            <button type="submit" class="input_btn">Search</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="supplierpayments">
+        <div class="row" *ngIf="(supplierpayments | filter :searchText) as supplierpayments">
+          <div class="col-sm-12 list" *ngIf="supplierpayments.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th>Supplier Name</th>
+                    <th class="text-right">Date</th>
+                    <th>Invoice No</th>
+                    <th class="text-right">Invoice (USD)</th>
+                    <th class="text-right">Invoice (CNY)</th>
+                    <th class="text-right">BL Date</th>
+                    <th class="text-right">No. of Days</th>
+                    <th class="text-right">Due Date</th>
+                    <th class="text-right">Paid Amount</th>
+                    <th class="text-right">Balance Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierpayments | paginate: { itemsPerPage: 10, currentPage: p };">
+                    <td>{{data.financial_year}}</td>
+                    <td>{{data.Suplier_Name}}</td>
+                    <td class="text-right">{{data.InvDate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td class="text-right">{{data.Invoice_USD | number : '1.2-2'}}</td>
+                    <td class="text-right">{{data.Invoice_CNY | number : '1.2-2'}}</td>
+                    <td class="text-right">{{data.BL_Date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.No_of_Days}}</td>
+                    <td class="text-right">{{data.Due_date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.PaidAmount | number : '1.2-2'}}</td>
+                    <td class="text-right">{{data.balance_amount | number : '1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <td class="text-right"><b>{{this.totalinvoiceusd | number : '1.2-2'}}</b></td>
+                    <td class="text-right"><b>{{this.totalinvoicecny | number : '1.2-2'}}</b></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12">
+              <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" (click)="printreport()">Print</button>
+              </div>
+            </div>
+            <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+          </div>
+          <div *ngIf="supplierpayments.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ngx-spinner class="loader_spinner"></ngx-spinner>
+    </div>
+  </div>
+</div>

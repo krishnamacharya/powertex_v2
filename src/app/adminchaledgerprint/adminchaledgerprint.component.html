@@ -1,0 +1,136 @@
+
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>
+
+    <!-- <span>
+      <a href="javascript.void(0)" routerLink="/adminchaledger" style="color: #878787 !important; ">Clearing House Agent Ledger</a>
+    </span> -->
+    <span>&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Admin-Cha-Reports" style="color: #878787 !important;">Cha-Reports&nbsp;>&nbsp;Clearing House Agent Ledger</a>
+    </span>
+    &nbsp;>&nbsp;
+    <span>Print</span>		
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Clearing House Agent Ledger</h4>
+        </div>
+        <div class="fr"  *ngIf="orders.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+   
+    <div>
+      <div *ngIf="orders">
+        <div id="printsuppndng">
+          <div class="row busname text-center">
+
+            <h3 class="shopee_name">
+              <span> {{loginUserData.company_address.companyname}}</span>
+            </h3>
+            <hr>
+          <h3 class="shopee_name text-center">
+            <!-- {{this.loginUserData.shipment_point}}  (Clearing House Agent) -->
+
+            <span *ngIf="this.loginUserData.user_type == 'Admin'">{{this.pro.businessname}}  LEDGER&nbsp;(Admin)</span> 
+          </h3>
+          </div>
+
+        <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+
+                    <th class="text">Bill No</th>
+                    <th class="text-left">Bill Date</th>
+                    <th class="text-left">Invoice No</th>
+                    <th class="text-right">Cha Amount</th>
+                    <th class="text-right">Payment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders;  let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td class="text">{{data.bill_no}}</td>
+                    <td class="text-left">{{data.bill_date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-left">{{data.inv_no}}</td>
+                    <td class="text-right">{{data.chaamount | number : '1.2-2'}}</td>
+                    <td class="text-right">{{data.Payment | number : '1.2-2'}}</td>
+
+                  </tr>
+                  <tr>
+                    
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><b><h5>Total</h5></b></td>
+                    <td class="text-right"><b>{{this.chaamount | number : '1.2-2'}}</b></td>
+                    <td class="text-right"><b>{{this.totalpayment | number : '1.2-2'}}</b></td>
+                  </tr>
+
+                  <tr>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right"><b>
+                        <h5>Balance</h5>
+                      </b></td>
+                    <td class="text-right"><b>{{this.chaamount-this.totalpayment | number : '1.2-2'}}</b></td>
+                  </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+            <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+              <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+              </button>
+              <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Admin-Cha-Reports">Cancel</button>
+            </div>
+          
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+       
+
+
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

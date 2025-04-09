@@ -1,0 +1,109 @@
+<div class="container-fluid pad_t_5per">
+
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>
+    <span *ngIf="this.loginUserData.user_type == 'Admin'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Pending-Duty-List" style="color: #878787 !important;">Port Wise List</a>
+    </span>
+    <span *ngIf="this.loginUserData.user_type != 'Admin'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/PendingDutyListPrint" style="color: #878787 !important;">Port Wise List</a>
+    </span>
+    &nbsp;>&nbsp;
+    <span>Print</span>
+
+  </p>
+  <div class="reg_form mar_b_30">
+    <div class="row">
+      <div class="col-sm-12">
+         <div class="fl">
+          <h5><b>Port Wise List</b></h5>
+        </div> 
+        <div class="fr" *ngIf="orders.length>0">
+          <input type="text" [(ngModel)]="searchText" placeholder="Search Port" class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="orders">
+
+
+      <div id="printsuppndng">
+
+        <div class="row busname text-center">
+          <h3 class="shopee_name text-center">
+            <!-- {{this.loginUserData.shipment_point}} On Port Summary (Clearing House Agent) -->
+           Admin Port Wise List
+          </h3>
+        </div>
+
+        <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+          <!-- <div class="row" *ngIf="(orders | filter :searchText) as orders"> -->
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+
+
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Port</th>
+                    <th class="col-md-3">Supplier Name</th>
+                    <th>Invoice No</th>
+                    <th class="col-md-1">Invoice Date</th>
+                    <th class="col-md-1">BL Date</th>
+                    <th>CTNS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders">
+                    <td>{{data.port}}</td>
+                    <td class="col-md-3">{{data.Suplier_Name}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td class="col-md-1">{{data.InvDate | date:'dd-MM-yyyy'}}</td>
+                    <td class="col-md-1">{{data.BL_Date | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.ctns}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+            <div class="col-md-12">
+
+               
+            <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+              <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+              </button>
+              <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Pending-Duty-List">Cancel</button>
+            </div>
+
+
+            </div>
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+  </div>
+</div>

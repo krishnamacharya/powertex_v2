@@ -1,0 +1,91 @@
+<div class="container pad_t_5per">
+
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Minimum Order Quantity Details</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h5><b>Minimum Order Quantity Details</b></h5>
+        </div>
+        <div class="fr" *ngIf="orders.length>0">
+          <input type="text" [(ngModel)]="searchText" placeholder="Search Port" class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="orders">
+
+      <div id="printsuppndng">
+
+        <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Model No</th>
+                    <th>Category</th>
+                    <th>Sub Category</th>
+                    <th>Brand</th>
+                    <th>Closing Qty</th>
+                    <th>Minimum Order</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.modelno}}</td>
+                    <td>{{data.category}}</td>
+                    <td>{{data.subcategory }}</td>
+                    <td>{{data.brand}}</td>
+                    <td class="text-right">{{data.closing_bal_qty}}</td>
+                    <td class="text-right">{{data.minimumOrder}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-md-12">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton"
+                  (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+
+
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+  </div>
+</div>

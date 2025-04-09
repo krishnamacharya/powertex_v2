@@ -1,0 +1,50 @@
+<div class="pad_t_5per pad_b_5per" style="width:100%;">
+    
+  <div class="pad_15 mar_b_30" >
+    <div class="container" >
+        <p class="bread-crumb1">
+            <span>
+              <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+            </span>&nbsp;>&nbsp;<span>Reports</span>
+        </p>
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Nav tabs -->
+        <div class="card">
+          <ul class="nav nav-tabs" role="tablist">
+            <!-- <li role="presentation" class="active">
+              <a href="#report" aria-controls="home" role="tab" data-toggle="tab">REPORTS
+              </a>
+            </li> -->
+            <li role="presentation" class="active" *ngFor="let re of reporttypedata;let i=index">
+             
+                <a *ngIf="i==0" role="tab" (click)="changetype(re.process)" data-toggle="tab" >{{re.process}} Reports</a>
+              </li>
+            <li role="presentation" *ngFor="let re of reporttypedata;let i=index">
+                <a *ngIf="i!=0"  role="tab" (click)="changetype(re.process)" data-toggle="tab" >{{re.process}} Reports</a>
+            </li>
+            <!-- <li role="presentation">
+              <a href="#perticularreport" aria-controls="profile" role="tab" data-toggle="tab">VIEW All REPORTS</a>
+            </li> -->
+            <!-- <li role="presentation"><a href="#view" aria-controls="profile" role="tab" data-toggle="tab">View</a></li> -->
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="report">
+              <app-admin-report-all [type]="this.type"></app-admin-report-all> 
+            </div>
+            <div role="tabpanel" class="tab-pane" id="perticularreport">
+              <!-- <app-admin-report-perticular></app-admin-report-perticular>  -->
+            </div>
+            <!-- <div role="tabpanel" class="tab-pane" id="view">
+            <app-view-products-data></app-view-products-data>
+          </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+ 
+
+    

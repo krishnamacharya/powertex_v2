@@ -1,0 +1,421 @@
+<div class="container pad_t_5per pad_b_5per" id="printSectionId">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+            <span>{{loginUserData.content}}</span>
+          </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>
+        <a href="javascript.void(0)" routerLink="/Dealer-GRN">GRN</a>
+      </span>&nbsp;>&nbsp;
+      <span>GRN Generation</span>
+    </p>
+  
+    <div class="reg_form mar_b_30 pad_15">
+      <div class="row page_hdr">
+        <span>GRN Generation</span>
+      </div>
+  
+      <div class="row pad_b_10 grnponowrap">
+        <div class="col-md-12 hr_line_botm pad_b_10" id="ponoMt">
+          <div class="fl">
+           <span> <b>Invoice No:</b> {{grnGetData.refinvno}}</span>
+          </div>
+          <div class="fr">
+            <span>
+                <b>Invoice Date:</b> {{grnGetData.inv_date | date:'dd-MM-yyyy'}}
+            </span>
+         
+          </div>
+        </div>
+        <!-- <hr style="border:1px solid #00000017;" /> -->
+  
+        <div class="grn_header">
+          <div class="col-md-12 hr_line_botm pad_b_10">
+            <div class="col-md-4">
+              <div class="txt_l">
+                <h4>Sold By</h4>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span><b>{{soldbyAddress.companyname}},</b></span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{soldbyAddress.address1}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{soldbyAddress.address2}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{soldbyAddress.city}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{soldbyAddress.state}}</span>
+              </div>
+  
+              <!-- <div class="txt_l fnt_size_12">
+                <span>{{shipingAddress.address2}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{shipingAddress.city}}.</span>
+              </div> -->
+            </div>
+            <!-- <div class="col-md-4" *ngIf="billingAddress">
+              <div class="txt_l">
+                <h4>Billing Address</h4>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{billingAddress.business_name}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{billingAddress.mobile}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{billingAddress.address1}},</span>
+              </div>
+              <div class="txt_l fnt_size_12" *ngIf="billingAddress.address2">
+                <span>{{billingAddress.address2}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{billingAddress.city}}.</span>
+              </div>
+            </div>
+   -->
+            <!-- <div class="col-md-4" *ngIf="shipingAddress">
+              <div class="txt_l">
+                <h4>Shipping Address</h4>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{shipingAddress.business_name}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{shipingAddress.mobile}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{shipingAddress.address1}},</span>
+              </div>
+              <div class="txt_l fnt_size_12" *ngIf="shipingAddress.address2">
+                <span>{{shipingAddress.address2}},</span>
+              </div>
+              <div class="txt_l fnt_size_12">
+                <span>{{shipingAddress.city}}.</span>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+  
+      <!-- <div class="row">
+        <div class="credittermswrap">
+          <div class="col-md-6">
+            <h4 style="font-size: 16px;text-decoration: underline;">Credit Terms</h4>
+            <p>
+              <b>Credit Period (days) : </b>{{grnGetData.credit_period}}</p>
+            <p>
+              <b>Credit Limit : </b>{{grnGetData.payment_terms}}</p>
+          </div>
+          <div class="col-md-6 remarkswrap">
+            <p *ngIf="grnGetData.remarks1!=''">
+              <b>remarks 1 :</b> {{grnGetData.remarks1}}</p>
+            <p *ngIf="grnGetData.remarks2!=''">
+              <b>remarks 2 :</b> {{grnGetData.remarks2}}</p>
+          </div>
+        </div>
+      </div> -->
+  
+      <div class="row pad_15">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="txt_centr">Sr.No</th>
+                <th class="txt_left">Product Name</th>
+                <!-- <th class="txt_left">Model No</th> -->
+                <th class="txt_right">MRP(&#8377;)</th>
+                <th class="txt_right">Disc(%)</th>
+                <!-- <th class="txt_right">Spl.Disc(%)</th> -->
+                <th class="txt_right">Qty</th>
+                <th class="txt_right">Rate(&#8377;)</th>
+                <th class="txt_right">Total(&#8377;)</th>
+                <!-- <th class="txt_right">GST(%)</th>
+                <th class="txt_right">Net Value(&#8377;)</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of grn_details;let j = index">
+                <td class="txt_centr">{{j+1}}</td>
+                <td class="txt_left">{{data.long_name}} &nbsp;{{data.modelno}}</td>
+                <td class="txt_right">{{data.mrp}}</td>
+                <td class="txt_right">{{data.discount_eff}}</td>
+                <!-- <td class="txt_right">{{data.sp_discount}}</td> -->
+                <td class="txt_right">{{data.inv_qty }}</td>
+                <td class="txt_right">{{data.net_price | currency : '&nbsp;'}}</td>
+                <td class="txt_right">{{data.tot_value | currency : '&nbsp;'}}</td>
+                <!-- <td class="txt_right">18</td>
+                <td class="txt_right">{{data.net_value| currency : '&nbsp;'}}</td> -->
+              </tr>
+              <tr>
+                <td colspan="5" class="no-line">
+                  <span *ngIf="totalsp_discountamount!=0">
+                    <b>Special Discount :</b> ₹ {{totalsp_discountamount}}</span>
+                </td>
+                <td class="no-line txt_right">
+                  <strong>TAXABLE</strong>
+                </td>
+                <td class="no-line txt_right"><span style="color:#000;"></span>₹ {{lineamount.toLocaleString('en-IN') }}.{{decimaltaxableamount}}</td>
+  
+              </tr>
+              <tr *ngIf="grnGetData.devicediscamount">
+                <td colspan="5" class="no-line"> </td>
+                <td class="no-line txt_right">
+                  <strong>DISCOUNT</strong>
+                </td>
+                <td class="no-line txt_right"><span style="color:#000;"></span>₹ {{grnGetData.devicediscamount.toLocaleString('en-IN') }}</td>
+              </tr>
+
+              <tr *ngIf="grnGetData.promo_amount">
+                <td colspan="5" class="no-line"> </td>
+                <td class="no-line txt_right">
+                  <strong>PROMO DISCOUNT</strong>
+                </td>
+                <td class="no-line txt_right"><span style="color:#000;"></span>₹ {{grnGetData.promo_amount.toLocaleString('en-IN') }}</td>
+  
+              </tr>
+
+              <tr *ngIf="loginUserData.company_address.state_code==billingAddress.state_code">
+    
+                <td colspan="5" class="no-line">
+                  <b *ngIf="freeqtyarr.length>0">Free Qty : </b>
+                  <span *ngFor="let f of freeqtyarr">
+                   <span>{{f.productname}} = {{f.free_qty}} </span>
+                   </span>
+                </td>
+  
+                <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+                    <strong>CGST </strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;"><span
+                        style="color:#000;">₹ {{grnGetData.gst_amount/2 | currency :'&nbsp;'}}</span></td>
+  
+            </tr>
+            <tr *ngIf="loginUserData.company_address.state_code==billingAddress.state_code ">
+              <td colspan="5" class="no-line"> </td>
+              <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+                  <strong>SGST </strong>
+              </td>
+              <td class="no-line txt_right" style="text-align: right;"><span
+                      style="color:#000;">₹ {{grnGetData.gst_amount/2 | currency : '&nbsp;'}}</span></td>
+  
+          </tr>
+          <tr *ngIf="loginUserData.company_address.state_code != billingAddress.state_code ">
+            <td colspan="5" class="no-line">
+              <b *ngIf="freeqtyarr.length>0">Free Qty : </b>
+              <span *ngFor="let f of freeqtyarr">
+               <span>{{f.productname}} = {{f.free_qty}} </span>
+               </span>
+            </td>
+            <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+                <strong>IGST </strong>
+            </td>
+            <td class="no-line txt_right" style="text-align: right;"><span
+                    style="color:#000;">₹ {{grnGetData.gst_amount.toLocaleString('en-IN')}}</span></td>
+  
+        </tr>
+        <tr *ngIf="this.grnGetData.tcs_percent">
+            <td colspan="5" class="no-line" >
+
+            </td>
+            <td class="no-line txt_right"
+              style="text-align: right; vertical-align: middle !important;">
+              <strong>TCS(%)</strong>
+            </td>
+            <td class="no-line txt_right" style="text-align: right;"><span
+                style="color:#000;text-align: right;">
+                {{grnGetData.tcs_percent | currency:'&nbsp;'}}</span>
+            </td>
+          </tr>
+          <tr *ngIf="this.grnGetData.tcs">
+            <td colspan="5" class="no-line" >
+
+            </td>
+            <td class="no-line txt_right"
+              style="text-align: right; vertical-align: middle !important;">
+              <strong>TCS Amount</strong>
+            </td>
+            <td class="no-line txt_right" style="text-align: right;"><span
+                style="color:#000;text-align: right;">₹
+                {{grnGetData.tcs | currency:'&nbsp;'}}</span>
+            </td>
+          </tr>
+
+<!-- 
+              <tr>
+                <td colspan="5" class="no-line"> 
+                  <b *ngIf="freeqtyarr.length>0">Free Qty : </b>
+                  <span *ngFor="let f of freeqtyarr">
+                   <span>{{f.productname}} = {{f.free_qty}} </span>
+                   </span>
+                </td>
+                <td class="no-line txt_right">
+                  <strong>GST AMOUNT</strong>
+                </td>
+                <td class="no-line txt_right"><span style="color:#000;"></span>{{grnGetData.gst_amount| currency :'&nbsp;' }}</td>
+              </tr> -->
+
+             
+
+              <tr >
+                <td colspan="5" class="no-line">
+                   </td>
+                <td class="no-line txt_right">
+                  <strong>Round Off</strong>
+                </td>
+                <td class="no-line txt_right"><span style="color:#000;"></span>₹ {{roundoffAmt.toLocaleString('en-IN') }}</td>
+              </tr>
+
+              <tr>
+                <td colspan="5" class="no-line">
+                  <b>Total Cartons -</b> {{cartonqty | number : '1.2-2'}},
+                  <b>Total Pieces -</b> {{temp}} </td>
+                <td colspan="1" class="no-line txt_right">
+                  <strong>NET AMOUNT</strong>
+                </td>
+                <td *ngIf="!grnGetData.final_amount" class="no-line txt_right"><span style="color:#000;"></span>₹ {{Sum.toLocaleString('en-IN')}}</td>
+                <td *ngIf="grnGetData.final_amount" class="no-line txt_right"><span style="color:#000;"></span>₹ {{final_amount.toLocaleString('en-IN')}}.{{decimalfinalamount}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+         <!-- GST table -->
+  <div class="row">
+    <div class="col-md-7 gsttable">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped pending_order printTable"
+          style="margin-bottom: 5px !important;table-layout: initial;">
+          <thead>
+            <tr>
+              <th class="alignright">GST%</th>
+              <th class="alignright">Taxable (&#8377;)</th>
+              <th class="alignright">CGST (&#8377;)</th>
+              <th class="alignright">SGST (&#8377;)</th>
+              <th class="alignright">IGST (&#8377;)</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="loginUserData.company_address.state_code==billingAddress.state_code">
+            <tr *ngIf="first">
+              <td class="alignright">18%</td>
+              <td class="alignright">{{totalfirsttaxable.toLocaleString('en-IN')}}.{{decimalfirsttaxableamount}}</td>
+              <td class="alignright"> 
+                {{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}
+
+              </td>
+              <td class="alignright"> 
+                {{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}
+
+              </td>
+              <td class="alignright"> -</td>
+            </tr>
+            <tr *ngIf="second">
+              <td class="alignright">5%</td>
+              <td class="alignright">{{totalsecondtaxable.toLocaleString('en-IN')}}.{{decimalsecondtaxableamount}}</td>
+              <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+              <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+              <td class="alignright">-</td>
+            </tr>
+            <tr *ngIf="third">
+              <td class="alignright">12%</td>
+              <td class="alignright">{{totalthirdtaxable.toLocaleString('en-IN')}}.{{decimalthirdtaxableamount}}</td>
+              <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+              <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+              <td class="alignright">-</td>
+            </tr>
+            <tr *ngIf="fourth">
+              <td class="alignright">28%</td>
+              <td class="alignright">{{totalfourthtaxable.toLocaleString('en-IN')}}.{{decimalfourthtaxableamount}}</td>
+              <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+              <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+              <td class="alignright">-</td>
+            </tr>
+          </tbody>
+       <tbody *ngIf="loginUserData.company_address.state_code!=billingAddress.state_code">
+        <tr *ngIf="first">
+          <td class="alignright">18%</td>
+          <td class="alignright">{{totalfirsttaxable.toLocaleString('en-IN')}}.{{decimalfirsttaxableamount}}</td>
+          <td class="alignright">-</td>
+          <td class="alignright">-</td>
+          <td class="alignright">{{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}</td>
+        </tr>
+        <tr *ngIf="second">
+          <td class="alignright">5%</td>
+          <td class="alignright">{{totalsecondtaxable.toLocaleString('en-IN')}}.{{decimalsecondtaxableamount}}</td>
+          <td class="alignright">-</td>
+          <td class="alignright">-</td>
+          <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+        </tr>
+        <tr *ngIf="third">
+          <td class="alignright">12%</td>
+          <td class="alignright">{{totalthirdtaxable.toLocaleString('en-IN')}}.{{decimalthirdtaxableamount}}</td>
+          <td class="alignright">-</td>
+          <td class="alignright">-</td>
+          <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+        </tr>
+        <tr *ngIf="fourth">
+          <td class="alignright">28%</td>
+          <td class="alignright">{{totalfourthtaxable.toLocaleString('en-IN')}}.{{decimalfourthtaxableamount}}</td>
+          <td class="alignright">-</td>
+          <td class="alignright">-</td>
+          <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+        </tr>
+       </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+    <!-- ends GST table -->
+        <div class="fr pad_t_15">
+          <button *ngIf="a_grn" class="btn btn-primary mar_l_100 btn-align" (click)="Generate_GRN(grn_details,grndata)">Generate GRN
+          </button>
+          <button *ngIf="!a_grn" class="btn btn-primary mar_l_100 btn-align" (click)="confirm_grn()">OK</button>
+  
+        </div>
+  
+        <!-- <button id="printpagebutton" class="btn input_btn" (click)="Generate_GRN('printSectionId')">
+        <i class="fa fa-print" aria-hidden="true"></i> &nbsp;&nbsp;print</button> -->
+  
+        <!-- <div id="printpagebutton" *ngIf="showbtn" class="fr">
+          <button class="btn btn-primary" (click)="Generate_GRN(grn_details,grndata)">Generate GRN</button>
+        </div> -->
+      </div>
+    </div>
+    <ngx-spinner class="loader_spinner"></ngx-spinner>
+  </div>
+  
+  <!-- modal pop up start here -->
+  <div class="modal fade" id="grnSuccessfulModal" tabindex="-1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding:0;">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+                <span>Your GRN Generated Successfully.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button> -->
+          <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="confirm_grn()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>

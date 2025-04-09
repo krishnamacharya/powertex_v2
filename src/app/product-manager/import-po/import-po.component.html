@@ -1,0 +1,455 @@
+<div class="container pad_t_5per pad_b_5per">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+          <h3 class="shopee_name">
+            <span>{{loginUserData.content}}</span>
+          </h3>
+          <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+        </div>
+      </div>
+      <p class="bread-crumb1">
+        <span>
+          <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span>Import PO</span>
+      </p>
+
+      <section [ngStyle]="{'padding-top':ven_POHidden === true ? '1%' : '3%','transition':'0.7s' }">
+        <div class="chose_vendr">
+          <div class="col-md-12   text-center">
+            <div class="form-group">
+              <label class="vendor_lab" for="sel1">Choose Vendor </label>
+              <span>
+                <select class="vendor_sel" [(ngModel)]="selectedObj" (ngModelChange)="vendor_chn($event)" id="sel1">
+                  <option [ngValue]="undefined" disabled selected>Select Vendor</option>
+                  <option *ngFor="let p of vendors" [ngValue]="p">{{p.first_name}}-{{p.vendorcode}}</option>
+                </select>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section *ngIf="ven_POHidden">
+        <div *ngIf="poHidden">
+          <div *ngIf="resources.length>0">
+          <div class="reg_form mar_b_30 pad_15">
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="col-md-3">
+                  <p><b>Vendor Name:</b> {{selected_vendor}}</p>
+                  <p><b>Vendor Code:</b> {{selected_vendor_code}}</p>
+                </div>
+                <div class="col-md-7">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label  for="sel1">Select Currency Code 
+                         <sub class="txt_red f_size_25">*</sub> </label>
+                        <span>
+                          <select class="vendor_sel" [(ngModel)]="this.headerData.currency_code"  id="sel1">
+                            <option [ngValue]="undefined" disabled selected>Select Currency</option>
+                            <option  *ngFor="let p of vendors_currency" [ngValue]="p.sign">{{p.currency_code}}</option>
+                          </select>
+                        </span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label  for="sel1">Exchange Rate 
+                          <sub class="txt_red f_size_25">*</sub>
+                      </label>
+                      <span>
+                        <input type="number" class="vendor_sel" [(ngModel)]="this.headerData.exchange_rate" placeholder="Enter Exchange Rate">
+                      </span>
+                    </div>
+                  </div>   
+                </div>
+                <div class="col-md-2">
+                  <!-- <button class="btn btn-primary" (click)="display()">Advance Search</button>&nbsp; -->
+                  <button class="btn btn-primary" (click)="adv_display()">Advanced Selection</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ADV_sEARCH sTART-->
+            <div class="row  mar_t_30" style="background: url('../../../assets/images/banners/slider5.jpg')" *ngIf="isHidden">
+              <div class="col-md-2" style="padding:0px;min-height: 300px;">
+                <ul class="menu">
+                  <li *ngFor="let p of resources" ><a>{{p.Category}}</a>
+                    <div class="container megadrop" style="max-height:300px;overflow:auto">
+                      <div class="row" style="margin:0px !important;padding: 5px;">
+                        <div class="col-md-4" style="height:200px;padding: 0px" *ngFor="let subp of p.detail">
+                          <h4>{{subp['SubCategory']}}</h4>
+                          <div class="col-md-12">
+                            <ul style="max-height:140px;overflow:auto; padding: 0px">
+                              <li class="l_s_m" *ngFor="let m of subp.modelno"><input class="a_c_f" type="checkbox" [checked]="selected"
+                                  id="{{m}}" (change)="prod_modal1(p,subp,m,$event)">{{m}}
+                                  <!-- <i class="fa fa-info-circle" (click) ="pro_detail(p,subp,m) "   style="font-size:16px;color:#0fa497"></i> -->
+                              </li>
+                            </ul>
+                          
+
+                            </div>
+                          </div>
+                          <div *ngIf="adv_det_disp" (mouseleave)="dis()" style="width: 300px;background:white;position: sticky;top: 20%;left: 40%;">
+                            <div class="row" *ngFor="let D of adv_det" style="position: fixed;background: white;padding: 10px;border: 2px solid #0fa497;left: 40%;">
+                              <h4 class="alert_heading" style="padding:10px !important;color: white !important;    margin-bottom: 0px !important; "> {{D.modelno}} Attributes
+                                
+                              </h4>
+                              <table class="table det_table">
+                                  <tr *ngFor="let p of D.details">
+                                    <td>
+                                        {{p.attribute}}
+                                    </td>
+                                    <td style="width:100px">:</td>
+                                    <td>
+                                        {{p.actual_value}}
+                                    </td>
+                                  </tr>
+                                </table>
+                                <button class="btn btn-primary" style="float:right;" (click)="dis();">Close</button> 
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- <div class="row adv_search mar_t_30" *ngIf="isHidden">
+
+              <div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3 pad_r_l_0">
+                  <div>
+                    <h3>Category</h3>
+                    <div  style="height:250px;overflow:auto;width: 90%; ">
+                      <p *ngFor="let p of resources" class="pad_l_5">
+                        <input type="checkbox" [checked]="selected_cat === p.Category" (change)="prod_category(p,$event)">
+                        {{p.Category}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 pad_r_l_0">
+                  <h3>Sub Category</h3>
+                  <div *ngFor="let p of resources">
+                    <div *ngIf="selectedCategory==p.Category" style="height:250px;overflow:auto;width: 90%; ">
+                      <p *ngFor="let pd of p['detail']" class="pad_l_5">
+                        <input type="checkbox" [checked]="selected_sub_cat === pd.SubCategory"
+                          (change)="prod_subcategory(p,pd,$event)"> {{ pd['SubCategory']}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 pad_r_l_0">
+                  <h3>Model Type</h3>
+                  <div style="height: 250px;overflow:auto; width: 90%;">
+                    <p *ngFor="let r of httpdata" class="pad_l_5">
+                      <input type="checkbox" (change)="prod_modal(r,ev)"> {{r.modelno}}</p>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="row pad_t_5per pad_15">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr *ngIf="newAttribute1">
+                    <th>Category</th>
+                    <th>SubCategory</th>
+                    <th>SKU/Model No</th>
+                    <th>Piece's</th>
+                    <th>Stock</th>
+                    <th>Purchase Price({{headerData.currency_code}})</th>
+                    <th>Discount</th>
+                    <th>Effective Price({{headerData.currency_code}})</th>
+                    <th>Total Value({{headerData.currency_code}})</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let catg of selectedList;let j = index">
+                    <td>{{catg.category}}</td>
+                    <td>{{catg.subcategory}}</td>
+                    <td>{{catg.modelno}}</td>
+                    <td><input type="number" class="form-control" placeholder="Enter Piece's" [(ngModel)]="catg.qty"
+                        name="qty"   style="padding-left: 5px;" required /></td>
+
+                    <td>{{catg.stock}}</td>
+
+                    <td> <input type="number" class="form-control" placeholder="Enter Unit Price" [(ngModel)]="catg.forex_mrp"
+                      name="forex_mrp"  /></td>
+
+                    <td> <input type="number" class="form-control" placeholder="Enter Discount" [(ngModel)]="catg.discount_eff"
+                      name="discount_eff" (keyup)="disc1(catg)" /></td>
+
+                    <td> <input type="number" class="form-control" placeholder="Enter Piece's" [(ngModel)]="catg.fr_effectiveprice"
+                        name="eff_price"  /></td>
+                    <td>{{catg.forex_value | currency : '&nbsp;'}}</td>
+                    <td> <i class="fa fa-trash" (click)="deleteFieldValue(j)" style="font-size: 18px;color: #20978c;"></i></td>
+                  </tr>
+                  <tr *ngFor="let field of fieldArray; let i = index">
+                    <td>{{field.category}}</td>
+                    <td>{{field.subcategory}}</td>
+                    <td>{{field.modelno}}</td>
+                    <td><input type="number" class="form-control" name="fieldquantity" [(ngModel)]="field.qty"
+                        style="padding-left: 5px;" min="1" oninput="validity.valid||(value='');"  /></td>
+                    <td>{{field.stock}}</td>
+                    <td>
+                      <input type="number" class="form-control" name="fieldforex_mrp"[(ngModel)]="field.forex_mrp" style="padding-left: 5px;"  />
+                    </td>
+                    <td>
+                      <input type="number" class="form-control" name="fielddiscount_per" [(ngModel)]="field.discount_eff"
+                        (change)="onKey2(field)" (keyup)="onKey2(field)" style="padding-left: 5px;"   >
+                    </td>
+                    <td>
+                        <input type="number" class="form-control" name="fieldfr_effectiveprice" [(ngModel)]="field.fr_effectiveprice"
+                          style="padding-left: 5px;" >
+                    </td>
+                    <td>{{field.forex_value | currency : '&nbsp;'}}</td>
+                    <td class="i_opt">
+                      <p>
+                        <i class="fa fa-trash" (click)="deleteFieldValue2(i)" style="font-size: 18px;color: #20978c;"></i></p>
+                    </td>
+                  </tr>
+              
+              <tr>
+                <td>
+                  <input list="categorys" class="form-control" placeholder="Select Category" 
+                  [(ngModel)]="newAttribute1.category" (input)="change_form($any($event.target).value)"style="padding-left: 5px;">
+                  <datalist id="categorys">
+                    <option *ngFor="let p of resources" value="{{p.Category}}">
+                  </datalist>
+                </td>
+                <td>
+                  <input list="subcategorys" class="form-control" placeholder="Select SubCategory"
+                     [(ngModel)]="newAttribute1.subcategory"
+                    (input)="change1($any($event.target).value,selectedCategory_form)" style="padding-left: 5px;"
+                    [disabled]="sele_sub_catg()" />
+                  <div *ngFor="let p of resources">
+                    <datalist id="subcategorys" *ngIf="selectedCategory_form==p.Category">
+                      <option *ngFor="let pd of p['detail']" value="{{pd['SubCategory']}}">
+                    </datalist>
+                  </div>
+                </td>
+                <td>
+                  <input list="modelno" class="form-control" placeholder="Select Model" 
+                    [(ngModel)]="newAttribute1.modelno" (input)="change2($any($event.target).value)"
+                    style="padding-left: 5px;" [disabled]="sele_model()" />
+                    <div>
+                      <div>
+                        <datalist id="modelno">
+                          <option *ngFor="let data of httpdata2" value="{{data.modelno}}">
+                        </datalist>
+                      </div>
+                    </div>
+                </td>
+                <td>
+                  <input type="number" class="form-control" name="newAttributequantity" 
+                    [(ngModel)]="newAttribute1.qty" placeholder="Enter Piece's" style="padding-left: 5px;"
+                    [disabled]="sele_quan()" />
+                </td>
+                <td >
+                    <input type="number" class="form-control" name="newAttributequantity" [(ngModel)]="newAttribute1.stock"
+                      placeholder="Available Quantity" style="padding-left: 5px;" disabled />
+                  </td>
+                <td>
+                  <input type="number" class="form-control" name="newAttributepurchaseprice"
+                    [(ngModel)]="newAttribute1.forex_mrp" style="padding-left: 5px;"  />
+                </td>
+
+                <td>
+                  <input type="number" class="form-control" name="newAttributediscount_per" [(ngModel)]="newAttribute1.discount_eff"
+                  (keyup)="disc(newAttribute1)" style="padding-left: 5px;"   >
+                </td>
+               
+                <td>
+                  <input type="number" class="form-control" name="newAttributeeff_price" [(ngModel)]="newAttribute1.fr_effectiveprice"
+                    style="padding-left: 5px;" >
+                </td>
+                <td>
+                  <input class="form-control" name="newAttributeprice" type="text"
+                    [ngModel]="newAttribute1.forex_value| currency : '&nbsp;'"
+                    (ngModelChange)="newAttribute1.forex_value = $event" style="padding-left: 5px;" disabled />
+                </td>
+                <td>
+                  <button class="btn btn-default" type="button" [disabled]="add_disable(newAttribute1)"
+                    (click)="addFieldValue()">Add</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <input type="button" style="float:right" class="btn btn-primary" value="Place Order"
+            [disabled]="placeorder_disable(selectedList,newAttribute1,fieldArray)"
+            (click)="addupd(selectedList,newAttribute1,fieldArray)">
+          <input type="button" style="float:right; margin-right: 10px;" class="btn btn-primary" value="Save"
+            (click)="draft(selectedList,newAttribute1,fieldArray)">
+        </div>
+      </div>
+      </div>
+      
+      <div class="col-md-12" *ngIf="resources.length==0">
+        <div class="no_data">
+          <img class="no_data_cnter" src="../assets/emptyicon.png" />
+          <span class="nodata_txt">No Data Available</span>
+        </div>
+      </div>
+    
+    </div>
+
+
+    <!-- *ngIf="addressHidden" -->
+    <div class="container pad_t_5per pad_b_5per" *ngIf="addressHidden">
+      <form #paymentForm="ngForm">
+        <div class="pad_t_b_20 reg_form">
+          <h4 style="background: #0fa497;padding: 10px;color: white !important;">Payment Terms</h4>
+
+          <div class="row pad_t_20">
+            <div class="form-group">
+              <div class="col-md-12">
+                <div class="col-md-3">
+                  <label for="creditperiod">Credit Period (days)
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <div>
+                    <input type="text" class="form-control" name="creditperiod" [(ngModel)]="paymentData.creditperiod"
+                      #creditperiod="ngModel" required placeholder="Enter creditperiod">
+                    <div [hidden]="creditperiod.valid ||  creditperiod.untouched" class="validation_msg">
+                      credit period is required
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-md-3">
+                  <label for="paymentterms">Credit Limit
+                    <sub class="txt_red f_size_25">*</sub>
+                  </label>
+                  <input type="text" class="form-control" name="paymentterms" [(ngModel)]="paymentData.paymentterms"
+                    #paymentterms="ngModel" required  placeholder="Enter payment terms">
+                  <div [hidden]="paymentterms.valid ||  paymentterms.untouched" class="validation_msg">
+                    Payment terms is required
+                  </div>
+
+
+                </div>
+                <div class="col-md-3">
+                  <label for="splinstr">Special Instructions
+                    <!-- <sub class="txt_red f_size_25">*</sub> -->
+                  </label>
+                  <div>
+                    <textarea type="text" class="form-control" name="splinstr"
+                      [(ngModel)]="paymentData.splinstr" #splinstr="ngModel"
+                      placeholder="Enter Special instructions"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label for="remarks1">comments from wh-manager
+                    <!-- <sub class="txt_red f_size_25">*</sub> -->
+                  </label>
+                  <textarea type="text" class="form-control" name="remarks1" [(ngModel)]="paymentData.remarks2"
+                    #remarks1="ngModel"  placeholder="Enter remarks"></textarea>
+                
+                </div>
+               
+              </div>
+            </div>
+          </div>
+          
+
+        </div>
+        <div class="reg_form mar_b_30 pad_15">
+          <div class="row">
+            <div class="col-md-6">
+
+              <h4 style="background: #0fa497;padding: 10px;color: white !important;">Select Delivery Address</h4>
+              <div *ngFor="let p of shipAdd;  let i = index;" style="border-bottom: 1px solid #d9534f4d;padding: 10px;">
+                <div class="col-md-8">
+                  {{p.address1}},{{p.address2}}, {{p.city}},{{p.state}}
+                </div>
+                <div class="col-md-4">
+
+                  <span style="float:right">
+                    <input type="checkbox" style="width:20px;height:18px" name="shipAdd"
+                      [checked]="selected_ship === p.seq_no" (change)="shipping(p,$any($event.target).checked)">
+                  </span>
+
+                </div>
+                <hr />
+              </div>
+            </div>
+            <div class="col-md-6">
+
+              <h4 style="background: #0fa497;padding: 10px;color: white !important;">Select Billing Address</h4>
+              <div *ngFor="let p of billAdd;  let i = index" style="border-bottom: 1px solid #d9534f4d;padding: 10px;">
+                <div class="col-md-8">
+                  {{p.address1}},{{p.address2}}, {{p.city}},{{p.state}}
+                </div>
+                <div class="col-md-4">
+
+                  <span style="float:right">
+                    <input type="checkbox" style="width:20px;height:18px" name="billAdd" value="billAdd"
+                      [checked]="selected_bill === p.seq_no" (change)="billing(p,$any($event.target).checked)">
+                  </span>
+
+                </div>
+                <hr />
+              </div>
+            </div>
+
+
+
+
+          </div>
+          <div class="row pad_t_5per">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 text-center">
+              <button class="btn btn-primary" style="margin:5px;">
+                Cancel
+              </button>
+              <button class="btn btn-primary" [disabled]="con_disable() || paymentForm.invalid"
+                (click)="confirm_order()" style="margin:5px;">
+                Confirm Order
+              </button>
+            </div>
+            <div class="col-md-2"></div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <!-- modal pop up start here -->
+
+  </section>
+
+</div>
+
+<div class="modal fade" id="orderSuccessfulModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Your Order was Placed Successfully..!!</span>
+              <p class="alert_order_no">Order No : <b>{{poprint.PO}}</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button> -->
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoPrint()">OK</button>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

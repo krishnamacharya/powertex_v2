@@ -1,0 +1,294 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span *ngIf="this.PUrl == 'S=Doc'">
+      <a routerLink="/Supplier-Pending-Doc-List" style="color: #878787 !important;">
+        Upload Documents</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="this.PUrl == 'A=DcL'">
+      <a routerLink="/Admin-GeneratedInvoices" style="color: #878787 !important;">
+        Documents List</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="this.PUrl == 'A=PDL'">
+      <a routerLink="/Admin-Pending-Generated-Invoices" style="color: #878787 !important;">
+        Pending Generated Invoices</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="this.PUrl == 'S=Gdc'">
+      <a routerLink="/Generated-Supplier-Invoices" style="color: #878787 !important;">
+        Updated Documents List</a>&nbsp;>&nbsp;
+    </span>
+    <span>Invoice File upload</span>
+  </p>
+  <form (ngSubmit)="onSubmit(productDataForm)" #productDataForm="ngForm" class="reg_form">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 pl_1">
+        <div class="col-md-3 col-lg-3 col-xs-6">
+          <div class="form-group">
+            <label>Invoice</label>
+            <!-- <span class="astrick">*</span> -->
+            <div class="main-img-preview">
+              <img class="thumbnail img-preview" [src]="attrurl" title="Upload Files Here..">
+            </div>
+            <span *ngIf="attrurl" class="pad_l_10 f_wt_600 txt_gray">{{uploadAttrfile}}</span>
+            <div>
+              <div class="text-center">
+                <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                  <span><i class="glyphicon glyphicon-upload"></i> Invoice</span>
+                  <input id="uploadfile" name="doc2" #doc2="ngModel" type="file" [(ngModel)]="pro.doc2"
+                    (change)="attrexcelUpload($event)" class="attachment_upload">
+                </div>
+              </div>
+            </div>
+            <div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-3 col-xs-6">
+          <div class="form-group">
+            <label>Packing List</label>
+            <div class="main-img-preview">
+              <img class="thumbnail img-preview" [src]="stockurl" title="Upload Files Here..">
+            </div>
+            <span *ngIf="stockurl" class="pad_l_10 f_wt_600 txt_gray">{{uploadStockfile}}</span>
+            <div>
+              <div class="text-center">
+                <div class="fileUpload btn btn-danger upload-shadow  btn-block">
+                  <span><i class="glyphicon glyphicon-upload"></i> Packing List</span>
+                  <input id="uploadfile" name="doc3" #doc3="ngModel" type="file" [(ngModel)]="pro.doc3"
+                    (change)="stockexcelUpload($event)" class="attachment_upload">
+                </div>
+              </div>
+            </div>
+            <div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6 col-xs-6">
+          <div class="row borderbtm nopadding">
+            <div class="col-md-6 col-lg-6 col-xs-6">
+              <div>
+                <div class="pull-left form-group">
+                  <label>BL Number</label><span class="astrick">*</span>
+                  <input type="text" class="form-control" id="bl_no" name="bl_no" [(ngModel)]="pro.bl_no"
+                    #bl_no="ngModel" required (input)="changecs($event)" placeholder="Enter BL Number">
+                  <div [hidden]="bl_no.valid || bl_no.untouched" class="validation_msg">
+                    please enter BL Number
+                  </div>
+                </div>
+                <div class="pull-left">
+                  <label>BL Date</label><span class="astrick">*</span>
+                  <input type="date" class="form-control" id="brand" name="date" [(ngModel)]="pro.bldate"
+                    #date="ngModel" (change)="datechanged($event)" required placeholder="Enter Date">
+                  <div [hidden]="date.valid || date.untouched" class="validation_msg">
+                    please select BL date
+                  </div>
+                </div>
+                <div class="pull-left">
+                  <label>On-Board Date</label><span class="astrick">*</span>
+                  <input type="date" class="form-control form-group" id="brand2" name="date2" [(ngModel)]="pro.onportdate"
+                    #date2="ngModel" required placeholder="Enter OnBoard Date">
+                  <div [hidden]="date2.valid || date2.untouched" class="validation_msg">
+                    please select On-Board date
+                  </div>
+                </div>
+                <div class="pull-left">
+                  <label>CBM</label>
+                  <input type="text" class="form-control" id="cpm" name="cpm" [(ngModel)]="pro.cpm" #cpm="ngModel"
+                    required (input)="changecpm($event)" placeholder="Enter CPM">
+                  <div [hidden]="cpm.valid || cpm.untouched" class="validation_msg">
+                    please enter cpm
+                  </div>
+                </div>
+                <div class="pull-left form-group">
+                  <label>Container Size</label>
+                  <input type="text" class="form-control" id="cont_size" name="cont_size" [(ngModel)]="pro.cont_size"
+                    #cont_size="ngModel" required (input)="changecs($event)" placeholder="Enter Container Size">
+                  <div [hidden]="cont_size.valid || cont_size.untouched" class="validation_msg">
+                    please enter Container Size
+                  </div>
+                </div>
+                <div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xs-6">
+              <div class="form-group">
+                <label>Bill of Lading</label>
+                <div class="main-img-preview" [ngClass]="{'imgheightbill':imgheightbill}">
+                  <img class="thumbnail img-preview" [src]="url" title="Upload Files Here..">                
+                </div>
+                <span *ngIf="url" class="pad_l_10 f_wt_600 txt_gray">{{uploadfile}}</span>
+                <div>
+                </div>
+                <div class="text-center form-group">
+                  <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                    <span><i class="glyphicon glyphicon-upload"></i> Bill of Lading </span>
+                    <input [disabled]="!pro.onportdate || !pro.bldate" id="uploadfile" name="doc1" #doc1="ngModel"
+                      type="file" [(ngModel)]="pro.doc1" (change)="productexcelUpload($event)"
+                      class="attachment_upload">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="row" id="origiDiv">
+      <div class="col-md-3 col-lg-3 col-xs-6">
+        <div class="form-group">
+          <label>Certificate of Origin</label>
+          <div class="main-img-preview">
+            <img class="thumbnail img-preview" [src]="lasturl" title="Upload Files Here..">
+          </div>
+          <span *ngIf="lasturl" class="pad_l_10 f_wt_600 txt_gray">{{uploadlastfile}}</span>
+          <div>
+            <div class="text-center">
+              <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                <span><i class="glyphicon glyphicon-upload"></i> Certificate of Origin </span>
+                <input id="uploadfile" name="doc4" #doc4="ngModel" type="file" [(ngModel)]="pro.doc4"
+                  (change)="fileupload4($event)" class="attachment_upload">
+              </div>
+            </div>
+          </div>
+          <div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-xs-6">
+        <div class="form-group">
+          <label>Insurance</label>
+          <div class="main-img-preview">
+            <img class="thumbnail img-preview" [src]="lasturl2" title="Upload Files Here..">
+          </div>
+          <span *ngIf="uploadlastfile2" class="pad_l_10 f_wt_600 txt_gray">{{uploadlastfile2}}</span>
+          <div>
+            <div class="text-center">
+              <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                <span><i class="glyphicon glyphicon-upload"></i> Insurance </span>
+                <input id="uploadfile" name="doc5" #doc4="ngModel" type="file" [(ngModel)]="pro.doc5"
+                  (change)="fileupload5($event)" class="attachment_upload">
+              </div>
+            </div>
+          </div>
+          <div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-xs-6">
+        <div class="form-group">
+          <label>Others</label>
+          <div class="main-img-preview">
+            <img class="thumbnail img-preview" [src]="lasturl3" title="Upload Files Here..">
+          
+          </div>
+          <span *ngIf="lasturl3" class="pad_l_10 f_wt_600 txt_gray">{{uploadlastfile3}}</span>
+          <div>
+            <div class="text-center">
+              <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                <span><i class="glyphicon glyphicon-upload"></i> Others </span>
+                <input id="uploadfile" name="doc6" #doc4="ngModel" type="file" [(ngModel)]="pro.doc6"
+                  (change)="fileupload6($event)" class="attachment_upload">
+              </div>
+            </div>
+          </div>
+          <div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-3 col-xs-6">
+        <div class="form-group">
+          <label>Others 2</label>
+          <div class="main-img-preview">
+            <img class="thumbnail img-preview" [src]="lasturl4" title="Upload Files Here..">
+          </div>
+          <span *ngIf="lasturl4" class="pad_l_10 f_wt_600 txt_gray">{{uploadlastfile4}}</span>
+          <div>
+            <div class="text-center form-group">
+              <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                <span><i class="glyphicon glyphicon-upload"></i> Others 2 </span>
+                <input id="uploadfile" name="doc7" #doc4="ngModel" type="file" [(ngModel)]="pro.doc7"
+                  (change)="fileupload7($event)" class="attachment_upload">
+              </div>
+            </div>
+          </div>
+          <div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row borderbtm">
+      <div class="col-md-12 col-lg-12 pl_1">
+        <div class="col-md-3 col-lg-3 col-xs-6">
+          <div class="form-group">
+            <label>Loaded Container Image</label>
+            <div class="main-img-preview" [ngClass]="{'imgheight1':imgheight}">
+              <img class="thumbnail img-preview" [src]="image" title="Preview">
+            </div>
+            <div>
+              <div class="text-center">
+                <div class="fileUpload btn btn-danger upload-shadow btn-block">
+                  <span><i class="glyphicon glyphicon-upload"></i> Image Upload </span>
+                  <input id="productImg" name="productimage" #productimage="ngModel" type="file" 
+                    [(ngModel)]="pro.productimage" (change)="productfileUpload($event)" class="attachment_upload">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row borderbtm">
+      <div class="form-group">
+        <!-- [disabled]="productDataForm.invalid" -->
+        <!-- <button button="submit"  [disabled]="productDataForm.invalid" class="btn btn-primary center-block bg_green">Submit</button> -->
+        <button button="submit" class="btn btn-primary center-block bg_green">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Document Upload Sucessfully..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" (click)="updatemodal()" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

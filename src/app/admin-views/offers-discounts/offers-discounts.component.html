@@ -1,0 +1,1651 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per dash_w">
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+      </span>&nbsp;>&nbsp;
+      <span>Offers</span>
+    </p>
+  </div>
+  <div class="row t_s_1">
+    <div class="row bg-theme dash_status" style="margin:0px">
+      <div class=" col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}"
+          (click)="po()">Product Based Offers</a></div>
+
+      <div class="col-md-2 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':DOhidden == true}"
+          (click)="do()">Special Offers</a></div>
+      <div class=" col-md-2 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':BOhidden == true}"
+          (click)="bo()">Branch Offers</a></div>
+
+      <div class="col-md-2 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':DEhidden == true}"
+          (click)="de()">Dealer Offers</a></div>
+      <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':MWhidden == true}"
+          (click)="mw()">Mobile/Web Offers</a></div>
+
+    </div>
+    <div style="padding:5px 20px 20px 20px">
+      <div *ngIf="POhidden">
+        <section *ngIf="availOffers; else gen_new_offer">
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Available Offer's<span class="a_b_2"
+                  (click)="new_offer()">
+                  <button class="a_b_1 btn btn-primary BTN-SM">Create New Offer&nbsp;<i
+                      class="fa fa-long-arrow-right"></i></button></span></h4>
+
+              <div *ngIf="offers_data?.length>0" style="padding:10px 5px;box-shadow: 2px 2px 8px #dcdcdc"
+                class="table-responsive">
+                <!-- <div class="col-sm-1 mar_t_25 mar_b_10_mbl">
+                 
+                  <div >
+                    <select class='s_s_r' (change)="setFilteredItems()" [(ngModel)]="status"
+                      name="status" #status="ngModel">
+                      <option [ngValue]="undefined">Status</option>
+                      <option value="1">Active</option>
+                      <option value="0">Inactive</option>
+                    </select>
+                  </div>
+                </div> -->
+                <div class="fr">
+                  <select class='s_s_r' style="margin-right:10px;" (change)="setFilteredItems()" [(ngModel)]="status"
+                    name="status1" #status1="ngModel">
+                    <option [ngValue]="undefined">Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                  <input type="text" [(ngModel)]="searchText" placeholder="Search Product" class="search_style">
+                  <button type="submit" class="input_btn">Search</button>
+                </div>
+                <br><br>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Product</th>
+                      <th>Model No</th>
+                      <th>From Date</th>
+                      <th>To Date</th>
+                      <th class="text-right">Range</th>
+                      <th>Offer Type</th>
+                      <th class="text-right">Offer Value</th>
+                      <th class="customwidth27">Description</th>
+                      <th class="text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let data of offers_data  | filter:searchText | paginate: { itemsPerPage: 10, currentPage: page}; let i=index;"
+                      [ngStyle]="{'background-color':data.active == 0 ? '#c5cecd' : 'white' }">
+                      <td>{{10*(page-1)+(i+1)}}</td>
+                      <td>{{data.productid}}</td>
+                      <td>{{data.modelno}}</td>
+                      <td>{{data.fromdate}}</td>
+                      <td>{{data.todate}}</td>
+                      <td class="text-right">{{data.from_range}}-{{data.to_range}}</td>
+                      <td>{{data.offer_type}}</td>
+                      <td class="text-right">{{data.offer_value}}</td>
+                      <td id="formatted">{{data.description}}</td>
+                      <td class="text-center">
+                        <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="data.active == 1"
+                          (click)="edit(data)">
+                          <i class="fa fa-check" aria-hidden="true" title="Enable"></i>
+                        </span>
+                        <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="data.active ==1"
+                          (click)="extend(data)">
+                          <i class="fa fa-calendar" aria-hidden="true" title="Enable"></i>
+                        </span>
+                        <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" *ngIf="data.active ==1"
+                          (click)="edit_offer(data)">
+                          <i class="fa fa-edit" aria-hidden="true" title="Enable"></i>
+                        </span>
+                        <span class="f_size_15 red_clr padd_right_10 cursor_pointer" *ngIf="data.active == 0"
+                          (click)="edit(data)">
+                          <i class="fa fa-close" aria-hidden="true" title="Disable"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <br>
+              <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              <div class="col-md-12" *ngIf="offers_data?.length<=0">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <ng-template #gen_new_offer>
+
+          <section>
+            <div class="row">
+              <div class="col-sm-12" style="margin:0px 15px;padding:0px 10px 0px 0px">
+                <h4 class="f_wt_600 txt_black pad_t_b_10 mar_t_10 bussinesInfo" style="margin-right:18px;">Offer's &
+                  Discount's<span class="a_b_2" (click)="new_offer()">
+                    <button class="a_b_1 btn btn-primary">Available Offer's&nbsp;<i
+                        class="fa fa-long-arrow-right"></i></button></span></h4>
+              </div>
+              <div class="offerswrap">
+
+
+                <div class="row" style=" margin: 0px !important; ">
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="category_profile" class="col-form-label">Select Category</label>
+                    <div>
+                      <select class='select-option form-control' (change)="sel_category($any($event.target).value)"
+                        [(ngModel)]="selected.category" name="category" #category="ngModel">
+                        <option [ngValue]="undefined" disabled selected>Select Category</option>
+                        <option class='option' *ngFor="let data of resources" [ngValue]="data.Category">
+                          {{data.Category}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 mar_b_10_mbl">
+                    <label for="category_profile" class="col-form-label">Select Subcategory</label>
+                    <div>
+                      <select class='select-option form-control' (change)="sel_subcategory()"
+                        [(ngModel)]="selected.subcategory" name="subcategory" #subcategory="ngModel"
+                        [disabled]="sub_category">
+                        <option [ngValue]="undefined" disabled selected>Select Subcategory</option>
+                        <option class='option' *ngFor="let data of newarr " [ngValue]="data">
+                          {{data}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="dropdown">
+                      <label for="category_profile" class="col-form-label">Select Model</label>
+                      <button class="btn btn-block btn_t dropdown-toggle" style="text-align:left;" type="button"
+                        data-toggle="dropdown" [disabled]="sub_category_model">{{btn_txt}}
+                        <span class="caret" style="float: right; margin-top: 6px !important;"></span></button>
+                      <ul class="dropdown-menu" style=" max-height: 200px; overflow-y: scroll; ">
+                        <li style="width:220px;" *ngFor="let data of modal_list">
+                          <p><input type="checkbox" class="c_m_n" (change)="get_detail(data,$event)"
+                              value="{{data.modelno}}"> {{data.modelno}}</p>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-3" style="margin-top: 25px">
+                    <button class="btn btn-primary"> Submit</button>
+                  </div>
+                </div>
+                <div class="row" style="margin:20px;">
+                  <div class="row p_s_1" *ngIf="select_model.length>0">
+                    <div class="col-md-1 text-center">
+                      <h4>S.No</h4>
+                    </div>
+                    <div class="col-md-2 text-center">
+                      <h4>Product ID</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4>Category</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4>Sub Category</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4>Model No</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4>Sku No</h4>
+                    </div>
+                    <div class="col-md-1  text-center">
+                      <h4>MRP</h4>
+                    </div>
+                  </div>
+                  <mat-accordion
+                    *ngFor="let p of select_model | filter:searchText | paginate: { itemsPerPage: 10, currentPage: page }; let j=index">
+                    <!-- <div *ngIf="p.detail[0].status!=='Delivered'"> -->
+                    <div>
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style=" margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{10*(page-1)+(j+1)}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.productid}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.category}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                <span>&nbsp;&nbsp;{{p.subcategory}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-3  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.modelno}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.sku_no}}</span></p>
+                            </div>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.mrp}}</span></p>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <h4>Offer Details:</h4>
+                        <div class="row">
+                          <div class="col-md-4">
+                            <mat-form-field color="accent">
+                              <mat-label> Select From Date</mat-label>
+                              <input matInput [matDatepicker]="picker1" [(ngModel)]="Offer.fromdate" readonly required>
+                              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                              <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                          <div class="col-md-4">
+                            <mat-form-field color="accent">
+                              <mat-label> Select To Date</mat-label>
+                              <input matInput [matDatepicker]="picker2" [(ngModel)]="Offer.todate"
+                                (dateChange)="sel_offer()" readonly required>
+                              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                              <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="gen_off" class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th class="text-right">From Range</th>
+                                <th class="text-right">To Range</th>
+                                <th>Select Offer</th>
+                                <th class="text-right">Offer Value</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let data of Offer_arr; let i = index">
+                                <td class="text-right">{{data.from_range}}</td>
+                                <td class="text-right">{{data.to_range}}</td>
+                                <td>{{data.offer_type}}</td>
+                                <td class="text-right">{{data.offer_value}}</td>
+                                <td id="formatted">{{data.description}}</td>
+
+                                <td class="i_opt">
+                                  <p>
+                                    <i class="fa fa-trash" style="font-size: 18px;color: #20978c;"
+                                      (click)="deleteFieldValue2(i)"></i>
+                                  </p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <input type="number" class="form-control" placeholder="Enter From Range"
+                                    [(ngModel)]="Offer_gen.from_range">
+                                </td>
+                                <td>
+                                  <input type="number" class="form-control" placeholder="Enter To Range"
+                                    [(ngModel)]="Offer_gen.to_range">
+                                </td>
+                                <td>
+                                  <div class="form-group">
+                                    <!-- <label for="sel1">Select Offer</label> -->
+                                    <select class="select-option form-control" id="sel1"
+                                      [(ngModel)]="Offer_gen.offer_type" name="sel1">
+                                      <option [ngValue]="undefined" disabled selected>Select Offer</option>
+                                      <option value="Free Quantity">Free Quantity</option>
+                                      <option value="Topup Discount">Topup Discount</option>
+                                      <option value="Flat Discount">Flat Discount</option>
+                                      <option value="Clearance Sale">Clearance Sale</option>
+                                    </select>
+                                  </div>
+                                </td>
+                                <td>
+                                  <input type="number" class="form-control" placeholder="Enter Discount Value"
+                                    [(ngModel)]="Offer_gen.offer_value">
+                                </td>
+                                <td>
+                                  <textarea class="form-control" placeholder="Enter Description"
+                                    [(ngModel)]="Offer_gen.description"></textarea>
+                                </td>
+                                <td>
+                                  <button class="btn btn-primary" (click)="sub_offer(p)"
+                                    [disabled]="check_off_dis(Offer_gen)">Add</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <button class="btn btn-primary" (click)="sub_final(j,p)">Submit</button>
+                          <button class="btn btn-primary" style="margin-left:10px;" (click)="reset()">Clear</button>
+
+                        </div>
+
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-accordion>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </ng-template>
+      </div>
+
+      <div *ngIf="DOhidden">
+
+        <div class="row">
+          <div class="col-sm-12" style="margin:0px 15px;padding:0px 10px 0px 0px">
+            <h4 class="f_wt_600 txt_black pad_t_b_10   mar_t_10 bussinesInfo" style="margin-right:18px;">Offer's &
+              Discount's
+
+            </h4>
+          </div>
+          <div class="offerswrap">
+
+            <div class="row" style=" margin: 0px !important; ">
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="category_profile" class="col-form-label">Select Category</label>
+                <div >
+
+                  <angular2-multiselect [data]="categorylist" [(ngModel)]="selectedlist.category"
+                    [settings]="dropdownSettings" (onSelect)="sel_categorydata($event)"
+                    (onDeSelect)="oncategoryDeSelect($event)" (onSelectAll)="onSelectAllcategory($event)"
+                    (onDeSelectAll)="onDeSelectAllcategory($event)">
+                  </angular2-multiselect>
+                </div>
+              </div>
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="category_profile" class="col-form-label">Select Subcategory</label>
+                <div >
+
+
+                  <angular2-multiselect [data]="subcategorylistfinal" [(ngModel)]="selectedlist.subcategory"
+                    [settings]="dropdownSettings1" (onSelect)="onsubcategorySelect($event)"
+                    (onDeSelect)="onsubcategoryDeSelect($event)" (onSelectAll)="onSelectAllsubcategory($event)"
+                    (onDeSelectAll)="onDeSelectAllsubcategory($event)">
+                  </angular2-multiselect>
+
+                </div>
+
+              </div>
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="category_profile" class="col-form-label">Select Model</label>
+                <div class="dropdown">
+
+                  <angular2-multiselect [data]="modellist" [(ngModel)]="selectedlist.model"
+                    [settings]="dropdownSettings2" (onSelect)="onmodelSelect($event)"
+                    (onDeSelect)="onmodelDeSelect($event)" (onSelectAll)="onSelectAllmodel($event)"
+                    (onDeSelectAll)="onDeSelectAllmodel($event)">
+                  </angular2-multiselect>
+                </div>
+
+              </div>
+            </div>
+            <div class="row" style=" margin: 10px 0px !important; ">
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="category_profile" class="col-form-label">Select Branch</label>
+                <div class="dropdown">
+
+                  <angular2-multiselect [data]="branchdata" [(ngModel)]="selectedlist.branch"
+                    [settings]="dropdownSettings3" (onSelect)="onbranchSelect($event)"
+                    (onDeSelect)="onbranchDeSelect($event)" (onSelectAll)="onSelectAllbranch($event)"
+                    (onDeSelectAll)="onDeSelectAllbranch($event)"></angular2-multiselect>
+                </div>
+
+              </div>
+              <div class="col-sm-3" style="margin-top: 25px">
+                <button class="btn btn-primary"
+                  (click)="addbranchdiscount(selectedlist.branch,selectedlist.model)">Branch Discount</button>
+              </div>
+            </div>
+
+
+
+            <div class="row" style="margin:20px;">
+              <div class="row p_s_1" *ngIf="this.brancheslist.length>0">
+                <div class="col-md-1 text-center">
+                  <h4>S.No</h4>
+                </div>
+
+
+                <div class="col-md-2  text-center">
+                  <h4>Branch Code</h4>
+                </div>
+                <div class="col-md-3  text-center">
+                  <h4>Branch Name</h4>
+                </div>
+                <div class="col-md-2  text-center">
+                  <h4>Category</h4>
+                </div>
+                <div class="col-md-2  text-center">
+                  <h4>Subcategory</h4>
+                </div>
+                <div class="col-md-2">
+                  <h4>Model No.</h4>
+                </div>
+              </div>
+              <mat-accordion
+                *ngFor="let p of brancheslist | filter:searchText | paginate: { itemsPerPage: 10, currentPage: page }; let j=index">
+
+                <div>
+                  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <div class="col-md-1  text-center">
+                          <p class="txt_black" style=" margin-bottom: 0px;">
+                            <span>&nbsp;&nbsp;{{10*(page-1)+(j+1)}}</span>
+                          </p>
+                        </div>
+
+                        <div class="col-md-2  text-center">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.branchcode}}</span></p>
+                        </div>
+
+                        <div class="col-md-3  text-center">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.branchname}}</span></p>
+                        </div>
+                        <div class="col-md-2  text-center" *ngIf="p.category">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.category}}</span></p>
+                        </div>
+                        <div class="col-md-2  text-center" *ngIf="!p.category">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;-</span></p>
+                        </div>
+
+                        <div class="col-md-2  text-center" *ngIf="p.subcategory">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.subcategory}}</span>
+                          </p>
+                        </div>
+                        <div class="col-md-2  text-center" *ngIf="!p.subcategory">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;-</span></p>
+                        </div>
+                        <div class="col-md-2  text-center" *ngIf="p.model">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{p.model}}</span></p>
+                        </div>
+                        <div class="col-md-2  text-center" *ngIf="!p.model">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;-</span></p>
+                        </div>
+
+
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <h4>Offer Details:</h4>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <mat-form-field color="accent">
+                          <mat-label> Select From Date</mat-label>
+                          <input matInput [matDatepicker]="picker1" [(ngModel)]="branchoffer.fromdate" readonly
+                            required>
+                          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                          <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field color="accent">
+                          <mat-label> Select To Date</mat-label>
+                          <input matInput [matDatepicker]="picker2" [(ngModel)]="branchoffer.todate"
+                            (dateChange)="sel_offer()" readonly required>
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="gen_off" class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th class="text-right">From Range</th>
+                            <th class="text-right">To Range</th>
+                            <th>Select Offer</th>
+                            <th class="text-right">Offer Value</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of branchOffer_arr; let i = index">
+                            <td class="text-right">{{data.from_range}}</td>
+                            <td class="text-right">{{data.to_range}}</td>
+                            <td>{{data.offer_type}}</td>
+                            <td class="text-right">{{data.offer_value}}</td>
+                            <td class="i_opt">
+                              <p>
+                                <i class="fa fa-trash" style="font-size: 18px;color: #20978c;"
+                                  (click)="deletebranchFieldValue2(i)"></i>
+                              </p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="number" class="form-control" placeholder="Enter From Range"
+                                [(ngModel)]="branchOffer_gen.from_range">
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" placeholder="Enter To Range"
+                                [(ngModel)]="branchOffer_gen.to_range">
+                            </td>
+                            <td>
+                              <div class="form-group">
+                                <!-- <label for="sel1">Select Offer</label> -->
+                                <select class="select-option form-control" id="sel1"
+                                  [(ngModel)]="branchOffer_gen.offer_type" name="sel1">
+                                  <option [ngValue]="undefined" disabled selected>Select Offer</option>
+                                  <!-- <option value="Free Quantity">Free Quantity</option> -->
+                                  <option value="Topup Discount">Topup Discount</option>
+                                  <option value="Flat Discount">Flat Discount</option>
+                                </select>
+                              </div>
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" placeholder="Enter Discount Value"
+                                [(ngModel)]="branchOffer_gen.offer_value">
+                            </td>
+                            <td>
+                              <button class="btn btn-primary" (click)="branch_offer(p)"
+                                [disabled]="check_branchoff_dis(branchOffer_gen)">Add</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button class="btn btn-primary" (click)="sub_finalbranch(j,p)">Submit</button>
+
+                    </div>
+
+                  </mat-expansion-panel>
+
+                </div>
+
+              </mat-accordion>
+              <div class="row" style=" margin: 10px 0px !important; ">
+                <div *ngIf="offerslist.length>0" class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Branch Code</th>
+                        <th>Branch Name</th>
+                        <th>Category</th>
+                        <th>Subcategory</th>
+                        <th>Model No.</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th class="text-right">From Range</th>
+                        <th class="text-right">To Range</th>
+                        <th>Offer Type</th>
+                        <th class="text-right">Offer Value</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of offerslist; let i = index">
+                        <td>{{data.branchcode}}</td>
+                        <td>{{data.branchname}}</td>
+                        <td>{{data.category}}</td>
+                        <td>{{data.subcategory}}</td>
+                        <td>{{data.model}}</td>
+                        <td>{{data.fromdate}}</td>
+                        <td>{{data.todate}}</td>
+                        <td class="text-right">{{data.from_range}}</td>
+                        <td class="text-right">{{data.to_range}}</td>
+                        <td>{{data.offer_type}}</td>
+                        <td class="text-right">{{data.offer_value}}</td>
+
+
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button class="btn btn-primary" (click)="submitbranchoffers(data)">Submit</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style=" margin: 10px 0px !important; ">
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="category_profile" class="col-form-label">Select State</label>
+                <div class="dropdown">
+
+                  <angular2-multiselect [data]="statenamesdata" [(ngModel)]="selectedlist.state"
+                    [settings]="dropdownSettings4" (onSelect)="onstateSelect($event)"
+                    (onDeSelect)="OnstateDeSelect($event)" (onSelectAll)="onSelectAllstate($event)"
+                    (onDeSelectAll)="onDeSelectAllstate($event)"></angular2-multiselect>
+                </div>
+
+              </div>
+
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="category_profile" class="col-form-label">Select City</label>
+                <div class="dropdown">
+
+                  <angular2-multiselect [data]="citynamesdata" [(ngModel)]="selectedlist.city"
+                    [settings]="dropdownSettings5" (onSelect)="oncitySelect($event)"
+                    (onDeSelect)="OncityDeSelect($event)" (onSelectAll)="onSelectAllcity($event)"
+                    (onDeSelectAll)="onDeSelectAllcity($event)"></angular2-multiselect>
+                </div>
+
+              </div>
+
+
+              <div class="col-sm-3 mar_b_10_mbl">
+                <label for="category_profile" class="col-form-label">Select Dealer</label>
+                <div class="dropdown">
+
+                  <angular2-multiselect [data]="dealernamesdata" [(ngModel)]="selectedlist.dealer"
+                    [settings]="dropdownSettings6" (onSelect)="ondealerSelect($event,selectedlist.model)"
+                    (onDeSelect)="OndealerDeSelect($event)" (onSelectAll)="onSelectAlldealer($event,selectedlist.model)"
+                    (onDeSelectAll)="onDeSelectAlldealers($event)"></angular2-multiselect>
+                </div>
+
+              </div>
+              <div class="col-sm-3" style="margin-top: 25px">
+                <button class="btn btn-primary"
+                  (click)="adddealerdiscount(selectedlist.dealer,selectedlist.model)">Dealer Discount</button>
+              </div>
+            </div>
+
+
+            <div class="row" style="margin:20px;">
+              <div class="row p_s_1" *ngIf="this.dealerslist1.length>0">
+                <!-- <div class="col-md-1 text-center">
+                            <h4 style="color:#ffff !important">S.No</h4>
+                          </div> -->
+                <div class="col-md-1  ">
+                  <h4>Branch Code</h4>
+                </div>
+                <div class="col-md-3  ">
+                  <h4>Branch Name </h4>
+                </div>
+                <div class="col-md-1 ">
+                  <h4>State</h4>
+                </div>
+                <div class="col-md-1  ">
+                  <h4>City</h4>
+                </div>
+                <div class="col-md-2  ">
+                  <h4>Dealer Code</h4>
+                </div>
+                <div class="col-md-2 " style="text-align:left">
+                  <h4>Dealer Name</h4>
+                </div>
+                <!-- <div class="col-md-1  ">
+                      <h4 style="color:#ffff !important">Category</h4>
+                    </div>
+                    <div class="col-md-1  ">
+                      <h4 style="color:#ffff !important">Subcategory</h4>
+                    </div> -->
+                <div class="col-md-2  ">
+                  <h4>Model No.</h4>
+                </div>
+              </div>
+              <mat-accordion
+                *ngFor="let d of dealerslist1 | filter:searchText | paginate: { itemsPerPage: 10, currentPage: page }; let j=index">
+
+                <div>
+                  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <!-- <div class="col-md-1  text-center">
+                                <p class="txt_black" style=" margin-bottom: 0px;">
+                                  <span>&nbsp;&nbsp;{{10*(page-1)+(j+1)}}</span></p>
+                              </div> -->
+
+                        <div class="col-md-1  ">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>{{d.branchcode}}</span></p>
+                        </div>
+
+                        <div class="col-md-3  ">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>{{d.branchname}}</span></p>
+                        </div>
+                        <div class="col-md-1  ">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>{{d.state}}</span></p>
+                        </div>
+                        <div class="col-md-1 ">
+                          <p class="txt_black" style="margin-bottom: 0px;word-break:break-all"><span>{{d.city}}</span>
+                          </p>
+                        </div>
+                        <div class="col-md-2  ">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>{{d.dealer}}</span></p>
+                        </div>
+                        <div class="col-md-2  ">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>{{d.dealername}}</span></p>
+                        </div>
+                        <!-- <div class="col-md-1  ">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>{{d.category}}</span></p>
+                        </div>
+                        <div class="col-md-1 ">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>&nbsp;&nbsp;{{d.subcategory}}</span>
+                          </p>
+                        </div> -->
+                        <div class="col-md-2 " *ngIf="d.model">
+                          <p class="txt_black" style="margin-bottom: 0px;"><span>{{d.model}}</span></p>
+                        </div>
+                        <div class="col-md-2 " *ngIf="!d.model">
+                          <p class="txt_black" style="margin-bottom: 0px;text-align:center"><span>-</span></p>
+                        </div>
+
+
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <h4>Offer Details:</h4>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <mat-form-field color="accent">
+                          <mat-label> Select From Date</mat-label>
+                          <input matInput [matDatepicker]="picker1" [(ngModel)]="dealeroffer.fromdate" readonly
+                            required>
+                          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                          <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field color="accent">
+                          <mat-label> Select To Date</mat-label>
+                          <input matInput [matDatepicker]="picker2" [(ngModel)]="dealeroffer.todate"
+                            (dateChange)="sel_offer()" readonly required>
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="gen_off" class="table-responsive">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th class="text-right">From Range</th>
+                            <th class="text-right">To Range</th>
+                            <th>Select Offer</th>
+                            <th class="text-right">Offer Value</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of dealerOffer_arr; let i = index">
+                            <td class="text-right">{{data.from_range}}</td>
+                            <td class="text-right">{{data.to_range}}</td>
+                            <td>{{data.offer_type}}</td>
+                            <td class="text-right">{{data.offer_value}}</td>
+                            <td class="i_opt">
+                              <p>
+                                <i class="fa fa-trash" style="font-size: 18px;color: #20978c;"
+                                  (click)="deletedealerFieldValue2(i)"></i>
+                              </p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="number" class="form-control" placeholder="Enter From Range"
+                                [(ngModel)]="dealerOffer_gen.from_range">
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" placeholder="Enter To Range"
+                                [(ngModel)]="dealerOffer_gen.to_range">
+                            </td>
+                            <td>
+                              <div class="form-group">
+
+                                <select class="select-option form-control" id="sel1"
+                                  [(ngModel)]="dealerOffer_gen.offer_type" name="sel1">
+                                  <option [ngValue]="undefined" disabled selected>Select Offer</option>
+                                  <!-- <option value="Free Quantity">Free Quantity</option> -->
+                                  <option value="Topup Discount">Topup Discount</option>
+                                  <option value="Flat Discount">Flat Discount</option>
+                                </select>
+                              </div>
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" placeholder="Enter Discount Value"
+                                [(ngModel)]="dealerOffer_gen.offer_value">
+                            </td>
+                            <td>
+                              <button class="btn btn-primary" (click)="dealer_offer(d)"
+                                [disabled]="check_dealeroff_dis(dealerOffer_gen)">Add</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button class="btn btn-primary" (click)="sub_finaldealer(j,d)">Submit</button>
+
+                    </div>
+
+                  </mat-expansion-panel>
+
+                </div>
+
+              </mat-accordion>
+              <div *ngIf="dofferslist.length>0" class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Branch Code</th>
+                      <th>Branch Name</th>
+                      <th>Dealer Code</th>
+                      <th>Dealer Name</th>
+                      <th>State</th>
+                      <th>City</th>
+                      <th>Category</th>
+                      <th>Subcategory</th>
+                      <th>Model</th>
+                      <th>From Date</th>
+                      <th>To Date</th>
+                      <th class="text-right">From Range</th>
+                      <th class="text-right">To Range</th>
+                      <th>Offer Type</th>
+                      <th class="text-right">Offer Value</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of dofferslist; let i = index">
+                      <td>{{data.branchcode}}</td>
+                      <td>{{data.branchname}}</td>
+                      <td>{{data.dealer}}</td>
+                      <td>{{data.dealername}}</td>
+                      <td>{{data.state}}</td>
+                      <td>{{data.city}}</td>
+                      <td>{{data.category}}</td>
+                      <td>{{data.subcategory}}</td>
+                      <td>{{data.model}}</td>
+                      <td>{{data.fromdate}}</td>
+                      <td>{{data.todate}}</td>
+                      <td class="text-right">{{data.from_range}}</td>
+                      <td class="text-right">{{data.to_range}}</td>
+                      <td>{{data.offer_type}}</td>
+                      <td class="text-right">{{data.offer_value}}</td>
+
+                    </tr>
+                  </tbody>
+                </table>
+                <button class="btn btn-primary" (click)="submitdealeroffers(data)">Submit</button>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+
+      </div>
+
+      <div *ngIf="BOhidden">
+
+        <div style="padding:17px 20px;margin:10px 0px;box-shadow: 2px 2px 8px #dcdcdc">
+
+          <div class="row" *ngIf="branchoffersdata?.length>0">
+            <div class="col-sm-12">
+              <div class="fl">
+                <h4>Offer Details</h4>
+              </div>
+              <div class="fr">
+                <input type="text" [(ngModel)]="searchText" placeholder="Search Branch" class="search_style">
+                <button type="submit" class="input_btn">Search</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(branchoffersdata | filter :searchText) as branchoffersdata">
+
+            <div class="row pad_15" *ngIf="branchoffersdata?.length>0">
+              <div class="table-responsive">
+                <table class="table table-striped">
+
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Branch Code</th>
+                      <th>Branch Name</th>
+                      <th>Product</th>
+                      <th>Model No</th>
+                      <th>From Date</th>
+                      <th>To Date</th>
+                      <th class="text-right">Range</th>
+                      <th>Offer Type</th>
+                      <th class="text-right">Offer Value</th>
+                      <th class="text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let data of branchoffersdata | paginate: { itemsPerPage: 10, currentPage: page}; let i=index;"
+                      [ngStyle]="{'background-color':data.active == 0 ? '#c5cecd' : 'white' }">
+                      <td>{{10*(page-1)+(i+1)}}</td>
+                      <td>{{data.branchcode}}</td>
+                      <td>{{data.branchname}}</td>
+                      <td *ngIf="data.productid">{{data.productid}}</td>
+                      <td style="text-align:center" *ngIf="!data.productid">-</td>
+                      <td *ngIf="data.modelno">{{data.modelno}}</td>
+                      <td style="text-align:center" *ngIf="!data.modelno">-</td>
+                      <td>{{data.fromdate}}</td>
+                      <td>{{data.todate}}</td>
+                      <td class="text-right">{{data.from_range}}-{{data.to_range}}</td>
+                      <td>{{data.offer_type}}</td>
+                      <td class="text-right">{{data.offer_value}}</td>
+                      <td class="text-center">
+                        <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="data.active == 1"
+                          (click)="edit(data)">
+                          <i class="fa fa-check" aria-hidden="true" title="Enable"></i>
+                        </span>
+                        <span *ngIf="data.active == 0" class="f_size_15 red_clr padd_right_10 cursor_pointer"
+                          (click)="edit(data)">
+                          <i class="fa fa-close" aria-hidden="true" title="Disable"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <br>
+              <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="branchoffersdata?.length<=0">
+            <div class="no_data">
+              <img class="no_data_cnter" src="../assets/emptyicon.png" />
+              <span class="nodata_txt">No Data is Available</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="DEhidden">
+        <div style="padding:17px 20px;margin:10px 0px;box-shadow: 2px 2px 8px #dcdcdc">
+
+          <div class="row" *ngIf="dealeroffersdata?.length>0">
+            <div class="col-sm-12">
+              <div class="fl">
+                <h4>Offer Details</h4>
+              </div>
+              <div class="fr">
+                <input type="text" [(ngModel)]="searchText" placeholder="Search Dealer" class="search_style">
+                <button type="submit" class="input_btn">Search</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="(dealeroffersdata | filter :searchText) as dealeroffersdata">
+            <div class="row pad_15 " *ngIf="dealeroffersdata?.length>0">
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Branch Code</th>
+                      <th>Branch Name</th>
+                      <th>Dealer Code</th>
+                      <th>Dealer Name</th>
+                      <th>Product</th>
+                      <th>Model No</th>
+                      <th>From Date</th>
+                      <th>To Date</th>
+                      <th class="text-right">Range</th>
+                      <th>Offer Type</th>
+                      <th class="text-right">Offer Value</th>
+                      <th class="text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let data of dealeroffersdata | paginate: { itemsPerPage: 10, currentPage: page}; let i=index;"
+                      [ngStyle]="{'background-color':data.active == 0 ? '#c5cecd' : 'white' }">
+                      <td>{{10*(page-1)+(i+1)}}</td>
+                      <td>{{data.branchcode}}</td>
+                      <td>{{data.branchname}}</td>
+                      <td>{{data.dealer}}</td>
+                      <td>{{data.dealername}}</td>
+                      <td *ngIf="data.productid">{{data.productid}}</td>
+                      <td style="text-align:center" *ngIf="!data.productid">-</td>
+                      <td *ngIf="data.modelno">{{data.modelno}}</td>
+                      <td style="text-align:center" *ngIf="!data.modelno">-</td>
+                      <td>{{data.fromdate}}</td>
+                      <td>{{data.todate}}</td>
+                      <td>{{data.from_range}}-{{data.to_range}}</td>
+                      <td>{{data.offer_type}}</td>
+                      <td class="text-right">{{data.offer_value}}</td>
+                      <td class="text-center">
+                        <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="data.active == 1"
+                          (click)="edit(data)">
+                          <i class="fa fa-check" aria-hidden="true" title="Enable"></i>
+                        </span>
+                        <span *ngIf="data.active == 0" class="f_size_15 red_clr padd_right_10 cursor_pointer"
+                          (click)="edit(data)">
+                          <i class="fa fa-close" aria-hidden="true" title="Disable"></i>
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <br>
+              <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="dealeroffersdata?.length<=0">
+            <div class="no_data">
+              <img class="no_data_cnter" src="../assets/emptyicon.png" />
+              <span class="nodata_txt">No Data is Available</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="MWhidden">
+        <section *ngIf="createcode">
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Create New Offer<span class="a_b_2"
+                  (click)="availoffers()">
+                  <button class="a_b_1 btn btn-primary pull-right"><i class="fa fa-long-arrow-left"></i>&nbsp;Available
+                    Offers</button></span></h4>
+              <div class="row pad_15">
+
+                <form (ngSubmit)="onSubmit(masterDataForm)" #masterDataForm="ngForm">
+                  <div class="form-group row">
+                    <div >
+
+                      <div class="col-sm-3 mar_b_10_mbl">
+                        <label for="applyto" >Applicable only
+                          <sub class="txt_red f_size_25">*</sub>
+                        </label>
+                        <div >
+                          <select class="form-control" [(ngModel)]="masterData.applyto" id="applyto" #applyto="ngModel"
+                            name="applyto" required>
+                            <option [ngValue]="undefined" disabled selected>--Select applyto--</option>
+                            <option *ngFor="let applicable of applicables" [ngValue]="applicable">
+                              {{applicable}}
+                            </option>
+
+                          </select>
+                          <div [hidden]="applyto.valid || applyto.untouched" class="validation_msg">
+                            please select applicable
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-3 mar_b_10_mbl">
+                        <label for="minorderamount" >Offer Type
+                          <sub class="txt_red f_size_25">*</sub>
+                        </label>
+                        <div >
+                          <select class='select-option form-control' [(ngModel)]="masterData.offer_type" required
+                            name="offer_type" #offer_type="ngModel">
+                            <option [ngValue]="undefined" disabled selected>Select</option>
+
+                            <option value="Topup Discount">Topup Discount</option>
+                            <option value="Flat Discount">Flat Discount</option>
+
+                          </select>
+                          <div [hidden]="offer_type.valid ||  offer_type.untouched" class="validation_msg">
+                            Offertype is required
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-3 mar_b_10_mbl">
+                        <label for="offer_value" >Offer Value
+                          <sub class="txt_red f_size_25">*</sub>
+                        </label>
+                        <div >
+                          <input type="text" class="form-control" id="offer_value" name="offer_value"
+                            [(ngModel)]="masterData.offer_value" #offer_value="ngModel" required
+                            placeholder="Enter Offer Value" (keypress)="keynumber($event)">
+                          <div [hidden]="offer_value.valid ||  offer_value.untouched" class="validation_msg">
+                            Offer Value is required
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+
+                    <div class="form-group row">
+                      <div >
+                        <div class="col-sm-3 mar_b_10_mbl">
+                          <label for="upto" >Amount Upto
+                            <sub class="txt_red f_size_25">*</sub>
+                          </label>
+                          <div >
+                            <input type="text" class="form-control" id="upto" name="upto" [(ngModel)]="masterData.upto"
+                              #upto="ngModel" required placeholder="Enter Amount" (keypress)="keynumber($event)">
+                            <div [hidden]="upto.valid ||  upto.untouched" class="validation_msg">
+                              Amount is required
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-3 mar_b_10_mbl">
+                          <label for="fromdate" >From Date
+                            <sub class="txt_red f_size_25">*</sub>
+                          </label>
+                          <div >
+                            <mat-form-field>
+                              <input matInput required [matDatepicker]="picker" placeholder="Choose fromdate"
+                                [(ngModel)]="masterData.fromdate" #fromdate="ngModel" name="fromdate">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <div [hidden]="fromdate.valid || fromdate.untouched" class="validation_msg">
+                              From Date is required
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-3 mar_b_10_mbl">
+                          <label for="todate" >To Date
+                            <sub class="txt_red f_size_25">*</sub>
+                          </label>
+                          <div >
+
+                            <mat-form-field>
+                              <input matInput required [matDatepicker]="picker1" placeholder="Choose todate"
+                                [(ngModel)]="masterData.todate" #todate="ngModel" name="todate">
+                              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                              <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                            <div [hidden]="todate.valid || todate.untouched" class="validation_msg">
+                              To Date is required
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <div >
+                        <div class="col-sm-3 mar_b_10_mbl">
+                          <label for="description" >Description
+                            <sub class="txt_red f_size_25">*</sub>
+                          </label>
+                          <div >
+                            <textarea class="form-control rounded-0" id="description" rows="3" name="description"
+                              [(ngModel)]="masterData.description" #description="ngModel" required
+                              placeholder="Enter Description"></textarea>
+                            <div [hidden]="description.valid || description.untouched" class="validation_msg">
+                              Description is required
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div>
+                        <h4>Offer Terms</h4>
+                      </div>
+                      <div>
+                        <div class="col-sm-3 mar_b_10_mbl">
+                          <label for="term1">Enter Term1
+                          </label>
+                          <div>
+                            <textarea class="form-control rounded-0" id="term1" rows="3" name="term1"
+                              [(ngModel)]="masterData.term1" #term1="ngModel" placeholder="Enter Term1"></textarea>
+                          </div>
+                        </div>
+                        <div class="col-sm-3 mar_b_10_mbl">
+                          <label for="term2">Enter Term2
+                          </label>
+                          <div>
+                            <textarea class="form-control rounded-0" id="term2" rows="3" name="term2"
+                              [(ngModel)]="masterData.term2" #term2="ngModel" placeholder="Enter Term2"></textarea>
+                          </div>
+                        </div>
+                        <div class="col-sm-3 mar_b_10_mbl">
+                          <label for="term3">Enter Term3
+                          </label>
+                          <div>
+                            <textarea class="form-control rounded-0" id="term3" rows="3" name="term3"
+                              [(ngModel)]="masterData.term3" #term3="ngModel" placeholder="Enter Term3"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row pad_t_b_10">
+                      <div class="col-sm-12">
+                        <div class="pull-left">
+                          <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+                            [disabled]="masterDataForm.invalid">Submit
+                            <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section *ngIf="availableoffers">
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo">Available Offers<span class="a_b_2"
+                  (click)="createoffers()">
+                  <button class="a_b_1 btn btn-primary pull-right">Create New Offer&nbsp;<i
+                      class="fa fa-long-arrow-right"></i></button></span></h4>
+              <div class="table-responsive tabres" style="padding:10px 2px;box-shadow: 2px 2px 8px #dcdcdc"
+                *ngIf="getoffer?.length>0">
+                <div class="table-responsive">
+                  <table class="table table-striped" style="border: 1px solid #ddd;">
+                    <thead>
+                      <tr>
+                        <th>S.No</th>
+                        <th>Applicable </th>
+                        <th>Offer Type</th>
+                        <th class="text-right">Offer Value</th>
+                        <th class="text-right">Amount Upto</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th class="customwidth20">Description</th>
+                        <th>Terms</th>
+                        <!-- <th>Term2</th>
+                        <th>Term3</th> -->
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="let offer of getoffer | paginate: { itemsPerPage: 10, currentPage: Page}; let i=index; "
+                        [ngStyle]="{'background-color':offer.active == 0 ? '#c5cecd' : 'white' }"
+                        [ngStyle]="{'background-color':offer.active == 0 ? '#c5cecd' : 'white' }">
+                        <td>{{10*(Page-1)+(i+1)}}</td>
+                        <td>{{offer.applyto}}</td>
+                        <td>{{offer.offer_type}}</td>
+                        <td class="text-right">{{offer.offer_value}}</td>
+                        <td class="text-right">{{offer.upto}}</td>
+                        <td>{{offer.fromdate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{offer.todate | date:'dd-MM-yyyy'}}</td>
+                        <td>{{offer.description}}</td>
+                        <td>
+                          <p *ngIf="offer.term1" class="mb-0">{{offer.term1}}</p>
+                          <p *ngIf="offer.term2" class="mb-0">{{offer.term2}}</p>
+                          <p *ngIf="offer.term3" class="mb-0">{{offer.term3}}</p>
+                        </td>
+                        <!-- <td  *ngIf="!offer.term1">-</td>
+                        <td *ngIf="offer.term2">{{offer.term2}}</td>
+                        <td  *ngIf="!offer.term2">-</td>
+                        <td *ngIf="offer.term3">{{offer.term3}}</td>
+                        <td  *ngIf="!offer.term3">-</td> -->
+                        <td>
+                          <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" *ngIf="offer.active ==1"
+                            (click)="editoffer(offer)">
+                            <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                          </span>
+                          <span class="f_size_15 green_clr padd_right_10 cursor_pointer" *ngIf="offer.active ==1"
+                            (click)="enable(offer)">
+                            <i class="fa fa-check" aria-hidden="true" title="Enable"></i>
+                          </span>
+                          <span class="f_size_15 red_clr padd_right_10 cursor_pointer" *ngIf="offer.active ==0"
+                            (click)="enable(offer)">
+                            <i class="fa fa-close" aria-hidden="true" title="Disable"></i>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <br>
+                <pagination-controls (pageChange)="Page = $event"></pagination-controls>
+              </div>
+              <div class="col-md-12" *ngIf="getoffer?.length==0">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exists" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Offer Already Exists On Selected Product-{{sel_prod}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="success" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Offer Updated Successfully...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="extend" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading1">Offer Extension </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 3% 0;">
+              <div class="row" *ngIf="offer_extend" class="row_mar_0">
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="usr">Select From Date:</label>
+                    <input type="date" class="form-control" id="usr" [(ngModel)]="offer_extend.fromdate" required>
+                  </div>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="usr1">Select To Date:</label>
+                    <input type="date" class="form-control" id="usr1" [(ngModel)]="offer_extend.todate" required>
+                  </div>
+                </div>
+                <div class="col-md-1"></div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-primary" data-dismiss="modal" (click)="extend_submit()">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl pull-right" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="edit_modal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading1">Edit </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 2% 0;">
+              <div class="row" *ngIf="edit_offer_data" class="row_mar_0">
+                <!-- <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="usr">Select From Date:</label>
+                    <input type="date" class="form-control" id="usr" [(ngModel)]="offer_extend.fromdate"  required>
+                  </div>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="usr1">Select To Date:</label>
+                    <input type="date" class="form-control" id="usr1" [(ngModel)]="offer_extend.todate"  required>
+                  </div>
+                </div> -->
+                <!-- <div class="col-md-12">
+                  <button class="btn btn-primary fr" style="margin-bottom:5px" (click)="make_new_offer()"
+                    *ngIf="edit_offers">Add New Offer</button>
+                  <button class="btn btn-primary fr" style="margin-bottom:5px" (click)="make_new_offer()"
+                    *ngIf="add_new_offer">Edit Existing Offers</button>
+                </div> -->
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>S.no</th>
+                          <th>From Date</th>
+                          <th>To Date</th>
+                          <th class="text-right">From Range</th>
+                          <th class="text-right">To Range</th>
+                          <th>Offer Type</th>
+                          <th class="text-right">Offer Value</th>
+                          <th>Description</th>
+                          <th *ngIf="add_new_offer">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="edit_offers">
+                        <tr *ngFor="let data of edit_offer_data; let i=index">
+                          <td>{{i+1}}</td>
+                          <td>
+                            <div  style="width:150px;">
+                              <input type="date" class="form-control" [(ngModel)]="data.fromdate" required>
+                            </div>
+                          </td>
+                          <td>
+                            <div  style="width:150px;">
+                              <input type="date" class="form-control" [(ngModel)]="data.todate" required>
+                            </div>
+                          </td>
+                          <!-- <td>{{data.todate}}</td> -->
+                          <td>
+                            <div  style="width:100px;">
+                              <input type="number" class="form-control" [(ngModel)]="data.from_range" required>
+                            </div>
+                          </td>
+                          <td>
+                            <div  style="width:100px;">
+                              <input type="number" class="form-control" [(ngModel)]="data.to_range" required>
+                            </div>
+                          </td>
+                          <td>
+                            <div  style="width:150px;">
+                              <select class='select-option form-control' [(ngModel)]="data.offer_type" required
+                                name="offer_type" #offer_type="ngModel">
+                                <option [ngValue]="undefined" disabled selected>Select</option>
+                                <option value="Free Quantity">Free Quantity</option>
+                                <option value="Topup Discount">Topup Discount</option>
+                                <option value="Flat Discount">Flat Discount</option>
+                                <option value="Clearance Sale">Clearance Sale</option>
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <div  style="width:80px;">
+                              <input type="number" class="form-control" [(ngModel)]="data.offer_value" required>
+                            </div>
+                          </td>
+                          <td>
+                            <div  style="width:170px;">
+                              <textarea class="form-control" rows="3" placeholder="Enter Description"
+                                [(ngModel)]="data.description"></textarea>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-12" *ngIf="edit_offers">
+                  <button class="btn btn-primary" data-dismiss="modal" (click)="edit_offer_submit()">Update</button>
+                </div>
+                <!-- <div class="col-md-12" *ngIf="add_new_offer">
+                  <button class="btn btn-primary" data-dismiss="modal" (click)="sub_new_final()">Submit</button>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="successModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Offer Details Inserted Sucessfully..!!</span>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editoffermodal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading1">Edit </h4>
+            <div class="pad_15 text-center content_msg" style="padding: 2% 0;">
+              <div class="row" *ngIf="editoffer_data" class="row_mar_0">
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Applicable </th>
+                          <th>Offer Type</th>
+                          <th>Offer Value</th>
+                          <th>From Date</th>
+                          <th>To Date</th>
+                          <th>Description</th>
+                          <th>Term1</th>
+                          <th>Term2</th>
+                          <th>Term3</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <div style="width:150px;">
+                              <select class="form-control" [(ngModel)]="editoffer_data.applyto" id="applyto"
+                                #applyto="ngModel" name="applyto" required>
+                                <option [ngValue]="undefined" disabled selected>--Select applyto--</option>
+                                <option *ngFor="let applicable of applicables" [ngValue]="applicable">
+                                  {{applicable}}
+                                </option>
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <select class='select-option form-control' [(ngModel)]="editoffer_data.offer_type"
+                                required name="offer_type" #offer_type="ngModel">
+                                <option [ngValue]="undefined" disabled selected>Select</option>
+                                <option value="Topup Discount">Topup Discount</option>
+                                <option value="Flat Discount">Flat Discount</option>
+                              </select>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="text" (keypress)="keynumber($event)" class="form-control"
+                                [(ngModel)]="editoffer_data.offer_value" required>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="date" class="form-control" [(ngModel)]="editoffer_data.fromdate" required>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <input type="date" class="form-control" [(ngModel)]="editoffer_data.todate" required>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <textarea class="form-control rounded-0" id="description" rows="3" name="description"
+                                [(ngModel)]="editoffer_data.description" #description="ngModel"
+                                placeholder="Enter Description"></textarea>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <textarea class="form-control rounded-0" id="term1" rows="3" name="term1"
+                                [(ngModel)]="editoffer_data.term1" #term1="ngModel"
+                                placeholder="Enter Term1"></textarea>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <textarea class="form-control rounded-0" id="term2" rows="3" name="term2"
+                                [(ngModel)]="editoffer_data.term2" #term2="ngModel"
+                                placeholder="Enter Term2"></textarea>
+                            </div>
+                          </td>
+                          <td>
+                            <div style="width:150px;">
+                              <textarea class="form-control rounded-0" id="term3" rows="3" name="term3"
+                                [(ngModel)]="editoffer_data.term3" #term3="ngModel"
+                                placeholder="Enter Term3"></textarea>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-primary" data-dismiss="modal" (click)="editoffer_submit()">Update</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button> -->
+      </div>
+    </div>
+  </div>
+</div>

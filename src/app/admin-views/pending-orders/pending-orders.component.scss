@@ -1,0 +1,36 @@
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 15px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+}
+.alert_heading1 {
+    background: #0da550;
+    margin-top: 0;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white !important;
+}
+.padd_right_10{
+    padding-right: 10px;
+}
+.close1{
+    color:red !important;
+    margin-right: 10px !important;
+    margin-top: -10px !important;
+    cursor:pointer !important;
+  
+  
+}
+
+.custom_loder{
+    z-index: 99999999999 !important;
+     position: fixed !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important;  }
+  

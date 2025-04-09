@@ -1,0 +1,481 @@
+<div class="container pad_t_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <!-- <span *ngIf="poData.status">
+      <a href="javascript.void(0)" routerLink="/Warehouse Manager-PENDING PACKING LIST">Pending Packing List</a>
+    </span>
+    <span *ngIf="!poaddress && !poData.status">
+      <a href="javascript.void(0)" routerLink="/Dealer-ORDERS">Orders</a>
+    </span>
+    <span *ngIf="!poaddress">&nbsp;>&nbsp;</span>
+    <span *ngIf="poData.fromreportspage==true">
+      <a href="javascript.void(0)" routerLink="/Admin-REPORTS">Reports</a>
+    </span>
+    <span *ngIf="poData.fromreportspage==true">&nbsp;>&nbsp;</span> -->
+    <!-- <span *ngIf="poaddress">
+            <a href="javascript.void(0)" routerLink="/Dealer-ORDERS">Reports</a>
+        </span> <span *ngIf="poaddress">&nbsp;>&nbsp;</span> -->
+    <!-- <span>PO-Print</span> -->
+    <span *ngIf="this.PUrl == 'S=Apo'">
+      <a routerLink="/Supplier-PO-History" style="color: #878787 !important;">
+        PO History</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="this.PUrl == 'S=Rep'">
+      <a routerLink="/Supplier-Reports-Supplier" style="color: #878787 !important;">
+        Supplier Reports</a>&nbsp;>&nbsp;
+    </span>
+    <span *ngIf="this.PUrl == 'A=Rep'">
+      <a routerLink="/Supplier-Reports" style="color: #878787 !important;">
+        Supplier Reports</a>&nbsp;>&nbsp;
+    </span>
+    <span>PO-Print</span>
+  </p>
+  <div class="total_invoice_page" id="printSectionId" style="margin-bottom: 20px;">
+    <div class="printwrap">
+      <h3 *ngIf="!poData.data.json_hdr.pi_no" class="pt-1"
+        style="padding-bottom: 6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 10px;margin-bottom: 4px;padding-top:15px">
+        {{loginUserData.company_address.companyname}}
+      </h3>
+      <h3 *ngIf="poData.data.json_hdr.pi_no" class="pt-1"
+        style="padding-bottom: 6px;text-align: center;font-weight: 600;font-size: 20px;margin-top: 0px;">
+        {{ poData.data.json_hdr.supplierid.userprofiledtl.business_name}}
+      </h3>
+      <div style="text-align: center;" *ngIf="!poData.data.json_hdr.pi_no">
+        <span style="line-height: 1.5;" *ngIf="loginUserData.address1">{{ loginUserData.company_address.address1}}
+        </span>
+        <span style="line-height: 1.5;" *ngIf="loginUserData.address2">{{ loginUserData.company_address.address2}},
+        </span><br>
+        <span style="line-height: 1;">
+          <b>City</b>
+        </span>
+        <span style="line-height: 1.5;" *ngIf="loginUserData.city"> : {{ loginUserData.company_address.city}},&nbsp;</span>
+        <span style="line-height: 1;">
+          <b>State</b>
+        </span>
+        <span style="line-height: 1;"> : {{loginUserData.company_address.state |
+          titlecase}}&nbsp;- <span style="line-height: 1.5;" *ngIf="loginUserData.pin">{{
+            loginUserData.company_address.pin}},&nbsp;</span> </span>
+        <span style="line-height: 1;">
+          <b>Mobile </b>
+        </span>
+        <span style="line-height: 1;"> :
+          {{loginUserData.company_address.mobile}},</span>
+        <br>
+        <span style="line-height: 1;">
+          <b>Email</b>
+        </span>
+        <span *ngIf="loginUserData.role=='Admin'" style="line-height: 1;"> :
+          {{loginUserData.company_address.company_email}},</span>
+        <span *ngIf="loginUserData.role!='Admin'" style="line-height: 1;">:{{loginUserData.email}}</span>&nbsp;
+        <span *ngIf="loginUserData.role=='Admin'">
+          <b>IEC Code</b>
+        </span>
+        <span *ngIf="loginUserData.role=='Admin'" style="line-height: 1;"> : {{loginUserData.cin |
+          titlecase}}.</span>
+      </div>
+      <div style="text-align: center;" *ngIf="poData.data.json_hdr.pi_no">
+        <span style="line-height: 1.5;">{{ poData.data.json_hdr.supplierid.address1}}
+        </span>
+        <span style="line-height: 1.5;">{{ poData.data.json_hdr.supplierid.address2}},
+        </span><br>
+        <span style="line-height: 1;">
+          <b>City</b>
+        </span>
+        <span style="line-height: 1.5;"> : {{ poData.data.json_hdr.supplierid.city}},</span>
+        <span style="line-height: 1;">
+          <b>State</b>
+        </span>
+        <span style="line-height: 1;"> : {{poData.data.json_hdr.supplierid.state |
+          titlecase}}&nbsp;-&nbsp; <span style="line-height: 1.5;">{{
+            poData.data.json_hdr.supplierid.pin}}.</span> </span>
+        <span style="line-height: 1;">
+          <b>Mobile </b>
+        </span>
+        <span style="line-height: 1;"> :
+          {{poData.data.json_hdr.supplierid.mobile}},</span>
+        <br>
+        <span style="line-height: 1;">
+          <b>Email</b>
+        </span>
+        <span style="line-height: 1;">:{{poData.data.json_hdr.supplierid.email}}</span>&nbsp;
+      </div>
+      <h5 *ngIf="loginUserData.role!='Admin'" style="text-align: center;font-weight: 600;">
+        PROFORMA INVOICE</h5>
+      <h5 *ngIf="loginUserData.role=='Admin'&&poData.data.json_hdr.approve==0"
+        style="text-align: center;font-weight: 600;">
+        PURCHASE ORDER</h5>
+      <h5 *ngIf="loginUserData.role=='Admin'&&poData.data.json_hdr.approve==1"
+        style="text-align: center;font-weight: 600;">
+        PROFORMA INVOICE</h5>
+      <div class="invoce_address" id="contentToConvert">
+        <div class="row hr_line_botm" style="display: flex;">
+          <div class="col-md-8 company_address padding_0 width70" style="line-height: 1.9;">
+            <div class="txt_l">
+              <h6 style="text-decoration:underline;margin-top: 2px;margin-bottom: 2px;">
+                <b>To</b>
+              </h6>
+            </div>
+            <div class="txt_l fnt_size_12 mt-1" style="line-height: 1.5;">
+              <h5 *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role=='Admin'"
+                style="margin-top: 1px;margin-bottom: 1px;font-weight: 600;line-height: 1.5;">
+                {{loginUserData.company_address.online_display_name}}
+              </h5>
+              <h5 *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'"
+                style="margin-top: 1px;margin-bottom: 1px;font-weight: 600;line-height: 1.5;">
+                {{loginUserData.headoffice_address.online_display_name}}
+              </h5>
+              <h5 *ngIf="!poData.data.json_hdr.pi_no"
+                style="margin-top: 1px;margin-bottom: 1px;font-weight: 600;line-height: 1.5;">
+                <!-- {{loginUserData.company_address.online_display_name}} -->
+                {{poData.data.json_hdr.supplierid.userprofiledtl.business_name}}
+              </h5>
+            </div>
+            <div class="txt_l fnt_size_12" style="line-height: 1.5;">
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role=='Admin'"
+                style="line-height: 1.5;;display: inline-block;">
+                <span *ngIf="loginUserData.company_address.address1">  {{loginUserData.company_address.address1}},</span>
+              </span><br *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role=='Admin'">
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role=='Admin'"
+                style="line-height: 1.5;display: inline-block;">
+               <span *ngIf="loginUserData.company_address.address2"> {{loginUserData.company_address.address2}},</span>
+              </span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'"
+                style="line-height: 1.5;;display: inline-block;">
+                <span *ngIf="loginUserData.headoffice_address.address1">  {{loginUserData.headoffice_address.address1}},</span>
+              </span><br *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'">
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'"
+                style="line-height: 1.5;display: inline-block;">
+                <span *ngIf="loginUserData.headoffice_address.address2">{{loginUserData.headoffice_address.address2}},</span>
+              </span>
+              <span *ngIf="!poData.data.json_hdr.pi_no" style="line-height: 1.5;display: inline-block;">
+                <!-- {{loginUserData.headoffice_address.address1}} -->
+                <span *ngIf="poData.data.json_hdr.supplierid.address1">  {{poData.data.json_hdr.supplierid.address1}},</span>
+              </span><br *ngIf="poData.data.json_hdr.supplierid.address2">
+              <span *ngIf="!poData.data.json_hdr.pi_no" style="line-height: 1.5;display: inline-block;">
+                <!-- {{loginUserData.company_address.address1}} -->
+                <span *ngIf="poData.data.json_hdr.supplierid.address2">  {{poData.data.json_hdr.supplierid.address2}},</span>
+              </span>
+
+            </div>
+            <div class="txt_l fnt_size_12" *ngIf="loginUserData.role!='Admin'&&poData.data.json_hdr.pi_no"
+              style="line-height: 1.5;">
+              <span style="line-height: 1;">City&nbsp;</span>
+              <span style="line-height: 1.5;">:
+                {{loginUserData.headoffice_address.city}},&nbsp;</span>
+              <span style="line-height: 1;">State&nbsp;</span>
+              <span style="line-height: 1.5;">:
+                {{loginUserData.headoffice_address.state}},&nbsp;</span>
+            </div>
+            <div class="txt_l fnt_size_12" *ngIf="loginUserData.role=='Admin'&&poData.data.json_hdr.pi_no"
+              style="line-height: 1.5;">
+              <span style="line-height: 1;">City&nbsp;</span>
+              <span style="line-height: 1.5;">:
+                {{loginUserData.company_address.city}},&nbsp;</span>
+              <span style="line-height: 1;">State&nbsp;</span>
+              <span style="line-height: 1.5;">:
+                {{loginUserData.company_address.state}},&nbsp;</span>
+            </div>
+            <div class="txt_l fnt_size_12" *ngIf="!poData.data.json_hdr.pi_no" style="line-height: 1.5;">
+              <span style="line-height: 1;">City&nbsp;</span>
+              <span style="line-height: 1.5;">:
+                {{poData.data.json_hdr.supplierid.city}},&nbsp;</span>
+              <span style="line-height: 1;">State&nbsp;</span>
+              <span style="line-height: 1.5;">:
+                {{poData.data.json_hdr.supplierid.state}},&nbsp;</span>
+            </div>
+            <div class="txt_l fnt_size_12" style="line-height: 1.5;">
+              <span style="line-height: 1;">Mobile&nbsp;</span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'" style="line-height: 1.5;">:
+                {{loginUserData.headoffice_address.mobile}},&nbsp;</span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role=='Admin'" style="line-height: 1.5;">:
+                {{loginUserData.company_address.mobile}},&nbsp;</span>
+              <span *ngIf="!poData.data.json_hdr.pi_no" style="line-height: 1.5;">:
+                <!-- {{loginUserData.company_address.mobile}} -->
+                {{poData.data.json_hdr.supplierid.mobile}},&nbsp;
+              </span>
+
+              <span style="line-height: 1;">Email</span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'" style="line-height: 1.5;"> :
+                {{loginUserData.headoffice_address.company_email}},</span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role=='Admin'" style="line-height: 1.5;"> :
+                {{loginUserData.company_address.company_email}},</span>
+              <span *ngIf="!poData.data.json_hdr.pi_no" style="line-height: 1.5;"> :
+                <!-- {{loginUserData.company_address.company_email}} -->
+                {{poData.data.json_hdr.supplierid.email}},
+              </span>
+              <br>
+              <span  class="gstspan" *ngIf="poData.data.json_hdr.pi_no">GSTIN
+                &nbsp;</span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'" class="gstspan">:
+                {{loginUserData.headoffice_address.gstin}},&nbsp;</span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role=='Admin'" class="gstspan">:
+                {{loginUserData.company_address.gstin}},&nbsp;</span>
+
+              <span style="line-height: 1;font-size: 9px !important;" *ngIf="poData.data.json_hdr.pi_no">PAN
+                &nbsp;</span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role=='Admin'"
+              class="gstspan">:
+                {{loginUserData.company_address.pan}}.</span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'"
+              class="gstspan">:
+                {{loginUserData.headoffice_address.pan}}.</span><br>
+
+              <span style="line-height: 1;font-size: 9px !important;" *ngIf="poData.data.json_hdr.pi_no">IEC Code&nbsp;
+              </span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role=='Admin'"
+              class="gstspan">:
+                {{loginUserData.company_address.cin |
+                titlecase}}.</span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'"
+              class="gstspan">:
+                {{loginUserData.headoffice_address.cin |
+                titlecase}}.</span>
+              <!-- <span style="line-height: 1;font-size: 9px !important;"
+                *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'">IEC Code&nbsp;
+              </span>
+              <span *ngIf="poData.data.json_hdr.pi_no&&loginUserData.role!='Admin'"
+                style="line-height: 1.5;font-size: 9px !important;">:
+                {{loginUserData.headoffice_address.cin |
+                titlecase}}.</span> -->
+            </div>
+            <div class="txt_l fnt_size_12" *ngIf="!poData.data.json_hdr.pi_no&&poData.data.json_hdr.revised==null"
+              style="line-height: 1.5;">
+              <span style="line-height: 1;">Kind Attention</span><br>
+              <span style="line-height: 1.5;">
+                {{poData.data.json_hdr.supplierid.salatation}}&nbsp;{{poData.data.json_hdr.supplierid.first_name}}&nbsp;{{poData.data.json_hdr.supplierid.last_name}}</span>
+            </div>
+          </div>
+          <div class="col-md-4 company_address padding_0 width30"
+            style="line-height: 1.5;padding-top: 10px;margin-top:5px;">
+            <div class="row" style="display: flex;">
+              <div class="col-md-3 fnt_size_12 nopadding width30">
+                <span style="line-height: 1;" class="spnleft">PO No</span><br>
+                <span style="line-height: 1;" class="spnleft">PO Date </span><br>
+                <span style="line-height: 1;" *ngIf="poData.data.json_hdr.pi_no" class="spnleft">PI No</span><br>
+                <span style="line-height: 1;" *ngIf="poData.data.json_hdr.pi_no" class="spnleft">PI Date </span><br>
+                <span style="line-height: 1;" *ngIf="poData.data.json_hdr.revised" class="spnleft">Revised </span>
+                <span style="line-height: 1;" *ngIf="poData.data.json_hdr.approve==1" class="spnleft">(Approved) </span>
+              </div>
+              <div class="col-md-9 fnt_size_12 nopadding width70">
+                <span style="font-weight: bold;line-height: 1.5;">:
+                  {{poData.data.json_hdr.pono_ref}}
+                </span><br>
+                <span style="line-height: 1;">:&nbsp;{{poData.data.json_hdr.podate |
+                  date:'dd/MM/yyyy'}}</span><br>
+                <span style="font-weight: bold;line-height: 1.5;"
+                  *ngIf="poData.data.json_hdr.pi_no">:&nbsp;{{poData.data.json_hdr.pi_no}}</span><br>
+                <span style="line-height: 1;" *ngIf="poData.data.json_hdr.pi_no">:&nbsp;{{poData.data.json_hdr.pidate |
+                  date:'dd/MM/yyyy'}}</span><br>
+                <span style="line-height: 1;"
+                  *ngIf="poData.data.json_hdr.revised">:&nbsp;{{poData.data.json_hdr.revised}}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="table-responsive row" style="margin-top: 15px;">
+          <table class="table table-bordered table-striped pending_order printTable"
+            style="margin-bottom: 5px !important;">
+            <thead>
+              <tr>
+                <th class="txt_centr" style="font-size: 10px;text-align: center;width: 2%;">Sr.</th>
+                <th class="txt_left" style="font-size: 10px;width:40%;word-break: break-all;">Product Name</th>
+                <th class="txt_left" style="font-size: 10px;width:10%;word-break: break-all;">Brand</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;width:8%;">SKU No</th>
+                <!-- <th class="txt_right" style="font-size: 10px;text-align: right;width:5%;">Aviqty</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;width:5%;">Months Qty</th> -->
+                <th class="txt_right" style="font-size: 10px;text-align: right;width:5%;">Qty</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;width: 15%;">Price
+                  ({{poData.data.json_dtl[0].ctype}})</th>
+                <th class="txt_right" style="font-size: 10px;text-align: right;">Amount
+                  ({{poData.data.json_dtl[0].ctype}})</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of poData.data.json_dtl; let i=index;">
+                <td class="txt_centr" style="font-size: 10px;text-align: center;">{{i+1}}</td>
+                <td class="txt_left" style="font-size: 9px;">{{item.productid.modelno}} {{item.productid.name1}}
+                </td>
+                <td class="txt_left" style="font-size: 9px;">{{item.productid.brand}}
+                </td>
+                <td class="txt_left" style="text-align: right;font-size: 9px;">{{item.mappingid.sku_no}}
+                </td>
+                <!-- <td class="txt_left" style="text-align: right;font-size: 9px;">{{item.aviqty}}
+                </td>
+                <td class="txt_left" style="text-align: right;font-size: 9px;">{{item.mothsqty}}
+                </td> -->
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.qty}}</td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.price | number:'1.3-3'}}</td>
+                <td class="txt_right" style="text-align: right;font-size: 10px;">
+                  {{item.amount | number:'1.3-3'}}</td>
+              </tr>
+              <tr>
+                <td colspan="3" class="no-line">
+                <b><span>({{poData.data.json_dtl[0].ctype}}-{{toWords(this.poData.data.json_hdr.poamount | number:'1.3-3')}})</span></b>  
+                </td>
+                <td class="no-line txt_right">
+                  <span style="font-size: 8px !important;text-align: right;display: inline-block;">
+                    <b style="font-size: 12px !important;">&nbsp;&nbsp;Total
+                      Qty</b></span>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;">
+                  <span style="color:#000;font-size: 8px!important;"></span>
+                  {{this.totqty}}
+                </td>
+                <td class="no-line txt_right">
+                  <span style="font-size: 8px !important;text-align: right;display: inline-block;">
+                    <b style="font-size: 12px !important;">&nbsp;&nbsp;Total
+                      ({{poData.data.json_dtl[0].ctype}})</b></span>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;">
+                  <span style="color:#000;font-size: 8px!important;"></span>
+                  {{this.poData.data.json_hdr.poamount | number:'1.3-3'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row" style="display: flex;">
+          <div style="width:50%">
+            <div style="display: flex;">
+              <div style="width: 16%;" class="customwidth30">
+                <p class="deliverytitle">Payment Terms</p>
+                <p class="deliverytitle">Delivery Terms</p>
+                <p class="deliverytitle">Delivery Time</p>
+                <p class="deliverytitle">Discharge Port</p>
+                <p class="deliverytitle">Shipment Port</p>
+              </div>
+              <div>
+                <p class="deliverytitle">:&nbsp;{{poData.data.json_hdr.payment_terms}}</p>
+                <p class="deliverytitle">:&nbsp;{{poData.data.json_hdr.deliveryterms}}</p>
+                <p class="deliverytitle">:&nbsp;{{poData.data.json_hdr.deliverytime}} </p>
+                <p class="deliverytitle">:&nbsp;{{poData.data.json_hdr.dischargeport}}</p>
+                <p class="deliverytitle">:&nbsp;{{poData.data.json_hdr.shipmentport}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="width: 100%;"
+          *ngIf="poData.data.json_hdr.description||poData.data.json_hdr.description2||poData.data.json_hdr.description3">
+          <h5 style="margin:5px">Note : </h5>
+          <div style="display: flex;">
+            <!-- <div style="width: 15%;">
+              <p style="margin:5px !important;line-height: 1;" *ngIf="poData.data.json_hdr.description">Description
+              </p>
+              <p style="margin:5px !important;line-height: 1;" *ngIf="poData.data.json_hdr.description2">Description 2
+              </p>
+              <p style="margin:5px !important;line-height: 1;" *ngIf="poData.data.json_hdr.description3">Description 3
+              </p>
+            </div> -->
+            <div style="width: 70%;">
+              <p class="deliverytitle" *ngIf="poData.data.json_hdr.description">
+                {{poData.data.json_hdr.description}}</p>
+              <p class="deliverytitle" *ngIf="poData.data.json_hdr.description2">
+                {{poData.data.json_hdr.description2}}</p>
+              <p class="deliverytitle" *ngIf="poData.data.json_hdr.description3">
+                {{poData.data.json_hdr.description3}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="display: flex;">
+          <div style="width:100%" *ngIf="bankDetails">
+            <h5 *ngIf="loginUserData.role!='Admin'" style="margin:5px"><b>Bank Details</b></h5>
+            <h5 *ngIf="loginUserData.role=='Admin'" style="margin:5px"><b>Your Bank Details</b></h5>
+            <div style="display: flex;">
+              <div style="width: 7.5%;" class="customwidth20">
+                <p class="deliverytitle">A/c Holder</p>
+                <p class="deliverytitle">A/c Number</p>
+                <p class="deliverytitle">Bank Name</p>
+                <p class="deliverytitle">Branch</p>
+                <p class="deliverytitle">SWIFT NO</p>
+              </div>
+              <div style="width: 85%;">
+                <p class="deliverytitle">:&nbsp;{{bankDetails.acc_holder}}
+                </p>
+                <p class="deliverytitle"> :&nbsp;{{bankDetails.acc_no}}</p>
+                <p class="deliverytitle">
+                  :&nbsp;{{bankDetails.bank_name}}
+                </p>
+                <p class="deliverytitle">
+                  :&nbsp;{{bankDetails.branch}}
+                </p>
+                <p class="deliverytitle">
+                  :&nbsp;{{bankDetails.ifsc}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <h5 style="margin-bottom: 5px;">
+              <strong class="theme_color fnt_size_12">Declaration</strong>
+            </h5>
+            <p style="font-size:9px;">1. Thanks for shopping with Powertex B2B app.</p>
+            <p style="font-size:9px;">2. Confirmation of Purchase Order doesn't guaranteed dispatch of goods.
+            </p>
+            <p style="font-size:9px;">3. Goods will be dispatched subject to availability & pass from accounts
+              department.If account overdue it can
+              be delay in dispatch,so keep track of payment.</p>
+            <p style="font-size:9px;">5. In case of any doubt,please contact marketing person as shown above or send
+              mail or contact customer care
+              (8885080111).</p>
+            <p style="font-size:9px;">6. If there is no instruction,delivery will be through standard mode.
+            </p>
+            <p style="font-size:9px;">
+              <sub class="txt_red" style="font-size:15px">*</sub> Terms and conditions apply.</p>
+          </div>
+        </div> -->
+        <br>
+        <div class="row" style="border-top:1.2px solid #dfdfdf;margin:0;">
+          <div class="pull-left">
+            <p style="margin-top: 5px;" class="mb-1" *ngIf="poData.data.json_hdr.approve!=1">Prepared by<br>
+              {{loginUserData.first_name}}&nbsp;{{loginUserData.last_name}}</p>
+            <p style="margin-top: 5px;" class="mb-1"
+              *ngIf="poData.data.json_hdr.approve==1&&loginUserData.role=='Admin'">Prepared
+              by<br>
+              {{poData.data.json_hdr.supplierid.first_name}}&nbsp;{{poData.data.json_hdr.supplierid.last_name}}<br></p>
+          </div>
+          <div class="pull-right">
+            <p style="margin-top: 5px;" *ngIf="poData.data.json_hdr.approve==1&&loginUserData.role=='Admin'"
+              class="mb-1">
+              Approved
+              by<br>
+              {{loginUserData.first_name}}&nbsp;{{loginUserData.last_name}} <br></p>
+            <br>
+          </div>
+          <br>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="text-align: left;">
+            <p style="font-size:9px !important;" class="mb-1half mt-1">
+              {{todaydate}}
+              <br>
+            </p>
+            <!-- <p style="font-size:9px !important;" *ngIf="loginUserData.role!='Admin'"> *This is a computer generated PI
+              and does not require a physical
+              signature.
+            </p>
+            <p style="font-size:9px !important;" *ngIf="loginUserData.role=='Admin'"> *This is a computer generated PO
+              and does not require a physical
+              signature.
+            </p> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row pad_t_b_5" style="text-align: center;">
+    <button type="submit" class="btn btn-success" (click)="printPO()">Print</button>
+    <button *ngIf="this.PUrl == 'S=Apo'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Supplier-PO-History">Close</button>
+    <button *ngIf="this.PUrl == 'S=Rep'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Supplier-Reports-Supplier">Close</button>
+    <button  *ngIf="this.PUrl == 'A=Rep'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Supplier-Reports">Close</button>
+    <button  *ngIf="this.PUrl != 'A=Rep' && this.PUrl != 'S=Rep' && this.PUrl != 'S=Apo'" type="submit" style="margin:10px;" class="btn btn-success" routerLink="/dashboard">
+      Close</button>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

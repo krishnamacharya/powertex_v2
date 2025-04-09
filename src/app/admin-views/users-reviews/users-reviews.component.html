@@ -1,0 +1,220 @@
+<div class="container pad_t_5per pad_b_5per">
+    <p class="bread-crumb1">
+        <span>
+          <a href="javascript.void(0)" routerLink="/dashboard"  class="breadcrumb_clr">Dashboard</a>
+        </span>&nbsp;>&nbsp;
+        <span>Users Review</span>
+      </p>
+  <div class="row tabwraper">
+    <div class="row bg-theme dash_status" style="margin:0px">
+      <div class="col-md-4 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':All_Rev == true}" (click)="A_Rev()">New Reviews</a>
+      </div>
+      <div class="col-md-4 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':Approve_Rev == true}" (click)="Apr_Rev()">Approved Reviews</a>
+      </div>
+      <div class="col-md-4 status_align">
+        <a href="javascript:void(0)" [ngClass]="{'active_tab':Rejected_Rev == true}" (click)="Rej_Rev()">Rejected Reviews</a>
+      </div>
+    </div>
+
+    <div style="padding:20px" id="newReviewTable">
+      <div *ngIf="All_Rev">
+        <div class="row" style="margin:0px">
+          <div>
+            <div>
+              <div class="row" style="padding: 10px;">
+                <div class="col-md-12 mar_t_20">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>S.No</th>
+                          <!-- <th>User ID</th> -->
+                          <th>User Id</th>
+                          <th>User Name</th>
+                          <th>Product Id</th>
+                          <th>Rating</th>
+                          <th>Title</th>
+                          <!-- <th>Status</th> -->
+                          <th>Options</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let reg of regList | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                          <td>{{10*(p-1)+(i+1)}}</td>
+                          <!-- <td>{{reg.user_id}}</td> -->
+                          <td>{{reg.first_name | titlecase}}</td>
+                          <td>{{reg.last_name | titlecase}}</td>
+                          <td>{{reg.email | lowercase}}</td>
+                          <td>{{reg.mobile}}</td>
+                          <td>{{reg.user_type}}</td>
+                          <td>{{reg.status}}</td>
+                          <td>
+                            <span class="f_size_15 blue_clr padd_right_10 cursor_pointer" (click)="viewInfo(reg)">
+                              <i class="fa fa-eye" aria-hidden="true" title="View More"></i>
+                            </span>
+                            <span class="f_size_15 red_clr padd_right_10 cursor_pointer" (click)="reject(reg)">
+                              <i class="fa fa-close" aria-hidden="true" title="Reject"></i>
+                            </span>
+                            <span class="f_size_15 orange_clr padd_right_10 cursor_pointer" (click)="editInfo(reg)">
+                              <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div *ngIf="regList.length>0">
+                  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="Approve_Rev">
+
+        <div class="row" style="margin:0px">
+          <div>
+            <div>
+              <div class="row" style="padding: 10px;">
+
+                <div class="col-md-12 mar_t_20">
+
+                  <mat-accordion *ngFor="let p of orders | filter:searchText">
+                    <!-- <div *ngIf="p.detail[0].status!=='Delivered'"> -->
+                    <div *ngIf="check_status1(p.detail)">
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <div class="col-md-2">
+                              <p class="txt_black" style="
+                        margin-bottom: 0px;
+                    ">Order No:
+                                <span class="f_wt_600">{{p.po_no }}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-3">
+                              <p class="txt_black" style="
+                        margin-bottom: 0px;
+                    ">Ordered On:
+                                <span class="f_wt_600">{{p.po_date | date:'mediumDate'}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-3">
+                              <p class="txt_black" style="
+                        margin-bottom: 0px;
+                    ">Product Line:
+                                <span class="f_wt_600">{{p.detail.length}}</span>
+                              </p>
+                            </div>
+                            <div class="col-md-3">
+                              <p class="txt_black" style="
+                        margin-bottom: 0px;
+                    ">Ordered Total:
+                                <span class="f_wt_600">{{p.amount}}</span>
+                              </p>
+                            </div>
+
+                          </mat-panel-title>
+                          <!-- <mat-panel-description>
+                          Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                        </mat-panel-description> -->
+                        </mat-expansion-panel-header>
+                        <h4>Order Details:</h4>
+
+                        <div>
+                          <div class="table-responsive">
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th>S.No</th>
+                                  <th>Product </th>
+                                  <th>Product Description</th>
+                                  <th>Price</th>
+                                  <th>Qty</th>
+                                  <th>Net Price</th>
+                                  <th>GST</th>
+                                  <th>Total Price</th>
+                                  <th>Status</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let pd of p.detail; let i=index;">
+                                  <td>{{i + 1}} </td>
+
+                                  <td style="width:10%;">
+                                    <div>
+                                      <img src="{{pd.image}}" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                                        class="img-thumbnail" style="width:70%;height: 30px;">
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <h4 class="table_pd_name">{{pd.name}}</h4>
+                                  </td>
+                                  <td>
+                                    <div class="row_mar_0">
+                                      <span class="f_wt_600">{{pd.net_price}}</span>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p>
+                                        <span class=" f_wt_600">{{pd.qty }}</span>
+                                      </p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p style="margin-bottom: 0px">
+                                        <span class=" f_wt_600">{{pd.qty * pd.net_price}}</span>
+                                      </p>
+                                         <p class="gsttitle">(Excluding GST)</p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p>
+                                        <span class=" f_wt_600">18% </span>
+                                      </p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <span></span>
+                                      <span>&#8377;&nbsp;</span>
+                                      <span class="f_wt_600">{{pd.tot_value}}</span>&nbsp;
+                                         <p class="gsttitle">(Including GST)</p>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="mar_b_10">
+                                      <p>
+                                        <span class=" f_wt_600">{{pd.status}} </span>
+                                      </p>
+                                    </div>
+                                    <button class="track_btn">Track</button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-accordion>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="Rejected_Rev">
+
+      </div>
+    </div>
+  </div>
+</div>

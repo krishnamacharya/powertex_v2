@@ -1,0 +1,48 @@
+<div class="container pad_t_5per">
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="
+                        color: #878787 !important;">Dashboard</a></span>
+      <span>&nbsp;>&nbsp;
+        <a href="javascript.void(0)" routerLink="/Admin-REPORTS" style="color: #878787 !important;">
+         Report</a>
+      </span>
+      &nbsp;>&nbsp;
+      <span>Print</span>
+    </p>
+    <div class="total_invoice_page" style="margin-bottom: 20px;" id="printSectionId">
+    <div class="invoce_address printwrap">
+        <div class="table-responsive" style="margin-top: 10px;">
+          <table class="table table-bordered table-striped pending_order printTable">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Business Name</th>
+                    <th class="text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let view_d of reportdata ;let j=index">
+                        <td>
+                          <span class="table_pd_name">{{j+1}}</span>
+                        </td>
+                        <td>
+                            <div style="margin:0px;text-align:left">
+                              <span class="f_wt_600 view_key">{{view_d.business_name}}</span></div>
+                          </td>
+                          <td>
+                            <div class="row_mar_0" style="text-align:right">
+                              <span class="f_wt_600 view_key">₹ {{view_d.final_amount.toLocaleString('en-IN')}}.00</span></div>
+                          </td>
+                      </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="text-align: center;padding-top: 15px;">
+          <button type="submit" class="btn btn-success" (click)="printPL()" style="letter-spacing:1px;">Print
+          </button>
+          <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Admin-REPORTS">Cancel</button>
+        </div>
+    </div>

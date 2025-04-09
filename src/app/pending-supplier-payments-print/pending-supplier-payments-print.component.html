@@ -1,0 +1,120 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+
+
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+
+    <span>
+      <a href="javascript.void(0)" routerLink="/Pending-SupplierPayments-List" style="color: #878787 !important;">Pending Payments</a>
+    </span>&nbsp;>&nbsp;
+    <span>Print</span>		
+  </p> 
+
+  <div class="reg_form mar_b_30 pad_15">
+
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Pending Payments</h4>
+        </div>
+        <div class="fr">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+       
+    </div>
+  
+    <div>
+      <div *ngIf="supplierdata">
+
+        <div id="printsuppndng">
+          <div class="row busname text-center">
+            <h3 class="shopee_name">
+              <span> {{loginUserData.headoffice_address.companyname}}</span>
+            </h3>
+            <hr>
+
+          <h3 class="shopee_name text-center">
+
+            <h4>Pending Payments</h4>
+          </h3>
+          </div>
+
+        <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+          <div class="col-sm-12 list">
+            <div class="table-responsive">
+
+
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Inv No</th>
+                    <th>Inv Date</th>
+                    <th class="text-right">Inv Amt</th>
+                    <th class="text-right">Balance Amt</th>
+                    <th class="text-right">BL Date</th>
+                    <th class="text-center">Credit Days</th>
+                    <th>Due Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierdata ; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td>{{data.updateon | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.poamount | number : '1.2-2'}} ({{data.currency}})</td>
+                    <td class="text-right">{{data.balance_amount | number : '1.2-2'}} ({{data.currency}})</td>
+                    <td class="text-right">{{data.bldate | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-center">{{data.credit_period}}</td>
+                    <td>{{data.Due_date | date:'dd-MM-yyyy'}}</td>
+                  </tr>
+
+                   <tr>
+                    <td colspan="3"><b></b></td>
+                    <td  class="text-right">Total</td>
+                    <td  class="text-right pright-2"><b>{{this.totaldue | number : '1.2-2'}}</b></td>
+                    <td colspan="3"></td>
+                  </tr> 
+                </tbody>
+              </table>
+
+
+            </div>
+
+          </div>
+          <div *ngIf="supplierdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+      <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+      </button>
+      <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Pending-SupplierPayments-List">Cancel</button>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

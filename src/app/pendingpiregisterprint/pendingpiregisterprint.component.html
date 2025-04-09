@@ -1,0 +1,130 @@
+<div class="container">
+  <div class="row pad_t_5per">
+    <ngx-spinner class="custom_loder">
+      <img src="../../../assets/Loader.gif">
+    </ngx-spinner>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span> {{loginUserData.content}}</span>
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+      </span>
+
+      <span>&nbsp;>&nbsp;
+        <a href="javascript.void(0)" routerLink="/pendingpiregister"
+          style="color: #878787 !important;">Pending PI Register</a>
+      </span>
+      &nbsp;>&nbsp;
+      <span>Print</span>
+      <!-- 
+      <span>Admin On Port Summary</span> -->
+    </p>
+    <div class="reg_form mar_b_30 pad_15">
+      <div class="col-md-12 form-group">
+        <div class="pull-left">
+          <h4>Pending PI Register</h4>
+        </div>
+        <div class="fr">
+          <input type="text" class="form-control" [(ngModel)]="searchText" name="searchText" (keyup)="searchdata(searchText)"  placeholder="Search Product..."
+            class="search_style">
+          <button type="submit" (click)="searchdata(searchText)" class="input_btn">Search</button>
+        </div>
+      </div>
+      <div>
+        <div id="printsuppndng">
+          <div class="row busname text-center">
+
+
+            <h3 class="shopee_name">
+              <span> {{loginUserData.company_address.companyname}}</span>
+            </h3>
+            <hr>
+            <!-- <h3 class="shopee_name text-center">
+              {{this.SupplierDtls.business_name}} PendinhgPI Register
+            </h3> -->
+
+            <h3 class="shopee_name text-center" *ngIf="this.SupplierDtls">
+              {{this.SupplierDtls}} Pending PI Register
+            </h3>
+            <h3 class="shopee_name text-center" *ngIf="!this.SupplierDtls">
+              Pending PI Register
+            </h3>
+
+
+          </div>
+
+
+          <div class="row printwrap" *ngIf="(PendingPayments | filter :searchText) as PendingPayments">
+            <div class="col-sm-12 list" *ngIf="PendingPayments.length>0">
+              <div class="table-responsive">
+
+
+                <table class="table table-striped" >
+
+
+                  <thead>
+                    <tr>
+                      <th>SlNO</th>
+                      <th>Business Name</th>
+                      <th>Product Name</th>
+                      <th class="text-right">Qty</th>
+                      <th></th>
+                      <th class="text-right">Price</th>
+                      <th class="text-center">CType</th>
+                     
+                      <th class="text-right">Amount</th>
+                      <th class="text-center">PIDate</th>
+                      <th class="text-center">PINo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let data of PendingPayments ; let i=index">
+                      <td>{{10*(p-1)+(i+1)}}</td>
+                      <td>{{data.business_name}}</td>
+                      <td>{{data.ProductName}}</td>
+                      <td class="text-right">{{data.Poqty}}</td>
+                      <td></td>
+                      <td class="text-right">{{data.price}}</td>
+                      <td class="text-center">{{data.CType}}</td>
+                      <td class="text-right">{{data.amount}}</td>
+                      <td class="text-center">{{data.pidate | date:'dd-MM-yyyy'}}</td>
+                      <td class="text-center">{{data.Pi_no}}</td>
+  
+                    </tr>
+                  </tbody>
+  
+                </table>
+
+              </div>
+            </div>
+
+            <div *ngIf="PendingPayments.length < 0">
+              <div class="col-md-12">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+          <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+          </button>
+          <button type="submit" style="margin:10px;" class="btn btn-success"
+            routerLink="/pendingpiregister">Cancel</button>
+        </div>
+      </div>
+      <ngx-spinner class="loader_spinner"></ngx-spinner>
+    </div>
+  </div>
+</div>

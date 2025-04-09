@@ -1,0 +1,183 @@
+<!--login new start here -->
+<div class="viewmore_modal_content">
+    <div class="modal-header view_header">
+      <h4>VIEW DETAILS</h4>
+    </div>
+    <div class="modal-body view_body">
+      <div class="row" *ngIf="this.data">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+          <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+              <p class="view_headings" *ngIf="this.data.user_id!='' && this.data.user_id!=undefined">User ID</p>
+              <p class="view_headings" *ngIf="this.data.user_type!='' && this.data.user_type!=undefined">User Type</p>
+              <p class="view_headings" *ngIf="this.data.salatation!='' && this.data.salatation!=undefined">Salutation</p>
+              <p class="view_headings" *ngIf="this.data.first_name!='' && this.data.first_name!=undefined">First Name</p>
+              <p class="view_headings" *ngIf="this.data.last_name!='' && this.data.last_name!=undefined">Last Name</p>
+              <p class="view_headings" *ngIf="this.data.business_name!='' && this.data.business_name!=undefined">Firm/Shop Name
+              </p>
+              <p class="view_headings" *ngIf="this.data.email!='' && this.data.email!=undefined">Email </p>
+              <p class="view_headings" *ngIf="this.data.mobile!='' && this.data.mobile!=undefined">Mobile</p>
+              <p class="view_headings" *ngIf="this.data.off_email!='' && this.data.off_email!=undefined">Office Email</p>
+              <p class="view_headings" *ngIf="this.data.off_mobile!='' && this.data.off_mobile!=undefined">Office No</p>
+              <p class="view_headings" *ngIf="this.data.pan!='' && this.data.pan!=undefined">PAN</p>
+              <p class="view_headings"
+                *ngIf="this.data.gst!=''||data['GST IN']!='' && this.data.gst!=undefined||data['GST IN']!=undefined">GST IN</p>
+              <p class="view_headings" *ngIf="this.data.address1!='' && this.data.address1!=undefined">Address1</p>
+              <p class="view_headings" *ngIf="this.data.address2!='' && this.data.address2!=undefined">Address2</p>
+            </div>
+            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
+              <p class="mar_b_15" *ngIf="this.data.user_id!='' && this.data.user_id!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.user_id}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.user_type!='' && this.data.user_type!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.user_type}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.salatation!='' && this.data.salatation!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.salatation}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.first_name!='' && this.data.first_name!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.first_name}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.last_name!='' && this.data.last_name!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.last_name}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.business_name!='' && this.data.business_name!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.business_name}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.email!='' && this.data.email!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.email | lowercase}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.mobile!='' && this.data.mobile!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.mobile}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.off_email!='' && this.data.off_email!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.off_email}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.off_mobile!='' && this.data.off_mobile!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.off_mobile}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.pan!='' && this.data.pan!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.pan}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.gst!='' && this.data.gst!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.gst}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="data['GST IN']!='' && data['GST IN']!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{data['GST IN']}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.address1!='' && this.data.address1!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.address1}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.address2!='' && this.data.address2!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.address2}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+            <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4">
+              <p class="view_headings" *ngIf="this.data.zone!='' && this.data.zone!=undefined">Zone</p>
+              <p class="view_headings" *ngIf="this.data.country!='' && this.data.country!=undefined">Country</p>
+              <p class="view_headings" *ngIf="this.data.state!='' && this.data.state!=undefined">State</p>
+              <p class="view_headings" *ngIf="this.data.city!='' && this.data.city!=undefined">City</p>
+              <p class="view_headings" *ngIf="this.data.pin!='' && this.data.pin!=undefined">Pincode</p>
+              <p class="view_headings" *ngIf="this.data.business_code!='' && this.data.business_code!=undefined">Bussiness Code
+              </p>
+              <p class="view_headings" *ngIf="this.data.business_name!='' && this.data.business_name!=undefined">Bussiness Name
+              </p>
+              <p class="view_headings" *ngIf="this.data.category_profile!='' && this.data.category_profile!=undefined">Category
+                Profile</p>
+              <p class="view_headings" *ngIf="this.data.company_code!='' && this.data.company_code!=undefined">Company Code</p>
+              <p class="view_headings" *ngIf="this.data.created_date!='' && this.data.created_date!=undefined">Created Date</p>
+              <p class="view_headings" *ngIf="this.data.createdby!='' && this.data.createdby!=undefined">Created By</p>
+              <p class="view_headings" *ngIf="this.data.designation!='' && this.data.designation!=undefined">Designation</p>
+              <p class="view_headings" *ngIf="this.data.status!='' && this.data.status!=undefined">Status</p>
+              <p class="view_headings" *ngIf="this.data.turnover!='' && this.data.turnover!=undefined">Turn Over</p>
+            </div>
+
+            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
+              <p class="mar_b_15" *ngIf="this.data.zone!='' && this.data.zone!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.zone}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.country!='' && this.data.country!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.country}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.state!='' && this.data.state!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.state}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.city!='' && this.data.city!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.city}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.pin!='' && this.data.pin!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.pin}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.business_code!='' && this.data.business_code!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.business_code}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.business_name!='' && this.data.business_name!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.business_name}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.category_profile!='' && this.data.category_profile!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.category_profile}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.company_code!='' && this.data.company_code!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.company_code}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.created_date!='' && this.data.created_date!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.created_date}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.createdby!='' && this.data.createdby!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.createdby}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.designation!='' && this.data.designation!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.designation}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.status!='' && this.data.status!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.status}}</span>
+              </p>
+              <p class="mar_b_15" *ngIf="this.data.turnover!='' && this.data.turnover!=undefined">
+                <span class="pad_r_15">: </span>
+                <span class="view_key">{{this.data.turnover}}</span>
+              </p>
+              <!-- ============================showing image=============================================== -->
+              <!-- ==============================showing image ends============================================== -->
+            </div>
+            <!-- ============================showing image=============================================== -->
+
+            <!-- ==============================showing image ends============================================== -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+</div>
+<!-- login new end here -->

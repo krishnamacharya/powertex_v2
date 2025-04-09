@@ -1,0 +1,80 @@
+.Admincls{
+    background-color: rgb(230, 243, 230) !important;
+    // color: #04184e !important;
+}
+.send{
+    padding-top: 12px;
+    background-color: white;
+    border-top: 1px ridge grey;
+}
+.icon small{
+    border-radius: 30px 30px 0px 30px;
+    padding: 5px 10px 2px 10px;
+}
+.btn2{
+    border-radius: 15px;
+    border-collapse:collapse;
+}
+.scrollit{
+    // overflow: auto;
+    overflow-y: scroll;
+    height:450px;
+    overflow-x:hidden;
+    display: flex;
+    flex-direction: column-reverse;
+}
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #0fa497 !important;
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+  }
+  .modal-header .modal-title {
+    color:#fff !important;
+  }
+  .active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 28px 14px 28px;
+    font-size: 17px !important;
+    font-weight: 600;
+  }
+  sup{
+      color: red;
+  }
+
+
+    //  /* Designing for scroll-bar */
+    //  ::-webkit-scrollbar {
+    //     width: 6px;
+    // }
+  
+    // /* Track */
+    // ::-webkit-scrollbar-track {
+    //     background: gainsboro;
+    //     border-radius: 5px;
+    // }
+  
+    // /* Handle */
+    // ::-webkit-scrollbar-thumb {
+    //     background: #0fa497;
+    //     border-radius: 5px;
+    // }
+  
+    // /* Handle on hover */
+    // ::-webkit-scrollbar-thumb:hover {
+    //     background: rgb(73, 195, 175);
+    // }
+    .bussinesInfo{
+        background: #0fa497;
+          margin-bottom: 0;
+          padding: 10px;
+          color: #fff !important;
+      }
+      .custom_loder{
+        z-index: 99999999999 !important;
+         position: fixed !important;
+          top: 42%;
+            left: 50%;
+            opacity: 9 !important;  }

@@ -1,0 +1,144 @@
+<div class="container-fluid">
+  <div class="row pad_t_5per">
+    <ngx-spinner class="custom_loder">
+      <img src="../../../assets/Loader.gif">
+    </ngx-spinner>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+        <h3 class="shopee_name">
+          <span> {{loginUserData.content}}</span>
+        </h3>
+        <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+      </div>
+    </div>
+    <p class="bread-crumb1">
+      <span>
+        <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+      </span>
+
+  <span>&nbsp;>&nbsp;
+    <a href="javascript.void(0)" routerLink="/Supplier-Reports" style="color: #878787 !important;">ProductWisePurchase-Reports</a>
+  </span>
+  &nbsp;>&nbsp;
+  <span>Print</span>
+<!-- 
+      <span>Admin On Port Summary</span> -->
+    </p>
+    <div class="reg_form mar_b_30">
+      <div class="row">
+        <div class="col-sm-12">
+
+
+
+          <div class="fr" *ngIf="orders.length>0">
+            <input type="text" [(ngModel)]="searchText" placeholder="Search Product" class="search_style">
+            <button type="submit" class="input_btn">Search</button>
+          </div>
+
+
+        </div>
+
+      </div>
+      <div>
+        <div id="printsuppndng">
+          <div class="row busname text-center">
+
+
+            <h3 class="shopee_name">
+              <span> {{loginUserData.company_address.companyname}}</span>
+            </h3>
+            <hr>
+            <h3 class="shopee_name text-center">
+              {{this.productname}} Product Wise Purchase
+            </h3>
+          </div>
+
+
+          <div class="row printwrap" *ngIf="(orders | filter :searchText) as orders">
+            <div class="col-sm-12 list" *ngIf="orders.length>0">
+              <div class="table-responsive">
+
+
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th class="text-left">Invoice Date </th>
+                      <th class="text-left">Business Name</th>
+                      <th class="text-left">ModelNo</th>
+                      <th class="text-right">Quantity</th>
+                      <th class="text-right">InvAmount</th>
+                      <th class="text-right">InvPrice</th>
+                      <th class="text-right">PIAmount</th>
+                      <th class="text-right">PIPrice</th>
+                     
+                    
+                    
+                      <!-- <th class="text-center">Options</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of orders; let i=index">
+                      <td>{{10*(p-1)+(i+1)}}</td>
+                      <td class="text-left">{{data.invdate | date:'dd-MM-yyyy'}}</td>
+                      <td class="text-left">{{data.business_name}}</td>
+                      <td class="text-left">{{data.modelno}}</td>
+                      <td class="text-right">{{data.Qty}}</td>
+                      <td class="text-right">{{data.Inv_Amount}}</td>
+                      <td class="text-right">{{data.Inv_Price}}</td>
+                      <td class="text-right">{{data.PI_Amount}}</td>
+                      <td class="text-right">{{data.PI_Price}}</td>
+                     
+                    </tr>
+      
+      
+                    <tr>
+      
+                      <td></td>
+                      <td></td>
+                      <td><b>
+                         Total
+                        </b></td>
+                     
+                      <td></td>
+                      <td class="text-right"><b>{{this.ppQuantity}}</b></td>
+                      <td class="text-right"><b>{{this.ppInvAmount | number : '1.2-2'}}</b></td>
+                      <td></td>
+                      <td></td>
+                      <td class="text-right"><b>{{this.ppIaAmount | number : '1.2-2'}}</b></td>
+                      <td></td>
+                      <td></td>
+                     
+                    </tr>
+      
+      
+                  </tbody>
+                </table>
+
+
+
+              </div>
+            </div>
+            <div *ngIf="orders.length==0">
+              <div class="col-md-12">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+        <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+          <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+          </button>
+          <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Supplier-Reports">Cancel</button>
+        </div>
+
+      </div>
+      <ngx-spinner class="loader_spinner"></ngx-spinner>
+    </div>
+  </div>
+</div>

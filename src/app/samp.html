@@ -1,0 +1,22 @@
+<div *ngFor="let item of loginUserData.display" [ngSwitch]="item.id">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 mar_t_50 padd_t_b_79">
+          <div *ngSwitchCase=1 class="col-sm-6 col-md-2 col-lg-2 col-xs-12 box" routerLink="/dealer-order">
+            <div class="inner_box">
+              <img src="/assets/images/dashboard_icons/orders.png" />
+            </div>
+            <span class="inner_text">{{item.displyname}}</span>
+          </div>
+          <div *ngSwitchCase=2 class="col-sm-6 col-md-2 col-lg-2 col-xs-12 box" routerLink="/grn">
+            <div class="inner_box">
+              <img src="/assets/images/dashboard_icons/sales.png" />
+            </div>
+            <span class="inner_text">{{item.displyname}}</span>
+          </div>
+          <div *ngSwitchCase=3 class="col-sm-6 col-md-2 col-lg-2 col-xs-12 box" routerLink="/dealer-status">
+            <div class="inner_box">
+              <img src="/assets/images/dashboard_icons/sales.png" />
+            </div>
+            <span class="inner_text">{{item.displyname}}</span>
+          </div>
+        </div>
+      </div>

@@ -1,0 +1,130 @@
+<div class="container pad_t_5per pad_b_5per">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+<p class="bread-crumb1">
+  <span>
+    <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+  </span>&nbsp;>&nbsp;
+  <span>Privileges</span>
+</p>
+<div class="row">
+  <button class="btn btn-primary" style="margin-bottom:10px;float: right;" (click)="edtpriv()">Manage Privileges</button>
+</div>
+
+<section *ngIf="PrivGraph">
+  <div class="row">
+    <table  class="table table-striped tableBodyScroll">
+      <thead>
+        <tr >
+          <th></th>
+          <th *ngFor="let data of roles">{{data}}</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let data of priv_roles">
+            <th>{{data}}</th>
+              <td>
+                <table>
+                  <tr *ngFor="let d of AccountsManager_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tr *ngFor="let d of Admin_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tr *ngFor="let d of BranchManager_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tr *ngFor="let d of Customer_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tr *ngFor="let d of Dealer_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tr *ngFor="let d of MarketingManager_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tr *ngFor="let d of PosCleark_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tr *ngFor="let d of PurchaseManager_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tr *ngFor="let d of ShopeeManager_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+              <td>
+                <table>
+                  <tr *ngFor="let d of WarehouseManager_Priv">
+                    <div *ngIf="d.content==data;">
+                       &nbsp;<i class="fa fa-check" style="font-size: 24px;color: #027002;"></i>
+                    </div>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          <!-- </div> -->
+        
+      </tbody>
+    </table>
+  </div>
+</section>
+<section *ngIf="PrivEdit">
+
+</section>
+</div>

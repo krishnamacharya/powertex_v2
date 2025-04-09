@@ -1,0 +1,101 @@
+
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+<p class="bread-crumb1">
+  <span>
+    <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+  </span>&nbsp;>&nbsp;
+  <span>Dealers Outstanding</span>
+</p>
+<div class="row mar_b_15" style="margin-left:8px;margin-right:8px;">
+  <div class="col-sm-12">
+    <div class="fl">
+      <h4>Dealers Outstanding</h4>
+    </div>
+    <div class="fr" *ngIf="dealerslist?.length>0">
+      <input type="text" placeholder="Search Dealer" [(ngModel)]="searchText" class="search_style">
+      <button type="submit" class="input_btn">Search</button>
+    </div>
+  </div>
+</div>
+<div class="branchtable" *ngIf="dealerslist?.length>0" >
+  <div  class="table-responsive">
+   <table class="table table-striped" >
+     <thead>
+       <tr>
+         <th>S.No</th>
+         <th>Dealer Name</th>
+         <th>Email</th>
+         <th>Mobile</th>
+         <th>City</th>
+         <th style="text-align:center">Total Outstanding</th>
+         <th>Due Amount</th>
+         <th>Credit Limit</th>
+         <th>Credit Period</th>
+         <th>Discount</th>
+         <th>Last Inv Amount</th>
+         <th>Actions</th>
+       </tr>
+     </thead>
+     <tbody>
+       <!-- <tr *ngFor="let del of dealerslist|filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i=index;" [ngClass]="{'exceeded':del.exceeded==true || del.due_amount>0}" 
+         [ngClass]="{'ModifiedAmount':del.credit_limit < del.outstanding_amount}" > -->
+
+         <tr *ngFor="let del of dealerslist|filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i=index;" 
+          [ngClass]="{'ModifiedAmount':del.credit_limit < del.outstanding_amount}" >
+         <td>{{10*(p-1)+(i+1)}}</td>
+         <td>{{del.business_name | titlecase}}</td>
+         <td>{{del.email | lowercase }}</td>
+         <td>{{del.mobile}}</td>
+         <td>{{del.city | titlecase}}</td>
+         <!-- <td style="text-align:center">{{del.outstanding_amount | currency:'&nbsp;'}}</td> -->
+         <td style="text-align:center">{{del.outstanding_amount?(del.outstanding_amount).toLocaleString('en-IN'):''}}</td>
+         <td style="text-align:right">{{(del.due[0]?.due).toLocaleString('en-IN')}}</td>
+         <td style="text-align:right">{{del.credit_limit?(del.credit_limit).toLocaleString('en-IN'):''}}</td>
+         <td style="text-align:center">{{del.credit_period}}</td>
+         <td style="text-align:center">{{del.discount}}%</td>
+         <td>
+          <span class="f_size_15 blue_clr padd_right_10 cursor_pointer"  (click)="print(del.LastInvAmount[0]?.seqno)" title="Print Details">
+            {{(del.LastInvAmount[0]?.final_amount).toLocaleString('en-IN')}}
+          </span>
+        </td>
+
+         <td style="text-align:center">
+          <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+            <i class="fa fa-eye" aria-hidden="true" title="View Details" (click)="viewinvoice(del)"></i>
+          </span>
+        </td>
+       </tr>
+     </tbody>
+   </table>
+   </div>
+
+    <!-- <div class="pull-right">
+      <button class="btn btn-primary " type="button" id="printPageButton" (click)="printreport1()">Print</button>
+    </div> -->
+    <div class="pull-right">
+      <button class="btn btn-primary " type="button" id="printPageButton"
+        (click)="printreport2()">Print</button>&nbsp;&nbsp;&nbsp;&nbsp;
+      <button class="btn btn-primary " type="button" id="printPageButton" (click)="printreport1()">Print WithOut
+        0</button>
+    </div>
+    <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls> 
+ 
+ </div>
+ <div class="col-md-12" *ngIf="dealerslist?.length==0">
+  <div class="no_data">
+    <img class="no_data_cnter" src="../assets/emptyicon.png" />
+    <span class="nodata_txt">No Data is Available</span>
+
+  </div>
+</div>
+ </div>
+ 

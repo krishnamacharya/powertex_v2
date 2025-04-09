@@ -1,0 +1,125 @@
+// Vertical Tab
+:host::deep {
+        .mat-tab-group {
+            flex-direction: row;
+        }
+        .mat-tab-header {
+          border-bottom: none;
+        }
+        .mat-tab-header-pagination {
+            display: none !important;
+        }
+        .mat-tab-labels {
+            flex-direction: column;
+        }
+        .mat-ink-bar {
+            height: 100%;
+            left: 98% !important;
+        }
+        .mat-tab-body-wrapper {
+            flex: 1 1 auto;
+        }
+        .mat-tab-body-content {
+            height: 550px !important;
+        }
+        .mat-form-field-infix{
+          width: 270px;
+        }
+    }
+
+.margin_l5 {
+  margin-right: 25px;
+}
+
+//alert styles start here
+.alert_heading{
+    background: #0da550;
+    margin-top: 0;
+    padding: 50px;
+    text-align: center;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .alert_heading span{
+    color:#fff;
+  }
+  .right_mark{
+    background: #fff;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 40%;
+    top: 50px;
+    box-shadow: 3px 5px 10px #ddd;
+  }
+  .right_mark i{
+    font-size: 60px;
+    color: #0da550;
+  }
+  .content_msg span{
+    font-size: 18px;
+    font-weight: 550;
+  }
+  .close{
+    color: #fff !important;
+     opacity: 0 !important;
+    margin-top: -40px !important;
+    margin-right: -30px !important;
+  }
+  .modal-content{
+    border-radius: 15px !important;
+  }
+  
+  .instructions {
+    font-size: 16px;
+    font-weight: 600;
+    color: #d9534f;
+    padding-left: 25px;
+  }  
+  .note_points ul li p{
+    font-size: 13px;
+    color: #989595;
+  }
+
+  .p_info_h {
+    margin: 30px;
+    font-weight: bold;
+    color: #293271;
+    font-size: 16px;
+  }
+/* mobile styles start here */
+@media screen and (min-width: 320px) and (max-width: 520px){
+  .mat-tab-group {
+    flex-direction: column !important;
+}
+.reg_form{
+  .user_profile {
+    .mat-tab-body-content {
+      height: inherit !important;
+      padding: 10px 10px !important;
+       margin-left: 0 !important;
+    }
+    h4{
+      margin: -10px 0px 0px !important;
+  }
+  }
+
+  form{
+    margin-top: 0 !important;
+    .col-md-12{
+      padding-left: 0 !important;
+      padding-right: 4px !important;
+    }
+  }
+}
+
+.mat-tab-body-wrapper{
+  margin-top: 2rem;
+}
+}

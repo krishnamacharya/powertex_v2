@@ -1,0 +1,31 @@
+.active_tab {
+    background-color: #ffffff;
+    color: #0fa497 !important;
+    padding: 5px 30% 14px 30%;
+    font-size: 17px !important;
+    font-weight: 600;
+}
+.padd_right_10{
+    padding-right: 10px;
+}
+.t_s_c{
+    margin:0px;
+    box-shadow: 1px 1px 3px 1px lightgray;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.bread-crumb1{
+    span{
+        color: #878787 !important;
+    }
+}
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #0fa497 !important;
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+}
+.modal-header .modal-title {
+    color:#fff !important;
+}

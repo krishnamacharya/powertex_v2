@@ -1,0 +1,500 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>
+      <a href="javascript.void(0)" routerLink="/Accounts Manager-INVOICE" style="color: #878787 !important;">Invoice</a>
+    </span>
+    &nbsp;>&nbsp;
+    <span>Invoice Preparation</span>
+  
+  </p>
+ 
+
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row text-center">
+      <div class="col-sm-12 estimationtitle">
+        <span class="header_pages">ESTIMATION</span>
+      </div>
+    </div>
+    <div class="row mar_b_5">
+      <div class="col-md-6">
+        <p><b>Packing Number :</b> {{proformaData.packing_l_no}}</p>
+        <p><b>Packing Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> {{proformaData.packing_l_date | date:'dd-MM-yyyy'}}</p>
+        <p><b>Company Name &nbsp;&nbsp;&nbsp;&nbsp;:</b> {{proformaData.company_name}},{{proformaData.city}}</p>
+      </div>
+      <div class="col-md-6 invamtwrap pull-right" >
+        <p><b>Credit Period Days &nbsp;&nbsp;&nbsp;&nbsp;:</b> {{proformaData.credit_period}}</p>
+        <p><b>Credit Limit Amount &nbsp; :</b> {{proformaData.payment_terms}}</p>
+        <p *ngIf="proformaData.outstatnding_amount"><b>Outstanding Amount &nbsp;:</b> {{proformaData.outstatnding_amount | currency:'&nbsp;'}}</p>
+        <p *ngIf="!proformaData.outstatnding_amount"><b>Outstanding Amount &nbsp;:</b> 0</p>
+      </div>
+    </div>
+    <form #invoiceform="ngForm" (keydown.enter)="$event.preventDefault()">
+      <div class="pad_t_b_10">
+        <h4 style="background: #0fa497;padding: 10px;color: white !important;">Payment Terms</h4>
+        <div class="row pad_t_20">
+            <div class="form-group">
+                <div class="col-md-12">
+                  <div class="col-md-2  mar_b_10_mbl">
+                    <label for="refinvno">Proforma Invoice No
+                      <sub class="txt_red f_size_25">*</sub>
+                    </label>
+                    <div>
+                      <input type="text" class="form-control" id="refinvno" (change)="checkinv(proformaData.refinvno)" name="refinvno" [(ngModel)]="proformaData.refinvno"
+                        #refinvno="ngModel" required placeholder="Enter Invoice No" >
+                      <div [hidden]="refinvno.valid ||  refinvno.untouched" class="validation_msg">
+                        Invoice No is required
+                      </div>
+                      <div [hidden]="errmsg==false" class="validation_msg">
+                        Invoice No already exists 
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6  mar_b_10_mbl fr"></div>
+                  <div class="col-md-2  mar_b_10_mbl fr">
+                    <div class="row">
+                      <label for="discount">Discount%</label>
+                      <div class="col-md-9">
+                        <div>
+                          <input type="number" class="form-control" id="discount" name="discount" min="0" [(ngModel)]="discountt"
+                            #discount="ngModel" placeholder="Enter discount %" >
+                        </div>
+                      </div>
+                      <div class="col-md-3 pt-3">
+                        <button type="button" class="btn btn-sm btn-success" (click)="applyDisc(discountt)">Apply</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+        <div class="row pad_t_20">
+          <div class="form-group">
+            <div class="col-md-12">
+              <div class="col-md-2 mar_b_10_mbl">
+                <label for="creditperiod">Credit Period (days)
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <div>
+                  <input type="text" class="form-control" name="creditperiod" [(ngModel)]="proformaData.credit_period"
+                    #creditperiod="ngModel" required placeholder="Enter creditperiod" readonly>
+                  <div [hidden]="creditperiod.valid ||  creditperiod.untouched" class="validation_msg">
+                    credit period is required
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2 mar_b_10_mbl">
+                <label for="paymentterms">Credit Limit
+                  <sub class="txt_red f_size_25">*</sub>
+                </label>
+                <input type="text" class="form-control" name="paymentterms" [(ngModel)]="proformaData.payment_terms"
+                  #paymentterms="ngModel" required placeholder="Enter payment terms" readonly>
+                <div [hidden]="paymentterms.valid ||  paymentterms.untouched" class="validation_msg">
+                  Paymentterms is required
+                </div>
+              </div>
+
+              <div class="col-md-2 mar_b_10_mbl">
+                <label for="splinstr">Branch Mngr. comments</label>
+                <div >
+                  <textarea type="text" class="form-control" name="splinstr" [(ngModel)]="proformaData.remarks1"
+                    placeholder="Enter Special instructions" readonly></textarea>
+                </div>
+              </div>
+
+              <div class="col-md-3 mar_b_10_mbl">
+                <label for="remarksinfo">Wharehouse manager comments </label>
+                <textarea type="text" class="form-control" name="remarksinfo" [(ngModel)]="proformaData.remarks2"
+                  #remarksinfo="ngModel" placeholder="Enter remarks" readonly></textarea>
+              </div>
+              <div class="col-md-3 mar_b_10_mbl input">
+                <label for="splinstr">Accounts Manager comments</label>
+                <sub class="txt_red f_size_25">*</sub>
+                <div>
+                  <textarea type="text" class="form-control" name="remarks3" [(ngModel)]="proformaData.remarks3"
+                    #remarks3="ngModel" placeholder="Enter Special instructions"></textarea>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 list">
+
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th class="txt_centr">S.No</th>
+                  <th class="txt_left">Product name</th>
+                
+               
+                  <th class="txt_right cellwithd9">MRP(&#8377;)</th>
+                  <th class="txt_right cellwithd9">GST(%)</th>
+                  <th class="txt_right cellwithd9">Disc(%)</th>
+                  <th class="txt_right cellwithd9">Spl Disc(%)</th>
+                  <th class="txt_right cellwithd12">Net Rate(&#8377;)</th>
+                  <th class="txt_right cellwithd9">Qty</th>
+                  <th class="txt_right cellwithd12">Total Value(&#8377;)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of invoiceListData ; let i=index">
+                  <td class="txt_centr">{{10*(p-1)+(i+1)}}</td>
+                  <td class="txt_left">{{item.subcategory}} {{item.modelno}}</td>
+                  
+                
+                  <td class="txt_right">{{item.mrp | currency : '&nbsp;'}}</td>
+                  <td class="txt_right">{{item.gst}}</td>
+                  <td class="txt_right" *ngIf="item.offer_type!=='Clearance'">
+                      <span class="f_size_15 blue_clr padd_right_10">
+                          <input type="number" #discount_eff="ngModel" class="form-control txt_right" required 
+                         min="0" max="99"
+                          [(ngModel)]="item.discount_eff"  (ngModelChange)="discountchange(item)"  
+                           [ngModelOptions]="{standalone: true}">
+                        
+                        </span>
+                  </td>
+                  <td class="txt_right" *ngIf="item.offer_type=='Clearance'">-</td>
+                  <td class="txt_right" *ngIf=" item.offer_type!=='Clearance'">
+                    <span class="f_size_15 blue_clr padd_right_10">
+                        <input type="number" #sp_discount="ngModel" class="form-control txt_right" required 
+                           
+                        [(ngModel)]="item.sp_discount" [disabled]="!item.spl" (change)="specialdiscountchange(item)" maxlength="8"
+                         [ngModelOptions]="{standalone: true}">
+                        
+                      </span> <input type="checkbox"     (change)="spldiscount($event,i,item)"> Special Discount
+                     
+                </td>
+                  <td style="width:180px;">
+                    <span class="f_size_15 blue_clr padd_right_10">
+                    <input type="text" #netprice="ngModel" class="form-control txt_right" required     (keypress)="keypress1($event)"
+                    [(ngModel)]="item.net_price"  (ngModelChange)="pricechange(item)" maxlength="8" [ngModelOptions]="{standalone: true}">
+                    
+                   
+                  </span><input type="checkbox"     (change)="splprice($event,item)"> Special price
+                </td>
+               
+                  <td class="txt_right">{{item.packing_qty}}</td>
+                  <td class="txt_right">₹ {{item.tot_value.toLocaleString('en-IN')}}</td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                      <span *ngIf="totalsp_discountamount!=0">
+                      <b>Special Discount :</b> {{totalsp_discountamount| currency : '&nbsp;'}}</span>
+                    </td>
+                    <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+                      <strong>TAXABLE</strong>
+                  </td>
+                    <td class="no-line txt_right"><span
+                            style="color:#000;"></span>₹ {{headerData.line_amount.toLocaleString('en-IN')}}</td>
+                </tr>
+                <tr *ngIf="headerData.devicediscamount">
+
+                  <td colspan="7" class="no-line"> </td>
+
+                  <td class="no-line txt_right" style="font-size: 9px;text-align: right; vertical-align: middle !important;">
+                      <strong>DISCOUNT</strong>
+                  </td>
+                  <td class="no-line txt_right" style="text-align: right;"><span
+                          style="color:#000;text-align: right;">₹ {{headerData.devicediscamount.toLocaleString('en-IN')}}</span>
+                  </td>
+
+              </tr>
+              <tr *ngIf="headerData?.promo_amount">
+                <td colspan="7" class="no-line"> </td>
+                <td class="no-line txt_right" style=" vertical-align: middle !important;text-align: right;">
+                    <strong>PROMO DISCOUNT</strong>
+                </td>
+                <td class="no-line txt_right" style="text-align: right;"><span
+                        style="color:#000;text-align: right;">₹ {{headerData.promo_amount.toLocaleString('en-IN')}}</span>
+                </td>
+
+            </tr>
+            <tr *ngIf="loginUserData.company_address.state_code==billingAddress.state_code">
+    
+                <td colspan="7" class="no-line"> 
+                    
+                  </td>
+
+              <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+                  <strong>CGST</strong>
+              </td>
+              <td class="no-line txt_right" style="text-align: right;"><span
+                      style="color:#000;">₹ {{(headerData.gst_amount/2).toLocaleString('en-IN')}}</span></td>
+
+          </tr>
+          <tr *ngIf="loginUserData.company_address.state_code==billingAddress.state_code ">
+            <td colspan="7" class="no-line"> </td>
+            <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+                <strong>SGST</strong>
+            </td>
+            <td class="no-line txt_right" style="text-align: right;"><span
+                    style="color:#000;">₹ {{(headerData.gst_amount/2).toLocaleString('en-IN')}}</span></td>
+        </tr>
+        <tr *ngIf="loginUserData.company_address.state_code != billingAddress.state_code ">
+          <td colspan="7" class="no-line"> 
+             
+
+          </td>
+          <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+              <strong>IGST</strong>
+          </td>
+          <td class="no-line txt_right" style="text-align: right;"><span
+                  style="color:#000;">₹ {{headerData.gst_amount | currency : '&nbsp;'}}</span></td>
+
+      </tr>
+      <tr>
+        <td colspan="7" class="no-line"> 
+           
+
+        </td>
+        <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+            <strong>TCS(%)</strong>
+        </td>
+        <td class="no-line txt_right" style="text-align: right;">
+          <span
+                style="color:#000;"> <input type="text" #tcs_percent="ngModel" class="form-control txt_right" required     (keypress)="keypress1($event)"
+                [(ngModel)]="headerData.tcs_percent"  (change)="tcspercentchange(headerData)"  [ngModelOptions]="{standalone: true}"></span>
+              </td>
+
+    </tr>
+    <tr>
+      <td colspan="7" class="no-line"> 
+         
+
+      </td>
+      <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+          <strong>TCS Amount</strong>
+      </td>
+      <td class="no-line txt_right" style="text-align: right;">
+        <span
+              style="color:#000;"> <input type="text" #tcs="ngModel" class="form-control txt_right" disabled required     (keypress)="keypress1($event)"
+              [(ngModel)]="headerData.tcs"   [ngModelOptions]="{standalone: true}"></span>
+            </td>
+
+  </tr>
+
+          <tr>
+              <td colspan="7">
+                <b *ngIf="freeqtyarr.length>0">Free Qty : </b>
+                <span *ngFor="let f of freeqtyarr">
+                 <span>{{f.productname}} = {{f.free_qty}} </span>
+                 </span>
+              </td>
+              <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+                  <strong>Round Off</strong>
+              </td>
+              <td class="no-line txt_right" style="text-align: right;"><span
+                      style="color:#000;text-align: right;">₹ {{roundoffAmt| currency :'&nbsp;'}}</span>
+              </td>
+          </tr>
+          <tr>
+              <td colspan="7" class="no-line">
+                <b>Total Cartons -</b> {{proformaData.totalcartoons | currency :'&nbsp;'}},
+                <b>Total Pieces -</b> {{proformaData.totalqty}}
+              </td>
+            <td class="no-line txt_right" style="text-align: right; vertical-align: middle !important;">
+                <strong>NET AMOUNT</strong>
+            </td>
+            <td class="no-line txt_right"  style="text-align: right;font-weight: 500;"><span
+                    style="color:#000;">₹ {{(headerData.final_amount).toLocaleString('en-IN')}}.00</span>
+            </td>
+
+        </tr>
+              </tbody>
+            </table>
+          </div>
+  <!-- GST table -->
+  <div class="row">
+    <div class="col-md-7 gsttable">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped pending_order printTable"
+          style="margin-bottom: 5px !important;table-layout: initial;">
+          <thead>
+            <tr>
+              <th class="alignright">GST%</th>
+              <th class="alignright">Taxable (&#8377;)</th>
+              <th class="alignright">CGST (&#8377;)</th>
+              <th class="alignright">SGST (&#8377;)</th>
+              <th class="alignright">IGST (&#8377;)</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="loginUserData.company_address.state_code==billingAddress.state_code">
+            <tr *ngIf="first">
+              <td class="alignright">18%</td>
+              <td class="alignright">{{totalfirsttaxable.toLocaleString('en-IN')}}.{{decimalfirsttaxableamount}}</td>
+              <td class="alignright"> 
+                {{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}
+
+              </td>
+              <td class="alignright"> 
+                {{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}
+
+              </td>
+              <td class="alignright"> -</td>
+            </tr>
+            <tr *ngIf="second">
+              <td class="alignright">5%</td>
+              <td class="alignright">{{totalsecondtaxable.toLocaleString('en-IN')}}.{{decimalsecondtaxableamount}}</td>
+              <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+              <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+              <td class="alignright">-</td>
+            </tr>
+            <tr *ngIf="third">
+              <td class="alignright">12%</td>
+              <td class="alignright">{{totalthirdtaxable.toLocaleString('en-IN')}}.{{decimalthirdtaxableamount}}</td>
+              <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+              <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+              <td class="alignright">-</td>
+            </tr>
+            <tr *ngIf="fourth">
+              <td class="alignright">28%</td>
+              <td class="alignright">{{totalfourthtaxable.toLocaleString('en-IN')}}.{{decimalfourthtaxableamount}}</td>
+              <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+              <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+              <td class="alignright">-</td>
+            </tr>
+          </tbody>
+       <tbody *ngIf="loginUserData.company_address.state_code!=billingAddress.state_code">
+        <tr *ngIf="first">
+          <td class="alignright">18%</td>
+          <td class="alignright">{{totalfirsttaxable.toLocaleString('en-IN')}}.{{decimalfirsttaxableamount}}</td>
+          <td class="alignright">-</td>
+          <td class="alignright">-</td>
+          <td class="alignright">{{(totalfirstgst).toLocaleString('en-IN')}}.{{decimalfirstgstamount}}</td>
+        </tr>
+        <tr *ngIf="second">
+          <td class="alignright">5%</td>
+          <td class="alignright">{{totalsecondtaxable.toLocaleString('en-IN')}}.{{decimalsecondtaxableamount}}</td>
+          <td class="alignright">-</td>
+          <td class="alignright">-</td>
+          <td class="alignright">{{(totalsecondgst).toLocaleString('en-IN')}}.{{decimalsecondgstamount}}</td>
+        </tr>
+        <tr *ngIf="third">
+          <td class="alignright">12%</td>
+          <td class="alignright">{{totalthirdtaxable.toLocaleString('en-IN')}}.{{decimalthirdtaxableamount}}</td>
+          <td class="alignright">-</td>
+          <td class="alignright">-</td>
+          <td class="alignright">{{(totalthirdgst).toLocaleString('en-IN')}}.{{decimalthirdgstamount}}</td>
+        </tr>
+        <tr *ngIf="fourth">
+          <td class="alignright">28%</td>
+          <td class="alignright">{{totalfourthtaxable.toLocaleString('en-IN')}}.{{decimalfourthtaxableamount}}</td>
+          <td class="alignright">-</td>
+          <td class="alignright">-</td>
+          <td class="alignright">{{(totalfourthgst).toLocaleString('en-IN')}}.{{decimalfourthgstamount}}</td>
+        </tr>
+       </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+    <!-- ends GST table -->
+          <div style="text-align: right;margin-bottom: 20px;">
+            <span *ngIf="approveBtn" class="text-center qty_error">
+              Invoice Qty should not be Greater than Packing Qty.
+            </span>
+          </div>
+          <div class="pull-right">
+            <button *ngIf="a_invoice" type="submit" [disabled]="invoiceform.invalid || approveBtn || errmsg==true"
+              class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="makeInvoice()">Approve
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </button>
+           
+            <button *ngIf="!a_invoice" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
+              (click)="invoice_cnfm()">OK
+              <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+          </div>
+          <div class="row">
+            <div class="form-group d-flex justify-content-between">
+              <label for="invcopy"><b>Upload Invoice</b></label>
+              <input type="file" id="invcopy" name="invcopy" type="file" [(ngModel)]="pro.invcopy" (change)="attrexcelUpload($event)"
+              title = "Upload Invoice">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </div>
+ 
+ 
+</div>
+
+
+<div class="modal fade" id="makeinvoiceModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>Invoice Prepared Sucessfully..!!</span>
+              <br>
+              <span>Your Invoice No : {{invoice_No}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button> -->
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="invoice_cnfm()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner class="loader_spinner"></ngx-spinner>
+
+<div id="alertpopup1" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading2">
+        <button type="button" class="close" data-dismiss="modal"></button>
+        <h4 class="modal-title text-center"></h4>
+        <div class="right_mark2">
+          <i class="fa fa-exclamation" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="modal-body text-center" *ngIf="this.proformaData.due>0 && this.proformaData.outstanding<=0">
+        <h4>Sorry, {{proformaData.company_name}} has exceeded credit period.</h4>
+      </div>
+      <div class="modal-body text-center" *ngIf="this.proformaData.outstanding>0 && this.proformaData.due<=0">
+        <h4>Sorry, {{proformaData.company_name}} has exceeded credit limit.</h4>
+      </div>
+      <div class="modal-body text-center" *ngIf="this.proformaData.outstanding>0 && this.proformaData.due>0">
+        <h4>Sorry, {{proformaData.company_name}} has exceeded credit limit and credit period.</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+
+<div class="container pad_t_5per pad_b_5per">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  <p class="bread-crumb1">
+  <span>
+    <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+  </span>&nbsp;>&nbsp;
+  <span>Special Offers</span>
+  </p>
+  
+
+ 
+
+  <div class="reg_form mar_b_30 pad_15">
+
+      <div class="row mar_b_15">
+        <div class="col-sm-12">
+          <div class="fl">
+            <h4>Offer Details</h4>
+          </div>
+         
+        </div>
+      </div>
+      <div class="row pad_15" *ngIf="branchoffersdata?.length>0">
+          <table class="table">
+    
+<thead>
+  <tr>
+    <th>S.No</th>
+    <th>Branch Code</th>
+    <th>Branch Name</th>
+    <th>From Date</th>
+    <th>To Date</th>
+    <th>Range</th>
+    <th>Offer Type</th>
+    <th>Offer Value</th>
+  
+  </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let data of branchoffersdata | paginate: { itemsPerPage: 10, currentPage: page}; let i=index;">
+    <td>{{10*(page-1)+(i+1)}}</td>
+    <td>{{data.branchcode}}</td>
+    <td>{{data.branchname}}</td>
+    <td>{{data.fromdate}}</td>
+    <td>{{data.todate}}</td>
+    <td>{{data.from_range}}-{{data.to_range}}</td>
+    <td>{{data.offer_type}}</td>
+    <td>{{data.offer_value}}</td>
+ 
+  </tr>
+</tbody>
+</table>
+<pagination-controls (pageChange)="page = $event"></pagination-controls>
+
+</div> 
+
+<div class="col-md-12" *ngIf="branchoffersdata?.length<=0">
+<div class="no_data">
+  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+  <span class="nodata_txt">No Data is Available</span>
+</div>
+</div>
+</div>
+
+
+
+</div>

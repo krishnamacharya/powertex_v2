@@ -1,0 +1,134 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Ledger</span>
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+
+    <!-- <div class="row mar_b_15"> -->
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>CHA Ledger</h4>
+        </div>
+        <div class="fr" *ngIf="orders.length>0">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+            class="search_style">
+          <button type="submit" class="input_btn">Search</button>
+        </div>
+      </div>
+      <div class="row row1">
+        <span class="col-md-3">
+          <mat-form-field color="accent">
+            <mat-label> Select From Date</mat-label>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </span>
+        <span class="col-md-3 selecttodate">
+          <mat-form-field color="accent">
+            <mat-label> Select To Date</mat-label>
+            <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" required>
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 color="primary"></mat-datepicker>
+          </mat-form-field>
+
+        </span>
+        <span class="col-md-2">
+          <button type="submit" class="input_btn" (click)="getChaLedger()">Get Data</button>
+        </span>
+      </div>
+      <!-- </div> -->
+    <!-- </div> -->
+
+    <div>
+      <div *ngIf="orders">
+        <div class="row" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+
+                    <th class="text">Bill No</th>
+                    <th class="text-left">Bill Date</th>
+                    <th class="text-left">Invoice No</th>
+                    <th class="text-right">Cha Amount</th>
+                    <th class="text-right">Payment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td class="text">{{data.bill_no}}</td>
+                    <td class="text-left">{{data.bill_date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-left">{{data.inv_no}}</td>
+                    <td class="text-right">{{data.chaamount | number : '1.2-2'}}</td>
+                    <td class="text-right">{{data.Payment | number : '1.2-2'}}</td>
+
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><b>
+                        <h5>Total</h5>
+                      </b></td>
+                    <td class="text-right"><b>{{this.chaamount | number : '1.2-2'}}</b></td>
+                    <td class="text-right"><b>{{this.totalpayment | number : '1.2-2'}}</b></td>
+
+                  </tr>
+                  <tr>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right"><b>
+                        <h5>Balance</h5>
+                      </b></td>
+                    <td class="text-right"><b>{{this.chaamount-this.totalpayment | number : '1.2-2'}}</b></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="col-md-12">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton"
+                  (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+            </div>
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

@@ -1,0 +1,58 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" class="breadcrumb_clr">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Cha Reports</span>
+  </p>
+  <div class="reg_form mar_b_30">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Nav tabs -->
+        <div class="card">
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+              <a href="#form1" aria-controls="profile" role="tab" data-toggle="tab">On Port Summary</a>
+            </li>
+            <li role="presentation">
+              <a href="#form2" aria-controls="home" role="tab" data-toggle="tab">Admin Track Report</a>
+            </li>
+            <li role="presentation">
+              <a href="#form3" aria-controls="profile" role="tab" data-toggle="tab">Cha Charges Report</a>
+            </li>
+            <li role="presentation">
+              <a href="#form4" aria-controls="profile" role="tab" data-toggle="tab">Duty Paid Report</a>
+            </li>
+            <li role="presentation">
+              <a href="#form5" aria-controls="profile" role="tab" data-toggle="tab">Cha Ledger</a>
+            </li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="form1">
+              <app-adminonport-summary></app-adminonport-summary>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="form2">
+              <app-admin-track-report></app-admin-track-report>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="form3">
+              <app-cha-charges-report></app-cha-charges-report>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="form4">
+              <app-duty-paid-report></app-duty-paid-report>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="form5">
+              <app-adminchaledger></app-adminchaledger>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

@@ -1,0 +1,560 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span>{{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span><a href="javascript.void(0)" routerLink="/dashboard">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Packing History</span>
+  </p>
+  <div class="row t_h_1">
+
+    <!-- <div class="row bg-theme dash_status" style="margin:0px">
+      <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':POhidden == true}"
+          (click)="po()">Packing List</a></div>
+      <div class="col-md-3 status_align"><a href="javascript:void(0)" [ngClass]="{'active_tab':PENhidden == true}"
+          (click)="pen()">Generated Challan's</a></div>
+     
+    </div> -->
+    <!-- <button class="btn btn-primary" (click)="po()">Placed Orders</button><button class="btn btn-primary" (click)="do()">Delivered Orders</button><button class="btn btn-primary" (click)="grn()">Generated GRN'S</button> -->
+    <div class="pad_20 mb_pad20">
+
+      <!-- <div *ngIf="POhidden"> -->
+      <!-- <div class="row row_mar_0">
+          <div class="row pad_10">
+            <div class="col-md-12 mar_t_20">
+                <div class="row mar_b_15" style="margin-left:8px;margin-right:8px;">
+                    <div class="col-sm-12">
+                      <div class="fl">
+                        <h4>Packing History</h4>
+                      </div>
+                    </div>
+                  </div>
+              <div class="row p_s_1">
+                <div class="col-md-1 text-center pad_0">
+                  <h4>PO No</h4>
+                </div>
+                <div class="col-md-2 text-center pad_0">
+                  <h4>PO Date</h4>
+                </div>
+                <div class="col-md-1 text-center pad_0">
+                  <h4>Packing <span class="hidden-xs">Number</span><span class="visible-sm-and-lg">No</span></h4>
+                </div>
+                <div class="col-md-2  text-center">
+                  <h4>Packing Date</h4>
+                </div>
+               
+                <div class="col-md-2  text-center hidden-xs">
+                  <h4>Business Name</h4>
+                </div>
+                <div class="col-md-2  text-center hidden-xs">
+                  <h4>City/State</h4>
+                </div>
+                <div class="col-md-1  text-center pad_0 hidden-xs">
+                  <h4>Packed Product Line</h4>
+                </div>
+               
+              </div>
+
+              <mat-accordion
+                *ngFor="let p of orders | filter:searchText| paginate: { itemsPerPage: 10, currentPage: page }; let i=index">
+             
+                <div>
+                  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <div class="col-md-1  text-center">
+                          <p class="txt_black" style="margin-bottom: 0px;">{{p.po_no }}</p>
+                        </div>
+                        <div class="col-md-2  text-center">
+                          <p class="txt_black" style="margin-bottom: 0px;">{{p.po_date | date:'dd-MM-yyyy'}}
+                          </p>
+                        </div>
+                        <div class="col-md-1  text-center">
+                          <p class="txt_black" style="margin-bottom: 0px;">{{p.packing_no }}</p>
+                        </div>
+                        <div class="col-md-2  text-center">
+                          <p class="txt_black" style="margin-bottom: 0px;">{{p.packing_date | date:'dd-MM-yyyy'}}
+                          </p>
+                        </div>
+                      
+                        <div class="col-md-2  text-center hidden-xs">
+                          <p class="txt_black" style="margin-bottom: 0px;">{{p.business_name}}</p>
+                        </div>
+                        <div class="col-md-2  text-center hidden-xs">
+                          <p class="txt_black" style="margin-bottom: 0px;">{{p.city}}</p>
+                        </div>
+                        <div class="col-md-1  text-center hidden-xs">
+                          <p class="txt_black" style="margin-bottom: 0px;">{{p.detail.length}}</p>
+                        </div>
+                       
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="visible-sm-and-lg">
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <b> Ordered Company Code :</b> <span>&nbsp;&nbsp;{{p.company_code}}
+                        </span>
+                      </p>
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <b>Business Name :</b> <span>&nbsp;&nbsp;{{p.business_name}}
+                        </span>
+                      </p>
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <b>City/State :</b> <span>&nbsp;&nbsp;{{p.city}}</span>
+                      </p>
+                      <p class="txt_black" style="margin-bottom: 0px;">
+                        <b>Packed Product Line :</b> <span>&nbsp;&nbsp; {{p.detail.length}}</span>
+                      </p>
+                    </div>
+                    <h4>Packed Details:</h4>
+
+                    <div style="max-height: 380px;overflow: auto;">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>S.No</th>
+                              <th>Product </th>
+                              <th>Product Description</th>
+                              <th>Model No</th>
+                              <th>SKU No</th>
+                              <th>PO Qty</th>
+                              <th>Packing Qty</th>
+                          
+                           
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let pd of p.detail ; let i=index;">
+                              <td>{{i + 1}} </td>
+
+                              <td style="width:10%;">
+                                <div><img src="{{pd.image}}"
+                                    onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                                    class="img-thumbnail" style="width:70%;height: 30px;"></div>
+                              </td>
+                              <td>
+                                <h4 class="table_pd_name">{{pd.name}}</h4>
+                              </td>
+                              <td>
+                                <div>
+                                  <p><span class=" f_wt_600">{{pd.modelno }}</span></p>
+                                </div>
+                              </td>
+                              <td>
+                                <div>
+                                  <p><span class=" f_wt_600">{{pd.sku_no }}</span></p>
+                                </div>
+                              </td>
+                              <td>
+                                <div>
+                                  <p><span class=" f_wt_600">{{pd.po_qty }}</span></p>
+                                </div>
+                              </td>
+                           
+                              <td>
+                                <div>
+                                  <p><span class=" f_wt_600">{{pd.qty }}</span></p>
+                                </div>
+                              </td>
+                             
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+                </div>
+              </mat-accordion>
+              <div class="pull-left mar_t_30">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      <!-- </div> -->
+      <!-- <div *ngIf="DOhidden">
+        <div class="row" style="margin:0px">
+          <div>
+            <div>
+              <div class="row" style="padding: 10px;">
+                <div class="col-md-12 mar_t_20">
+                  <div class="row p_s_1" >
+                    <div class="col-md-1 text-center">
+                      <h4 >Invoice No</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4 >Packing Date</h4>
+                    </div>
+                    <div class="col-md-2  text-center" style="padding: 0px;">
+                      <h4 >Ordered Company Name(Code)</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4 >Business Name</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4 >City</h4>
+                    </div>
+                    <div class="col-md-1  text-center" style="padding: 0px;">
+                      <h4 >Packed Product Line</h4>
+                    </div>
+                    <div class="col-md-2  text-center">
+                      <h4 >Total Packing Value</h4>
+                    </div>
+                  </div>
+                  <mat-accordion
+                    *ngFor="let pi of inv_data | filter:searchText| paginate: { itemsPerPage: 10, currentPage: page1 }; let i=index">-->
+      <!-- <div *ngIf="p.detail[0].status!=='Delivered'"> -->
+      <!-- <div>
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{pi.inv_no }}</p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{pi.inv_date | date:'dd-MM-yyyy'}}</p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{pi.company_code}}</p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{pi.business_name}}</p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{pi.city}}</p>
+                            </div>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{pi.detail.length}}</p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;"><span
+                                  style="position: absolute;right: 30%;">{{pi.amount
+                                  | currency: 'INR':true}}</span></p>
+                            </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <h4>Order Details:</h4>
+
+                        <div>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>S.No</th>
+                                <th>Product </th>
+                                <th>Product Description</th>
+                                <th>Price(&#8377;)</th>
+                                <th>Qty</th>
+                                <th>Net Price(&#8377;)</th>
+                                <th>GST</th>
+                                <th>Total Price(&#8377;)</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let pd of pi.detail; let i=index;">
+                                <td>{{i + 1}} </td>
+
+                                <td style="width:10%;">
+                                  <div><img src="{{pd.image}}"
+                                      onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                                      class="img-thumbnail" style="width:70%;height: 30px;"></div>
+                                </td>
+                                <td>
+                                  <h4  class="table_pd_name">{{pd.name}}</h4>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0"> <span
+                                      class="f_wt_600">{{pd.net_price | currency : '&nbsp;'}}</span></div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <p><span class=" f_wt_600">{{pd.inv_qty }}</span></p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <p style="margin-bottom: 0px"><span
+                                        class=" f_wt_600">{{pd.inv_qty * pd.net_price | currency : '&nbsp;'}}</span></p>
+                                    <p class="p_e_g">(Excluding GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <p><span class=" f_wt_600">18% </span></p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="mar_b_10">
+                                    <span ></span>
+                                    <span >&#8377;&nbsp;</span>
+                                    <span class="f_wt_600">{{pd.tot_value | currency : '&nbsp;'}}</span>&nbsp;
+                                    <p  class="p_e_g">(Including GST)</p>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-accordion>
+                  <div class="pull-left mar_t_30">
+                    <pagination-controls (pageChange)="page1 = $event"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="row mar_b_15">
+        <div class="col-sm-12">
+          <div class="fl">
+            <h4>Packing History</h4>
+          </div>
+          <div class="fr">
+            <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+              class="search_style">
+            <button type="submit" class="input_btn">Search</button>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="(orders | filter :searchText) as orders">
+        <div class="col-sm-12 list" *ngIf="orders.length>0">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th style="text-align:left">Business Name</th>
+                  <th style="text-align:left">DC No.</th>
+                  <th>DC Date</th>
+                  <th>Packing No</th>
+                  <th>Packing Date</th>
+                  <th>City</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let item of orders |filter:searchText | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                  <td>{{10*(p-1)+(i+1)}}</td>
+                  <td style="text-align:left">{{item.business_name}}</td>
+                  <td style="text-align:left">{{item.print}}</td>
+                  <td>{{item.printdate | date:'dd-MM-yyyy' }}</td>
+                  <td>{{item.packing_no}}</td>
+                  <td>{{item.packing_date}}</td>
+                  <td>{{item.city}}</td>
+                  <td>
+                    <span class="f_size_15 padd_right_10 green_clr cursor_pointer" (click)="printdatadetail(item)">
+                      <i class="fa fa-print" aria-hidden="true" title="Print"></i>
+                    </span>
+                    <span class="f_size_15 padd_right_10 orange_clr cursor_pointer" (click)="makePackingList(item)">
+                      <i class="fa fa-edit" aria-hidden="true" title="Edit"></i>
+                    </span>
+
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+        </div>
+
+        <div *ngIf="orders.length==0">
+          <div class="col-md-12">
+            <div class="no_data">
+              <img class="no_data_cnter" src="../assets/emptyicon.png" />
+              <span class="nodata_txt">No Data is Available</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div *ngIf="PENhidden">
+        <div class="row row_mar_0">
+          <div>
+            <div>
+              <div class="row pad_10">
+
+                <div class="col-md-12 mar_t_20">
+                  <div class="row p_s_1">
+                    <div class="col-md-1 text-center pad_0">
+                      <h4>PO No</h4>
+                    </div>
+                    <div class="col-md-2 text-center pad_0">
+                      <h4>PO Date</h4>
+                    </div>
+                    <div class="col-md-1 text-center pad_0 hidden-xs">
+                      <h4>Challan No</h4>
+                    </div>
+                    <div class="col-md-2  text-center hidden-xs">
+                      <h4>Challan Date</h4>
+                    </div>
+
+                    <div class="col-md-3  text-center hidden-xs">
+                      <h4>Business Name</h4>
+                    </div>
+
+                    <div class="col-md-1  text-center pad_0 hidden-xs">
+                      <h4>Packed Product Line</h4>
+                    </div>
+                    <!-- <div class="col-md-2  text-center">
+                      <h4>Total Packing Value</h4>
+                    </div> -->
+                  </div>
+
+                  <mat-accordion
+                    *ngFor="let data of gen_challans | filter:searchText| paginate: { itemsPerPage: 10, currentPage: page }; let i=index">
+                    <!-- <div *ngIf="p.detail[0].status!=='Delivered'"> -->
+                    <div>
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            <div class="col-md-1  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{data.pono_ref}}</p>
+                            </div>
+                            <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{data.po_date | date:'dd-MM-yyyy'}}
+                              </p>
+                            </div>
+                            <div class="col-md-1  text-center hidden-xs">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{data.del_challan_no }}</p>
+                            </div>
+                            <div class="col-md-2  text-center hidden-xs">
+                              <p class="txt_black" style="margin-bottom: 0px;">
+                                {{data.del_challan_date | date:'dd-MM-yyyy'}}
+                              </p>
+                            </div>
+
+                            <div class="col-md-3  text-center hidden-xs">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{data.company_name}}</p>
+                            </div>
+
+                            <div class="col-md-1  text-center hidden-xs">
+                              <p class="txt_black" style="margin-bottom: 0px;">{{data.detail.length}}</p>
+                            </div>
+                            <!-- <div class="col-md-2  text-center">
+                              <p class="txt_black" style="margin-bottom: 0px;"><span
+                                  style="position: absolute;right: 30%;">{{data.line_amount}}</span></p>
+                            </div> -->
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="visible-sm-and-lg">
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b> Challan No :</b> <span>&nbsp;&nbsp;{{data.del_challan_no }}
+                            </span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b>Challan Date :</b> <span>&nbsp;&nbsp;{{data.del_challan_date | date:'dd-MM-yyyy'}}
+                            </span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b>Business Name :</b> <span>&nbsp;&nbsp;{{data.inv_origin_company_code}}</span>
+                          </p>
+                          <p class="txt_black" style="margin-bottom: 0px;">
+                            <b>Packed Product Line :</b> <span>&nbsp;&nbsp; {{data.detail.length}}</span>
+                          </p>
+                        </div>
+                        <h4>Packed Details:</h4>
+                        <div style="max-height: 380px;overflow: auto;" class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>S.No</th>
+                                <!-- <th>Product </th> -->
+                                <th align="left">Product Description</th>
+                                <!-- <th>Price(&#8377;)</th> -->
+                                <th>Model No</th>
+                                <th>SKU No</th>
+                                <th>PO Qty</th>
+                                <th>Packing Qty</th>
+                                <!-- <th>Net Amount(&#8377;)</th>
+                                <th>GST</th>
+                                <th>Total Amount(&#8377;)</th> -->
+                                <!-- <th>Status</th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let pd of data.detail ; let i=index;">
+                                <td>{{i + 1}} </td>
+
+                                <!-- <td style="width:10%;">
+                                  <div><img src="{{pd.image}}"
+                                      onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
+                                      class="img-thumbnail" style="width:70%;height: 30px;"></div>
+                                </td> -->
+                                <td>
+                                  <div style="margin:0px;text-align:left"> <span
+                                      class="f_wt_600">{{pd.long_name}}</span></div>
+
+                                </td>
+                                <td>
+                                  <div class="row_mar_0"> <span class="f_wt_600">{{pd.modelno}}</span></div>
+                                </td>
+                                <td>
+                                  <div class="row_mar_0"> <span class="f_wt_600">{{pd.sku_no}}</span></div>
+                                </td>
+                                <!-- <td>
+                                  <div class="row_mar_0"> <span
+                                      class="f_wt_600">{{pd.net_price| currency : '&nbsp;'}}</span></div>
+                                </td> -->
+                                <td>
+                                  <div>
+                                    <p><span class=" f_wt_600">{{pd.po_qty }}</span></p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p><span class=" f_wt_600">{{pd.packing_qty }}</span></p>
+                                  </div>
+                                </td>
+                                <!-- <td>
+                                  <div>
+                                    <p style="margin-bottom: 0px"><span
+                                        class=" f_wt_600">{{pd.inv_qty * pd.net_price| currency : '&nbsp;'}}</span></p>
+                                    <p class="p_e_g" >(Excluding GST)</p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <p><span class=" f_wt_600">18% </span></p>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div>
+                                    <span class="f_wt_600">{{pd.tot_value| currency : '&nbsp;'}}</span>&nbsp;
+                                    <p class="p_e_g" >(Including GST)</p>
+                                  </div>
+                                </td> -->
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </mat-expansion-panel>
+                    </div>
+                  </mat-accordion>
+                  <div class="pull-left mar_t_30">
+                    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

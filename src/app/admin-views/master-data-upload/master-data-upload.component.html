@@ -1,0 +1,56 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per pad_b_5per">
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" class="breadcrumb_clr">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span  *ngIf="this.PUrl == 'A=APM'">
+      <a href="javascript.void(0)" routerLink="/Admin-PRODUCT MAPPING" style="color: #878787 !important;">Product Mapping</a>&nbsp;>&nbsp;
+    </span>
+    <span>Master Data Upload</span>
+  </p>
+  <div class="reg_form mar_b_30">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Nav tabs -->
+        <div class="card">
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+              <a href="#list" aria-controls="profile" role="tab" data-toggle="tab">Product List</a>
+            </li>
+            <li role="presentation">
+              <a href="#product" aria-controls="home" role="tab" data-toggle="tab">Product Upload
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="#excel" aria-controls="profile" role="tab" data-toggle="tab">Excel Upload</a>
+            </li>
+            <li role="presentation">
+              <a href="#form" aria-controls="profile" role="tab" data-toggle="tab">Stock Upload</a>
+            </li>
+            <!-- <li role="presentation"><a href="#view" aria-controls="profile" role="tab" data-toggle="tab">View</a></li> -->
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="list">
+              <app-master-product-list></app-master-product-list>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="product">
+              <app-product-pricing></app-product-pricing>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="excel">
+              <app-product-excel-upload></app-product-excel-upload>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="form">
+              <app-upload-stock></app-upload-stock>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

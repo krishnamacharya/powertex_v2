@@ -1,0 +1,25 @@
+
+.modified{
+  // color:red;
+  background-color:#e68852 !important;
+}
+.modified2{
+  // color:red;
+  background-color:#d9534f !important;
+}
+
+.color-box {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    left: 5px;
+    top: 5px;
+    border: 1px solid rgb(95, 89, 89);
+  }   
+
+  .custom_loder{
+    z-index: 99999999999 !important;
+     position: fixed !important;
+      top: 42%;
+        left: 50%;
+        opacity: 9 !important;  }

@@ -1,0 +1,116 @@
+<div class="container-fluid">
+  <!-- <div class="row pad_t_5per"> -->
+  <div class="row">
+    <ngx-spinner class="custom_loder">
+      <img src="../../../assets/Loader.gif">
+    </ngx-spinner>
+    <!-- <div class="reg_form mar_b_30"> -->
+    <div class="reg_form mar_b_30 pad_15">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <!-- 
+          <div class="fl">
+            <h4>Track Report</h4>
+          </div> -->
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="dischargeport">Discharge Port<sup>*</sup></label>
+
+              <select class="form-control" id="dischargeport" [(ngModel)]="dischargeprt" required name="dischargeport"
+                #dischargeport="ngModel" (change)="getPendingPayments()">
+                <option [ngValue]="undefined" selected>Select Discharge Port</option>
+                <option class='option' *ngFor="let d of dischargeports" [ngValue]="d.portname">{{d.portname}}</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="fr" *ngIf="supplierpayments.length>0">
+            <input type="text" [(ngModel)]="searchText" placeholder="Search by Supplier name" class="search_style">
+            <button type="submit" class="input_btn">Search</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="supplierpayments" id="printsuppndng">
+        <div class="row busname text-center">
+          <h3 class="shopee_name">
+            <!-- <span *ngIf="this.loginUserData.user_type == 'cha'">{{this.loginUserData.shipment_point}} - Track Summary&nbsp;(Clearing House Agent)</span> -->
+            <span *ngIf="this.loginUserData.user_type == 'Admin'">{{this.dischargeprt}} - Track Summary&nbsp;(Admin)</span>
+            <br>
+          </h3>
+        </div>
+        <div class="row" *ngIf="(supplierpayments | filter :searchText) as supplierpayments">
+          <div class="col-sm-12 list" *ngIf="supplierpayments1.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr class="bg_clr">
+                    <th>SlNO</th>
+                    <th>Supplier Name</th>
+                    <th class="text-left">BL Number</th>
+                    <th>Line Name</th>
+                    <th class="text-left cwidth">Container No</th>
+                    <!-- <th class="text-center cellwidth4">Tot. Cont</th> -->
+                    <th class="text-center cellwidth4">Cartons</th>
+                    <th class="text-left cwidth">On-Board</th>
+                    <th></th>
+                    <th class="text-left cwidth">Expected</th>
+                    <th class="text-left cellwidth15">Remarks</th>
+                    <th class="text-right">Final/Approx.Duty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierpayments | paginate: { id: 'pagination2',itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.business_name}}</td>
+                    <td class="text-left">{{data.bl_no}}</td>
+                    <td>{{data.linename}}</td>
+                    <td>{{data.containerno}}</td>
+                    <!-- <td class="text-center">{{data.noofcontainer}}</td> -->
+                    <td class="text-center">{{data.ctns}}</td>
+                    <td class="text-left">{{data.onportdate | date:'dd-MM-yyyy'}}</td>
+                    <td></td>
+                    <td class="text-left">{{data.exptdate | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-left">{{data.blremarks}}</td>
+                    <td class="text-right">{{data.duty_approx | number : '1.2-2'}}</td>
+                  </tr>
+                  <tr *ngIf="supplierpayments.length>0">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <!-- <td class="text-center"><b>{{this.tot_cont}}</b></td> -->
+                    <td class="text-center"><b>{{this.tot_ctns}}</b></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right">{{this.tot_amt | number : '1.2-2'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12" *ngIf="supplierpayments.length>0" id="printPageButton">
+              <div class="pull-right">
+                <button class="btn btn-primary " type="button" id="printPageButton" (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls id="pagination2" (pageChange)="p = $event" class="page"></pagination-controls> 
+            </div>
+            <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+          </div>
+          <div *ngIf="supplierpayments.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ngx-spinner class="loader_spinner"></ngx-spinner>
+    </div>
+  </div>
+</div>

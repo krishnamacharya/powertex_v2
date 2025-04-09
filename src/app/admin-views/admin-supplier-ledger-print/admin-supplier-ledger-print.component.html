@@ -1,0 +1,159 @@
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
+    </span>&nbsp;
+
+    <span *ngIf="this.loginUserData.user_type == 'Admin'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/Admin-Supplier-ledger" style="color: #878787 !important;">Supplier Ledger</a>
+    </span>
+    <span *ngIf="this.loginUserData.user_type != 'Admin'">&nbsp;>&nbsp;
+      <a href="javascript.void(0)" routerLink="/admin-supplier-ledger-print" style="color: #878787 !important;">Supplier Ledger</a>
+    </span>
+    &nbsp;>&nbsp;
+    <span>Print</span>
+  </p>
+
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <div class="pull-left">
+          <h4>Supplier Ledger</h4>
+        </div>
+        <div class="pull-right">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+          class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+          </div>
+      </div>
+      <!-- <div class="col-md-3">
+        <div class="form-group">
+         
+          <select class="form-control select-option" id="supplier" required name="supplier" [(ngModel)]="pro"
+            #supplier="ngModel">
+            <option [ngValue]="undefined" selected>Select Supplier</option>
+            <option class='option' *ngFor="let s of suppliers" [ngValue]="s.user_id">{{s.business_name}}
+            </option>
+          </select>
+          <div [hidden]="supplier.valid || supplier.untouched" class="validation_msg">
+            <small class="form-text text-muted text-danger">Select Supplier Name</small>
+          </div>
+          <div *ngIf="SNameExists" class="validation_msg">
+            <small class="form-text text-muted text-danger">Please select Supplier Name</small>
+          </div>
+        </div>
+      </div> -->
+          <!-- <div class="col-md-3">
+            <mat-form-field color="accent">
+              <mat-label> Select From Date</mat-label>
+              <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" required  [max]="maxdate">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 selecttodate">
+            <mat-form-field color="accent">
+              <mat-label> Select To Date</mat-label>
+              <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" required [max]="maxdate">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2 color="primary"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="input_btn" (click)="getsku()">Get Data</button>
+          </div> -->
+    </div>
+    <div>
+   
+      <div id="printsuppndng">
+      <div *ngIf="orders">
+
+        <div class="row busname text-center">
+
+          <h3 class="shopee_name">
+            <span> {{loginUserData.company_address.companyname}}</span>
+          </h3>
+          <hr>
+          <h3 class="shopee_name text-center">
+            <!-- {{this.loginUserData.shipment_point}} On Port Summary (Clearing House Agent) -->
+            Supplier Ledger
+          </h3>
+        </div>
+
+
+        <div class="row" *ngIf="(orders | filter :searchText) as orders">
+          <div class="col-sm-12 list" *ngIf="orders.length>0">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th class="text-left">Invoice No</th>
+                    <th class="text-right">Invoice Date</th>
+                    <th class="text-right">Invoice Amount</th>
+                    <th class="text-right">Paid Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of orders; let i=index">
+                    <td>{{(i+1)}}</td>
+                    <td class="text-left">{{data.Number}}</td>
+                    <td class="text-right">{{data.Date | date:'dd-MM-yyyy'}}</td>
+                    <td class="text-right">{{data.InvAmount | number : '1.2-2'}}&nbsp;({{data.ctype}})</td>
+                    <td class="text-right">{{data.PaidAmount | number : '1.2-2'}}&nbsp;({{data.ctype}})</td>
+                  </tr>
+                
+                  <!-- USD -->
+                    <!-- <tr *ngIf="totUsd.length>0"> -->
+                    <tr *ngIf="totUsd">
+                      <td class="text-right" colspan="3"><span><b>Total Invoice(USD) &nbsp; : &nbsp;</b>{{this.totInvUsd | number : '1.2-2'}}
+                        </span></td>
+                      <td class="text-right"><span><b>Total Paid(USD) &nbsp; : &nbsp;</b>{{this.totPaidUsd | number : '1.2-2'}}
+                        &nbsp;</span></td>
+                      <td class="text-right" colspan="5"><span><b>Balance (USD) &nbsp;:
+                        &nbsp;</b>{{this.totInvUsd-this.totPaidUsd | number : '1.2-2'}}</span></td>  
+                    </tr>
+                  <!-- CNY -->
+                  
+                    <tr *ngIf="totCny">
+                      <td class="text-right" colspan="3"><span><b>Total Invoice(CNY) &nbsp; : &nbsp;</b>{{this.totInvCny | number : '1.2-2'}}
+                        </span></td>
+                      <td class="text-right"><span><b>Total Paid(CNY) &nbsp; : &nbsp;</b>{{this.totPaidCny | number : '1.2-2'}}
+                        &nbsp;</span></td>
+                      <td class="text-right" colspan="5"><span><b>Balance (CNY) &nbsp;:
+                        &nbsp;</b>{{this.totInvCny-this.totPaidCny | number : '1.2-2'}}</span></td>  
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="orders.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="row" style="text-align: center;padding-top: 15px;" id="printPageButton">
+        <button type="submit" class="btn btn-success" (click)="printreport()" style="letter-spacing:1px;">Print
+        </button>
+        <button type="submit" style="margin:10px;" class="btn btn-success" routerLink="/Admin-Supplier-ledger">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>

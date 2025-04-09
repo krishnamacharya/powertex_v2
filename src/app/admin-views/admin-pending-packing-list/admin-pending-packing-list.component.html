@@ -1,0 +1,141 @@
+<ngx-spinner class="custom_loder">
+  <img src="../../../assets/Loader.gif">
+</ngx-spinner>
+<div class="container pad_t_5per">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 text-center">
+      <h3 class="shopee_name">
+        <span> {{loginUserData.content}}</span>
+      </h3>
+      <img class="s_bpy_ctg" src="../../assets/images/Underline Shaded.svg">
+    </div>
+  </div>
+  <p class="bread-crumb1">
+    <span>
+      <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important;">Dashboard</a>
+    </span>&nbsp;>&nbsp;
+    <span>Pending Packing List</span>
+  </p>
+  <div class="reg_form mar_b_30 pad_15">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4>Pending Packing List</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12" style="padding: 0px;">
+      <div class="col-md-4" style="padding: 0px;">
+        <div class="form-group">
+          <input autocomplete="off" type="text" class='select-option form-control' required name="supplier"
+              [(ngModel)]="pro1" #supplier="ngModel" id="supplier1"
+              (change)="getdata(pro1)"  list="suppliers"
+              placeholder="Select Supplier">
+            <datalist id="suppliers">
+              <option [ngValue]="undefined" disabled selected>Select Supplier</option>
+              <option class='option' *ngFor="let s of suppliers" [ngValue]="s">{{s.business_name}}</option>
+            </datalist>
+        </div>
+      </div>
+      <div class="fr" *ngIf="supplierdata.length>0">
+        <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search Here..."
+          class="search_style">
+        <button type="submit" class="input_btn">Search</button>
+      </div>
+      <!-- <div class="col-md-2">
+        <button type="submit" class="input_btn" (click)="getdata()">Get Data</button>
+      </div> -->
+    </div>
+    <div>
+      <div>
+        <div class="row" *ngIf="(supplierdata | filter :searchText) as supplierdata">
+
+          <div class="col-sm-12 list" *ngIf="supplierdata.length>0">
+
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Supplier Name</th>
+                    <th>PI No</th>
+                    <th>PI Date</th>
+                    <th>Inv No</th>
+                    <th>Invoice Date</th>
+                    <!-- <th>Amount</th> -->
+                    <th>Shipment Port</th>
+                    <th>Discharge Port</th>
+                    <!-- <th>Actions</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of supplierdata | paginate: { itemsPerPage: 10, currentPage: p }; let i=index">
+                    <td>{{10*(p-1)+(i+1)}}</td>
+                    <td>{{data.business_name}}</td>
+                    <td>{{data.pi_no}}</td>
+                    <td *ngIf="data.pidate=='==='" class="text-center">--</td>
+                    <td *ngIf="data.pidate!='==='">{{data.pidate | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.inv_no}}</td>
+                    <td>{{data.createdon | date:'dd-MM-yyyy'}}</td>
+                    <td>{{data.shipmentport}}</td>
+                    <td>{{data.dischargeport}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-12" id="printPageButton">
+              <div class="pull-right">
+                <button type="submit" style="margin:10px;" class="btn btn-success"
+                  routerLink="/Admin-Generate-Packing">Generate Packing</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary " type="button" id="printPageButton"
+                  (click)="printreport()">Print</button>
+              </div>
+              <pagination-controls (pageChange)="p = $event" class="page"></pagination-controls>
+            </div>
+          </div>
+          <div *ngIf="supplierdata.length==0">
+            <div class="col-md-12">
+              <div class="no_data">
+                <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                <span class="nodata_txt">No Data is Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner class="loader_spinner"></ngx-spinner>
+</div>
+
+<div class="modal fade" id="WarningModal" tabindex="-1" data-backdrop="static" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </h4>
+            <div class="right_mark">
+              
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 15% 0;">
+              <span>No Data is Available..!!</span>
+              <br>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button"  class="btn btn-success fr" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

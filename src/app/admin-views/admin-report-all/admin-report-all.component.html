@@ -1,0 +1,1796 @@
+<div>
+  <ngx-spinner class="custom_loder">
+    <img src="../../../assets/Loader.gif">
+  </ngx-spinner>
+
+  <div class="container" style="margin:0px;padding-top: 20px;padding-right: 0px;padding-left: 0px;">
+    <div class="row">
+
+      <!-- <div class="col-md-3 mar_b_10_mbl">
+          <label for="reporttypedata" class="col-form-label">Select Report Type
+            <sub class="txt_red f_size_25">*</sub>
+          </label>
+          <div class="form-group">
+            <select class='form-control' [(ngModel)]="type" required name="reporttypedata" #reporttype="ngModel">
+              <option [ngValue]="undefined" select>Select Report Type</option>
+              <option class="option" *ngFor="let re of reporttypedata;"> -->
+      <!-- <span  *ngIf="loginUserData.role == 'Dealer' && re.process=='PO' || re.process=='Inv'"> {{re.process}}</span>
+               <span *ngIf="loginUserData.role != 'Dealer'"> {{re.process}}</span> -->
+      <!--  {{re.process}}
+              </option>
+            </select>
+          </div>
+        </div> -->
+      <!-- <div *ngIf="type=='Stock' || type=='Market'" class="col-md-3 mar_b_10_mbl"> -->
+      <!-- <div *ngIf="type=='Market'" class="col-md-3 mar_b_10_mbl">
+        <label for="month" class="col-form-label">Select Month
+          <sub class="txt_red f_size_25">*</sub>
+        </label>
+        <div class="form-group">
+          <select class='form-control' [(ngModel)]="month" required name="month" #mon="ngModel" (click)="getDates()">
+            <option [ngValue]="undefined">Select Month</option>
+            <option class="option" *ngFor="let month of months" [ngValue]="month.val">
+              {{month.name}}
+            </option>
+          </select>
+        </div>
+      </div> -->
+      <!-- <div *ngIf="type=='Stock' || type=='Market'" class="col-md-3 mar_b_10_mbl"> -->
+      <!-- <div *ngIf="type=='Market'" class="col-md-3 mar_b_10_mbl">
+        <label for="month" class="col-form-label">Select Year
+          <sub class="txt_red f_size_25">*</sub>
+        </label>
+        <div class="form-group">
+          <select class='form-control col-md-2' [(ngModel)]="year" required name="year" #yea="ngModel">
+            <option [ngValue]="undefined" select>Select Year</option>
+            <option class="option" *ngFor="let years of years" [ngValue]="years">
+              {{years}}
+            </option>
+          </select>
+        </div>
+      </div> -->
+
+
+
+      <span class="col-md-2" style="margin-top: 10px;">
+        <!-- <mat-form-field color="accent" *ngIf="type!='Stock' && type!='NotSold' && type!='Market'"> -->
+        <mat-form-field color="accent" *ngIf="type!='Stock' && type!='NotSold'">
+          <mat-label> Select From Date</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="fromdate" readonly required>
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+      </span>
+      <span class="col-md-2 selecttodate" style="margin-left: 50px; margin-top: 10px;">
+        <!-- <mat-form-field color="accent" *ngIf="type!='Stock' && type!='NotSold' && type!='Market'"> -->
+        <mat-form-field color="accent" *ngIf="type!='Stock' && type!='NotSold'">
+          <mat-label> Select To Date</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="tilldate" readonly required>
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2 color="primary"></mat-datepicker>
+        </mat-form-field>
+
+      </span><span class="col-md-2" style=" margin-left: 50px; margin-top: 10px;float: right;"
+        *ngIf="type!='NotSold' && type!='Market' && type!='Stock'">
+        <button type="submit" class="input_btn"
+          (click)="getDataadminreport(year,month,fromdate,tilldate,company,branch,shopee,dealer,type,Category,subcategory,model)">Get
+          Reports
+        </button>
+
+      </span>
+      <span class="col-md-2" style=" margin-left: 50px; margin-top: 10px;float: right;" *ngIf="type=='Market'">
+        <button type="submit" class="input_btn " (click)="getmarketreports()">Get Reports
+        </button>
+      </span>
+    </div>
+  </div>
+  <div class="row">
+    <!--  ===============select company code==================== -->
+    <!-- <div class="col-md-3" *ngIf="loginUserData.role !='Branch Manager' && loginUserData.role !='Dealer' && loginUserData.role !='Accounts Manager' && loginUserData.role !='Warehouse Manager' && loginUserData.role !='Shopee Manager'">
+        <div class="form-group">
+          <select class='form-control' [(ngModel)]="company" required name="companycode" #companycode="ngModel" (change)="getBranchDropdown(company)">
+            <option value="HYD_MAIN" class="option" selected>HYD_MAIN</option>
+          </select>
+        </div>
+      </div> -->
+    <!--  ==================select Branch====================================-->
+    <div class="col-md-3"
+      *ngIf="loginUserData.role !='Branch Manager' && loginUserData.role !='Dealer' && loginUserData.role !='Warehouse Manager' && loginUserData.role !='Accounts Manager' && loginUserData.role !='Shopee Manager' && type!='NotSold' && type!='Market'&& type!='Stock'">
+      <div class="form-group">
+        <select class='form-control' [(ngModel)]="branch" required name="BranchDropdown" #BranchDropdown="ngModel"
+          (change)="getShopeeDropdown(branch)" (change)="getdealerDropdown(branch)">
+          <option [ngValue]="undefined">Select Branch</option>
+          <option class="option" *ngFor="let bnch of branchdata" [ngValue]="bnch.company_code">{{bnch.companyname}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-3" *ngIf="type=='Stock'">
+      <div class="form-group">
+        <select class='form-control' [(ngModel)]="brand" required name="brandDropdown" #brandDropdown="ngModel">
+          <option [ngValue]="undefined">Select Brand</option>
+          <option class="option" *ngFor="let bnch of brands" [ngValue]="bnch.brand">{{bnch.brand}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <!--  =================select Shopee===================================-->
+    <!-- <div class="col-md-3" *ngIf=" loginUserData.role !='Dealer'&& loginUserData.role !='Shopee Manager' && type!='Outstanding'">
+        <div class="form-group">
+          <select class='form-control' [(ngModel)]="shopee" required name="ShopeeDropdown" #ShopeeDropdown="ngModel" (change)="disabledel()">
+            <option [ngValue]="undefined">Select Shopee</option>
+            <option class="option" dealer=undefined *ngFor="let shop of shopeedata" [ngValue]="shop.company_code">
+              {{shop.companyname}}
+            </option>
+          </select>
+        </div>
+      </div> -->
+
+    <!--  =================select Dealer===============================-->
+    <div class="col-md-3"
+      *ngIf=" loginUserData.role !='Dealer'&& loginUserData.role !='Shopee Manager' && loginUserData.role !='Warehouse Manager' && type=='Outstanding'">
+      <div class="form-group">
+        <select class='form-control' [(ngModel)]="dealer" required name="dealer" (change)="disableshop()"
+          (change)="getmarketing_manager(dealer)" #dealerr="ngModel">
+          <option [ngValue]="undefined">Select Dealer</option>
+          <option class="option" *ngFor="let dealerdata of dealerdata" [ngValue]="dealerdata.company_code">
+            {{dealerdata.business_name}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <!--  =================select Marketing Manager===================================-->
+    <div class="col-md-3"
+      *ngIf=" loginUserData.role !='Dealer'&& loginUserData.role !='Shopee Manager' && loginUserData.role !='Warehouse Manager' && type!='' && type=='Outstanding'">
+      <div class="form-group">
+        <select class='form-control' [(ngModel)]="shopee" required name="ShopeeDropdown" #ShopeeDropdown="ngModel"
+          (change)="disabledel()">
+          <option [ngValue]="undefined">Select Marketing Manager</option>
+          <option class="option" dealer=undefined *ngFor="let m of market_manager_list" [ngValue]="m.user_id">
+            {{m.first_name | titlecase}} {{m.last_name | titlecase}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <!-- =============================category============================ -->
+    <!-- <span class="col-md-12" style=" margin-left: 300px;margin-top: 20px"> -->
+    <div class="col-md-3" *ngIf="type=='Stock'">
+      <div class="form-group">
+        <select class='form-control' [(ngModel)]="Category" required name="Category" #Categorys="ngModel"
+          (change)="getsubcategoryData(Category)">
+          <option [ngValue]="undefined" select>category</option>
+          <option class="option" *ngFor="let resources of resources">
+            {{resources.Category}}
+          </option>
+
+        </select>
+      </div>
+    </div>
+    <!-- ========================================Sub Category========================================= -->
+    <div class="col-md-3" *ngIf="type=='Stock'">
+      <div class="form-group">
+        <select class='form-control' [(ngModel)]="subcategory" required name="subcategorys" #subcategorys="ngModel">
+          <option [ngValue]="undefined" select>Sub Category</option>
+          <option class="option" *ngFor="let resources1 of resources1">
+            {{resources1.subcategory}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-2" style=" margin-left: 50px; margin-top: 10px;float: right;"
+        *ngIf="type=='Stock'">
+        <button type="submit" class="input_btn"
+          (click)="getDataadminreport(year,month,fromdate,tilldate,company,branch,shopee,dealer,type,Category,subcategory,model)">Get
+          Reports
+        </button>
+
+      </div>
+    <!-- ========================================Not sold========================================= -->
+    <div class="col-md-12" *ngIf="type=='NotSold'">
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="noOfDays">Not sold items from last &nbsp;</label>
+          <input type="number" min="1" id="noOfDays" max="999" placeholder="Enter Days" class='form-control'
+            [(ngModel)]="days" (change)="getbothdates(days)" placeholder="Enter Days" required name="dayss"
+            #dayss="ngModel">
+        </div>
+        <span>&nbsp;Days</span>
+        <div class="col-md-2 pull-right" *ngIf="type=='NotSold'">
+          <button type="submit" class="input_btn btn" (click)="getnotsoldreport(type)">Get Reports
+          </button>
+        </div>
+
+      </form>
+    </div>
+    <!-- ================================ -->
+    <!-- <mat-form-field class="col-md-2">
+        <mat-label>Select Record size</mat-label>
+        <mat-select [(value)]="selected" [(ngModel)]="itemsPerPage" (selectionChange)="itemsPerPagee(itemsPerPage)">
+          <mat-option value="5">5</mat-option>
+          <mat-option value="10">10</mat-option>
+          <mat-option value="15">15</mat-option>
+          <mat-option value="25">25</mat-option>
+          <mat-option value="50">50</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+    <!-- <div class="col-md-3">
+        <button type="submit" class="input_btn" (click)="getDataadminreport(year,month,fromdate,tilldate,company,branch,shopee,dealer,type,Category,subcategory,model)">Get Reports
+        </button>
+      </div> -->
+    <!-- <select class='select-option form-control col-md-2' [(ngModel)]="modelno" required name="modelno"
+          #modelnos="ngModel" style="width:200px" *ngIf="type=='Stock'">
+          <option [ngValue]="undefined" select>model number</option>
+          <option class="option" *ngFor="let m of resources1.subcategory.modelno">
+            {{m}}
+          </option>
+        </select> -->
+    <!-- ================================================================================= -->
+  </div>
+  <div class="reg_form mar_b_30 pad_15" style="overflow:visible">
+    <div class="row mar_b_15">
+      <div class="col-sm-12">
+        <div class="fl">
+          <h4 style="color: #3994df !important;"></h4>
+        </div>
+        <!-- <span style="padding-right:-100px">{{count}} Records found</span>  -->
+        <div class="fr inputsearchbox" *ngIf="resources2.length>0">
+          <input type="text" placeholder="Search here..." [(ngModel)]="searchText" class="search_style">
+          <button type="submit" class="input_btn searchbtn">Search</button>
+        </div>
+
+        <!-- ==============for extra line INFO FOR STOCK =========================== -->
+        <!-- <h4 class="f_wt_600 txt_black pad_t_b_10 bussinesInfo" align="center" *ngIf="resources2.length>0">{{typename}}
+            REPORT , {{count}}
+            Records Found<span class="a_b_2">
+   -->
+        <!-- </span> -->
+        <!-- </h4> -->
+        <!-- ========================================= -->
+      </div>
+    </div>
+
+    <div *ngIf="(resources2 | filter :searchText) as resources2" class="reportstable">
+      <div class="row" *ngIf="resources2.length>0 && types=='PO'" align="center">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+
+                <th>S.No</th>
+                <th>Business Name</th>
+                <th>City</th>
+                <th>PO No</th>
+                <th>PO Date</th>
+                <th>DC No</th>
+                <th>DC Date</th>
+                <!-- <th>Origin Company code</th> -->
+
+                <!-- <th>Supplier Company Name</th> -->
+                <th>Total Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let res of resources2|filter:searchText  | paginate: { id: 'pagination10',itemsPerPage: 10, currentPage: pageya };let w=index">
+
+                <td>{{w+1}}</td>
+                <td style="text-align:left">{{res.po_company_name}}</td>
+                <td style="text-align:left">{{res.po_city}}</td>
+                <td *ngIf="loginUserData.role!='Dealer'" style="text-align:left">
+                  {{res.spo_no}}-{{res.po_origin_company_code}}</td>
+                <td *ngIf="loginUserData.role=='Dealer'" style="text-align:center">{{res.spo_no}}</td>
+                <td>{{res.po_date | date:'dd-MM-yyyy'}}</td>
+                <td *ngIf="res.print" style="text-align:center">{{res.print}}</td>
+                <td *ngIf="!res.print" style="text-align:center">N/A</td>
+                <td *ngIf="res.printdate">{{res.printdate | date:'dd-MM-yyyy'}}</td>
+                <td *ngIf="!res.printdate">N/A</td>
+                <!-- <td style="text-align:left">{{res.po_origin_company_code}}</td> -->
+
+                <!-- <td style="text-align:left">{{res.sup_company_name}}</td> -->
+                <td style="text-align:right">₹ {{(math.round(res.total_po_value)).toLocaleString('en-IN') }}.00</td>
+
+                <td>
+                  <span class="f_size_15 orange_clr padd_right_10 cursor_pointer">
+                    <i class="fa fa-eye" aria-hidden="true" title="View Details"
+                      (click)="view_Po_More(res.po_detail,res.spo_no)"></i>
+                  </span>
+                  <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                    <i class="fa fa-print" aria-hidden="true" title="Print Details" (click)="print(res.seq_no)"></i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <div class="col-md-12">
+              <button class="btn btn-primary" style="float:right" type="button" (click)="printreport()">Print</button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="resources2.length>0">
+          <pagination-controls id="pagination10" (pageChange)="pageya = $event"></pagination-controls>
+        </div>
+
+        <div style=" float: right;"> For {{typename}}
+          REPORT {{count}}
+          Records Found<span class="a_b_2"> </span></div>
+
+      </div>
+      <!-- ======================================stock=========================================== -->
+      <div class="row" *ngIf="resources2.length>0 && types=='Stock'" align="center">
+        <!--  <p class="bread-crumb1">
+                <span>
+                  <a ><B>THE TOTAL STOCK FOUND IS </B></a>
+                </span>&nbsp;&nbsp;
+              </p> -->
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <!-- <th>company code</th> -->
+
+                <!-- <th>Category</th> -->
+                <th>Product Name</th>
+                <!-- <th>Sub Category</th>
+                <th>Model Number</th> -->
+                <th>Brand</th>
+                <th class="text-right">Last 2month sales</th>
+                <th class="text-right">Pi Qty</th>
+                <th class="text-right">Transit Qty</th>
+                <!-- <th>Total Stock	</th> -->
+                <!-- <th class="text-right">Opening Balance Qty</th> -->
+                <!-- <th>Year</th>
+                <th>Month</th> -->
+                <!--   <th>Sales Quantity</th> -->
+
+                <!-- <th>Product Id</th> -->
+                <!--    <th>Sales Amount</th> -->
+                <th class="text-right">Closing Balance Qty</th>
+                <!-- <th>Closing Balance Amount</th> -->
+                <!-- <th>Model Description</th> -->
+                <!--  <th>Sales Quantity</th> -->
+                <!-- <th>Actions</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let res of resources2|filter:searchText  | paginate: { itemsPerPage: itemsPerPage, currentPage: s };let j = index">
+                <!-- <td style="text-align:left">{{res.company_code}}</td> -->
+                <td>{{20*(s-1)+(j+1)}}</td>
+                <!-- <td style="text-align:left">{{res.category}}</td> -->
+                <td style="text-align:left">{{res.modelno}}  {{res.subcategory}}</td>
+                <!-- <td style="text-align:left">{{res.modelno}}</td> -->
+                <td style="text-align:left">{{res.Brand}}</td>
+                <!-- <td class="text-right">{{res.opening_bal_qty}} -->
+                  <!-- td>{{res.year1}}</td>
+                <td>{{res.month1}}</td> -->
+                  <!-- <td align="right">{{res.sales_qty}}</td> -->
+
+                  <!-- <td>{{res.productid}}</td> -->
+                  <!--   <td align="right">{{res.sales_amt}}</td> -->
+                <!-- <td class="text-right">{{res.closing_bal_qty}}</td> -->
+                <td class="text-right">{{res.saleQty}}</td>
+                <td class="text-right bgc" (click)="piclick(res)">{{res.zpoqty}}</td>
+                <td class="text-right bgc" (click)="transitclick(res)">{{res.zTransitQty}}</td>
+                <td class="text-right">{{res.closing_bal_qty}}</td>
+                <!-- <td class="text-right">{{res.TotalStock}}</td> -->
+                <!-- <td align="right">{{res.closing_bal_amt | currency : '&nbsp;'}}</td> -->
+                <!-- <td>{{res.long_name}}</td> -->
+                <!--   -->
+                <!-- <td>
+                      <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                    <i class="fa fa-eye" aria-hidden="true" title="View Details" (click)="view_Stock_More(res)"></i>
+                  </span>
+                    </td> -->
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <div class="col-md-12">
+              <button class="btn btn-primary" style="float:right" type="button" (click)="printreport()">Print</button>
+            </div>
+          </div>
+        </div>
+        <pagination-controls (pageChange)="s = $event"></pagination-controls>
+      </div>
+      <!--  ===================================GRN==================================== -->
+      <div class="row" *ngIf="resources2.length>0 && types=='GRN'" align="center">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Business Name</th>
+              <th>Invoice No.</th>
+              <th>Invoice Date</th>
+              <th>GRN No.</th>
+              <th>GRN Date</th>
+              <!-- <th>Year</th> -->
+              <!-- <th>Month</th> -->
+              <!-- <th>period</th> -->
+
+
+              <!-- <th>Company code</th> -->
+
+              <!-- <th>Model Number</th> -->
+              <!-- <th>Category</th> -->
+              <!-- <th>Sub Category</th> -->
+              <!-- <th>Product Id</th> -->
+              <!-- <th>Product Name</th> -->
+              <th>Total Amount</th>
+              <th>Actions</th>
+              <!-- <th>Sales Amount</th>
+                <th>Sales Quantity</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let res of resources2|filter:searchText  | paginate: { itemsPerPage: itemsPerPage, currentPage: g };let j = index">
+              <td>{{20*(g-1)+(j+1)}}</td>
+              <td style="text-align:left">{{res.business_name}}</td>
+              <td style="text-align:left">{{res.sinv_no}}</td>
+              <td style="text-align:left">{{res.inv_date | date:'dd-MM-yyyy'}}</td>
+              <td style="text-align:left">{{res.grn_no}}</td>
+              <td style="text-align:left">{{res.grn_date | date:'dd-MM-yyyy'}}</td>
+
+              <!--   <td>{{res.month1}}</td> -->
+              <!-- <td>{{res.period}}</td> -->
+
+              <!-- <td style="text-align:left">{{res.company_code}}</td> -->
+              <!-- <td style="text-align:left">{{res.modelno}}</td> -->
+              <!-- <td style="text-align:left">{{res.category}}</td>
+              <td style="text-align:left">{{res.subcategory}} {{res.modelno}}</td> -->
+              <td style="text-align:right">₹ {{res.final_amount.toLocaleString('en-IN')}}.00</td>
+              <!-- <td>{{res.productid}}</td> -->
+              <!--  <td align="right">{{res.sales_amt}}</td>
+                <td align="right">{{res.sales_qty}}</td> -->
+              <td>
+                <span class="f_size_15 orange_clr padd_right_10 cursor_pointer">
+                  <i class="fa fa-eye" aria-hidden="true" title="View Details" (click)="view_Grn_More(res.detail)"></i>
+                </span>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="g = $event"></pagination-controls>
+      </div>
+      <!-- =====================INVOIC===========INV=============== -->
+      <div class="row" *ngIf="resources2.length>0 && types=='Inv'" align="center">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Business Name</th>
+              <th>Packing No</th>
+              <th>Packing Date</th>
+              <th>Inv No</th>
+              <th>Inv Date</th>
+              <!--  <th>Origin company code</th> -->
+              <!-- <th>Shipping To</th> -->
+              <th style="text-align:right">Total Amount</th>
+              <!--  <th>branch comment</th>
+                <th>wharehouse comment</th>
+                <th>Accounts comment</th> -->
+
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let res of resources2|filter:searchText  | paginate: { itemsPerPage: itemsPerPage, currentPage: i };let j = index">
+              <td>{{20*(i-1)+(j+1)}}</td>
+
+              <td style="text-align:left">{{res.business_name}}</td>
+              <td style="text-align:left">{{res.packingno}}</td>
+              <td style="text-align:left">{{res.packingdate | date:'dd-MM-yyyy'}}</td>
+              <td style="text-align:left">{{res.refinvno}}</td>
+              <td style="text-align:left">{{res.inv_date | date:'dd-MM-yyyy'}}</td>
+              <!--  <td>{{res.inv_origin_company_code}}</td> -->
+              <!-- <td style="text-align:left">{{res.ship_to_company_code}}</td> -->
+              <td style="text-align:right">₹ {{res.total_inv_value.toLocaleString('en-IN')}}.00</td>
+              <!--  <td>{{res.remarks1}}</td>
+                <td>{{res.remarks2}}</td>
+                <td>{{res.remarks3}}</td> -->
+              <td>
+                <span class="f_size_15 green_clr padd_right_10 cursor_pointer">
+                  <i class="fa fa-truck" aria-hidden="true" title="View Details" (click)="view_transport(res)"></i>
+                </span>
+                <span class="f_size_15 orange_clr padd_right_10 cursor_pointer">
+                  <i class="fa fa-eye" aria-hidden="true" title="View Details"
+                    (click)="view_inv_More(res.po_detail,res.sinv_no,res.remarks2,res.remarks3)"></i>
+                </span>
+                <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                  <i class="fa fa-print" aria-hidden="true" title="Print Details" (click)="print(res.seq_no)"></i>
+                </span>
+
+                <!-- <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                  <i class="fa fa-file-pdf-o" aria-hidden="true" title="Print Details" (click)="convert(res.dcno)"></i>
+                </span> -->
+                
+                <!-- <span class="f_size_15 red_clr padd_right_10 cursor_pointer">
+                    <i class="fa fa-close" aria-hidden="true" title="Delete" (click)="delete(res.seq_no)"></i>
+                  </span> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <div class="col-md-12">
+            <button class="btn btn-primary" style="float:right" type="button" (click)="printreport()">Print</button>
+          </div>
+        </div>
+        <pagination-controls (pageChange)="i = $event"></pagination-controls>
+      </div>
+      <!--  ===================================OUTSTANDING==================================== -->
+      <div class="row" *ngIf="resources2.length>0 && types=='Outstanding' && totaloutstanding">
+        <div class="fr"><b>Total outstanding Amount :<font color="color='#d9534f'">₹
+              {{totaloutstanding.toLocaleString('en-IN')}}.00</font></b></div>
+      </div>
+      <br>
+      <div class="row" *ngIf="resources2.length>0 && types=='Outstanding'" align="center">
+
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <!-- <th>Company Code</th> -->
+                <th>Business name</th>
+                <!-- <th>State</th> -->
+                <th>City</th>
+                <th>Mobile Number</th>
+                <th>Outstanding Amount</th>
+                <!-- <th>Actions</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let res of resources3|filter:searchText  | paginate: { itemsPerPage: itemsPerPage, currentPage: o };let t = index">
+                <td>{{20*(o-1)+(t+1)}}</td>
+                <!-- <td style="text-align:left;">{{res.Company_code}}</td> -->
+                <td style="text-align:left;">{{res.name}}</td>
+                <!-- <td style="text-align:left;">{{res.state}}</td> -->
+                <td style="text-align:left;">{{res.city}}</td>
+                <td style="text-align:left;">{{res.mobile}}</td>
+                <td style="text-align:right;width:180px">₹ {{res.Outstanding_amount.toLocaleString('en-IN')}}.00</td>
+
+                <!-- <td>
+                    <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                      <i class="fa fa-eye" aria-hidden="true" title="View Details"
+                        (click)="view_Po_More(res.po_detail,res.po_no)"></i>
+                    </span>
+                  </td> -->
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <div class="col-md-12">
+              <button class="btn btn-primary" style="float:right" type="button" (click)="printreport()">Print</button>
+            </div>
+          </div>
+        </div>
+        <pagination-controls (pageChange)="o = $event"></pagination-controls>
+      </div>
+      <!--  ===================================PACKING==================================== -->
+      <div class="row" *ngIf="resources2.length>0 && types=='Packing'" align="center">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+
+                <th>S.No</th>
+                <th style="text-align:left">Business Name</th>
+                <th style="text-align:left">City</th>
+                <th>DC No</th>
+                <th>DC Date</th>
+                <th>Packing No</th>
+                <th>Packing Date</th>
+                <!-- <th>Origin Company code</th> -->
+
+                <!-- <th>Supplier Company Name</th> -->
+                <!-- <th style="text-align:right">Total Amount</th> -->
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let res of resources2|filter:searchText  | paginate: { itemsPerPage: itemsPerPage, currentPage: page };let j = index">
+                <td>{{20*(page-1)+(j+1)}}</td>
+                <td style="text-align:left">{{res.po_company_name}}</td>
+                <td style="text-align:left">{{res.po_city}}</td>
+                <td>{{res.dcno}}</td>
+                <td>{{res.dcdate | date:'dd-MM-yyyy'}}</td>
+                <td>{{res.packing_no}}</td>
+                <td>{{res.packing_date | date:'dd-MM-yyyy'}}</td>
+                <!-- <td style="text-align:left">{{res.po_origin_company_code}}</td> -->
+
+                <!-- <td style="text-align:left">{{res.sup_company_name}}</td> -->
+                <!-- <td style="text-align:right">{{res.total_inv_value}}</td> -->
+
+                <td>
+                  <span class="f_size_15 orange_clr padd_right_10 cursor_pointer">
+                    <i class="fa fa-eye" aria-hidden="true" title="View Details"
+                      (click)="view_Packing_More(res.po_detail,res.packing_no)"></i>
+                  </span>
+                  <span class="f_size_15 blue_clr padd_right_10 cursor_pointer">
+                    <i class="fa fa-print" aria-hidden="true" title="Print Details" (click)="print(res.seq_no)"></i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <div class="col-md-12">
+              <button class="btn btn-primary" style="float:right" type="button" (click)="printreport()">Print</button>
+            </div>
+          </div>
+        </div>
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        <div style=" float: right;"> For {{typename}}
+          REPORT {{count}}
+          Records Found<span class="a_b_2"> </span></div>
+
+      </div>
+      <!--  ===================================PACKING==================================== -->
+      <div class="row" *ngIf="resources2.length>0 && types=='NotSold'" align="center">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>S.No</th>
+                <!-- <th style="text-align:left">Product Id</th> -->
+                <th style="text-align:left">Category</th>
+                <th style="text-align:left">Product Name</th>
+                <th style="text-align:left">Brand</th>
+                <th style="text-align:left">Stock Qty</th>
+                <th style="text-align:right">Mrp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let res of resources2|filter:searchText  | paginate: { itemsPerPage: itemsPerPage, currentPage: n };let j = index">
+                <td>{{20*(n-1)+(j+1)}}</td>
+                <!-- <td style="text-align:left">{{res.productid}}</td> -->
+                <td style="text-align:left">{{res.category}}</td>
+                <td style="text-align:left">{{res.subcategory}}{{res.modelno}}</td>
+                <td style="text-align:left">{{res.brand}}</td>
+                <td style="text-align:left">{{res.stock_qty}}</td>
+                <td style="text-align:right">{{res.mrp}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-md-12">
+            <button class="btn btn-primary" style="float:right" type="button" (click)="printreport()">Print</button>
+          </div>
+        </div>
+        <pagination-controls (pageChange)="n = $event"></pagination-controls>
+        <div style=" float: right;"> For {{typename}}
+          REPORT {{count}}
+          Records Found<span class="a_b_2"> </span></div>
+
+      </div>
+      <!--  ===================================PACKING==================================== -->
+      <div class="row" *ngIf="resources2.length>0 && types=='Market'" align="center">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="text-align:left">S.No</th>
+                <!-- <th style="text-align:left">Product Id</th> -->
+                <th style="text-align:left">Marketing Name</th>
+                <th class="text-right">Total Amount</th>
+                <th class="txt_center">Product Sales</th>
+                <th class="txt_center">Dealer Sales</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let res of resources2|filter:searchText;let j = index">
+                <td style="text-align:left">{{j+1}}</td>
+                <!-- <td style="text-align:left">{{res.productid}}</td> -->
+                <td style="text-align:left">{{res.marketingname}}</td>
+                <td style="text-align:right">₹ {{res.final_amount.toLocaleString('en-IN')}}.{{res.decimalamount}}</td>
+                <td style="text-align:center" class="txt_center"> <span class="f_size_15 orange_clr  cursor_pointer">
+                    <i class="fa fa-eye" aria-hidden="true" title="View Details"
+                      (click)="view_marketprod_more(res)"></i>
+                  </span>
+
+                </td>
+                <td class="text-center"> <span class="f_size_15 green_clr padd_right_10 cursor_pointer" (click)="view_marketdel_more(res)">
+                    <img src="../../../assets/Explore icon.svg" style="width: 5%;" title="View Details">
+                  </span>
+
+                </td>
+              </tr>
+              
+              <tr>
+                <td colspan="2" style="text-align:right"><b>Total</b></td>
+                <td style="text-align:right">{{this.TotMarketingAmt.toLocaleString('en-IN')}}</td>
+                <td colspan="2"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="pull-left"> For {{typename}}
+            Report {{count}}
+            Records Found<span class="a_b_2"> </span></div>
+          <div class="pull-right">
+            <button class="btn btn-primary" style="float:right" type="button" (click)="printreport()">Print</button>
+          </div>
+        </div>
+        <!-- <pagination-controls (pageChange)="m = $event"></pagination-controls> -->
+      
+
+      </div>
+      <!-- ========================no_data_cnter============================== -->
+      <div *ngIf="resources2.length==0">
+        <div class="col-md-12">
+          <div class="no_data">
+            <img class="no_data_cnter">
+            <span class="nodata_txt"><br></span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--=========================================modal popup for po Details=======================================================-->
+    <div class="modal fade" id="viewpoModal1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title-col-md-12" align="center">Purchase Order Details(PO.No - {{po}})</h4>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive table-bordered">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <!-- <th>Modelno</th> -->
+                    <th>Product Name</th>
+                    <!-- <th>Category</th>
+                    <th>Subcategory</th> -->
+                    <th>Qty</th>
+                    <!-- <th>Free Qty</th> -->
+                    <th>Mrp</th>
+                    <th>Discount</th>
+                    <!-- <th>Spl Discount</th> -->
+                    <th>Net Price</th>
+                    <th>GST Amount</th>
+                    <th>Total value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let view_d of view_d | paginate: { id: 'pagination1',itemsPerPage: 10, currentPage: Page };let j=index">
+                    <td>
+                      <!--  <span class="table_pd_name">{{10*(Page-1)+(j+1)}}</span> -->
+                      <span class="table_pd_name">{{j+1}}</span>
+                    </td>
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view_d.subcategory}} {{view_d.modelno}}</span>
+                      </div>
+                    </td>
+                    <!-- <td style="word-wrap: break-word">
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view_d.long_name}}</span></div>
+                    </td>
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view_d.category}}</span></div>
+                    </td>
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view_d.subcategory}}</span></div>
+                    </td> -->
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.qty}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.free_qty}}</span></div>
+
+                    </td> -->
+                    <td style="text-align:right">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.mrp}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.discount_eff}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.sp_discount}}</span></div>
+                    </td> -->
+                    <td style="text-align:right">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.net_price| currency:'&nbsp;'}}</span>
+                      </div>
+                    </td>
+                    <td style="text-align:right">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.gst_amount| currency:'&nbsp;'}}</span>
+                      </div>
+                    </td>
+                    <td style="text-align:right">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.total_value| currency:'&nbsp;'}}</span>
+                      </div>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+              <div *ngIf="view_d.length>0">
+                <pagination-controls id="pagination1" (pageChange)="Page = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--   =================================modal popup for content for GRN==========================================================-->
+
+    <div class="modal fade" id="viewgrnModal1" role="dialog">
+
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" align="center">GRN Details</h4>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <!-- <th>Company Code</th> -->
+                    <th>Financial Year</th>
+                    <!-- <th>PO No</th>
+                    <th>PO Date</th> -->
+                    <!-- <th>Invoice No</th>
+                    <th>Invoice Date</th> -->
+                    <!-- <th>Product Id</th> -->
+                    <th>Product Name</th>
+
+                    <!-- <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Subcategory</th>
+                        <th>Qty</th> -->
+                    <th>Mrp</th>
+                    <th>Discount</th>
+                    <th>Net Price</th>
+                    <!-- <th>GST Amount</th> -->
+                    <th>Total value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let view_data of view_data;let i=index">
+                    <td>
+                      <span class="table_pd_name">{{i + 1}}</span>
+                    </td>
+                    <!-- <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view_data.company_code}}</span></div>
+                    </td> -->
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view_data.financial_year}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_data.po_no}}</span></div>
+                    </td>
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view_data.po_date| date:'dd-MM-yyyy'}}</span></div>
+                    </td> -->
+                    <!-- <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_data.sinv_no}}</span></div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_data.inv_date| date:'dd-MM-yyyy'}}</span></div>
+                    </td> -->
+                    <!-- <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_data.productid}}</span></div>
+                    </td> -->
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_data.subcategory}} {{view_data.modelno}}</span>
+                      </div>
+                    </td>
+
+                    <!-- <td>
+                              <div class="row_mar_0">
+                                <span class="f_wt_600 view_key">{{view_d.receiving_qty}}</span></div>
+                            </td>
+                        <td>
+                            <div class="row_mar_0">
+                              <span class="f_wt_600 view_key">{{view_d.barcode_rec_conf}}</span></div>
+                          </td> -->
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_data.mrp}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_data.discount_eff}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                                <div class="row_mar_0">
+                                  <span class="f_wt_600 view_key">{{view_d.gst_amount}}</span></div>
+                              </td> -->
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">₹ {{view_data.net_price.toLocaleString('en-IN')}}.00</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">₹ {{view_data.tot_value.toLocaleString('en-IN')}}.00</span>
+                      </div>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--   =================================modal popup for content for Stock==========================================================-->
+
+    <div class="modal fade" id="viewstockModal1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title-col-md-12" align="center">Stock Details</h4>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>CompanyCode</th>
+                    <th>Product Id</th>
+                    <th>Opening Balance</th>
+                    <th>Closing Balance</th>
+                    <!-- <th>Storage Location</th> -->
+                    <th>GRN Quantity</th>
+                    <th>Grn_Average Rate</th>
+                    <th>Grn Amt</th>
+                    <th>Sales Quantity</th>
+                    <!-- <th>Inv Date</th>
+                          <th>MRP</th>
+                          <th>Net Price</th>
+                          <th>Total value</th> -->
+                    <th>Description</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr>
+                    <!-- <td>
+                              <span  class="table_pd_name">{{i + 1}}</span>
+                            </td> -->
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{stockdata.company_code}}</span>
+                      </div>
+                    </td>
+                    <td style="word-wrap: break-word">
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{stockdata.productid}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{stockdata.opening_bal_qty}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{stockdata.closing_bal_qty}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                            <div class="row_mar_0">
+                              <span class="f_wt_600 view_key">{{view_d.storage_location}}</span></div>
+                          </td> -->
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{stockdata.grn_qty}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{stockdata.grn_avg_rate}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{stockdata.grn_amt | currency:'&nbsp;'}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{stockdata.sales_qty}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                              <div class="row_mar_0">
+                                <span class="f_wt_600 view_key">{{view_d.inv_date| date:'dd-MM-yyyy'}}</span></div>
+                            </td> -->
+                    <!-- <td>
+                            <div class="row_mar_0">
+                              <span class="f_wt_600 view_key">{{view_d.receiving_qty}}</span></div>
+                          </td>
+                          <td>
+                              <div class="row_mar_0">
+                                <span class="f_wt_600 view_key">{{view_d.barcode_rec_conf}}</span></div>
+                            </td> -->
+                    <!-- <td>
+                                <div class="row_mar_0">
+                                  <span class="f_wt_600 view_key">{{view_d.mrp}}</span></div>
+                              </td> -->
+                    <!-- <td>
+                                  <div class="row_mar_0">
+                                    <span class="f_wt_600 view_key">{{view_d.net_price}}</span></div>
+                                </td>
+                                <td>
+                                    <div class="row_mar_0">
+                                      <span class="f_wt_600 view_key">{{view_d.tot_value}}</span></div>
+                                  </td> -->
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{stockdata.long_name}}</span>
+                      </div>
+                    </td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--=========================================modal popup for invoice Details==========================================-->
+    <div class="modal fade" id="viewinvModal1" role="dialog">
+
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" align="center">Invoice Details(Invoice.No - {{inv}})</h4>
+          </div>
+          <div class="modal-body">
+            <!-- <div class="row">
+              <div class="col-md-4 mar_b_10_mbl input">
+            <label><b>Branch manager Comment</b></label>
+            <textarea type="text" class="form-control" placeholder="No Branch Comments" readonly></textarea>
+
+          </div>
+          <div class="col-md-4 mar_b_10_mbl input">
+            <label><b>wharehouse manager Comment</b></label>
+            <textarea type="text" class="form-control" placeholder="No wharehouse Comments" readonly
+              value={{view_d.remarks2}}></textarea>
+          </div>
+          <div class="col-md-4 mar_b_10_mbl input">
+            <label><b>Accounts manager Comment</b></label>
+            <textarea type="text" class="form-control" placeholder="No Accounts Comments" readonly
+              value={{view_d.remarks3}}></textarea>
+
+          </div></div> -->
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <!-- <th>Modelno</th> -->
+                    <th>Product Name</th>
+                    <!-- <th>Category</th>
+                    <th>Subcategory</th> -->
+                    <th>Invoice Qty</th>
+                    <!-- <th>Free Qty</th> -->
+                    <th>Mrp</th>
+                    <th>Discount</th>
+                    <!-- <th>Spl Discount</th> -->
+                    <th>Net Price</th>
+                    <th>GST Amount</th>
+                    <th>Total value</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let view of view_d;let i=index">
+                    <td>
+                      <span class="table_pd_name">{{i + 1}}</span>
+                    </td>
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view.subcategory}} {{view.modelno}}</span>
+                      </div>
+                    </td>
+                    <!-- <td style="word-wrap: break-word">
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view.name1}}</span></div>
+                    </td>
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view.category}}</span></div>
+                    </td>
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view.subcategory}}</span></div>
+                    </td> -->
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view.inv_qty}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                      <div class="row_mar_0" *ngIf="view.free_qty!=null">
+                        <span class="f_wt_600 view_key">{{view.free_qty}}</span></div>
+                      <div class="row_mar_0" *ngIf="view.free_qty==null">
+                        <span class="f_wt_600 view_key">-</span></div>
+                    </td> -->
+                    <td style="text-align:right;">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view.mrp}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view.discount_eff}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                      <div class="row_mar_0" *ngIf="view.sp_discount!=null">
+                        <span class="f_wt_600 view_key">{{view.sp_discount}}</span></div>
+                      <div class="row_mar_0" *ngIf="view.sp_discount==null">
+                        <span class="f_wt_600 view_key">-</span></div>
+                    </td> -->
+                    <td style="text-align:right;" *ngIf="view.net_price!=null">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">₹ {{view.net_price.toLocaleString('en-IN')}}.00</span>
+                      </div>
+                    </td>
+                    <td style="text-align:center;" *ngIf="view.net_price==null">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+                    <td style="text-align:right;" *ngIf="view.gst_amount!=null">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">₹ {{view.gst_amount.toLocaleString('en-IN')}}</span>
+                      </div>
+                    </td>
+                    <td style="text-align:center;" *ngIf="view.gst_amount==null">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+                    <td style="text-align:right;" *ngIf="view.tot_value!=null">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">₹ {{view.tot_value.toLocaleString('en-IN')}}.00</span>
+                      </div>
+                    </td>
+                    <td style="text-align:center;" *ngIf="view.tot_value==null">
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="viewinvtransportModal1" role="dialog">
+
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" align="center">Invoice Details(Invoice.No - {{inv}})</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+
+                    <th>Delivery Mode</th>
+                    <th>LR No</th>
+                    <th>LR Date</th>
+                    <th>Transport Name</th>
+                    <th>Delivery Consin No</th>
+                    <th>Driver Name</th>
+                    <th>Vehicle No</th>
+                    <th>License No</th>
+
+
+
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let view of view_d;let i=index">
+
+                    <td>
+                      <div style="margin:0px;text-align:left" *ngIf="view.del_mode">
+                        <span class="f_wt_600 view_key">{{view.del_mode}}</span>
+                      </div>
+                      <div class="row_mar_0" *ngIf="!view.del_mode">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="row_mar_0" *ngIf="view.lrno">
+                        <span class="f_wt_600 view_key">{{view.lrno}}</span>
+                      </div>
+                      <div class="row_mar_0" *ngIf="!view.lrno">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0" *ngIf="view.lrdate">
+                        <span class="f_wt_600 view_key">{{view.lrdate}}</span>
+                      </div>
+                      <div class="row_mar_0" *ngIf="!view.lrdate">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0" *ngIf="view.transportname">
+                        <span class="f_wt_600 view_key">{{view.transportname}}</span>
+                      </div>
+                      <div class="row_mar_0" *ngIf="!view.transportname">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0" *ngIf="view.del_consin_no">
+                        <span class="f_wt_600 view_key">{{view.del_consin_no}}</span>
+                      </div>
+
+
+                      <div class="row_mar_0" *ngIf="!view.del_consin_no">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0" *ngIf="view.del_driver_name">
+                        <span class="f_wt_600 view_key">{{view.del_driver_name }}</span>
+                      </div>
+
+
+                      <div class="row_mar_0" *ngIf="!view.del_driver_name">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0" *ngIf="view.del_vehicle_no">
+                        <span class="f_wt_600 view_key">{{view.del_vehicle_no}}</span>
+                      </div>
+
+
+                      <div class="row_mar_0" *ngIf="!view.del_vehicle_no">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0" *ngIf="view.del_license_no">
+                        <span class="f_wt_600 view_key">{{view.del_license_no}}</span>
+                      </div>
+                      <div class="row_mar_0" *ngIf="!view.del_license_no">
+                        <span class="f_wt_600 view_key">-</span>
+                      </div>
+                    </td>
+
+
+
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="viewpackingModal1" role="dialog">
+
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" align="center">Packing Details(Packing No - {{packingno}})</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <!-- <th>Modelno</th> -->
+                    <th>PO No</th>
+                    <th>PO Date</th>
+                    <th>Product Name</th>
+                    <th>Packing Qty</th>
+                    <th></th>
+                    <!-- <th>Category</th>
+                      <th>Subcategory</th>
+                      <th>Invoice Qty</th>
+                      <th>Free Qty</th> -->
+                    <!-- <th>Mrp</th>
+                      <th>Discount</th>
+                      <th>Spl Discount</th>
+                      <th>Net Price</th>
+                      <th>GST Amount</th>
+                      <th>Total value</th> -->
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let view of view_d;let i=index">
+                    <td>
+                      <span class="table_pd_name">{{i + 1}}</span>
+                    </td>
+                    <td style="word-wrap: break-word">
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view.pono_ref}}</span>
+                      </div>
+                    </td>
+                    <td style="word-wrap: break-word">
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view.po_date | date:'dd-MM-yyyy'}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view.subcategory}} {{view.modelno}}</span>
+                      </div>
+                    </td>
+                    <td style="word-wrap: break-word">
+                      <div style="margin:0px;text-align:center">
+                        <span class="f_wt_600 view_key">{{view.packing_qty}}</span>
+                      </div>
+                    </td>
+                    <!-- <td style="word-wrap: break-word">
+                        <div style="margin:0px;text-align:left">
+                          <span class="f_wt_600 view_key">{{view.name1}}</span></div>
+                      </td>
+                      <td>
+                        <div style="margin:0px;text-align:left">
+                          <span class="f_wt_600 view_key">{{view.category}}</span></div>
+                      </td>
+                      <td>
+                        <div style="margin:0px;text-align:left">
+                          <span class="f_wt_600 view_key">{{view.subcategory}}</span></div>
+                      </td> -->
+                    <!-- <td>
+                        <div class="row_mar_0">
+                          <span class="f_wt_600 view_key">{{view.inv_qty}}</span></div>
+                      </td>
+                      <td>
+                        <div class="row_mar_0" *ngIf="view.free_qty!=null">
+                          <span class="f_wt_600 view_key">{{view.free_qty}}</span></div>
+                        <div class="row_mar_0" *ngIf="view.free_qty==null">
+                          <span class="f_wt_600 view_key">-</span></div>
+                      </td>
+                      <td>
+                        <div class="row_mar_0">
+                          <span class="f_wt_600 view_key">{{view.mrp}}</span></div>
+                      </td>
+                      <td>
+                        <div class="row_mar_0">
+                          <span class="f_wt_600 view_key">{{view.discount_eff}}</span></div>
+                      </td>
+                      <td>
+                        <div class="row_mar_0" *ngIf="view.sp_discount!=null">
+                          <span class="f_wt_600 view_key">{{view.sp_discount}}</span></div>
+                        <div class="row_mar_0" *ngIf="view.sp_discount==null">
+                          <span class="f_wt_600 view_key">-</span></div>
+                      </td>
+                      <td>
+                        <div class="row_mar_0">
+                          <span class="f_wt_600 view_key">{{view.net_price}}</span></div>
+                      </td>
+                      <td>
+                        <div class="row_mar_0">
+                          <span class="f_wt_600 view_key">{{view.gst_amount}}</span></div>
+                      </td>
+                      <td>
+                        <div class="row_mar_0">
+                          <span class="f_wt_600 view_key">{{view.tot_value}}</span></div>
+                      </td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--=========================================modal popup for po Details=======================================================-->
+    <div class="modal fade" id="viewmarketModal1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title-col-md-12" align="center">Product Sales Report</h4>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <div *ngIf="marketingproducts.length>0">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Product Name</th>
+                      <th>Qty</th>
+                      <th>Profit</th>
+                      <th style="margin:0px;text-align:right">Total Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let view_d of marketingproducts | paginate: { id: 'pagination1',itemsPerPage: 10, currentPage: Page };let j=index">
+                      <td>
+                        <span class="table_pd_name">{{10*(Page-1)+(j+1)}}</span>
+                      </td>
+                      <td>
+                        <div style="margin:0px;text-align:left">
+                          <span class="f_wt_600 view_key">{{view_d.subcategory}} {{view_d.modelno}}</span>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="row_mar_0" style="margin:0px;text-align:left">
+                          <span class="f_wt_600 view_key">{{view_d.inv_qty}}</span>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="row_mar_0" style="margin:0px;text-align:left">
+                          <span class="f_wt_600 view_key">{{view_d.profit}}%</span>
+                        </div>
+                      </td>
+
+
+
+                      <td>
+                        <div class="row_mar_0" style="text-align:right">
+                          <span class="f_wt_600 view_key">₹ {{view_d.final_amount.toLocaleString('en-IN')}}.00</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div *ngIf="marketingproducts.length>0">
+                  <pagination-controls id="pagination1" (pageChange)="Page = $event"></pagination-controls>
+                </div>
+              </div>
+
+
+              <div class="col-md-12" *ngIf="marketingproducts?.length<=0">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="viewmarketdelModal1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title-col-md-12" align="center">Dealer Sales Report</h4>
+
+          </div>
+
+          <div class="modal-body">
+
+            <div class="table-responsive">
+              <div class="fr">
+                <select class='s_s_r form-control' style="margin-right:10px;" (change)="searchdata()"
+                  [(ngModel)]="amount" name="amount1" #amount1="ngModel">
+                  <option [ngValue]="undefined">Search By Amount</option>
+                  <option value="zero">0</option>
+                  <option value=">0">>0</option>
+                </select>
+              </div>
+              <br><br>
+              <div *ngIf="marketingdealers.length>0">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Business Name</th>
+                      <!-- <th>Qty</th> -->
+                      <!-- <th>Profit</th> -->
+                      <th style="margin:0px;text-align:right">Total Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let view_d of marketingdealers | paginate: { id:'pagination2',itemsPerPage: 10, currentPage: Page1 };let m=index">
+                      <td class="text-left">
+                        <span class="table_pd_name">{{10*(Page1-1)+(m+1)}}</span>
+                      </td>
+                      <td>
+                        <div style="margin:0px;text-align:left">
+                          <span class="f_wt_600 view_key">{{view_d.business_name}}</span>
+                        </div>
+                      </td>
+
+                      <!-- <td>
+                        <div class="row_mar_0" style="margin:0px;text-align:left">
+                          <span class="f_wt_600 view_key">{{view_d.inv_qty}}</span>
+                        </div>
+                      </td> -->
+
+                      <!-- <td>
+                        <div class="row_mar_0" style="margin:0px;text-align:left">
+                          <span class="f_wt_600 view_key">{{view_d.profit}}%</span>
+                        </div>
+                      </td> -->
+
+
+
+                      <td>
+                        <div class="row_mar_0" style="text-align:right">
+                          <span class="f_wt_600 view_key">₹ {{view_d.final_amount.toLocaleString('en-IN')}}.00</span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <div class="row_mar_0" style="text-align:right">
+                          <span class="f_wt_600 view_key">Total</span>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="row_mar_0" style="text-align:right">
+                          <span class="f_wt_600 view_key">₹ {{this.TotMarkAmt.toLocaleString('en-IN')}}.00</span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+              <div *ngIf="marketingdealers.length>0" class="col-md-12">
+                <button class="btn btn-primary" style="float:right" type="button"
+                  (click)="printdealersalesreport()">Print</button>
+              </div>
+              <div *ngIf="marketingdealers.length>0">
+                <pagination-controls id="pagination2" (pageChange)="Page1 = $event"></pagination-controls>
+              </div>
+
+              <div class="col-md-12" *ngIf="marketingdealers?.length<=0">
+                <div class="no_data">
+                  <img class="no_data_cnter" src="../assets/emptyicon.png" />
+                  <span class="nodata_txt">No Data is Available</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="viewpiModal" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title-col-md-12" align="center">Product Details</h4>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Bussiness Name</th>
+                    <!-- <th>Product Name</th> -->
+                    <th>Pi Number</th>
+                    <th>Pi Date</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let view_d of pidata;let i=index">
+                    <td>
+                      <span class="table_pd_name">{{i + 1}}</span>
+                    </td>
+    
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view_d.business_name}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.long_name}}</span>
+                      </div>
+                    </td> -->
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.Pi_no}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.pidate | date:'dd-MM-yyyy'}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.Poqty}}</span>
+                      </div>
+                    </td>
+    
+                    <td>
+                      <div class="row_mar_0 text-right">
+                        <span class="f_wt_600 view_key">{{view_d.price | number : '1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0 text-right">
+                        <span class="f_wt_600 view_key">{{view_d.amount | number : '1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="f_wt_600 view_key text-right blue_clr"><b>Total(Qty):</b></td>
+                    <td class="f_wt_600 view_key"><b>{{this.totalqty}}</b></td>
+                    <td class="f_wt_600 view_key text-right blue_clr">Total&nbsp;(USD):</td>
+                    <td *ngIf="this.totPiUsdAmt" class="f_wt_600 view_key text-right"><b>{{this.totPiUsdAmt | number : '1.2-2'}}</b></td>
+                    <td *ngIf="!this.totPiUsdAmt" class="f_wt_600 view_key text-right"><b>--</b></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td colspan="6" class="f_wt_600 view_key text-right blue_clr">Total&nbsp;(CNY):</td>
+                    <td *ngIf="this.totPiCnyAmt" class="f_wt_600 view_key text-right"><b>{{this.totPiCnyAmt | number : '1.2-2'}}</b></td>
+                    <td *ngIf="!this.totPiCnyAmt" class="f_wt_600 view_key text-right"><b>--</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="viewtransModal" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header v_h">
+            <button type="button" class="close1" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title-col-md-12" align="center">Product Details</h4>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Bussiness Name</th>
+                    <!-- <th>Product Name</th> -->
+                    <th>Invoice No</th>
+                    <th>Invoice Date</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let view_d of transdata;let i=index">
+                    <td>
+                      <span class="table_pd_name">{{i + 1}}</span>
+                    </td>
+    
+                    <td>
+                      <div style="margin:0px;text-align:left">
+                        <span class="f_wt_600 view_key">{{view_d.business_name}}</span>
+                      </div>
+                    </td>
+                    <!-- <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.long_name}}</span>
+                      </div>
+                    </td> -->
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.inv_no}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.Invdate | date:'dd-MM-yyyy'}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0">
+                        <span class="f_wt_600 view_key">{{view_d.qty}}</span>
+                      </div>
+                    </td>
+    
+                    <td>
+                      <div class="row_mar_0 text-right">
+                        <span class="f_wt_600 view_key">{{view_d.Price | number : '1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="row_mar_0 text-right">
+                        <span class="f_wt_600 view_key">{{view_d.amount | number : '1.2-2'}}&nbsp;({{view_d.CType}})</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" class="f_wt_600 view_key text-right blue_clr"><b>Total(Qty):</b></td>
+                    <td class="f_wt_600 view_key"><b>{{this.totaltqty}}</b></td>
+                    <td class="f_wt_600 view_key text-right blue_clr">Total&nbsp;(USD):</td>
+                    <td *ngIf="this.totTrUsdAmt" class="f_wt_600 view_key text-right"><b>{{this.totTrUsdAmt | number : '1.2-2'}}</b></td>
+                    <td *ngIf="!this.totTrUsdAmt" class="f_wt_600 view_key text-right"><b>--</b></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td colspan="6" class="f_wt_600 view_key text-right blue_clr">Total&nbsp;(CNY):</td>
+                    <td *ngIf="this.totTrCnyAmt" class="f_wt_600 view_key text-right"><b>{{this.totTrCnyAmt | number : '1.2-2'}}</b></td>
+                    <td *ngIf="!this.totTrCnyAmt" class="f_wt_600 view_key text-right"><b>--</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
