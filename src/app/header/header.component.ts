@@ -27,6 +27,7 @@ interface LoginData{
 export class HeaderComponent implements OnInit{
   scrHeight:any;
   scrWidth:any;
+categories: any;
 
   @HostListener('window:resize', ['$event'])
   getScreenSize() {

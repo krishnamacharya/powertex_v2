@@ -263,7 +263,8 @@ import { WhStockComponent } from './wh-manager/wh-stock/wh-stock.component';
 import { WhSubcatgComponent } from './wh-manager/wh-stock/wh-subcatg/wh-subcatg.component';
 
 const routes: Routes = [
-  { path: "home", component: HomeComponent, data: { breadcrumb: 'home' } },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
 
   { path: "wh-pending-packing-moreinfo", component: WishListwhPendingPackingMoreinfoComponent },
 
@@ -619,6 +620,10 @@ const routes: Routes = [
   { path: "Reports-Packing-Print", component: ReportsPackingPrintComponent, canActivate: [AuthGuard] },
   { path: "Correction", component: CorrectionComponent, canActivate: [AuthGuard] },
   { path: "Coming-soon", component: ComingSoonComponent, canActivate: [AuthGuard] },
+
+
+  // ✅ Wildcard route goes last
+  { path: '**', redirectTo: '/home' },
 ];
 
 @NgModule({

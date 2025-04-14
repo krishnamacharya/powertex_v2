@@ -1,219 +1,122 @@
-<!-- <ngx-spinner class="custom_loder">
-    <img src="../../../assets/Loader.gif">
-  </ngx-spinner> -->
-  <div id="homeWrapper">
-    <div class="row homeheadwrap" >
-      <div class="hidden-xs">
-      <app-catg-menu></app-catg-menu>
-      </div>
-      <!-- <div class="col-md-2 col-sm-4 hidden-xs  pad_0" style="height: 444px;background: #0fa497;" id="sidebarCat">
-        <h3 class=" prod_head"><b>Categories</b></h3>
-        <app-product-menu [resources]="resources"></app-product-menu>
-      </div> -->
-      <div class="col-md-12 col-sm-10  pad_0" >
-        <!-- <div class="visible-sm-and-lg"  > -->
-        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-          <!-- Indicators -->
-          <!-- <ol class="carousel-indicators" style="display:none;">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-            <li data-target="#myCarousel" data-slide-to="3"></li>
-            <li data-target="#myCarousel" data-slide-to="4"></li>
-          </ol> -->
-          <!-- <div class="carousel-inner ">
-            <div class="item" *ngFor="let img of Banners; let i=index;" [ngClass]="{'active':i==0}">
-  
-               <img src="../../assets/Banners/{{img}}.jpg" style="width:100%">
-            </div>
-          </div> -->
-          <!-- <div class="carousel-inner "> -->
-          <div class="carousel-inner ">
-            <div class="item" *ngFor="let img of banners; let i=index;" [ngClass]="{'active':i==0}">
-              <img src="{{img}}">
-            </div>
-            <!-- <p>Powertex Tools Company Pvt Ltd</p> -->
-          </div>
-          <!-- Left and right controls -->
-          <a class="left carousel-control" href="#myCarousel" data-slide="prev"
-            style="background:transparent !important;opacity:1;">
-            <span class="glyphicon glyphicon-chevron-left"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="right carousel-control" href="#myCarousel" data-slide="next"
-            style="background:transparent !important;opacity:1;">
-            <span class="glyphicon glyphicon-chevron-right"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
-        <!-- </div> -->
+<!-- Wrapper to position category floating over carousel -->
+<div class="position-relative py-3 px-3 px-md-5"> <!-- Added padding -->
+  <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+    
+    <!-- Carousel Indicators -->
+    <div class="carousel-indicators">
+      <button
+        *ngFor="let img of banners; let i = index"
+        type="button"
+        data-bs-target="#myCarousel"
+        [attr.data-bs-slide-to]="i"
+        [class.active]="i === 0"
+        [attr.aria-current]="i === 0 ? 'true' : null"
+        [attr.aria-label]="'Slide ' + (i + 1)"
+      ></button>
+    </div>
+
+    <!-- Carousel Slides -->
+    <div class="carousel-inner">
+      <div
+        *ngFor="let img of banners; let i = index"
+        class="carousel-item"
+        [class.active]="i === 0"
+      >
+        <img [src]="img" class="d-block w-100" alt="Banner Image" />
       </div>
     </div>
-    <div class="container-fluid"  style="background-color: #f1f3f6;">
-      <div class="row">
-      
-        <div class=" col-xs-12 col-sm-12 hidden-xs">
-          <div class="row  hidden-xs">
-            <div class="text-center all_tools">
-              <h4 class="Shopbycatg_header">Shop By Profession</h4>
-              <img src="../../assets/images/Underline Shaded.svg" class="s_bpy_ctg">
-              <br>          <br>
-              <!-- ================================= -->
-              <div id="Carousel11" class="carousel slide text-center" data-interval="false" data-pause="hover">
-                <div class="carousel-inner">
-                  <div class="item active">
-                    <div class="row">
-                      <div class="col-md-2 col-sm-4" style="min-height: 200px"
-                        *ngFor="let p of prof | slice:0:6; let i=index ">
-                        <div class="img-thumbnail" (click)="shop_by_prof(p)">
-                          <div>
-                            <img src="{{p.image}}" 
-                              onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
-                              alt="{{p.profession}}" class="p_i" style="width:100%">
-                              <h4 style="color:black !important">{{p.profession | titlecase}}</h4>
-                          </div>
-                        </div>
-                        <!-- <div class="tool_name">
-                          <span>{{p.profession}}</span>
-                        </div> -->
-                      </div>
-                    </div>
-                  </div>
-                  <div class="item">
-                    <div class="row" *ngIf="prof && prof.length>0">
-                      <div class="col-md-2 col-sm-4" *ngFor="let p of prof | slice:1:l " style="min-height: 200px">
-                        <div class="img-thumbnail" (click)="shop_by_prof(p)">
-                          <div>
-                            <img src="{{p.image}}" onError="this.src='../../assets/images/emty_img.png';"
-                              alt="{{p.profession}}" class="p_i" style="width:100%">
-                              <h4 style="color:black !important">{{p.profession | titlecase}}</h4>
-                          </div>
-                        </div>
-                        <!-- <div class="tool_name">
-                          <span>{{p.profession}}</span>
-                        </div> -->
-                      </div>
-                      <!-- <div class="col-md-2 col-sm-4 explorewrap" *ngIf="l!==prof.length">
-                        <a class="thumbnail" routerLink="/all-Category">
-                          <span class="tool_more">Explore All...</span>
-                        </a>
-                      </div> -->
-                    </div>
-                  </div>
-                </div>
-  
-                  <a class="left carousel-control" href="#Carousel11" data-slide="prev" style="background:transparent !important;border: none;">
-              <!-- style="background:transparent !important;opacity:1;"> -->
-              <span class="rectangle glyphicon glyphicon-chevron-left" style="color:black;margin-top:30px;">
-              <span class="sr-only" >Previous</span>
-              </span>
-              </a>
-  
-  
-            <a class="right carousel-control" href="#Carousel11" data-slide="next" style="background:transparent !important;border: none;">
-            <!-- style="background:transparent !important;opacity:1;"> -->
-            <span class="rectangle glyphicon glyphicon-chevron-right" style="color:black;margin-top:30px;">
-              <span class="sr-only" >Next</span>
-            </span>
-            
-            </a>
-  
-              </div>
-              <!-- ================================================================================================ -->
-                  <!-- <div class="col-sm-1"></div>
-                  <div id="Carousel" class="carousel slide text-center" data-interval="false" data-pause="hover">
-                    <div class="carousel-inner">
-                      <div class="item active">
-                        <div class="row">
-                          <div class="col-md-1 col-sm-4" style="min-height: 200px"
-                          *ngFor="let p of prof | slice:0:6; let i=index "> -->
-                            <!-- ==================================================================================== -->
-                <!-- <div class="col-sm-2 text-center" *ngFor="let p of prof" (click)="shop_by_prof(p)">
-                  *ngFor="let p of prof"
-                  <img src="{{p.image}}" class="p_i">
-                  <h4 style="color:black !important">{{p.profession | titlecase}}</h4>
-                </div>
-                <div class="col-sm-1"></div> -->
-            </div>
-          </div>
-                <!-- ========================================================================================== -->
-                <div class="row">
-                  <div class="col-md-12 all_tools">
-                    <div>        
-                      <div class="text-center" style="padding: 3%;">
-                      <h4 class="Shopbycatg_header">Shop&nbsp;By&nbsp;Categories</h4>
-                      <img src="../../assets/images/Underline Shaded.svg" class="s_bpy_ctg">
-                      </div>
-                    </div>
-          <div id="Carousel" class="carousel slide text-center" data-interval="false" data-pause="hover">
-            <div class="carousel-inner">
-              <div class="item active">
-                <div class="row">
-                  <div class="col-md-2 col-sm-4" style="min-height: 200px"
-                    *ngFor="let data of resources | slice:0:6; let i=index ">
-                    <div class="img-thumbnailone" (click)="selected_catg(data.Category)">
-                      <div>
-                        <!-- <img src="{{data.cat}}"  -->
-                        <img src="{{data.cat}}" 
-                          onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
-                          alt="{{data.Category}}" class="p_i" style="width:100%">
-                          <!-- <h4 style="color:black !important">{{p.profession | titlecase}}</h4> -->
-                          <div class="tool_name">
-                            <span>{{data.Category}}</span>
-                          </div>
-                      </div>
-                    </div>
-                    <!-- <div class="tool_name">
-                      <span>{{p.profession}}</span>
-                    </div> -->
-                  </div>
+
+    <!-- Prev/Next Controls -->
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#myCarousel"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#myCarousel"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+
+      <!-- ================================================= -->
+      <!-- <div class="item">
+        <div class="row" *ngIf="resources && resources.length > 0">
+          <div
+            class="col-md-2 col-sm-4"
+            *ngFor="let data of resources | slice : 6 : l"
+            style="min-height: 200px"
+          >
+            <div class="img-thumbnailone" (click)="shop_by_prof(data)">
+              <div>
+                <img
+                  src="{{ data.cat }}"
+                  onError="this.src='../../assets/images/emty_img.png';"
+                  alt="{{ data.Category }}"
+                  class="p_i"
+                  style="width: 100%"
+                />
+                <h4 style="color:black !important">{{p.profession | titlecase}}</h4>
+                <div class="tool_name">
+                  <span>{{ data.Category }}</span>
                 </div>
               </div>
-              <!-- ================================================= -->
-              <div class="item">
-                <div class="row" *ngIf="resources && resources.length>0">
-                  <div class="col-md-2 col-sm-4" *ngFor="let data of resources | slice:6:l " style="min-height: 200px">
-                    <div class="img-thumbnailone" (click)="shop_by_prof(data)">
-                      <div>
-                        <img src="{{data.cat}}" onError="this.src='../../assets/images/emty_img.png';"
-                          alt="{{data.Category}}" class="p_i" style="width:100%">
-                          <!-- <h4 style="color:black !important">{{p.profession | titlecase}}</h4> -->
-                          <div class="tool_name">
-                            <span>{{data.Category}}</span>
-                          </div>
-                      </div>
-                    </div>
-                    <!-- <div class="tool_name">
+            </div> -->
+            <!-- <div class="tool_name">
                       <span>{{p.profession}}</span>
                     </div> -->
-                  </div>
-                  <!-- <div class="col-md-2 col-sm-4 explorewrap" *ngIf="l!==prof.length">
+   
+          <!-- <div class="col-md-2 col-sm-4 explorewrap" *ngIf="l!==prof.length">
                     <a class="thumbnail" routerLink="/all-Category">
                       <span class="tool_more">Explore All...</span>
                     </a>
                   </div> -->
-                </div>
-              </div>
-              <!-- ======================================================= -->
-            </div>
-  
-              <a class="left carousel-control" href="#Carousel" data-slide="prev" style="background:transparent !important;border: none;">
-          <!-- style="background:transparent !important;opacity:1;"> -->
-          <span class="rectangle glyphicon glyphicon-chevron-left" style="color:black;">
-          <span class="sr-only" >Previous</span>
-          </span>
-          </a>
-  
-  
-        <a class="right carousel-control" href="#Carousel" data-slide="next" style="background:transparent !important;border: none;">
-        <!-- style="background:transparent !important;opacity:1;"> -->
-        <span class="rectangle glyphicon glyphicon-chevron-right" style="color:black;">
-          <span class="sr-only" >Next</span>
-        </span>
-        </a>
-          </div>
-          <!-- ============================================================================================== -->
-          <!-- <div class="row" style="padding-top: 2%;">
+         
+      <!-- ======================================================= -->
+
+
+    <!-- <a
+      class="left carousel-control"
+      href="#Carousel"
+      data-slide="prev"
+      style="background: transparent !important; border: none"
+    > -->
+      <!-- style="background:transparent !important;opacity:1;"> -->
+      <!-- <span
+        class="rectangle glyphicon glyphicon-chevron-left"
+        style="color: black"
+      >
+        <span class="sr-only">Previous</span>
+      </span>
+    </a> -->
+
+    <!-- <a
+      class="right carousel-control"
+      href="#Carousel"
+      data-slide="next"
+      style="background: transparent !important; border: none"
+    > -->
+      <!-- style="background:transparent !important;opacity:1;"> -->
+      <!-- <span
+        class="rectangle glyphicon glyphicon-chevron-right"
+        style="color: black"
+      >
+        <span class="sr-only">Next</span>
+      </span>
+    </a> -->
+
+  <!-- ============================================================================================== -->
+  <!-- <div class="row" style="padding-top: 2%;">
             <div class="col-md-12 all_tools">
               <div>        
                 <div class="text-center" style="padding: 3%;">
@@ -270,19 +173,17 @@
               </div>
             </div>
         </div> -->
-        </div>
-          
-        </div>
-    </div>
-    <!-- new -->
-    <!-- mobile categories -->
-    <!-- <div class="hidden-sm hidden-md hidden-lg  row mobcatwrap">
+
+
+<!-- new -->
+<!-- mobile categories -->
+<!-- <div class="hidden-sm hidden-md hidden-lg  row mobcatwrap">
       <div class="col-xs-12">
         <h3 class="prod_head"><b>Categories</b></h3>
         <app-product-menu></app-product-menu>
       </div>
     </div> -->
-    <!-- <div class="row" style="width: 100%; background-color: #f1f3f6;">
+<!-- <div class="row" style="width: 100%; background-color: #f1f3f6;">
       <div class="col-md-2 side_img">
         <img src="../../assets/images/web_side_tamplate 1.jpg" height="500px"
               onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
@@ -394,11 +295,9 @@
                class="catg_img" style="width:100%;">
       </div>
     </div> -->
-    
-   
-    
-    <!-- <section class="pad_b_3per" style="background:#eaf4f4"> -->
-    <!-- <div class="container-fluid testimonial ">
+
+<!-- <section class="pad_b_3per" style="background:#eaf4f4"> -->
+<!-- <div class="container-fluid testimonial ">
       <div style="padding:20px;">
         <div class="row ">
           <div class="col-md-12 col-xs-12 text-center">
@@ -407,7 +306,7 @@
               <source src="../../assets/images/avc_Powertex tools- 27-10-2018.ogg" type="video/ogg">
             </video>
           </div> -->
-    <!-- <div class="col-md-6 col-xs-12">
+<!-- <div class="col-md-6 col-xs-12">
             <div id="myCarousel1" class="carousel slide" data-ride="carousel">
               
               <ol class="carousel-indicators" style="display:none;">
@@ -432,407 +331,676 @@
               </a>
             </div>
           </div> -->
-    <!-- </div>
+<!-- </div>
       </div>
     </div>
   </section> -->
-  
-    
-    <!-- =========================================================== -->
-  
-    <!-- <div *ngFor="let item of card1discp">
+
+<!-- =========================================================== -->
+
+<!-- <div *ngFor="let item of card1discp">
       <div *ngFor="let detail of item.details">
         <p>{{detail.image1sub}}</p>
       </div>
     </div> -->
-  
-      <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6 col-xs-12 col-md-3 " *ngFor="let item of card1discp">
-              <div class="row crd-brd" >
-                <!-- <div class="card pad"> <h4 class="card-title">{{card1dat.carddiscp}}</h4></div> -->
-                <div class="card pad"> <h4 class="card-title">{{item.carddiscp}}</h4></div>
-                <div *ngFor="let detail of item.details">
-                  <div class="card col-sm-3 col-xs-6 col-md-6 " (click)="dispItems(detail.image1cat,detail.image1sub)">
-                    <img src="{{detail.image1}}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <!-- <h5 class="card-title">Card title 1</h5> -->
-                        <p class="card-text" style="text-align: left; font-size: 15px;">{{detail.image1sub}}</p>
-                    </div>
-                  </div>
-                  <div class="card col-sm-3 col-xs-6 col-md-6 " (click)="dispItems(detail.image2cat,detail.image2sub)">
-                  <img src="{{detail.image2}}" class="card-img-top" alt="...">
-                  <div class="card-body">
-                      <!-- <h5 class="card-title">Card title 1</h5> -->
-                      <p class="card-text" style="text-align: left; font-size: 15px;">{{detail.image2sub}}</p>
-                  </div>
-                  </div>
-                  <div class="card col-sm-3 col-xs-6 col-md-6 " (click)="dispItems(detail.image3cat,detail.image3sub)">
-                  <img src="{{detail.image3}}" class="card-img-top" alt="...">
-                  <div class="card-body">
-                      <!-- <h5 class="card-title">Card title 1</h5> -->
-                      <p class="card-text" style="text-align: left; font-size: 15px;">{{detail.image3sub}}</p>
-                  </div>
-                  </div>
-                  <div class="card col-sm-3 col-xs-6 col-md-6 " (click)="dispItems(detail.image4cat,detail.image4sub)">
-                  <img src="{{detail.image4}}" class="card-img-top" alt="...">
-                  <div class="card-body">
-                      <!-- <h5 class="card-title">Card title 1</h5> -->
-                      <p class="card-text" style="text-align: left; font-size: 15px;">{{detail.image4sub}}</p>
-                  </div>
-                </div>
-              </div>     
-            </div>
-          </div> 
-  
-  
-  
-          <div class="col-sm-6 col-xs-12 col-md-3 ">
-              <div class="row crd-brd" >
-                <div class="card pad"> <h4 class="card-title">High Qulity Cordless Power Tools</h4></div>
-                <div>
-                  <div class="card col-sm-3 col-xs-6 col-md-12" >
-                    <img  src="https://s3.ap-south-1.amazonaws.com/gstbucket1/Powertexmodel/Banner05.jpg" class="card-img-top" style="height: -webkit-fill-available;" alt="...">
-                  </div>
-                  <div class="card col-sm-3 col-xs-6 col-md-12 ">
-                    <div class="video">
-                      <video class="sideimage ng-star-inserted" controls #videoPlayer>
-                          <source  src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/video6.mp4" type="video/mp4" />
-                      </video>
-                    </div>
-                  </div>
-              </div>     
-            </div>
+    <div class="container py-4">
+ <!-- Section Title -->
+<div class="container py-4">
+
+  <div class="position-relative">
+
+    <!-- Scroll Buttons -->
+    <button class="scroll-btn left" (click)="scrollLeft()" [disabled]="startIndex === 0">&lt;</button>
+    <button class="scroll-btn right" (click)="scrollRight()" [disabled]="endIndex >= card1dat.length">&gt;</button>
+
+    <!-- Category Wrapper -->
+    <div class="d-flex justify-content-center" style="overflow: hidden;">
+      <div
+        class="flex-shrink-0 mx-2"
+        style="width: 150px;"
+        *ngFor="let data of card1dat.slice(startIndex, endIndex)"
+        (click)="selected_catg(data.Category)"
+      >
+        <div class="card h-100 text-center border-0 shadow-sm">
+          <img
+            [src]="data.cat"
+            (error)="onImgError($event)"
+            alt="{{ data.Category }}"
+            class="card-img-top"
+            style="height: 120px; object-fit: cover;"
+          />
+          <div class="card-body p-2">
+            <p class="card-text font-weight-semibold mb-0 text-uppercase">{{ data.Category }}</p>
           </div>
         </div>
       </div>
-   
-  <!-- ========================================================= -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-6 col-xs-12 col-md-2 " *ngFor="let item of card2discp">
-        <div class="row crd-brd" >
-          <!-- <div class="card pad"> <h4 class="card-title">CARD TITLE</h4></div> -->
-          <!-- <div class="card col-sm-3 col-xs-6 col-md-12 "> -->
-            <div class="card pad"> <h4 class="card-title">{{item.carddiscp}}</h4></div>
-          <div class="card col-md-12" *ngFor="let detail of item.details">
-                <div class="col-md-12">
-              <img src="{{detail.image1}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <!-- <h5 class="card-title">Card title 1</h5> -->
-                  <p class="card-text" style="text-align: left; font-size: 15px;">{{detail.image1sub}}</p>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <img src="{{detail.image2}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <!-- <h5 class="card-title">Card title 1</h5> -->
-                  <p class="card-text" style="text-align: left; font-size: 15px;">{{detail.image2sub}}</p>
-              </div>
-            </div>
-          </div>
-          
-        </div>
+
+      <!-- Explore All Card -->
+      <div class="flex-shrink-0 mx-2" style="width: 150px;">
+        <a
+          class="card h-100 text-center border-0 shadow-sm d-flex align-items-center justify-content-center"
+          routerLink="/all-Category"
+          style="text-decoration: none;"
+        >
+          <span class="text-primary font-weight-bold">Shop Now</span>
+        </a>
       </div>
-    
     </div>
+
   </div>
+</div>
+
+<!-- Add to bottom of your component template -->
+<style>
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.scroll-btn.left {
+  left: -20px;
+}
+.scroll-btn.right {
+  right: -20px;
+}
+.scroll-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</style>
+
   
-  <!-- ========================================================= -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-6 col-xs-12 col-md-12" *ngFor="let item of card3discp">
-        <div class="row crd-brd" >
-          <div class="card pad"> <h4 class="card-title">{{item.carddiscp}}</h4></div>
-          <div class="card col-md-12" style="background-color: beige !important;" *ngFor="let detail of item.details">
-            <div class="card col-sm-3 col-xs-6 col-md-2 ">
-              <img src="{{detail.image1}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <!-- <h5 class="card-title">Card title 1</h5> -->
-                  <p class="card-text" style="text-align: center; font-size: 15px;">{{detail.image1des}}</p>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-md-3 mb-4" *ngFor="let item of card1discp">
+      <div class="card h-100 p-3 shadow-sm">
+        <!-- Card Header -->
+        <h5 class="card-title text-center mb-3">{{ item.carddiscp }}</h5>
+
+        <!-- Card Items -->
+        <div class="row g-3">
+          <ng-container *ngFor="let detail of item.details">
+            <!-- Card 1 -->
+            <div class="col-6">
+              <div class="card h-100" (click)="dispItems(detail.image1cat, detail.image1sub)">
+                <img [src]="detail.image1" class="card-img-top" alt="{{ detail.image1sub }}">
+                <div class="card-body p-2">
+                  <p class="card-text mb-0" style="font-size: 14px;">{{ detail.image1sub }}</p>
+                </div>
               </div>
             </div>
-            <div class="card col-sm-3 col-xs-6 col-md-2 ">
-              <img src="{{detail.image2}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <!-- <h5 class="card-title">Card title 1</h5> -->
-                  <p class="card-text" style="text-align: center; font-size: 15px;">{{detail.image2des}}</p>
+
+            <!-- Card 2 -->
+            <div class="col-6">
+              <div class="card h-100" (click)="dispItems(detail.image2cat, detail.image2sub)">
+                <img [src]="detail.image2" class="card-img-top" alt="{{ detail.image2sub }}">
+                <div class="card-body p-2">
+                  <p class="card-text mb-0" style="font-size: 14px;">{{ detail.image2sub }}</p>
+                </div>
               </div>
             </div>
-            <div class="card col-sm-3 col-xs-6 col-md-2 ">
-              <img src="{{detail.image3}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <!-- <h5 class="card-title">Card title 1</h5> -->
-                  <p class="card-text" style="text-align: center; font-size: 15px;">{{detail.image3des}}</p>
+
+            <!-- Card 3 -->
+            <div class="col-6">
+              <div class="card h-100" (click)="dispItems(detail.image3cat, detail.image3sub)">
+                <img [src]="detail.image3" class="card-img-top" alt="{{ detail.image3sub }}">
+                <div class="card-body p-2">
+                  <p class="card-text mb-0" style="font-size: 14px;">{{ detail.image3sub }}</p>
+                </div>
               </div>
             </div>
-            <div class="card col-sm-3 col-xs-6 col-md-2 ">
-              <img src="{{detail.image4}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <!-- <h5 class="card-title">Card title 1</h5> -->
-                  <p class="card-text" style="text-align: center; font-size: 15px;">{{detail.image4des}}</p>
+
+            <!-- Card 4 -->
+            <div class="col-6">
+              <div class="card h-100" (click)="dispItems(detail.image4cat, detail.image4sub)">
+                <img [src]="detail.image4" class="card-img-top" alt="{{ detail.image4sub }}">
+                <div class="card-body p-2">
+                  <p class="card-text mb-0" style="font-size: 14px;">{{ detail.image4sub }}</p>
+                </div>
               </div>
             </div>
-            <div class="card col-sm-3 col-xs-6 col-md-2 ">
-              <img src="{{detail.image5}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <!-- <h5 class="card-title">Card title 1</h5> -->
-                  <p class="card-text" style="text-align: center; font-size: 15px;">{{detail.image5des}}</p>
-              </div>
-            </div>
-            <div class="card col-sm-3 col-xs-6 col-md-2 ">
-              <img src="{{detail.image6}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <!-- <h5 class="card-title">Card title 1</h5> -->
-                  <p class="card-text" style="text-align: center; font-size: 15px;">{{detail.image6des}}</p>
-              </div>
-            </div>
-          </div>
+          </ng-container>
         </div>
       </div>
     </div>
   </div>
-  <!-- =========================================================================== -->
-  <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-6 col-xs-12 col-md-3 " *ngFor="let item of card1discp">
+</div>
+ 
+<!-- ========================================================= -->
+
+<div class="container py-4">
+  <div class="row g-4"> <!-- g-4 for spacing between cards -->
+
+    <div class="col-12 col-md-4" *ngFor="let card of promoCards"> <!-- 3 cards per row on medium screens and larger -->
+      <div class="card h-100 shadow-sm border-0 d-flex" style="background-color: #e6e5e3;"> <!-- Added cream background color -->
+        
+        <div class="d-flex flex-row w-100"> <!-- Added flex-row for alignment -->
           
-          <div class="row crd-brd" >
-            <!-- <div class="card pad"> <h4 class="card-title">{{card1dat.carddiscp}}</h4></div> -->
-            <div class="card pad"> <h4 class="card-title">{{item.carddiscp}}</h4></div>
-            <div *ngFor="let detail of item.details">
-              <div class="card col-sm-3 col-xs-6 col-md-6 ">
-                <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <!-- <h5 class="card-title">Card title 1</h5> -->
-                    <p class="card-text" style="text-align: left; font-size: 10px;">{{detail.image1sub}}</p>
-                </div>
-            </div>
-            <div class="card col-sm-3 col-xs-6 col-md-6 ">
-              <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png" class="card-img-top" alt="...">
-              <div class="card-body">
-                  <!-- <h5 class="card-title">Card title 1</h5> -->
-                  <p class="card-text" style="text-align: left; font-size: 10px;">{{detail.image2sub}}</p>
-              </div>
+          <!-- Left Side: Text and Discount -->
+          <div class="card-body d-flex flex-column justify-content-between w-50 p-3">
+            <p class="discount text-black fs-20 fw-bold" style="font-size: 1.2rem; margin-bottom: 10px;">{{ card.discount }}</p> <!-- Discount style with larger font -->
+            <h4 class="card-title" style="font-size: 1.5rem; font-weight: bold; color: #333;">{{ card.title }}</h4> <!-- Title style with color -->
+            <a href="#" class="btn btn-outline-black btn-sm mt-2 text-black " style="font-size: 0.9rem; width: auto; padding: 5px 20px; ">Shop Now</a>
+
           </div>
-          <div class="card col-sm-3 col-xs-6 col-md-6 ">
-            <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png" class="card-img-top" alt="...">
+
+          <!-- Right Side: Image -->
+          <div class="w-50 d-flex justify-content-center align-items-center p-3">
+            <img [src]="card.image" alt="{{ card.title }}" class="img-fluid" style="max-height: 150px; object-fit: cover;" />
+          </div>
+          
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12 col-md-2" *ngFor="let item of card2discp">
+      <div class="row crd-brd">
+        <!-- <div class="card pad"> <h4 class="card-title">CARD TITLE</h4></div> -->
+        <!-- <div class="card col-sm-3 col-xs-6 col-md-12 "> -->
+        <div class="card pad">
+          <h4 class="card-title">{{ item.carddiscp }}</h4>
+        </div>
+        <div class="card col-md-12" *ngFor="let detail of item.details">
+          <div class="col-md-12">
+            <img src="{{ detail.image1 }}" class="card-img-top" alt="..." />
             <div class="card-body">
-                <!-- <h5 class="card-title">Card title 1</h5> -->
-                <p class="card-text" style="text-align: left; font-size: 10px;">{{detail.image3sub}}</p>
-            </div>
-          </div>
-        <div class="card col-sm-3 col-xs-6 col-md-6 ">
-          <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png" class="card-img-top" alt="...">
-          <div class="card-body">
               <!-- <h5 class="card-title">Card title 1</h5> -->
-              <p class="card-text" style="text-align: left; font-size: 10px;">{{detail.image4sub}}</p>
-          </div>
-        </div>
-      </div>     
-    </div>
-  </div>
-  </div>
-  </div>
-  
-  <div class="container-fluid">
-    <div class="row">
-  <div class="col-sm-6 col-xs-12 col-md-3 " *ngFor="let item of card1discp">
-          
-    <div class="row crd-brd" >
-      <!-- <div class="card pad"> <h4 class="card-title">{{card1dat.carddiscp}}</h4></div> -->
-      <div class="card pad"> <h4 class="card-title">{{item.carddiscp}}</h4></div>
-      <div *ngFor="let detail of item.details">
-        <div class="card col-sm-3 col-xs-6 col-md-6 ">
-          <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png" class="card-img-top" alt="...">
-          <div class="card-body">
-              <!-- <h5 class="card-title">Card title 1</h5> -->
-              <p class="card-text" style="text-align: left; font-size: 10px;">{{detail.image1sub}}</p>
-          </div>
-      </div>
-      <div class="card col-sm-3 col-xs-6 col-md-6 ">
-        <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png" class="card-img-top" alt="...">
-        <div class="card-body">
-          <!-- <h5 class="card-title">Card title 1</h5> -->
-          <p class="card-text" style="text-align: left; font-size: 10px;">{{detail.image2sub}}</p>
-        </div>
-    </div>
-    <div class="card col-sm-3 col-xs-6 col-md-6 ">
-        <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png" class="card-img-top" alt="...">
-      <div class="card-body">
-        <!-- <h5 class="card-title">Card title 1</h5> -->
-        <p class="card-text" style="text-align: left; font-size: 10px;">{{detail.image3sub}}</p>
-      </div>
-    </div>
-    <div class="card col-sm-3 col-xs-6 col-md-6 ">
-      <img src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png" class="card-img-top" alt="...">
-    <div class="card-body">
-      <!-- <h5 class="card-title">Card title 1</h5> -->
-      <p class="card-text" style="text-align: left; font-size: 10px;">{{detail.image4sub}}</p>
-    </div>
-  </div>
-  </div>     
-  </div>
-  </div>
-  </div>
-  </div>
-  <!-- ================================================================== -->
-  <section class="pad_b_3per" style="background:#eaf4f4;padding-top: 10px;">
-    <div class="container-fluid testimonial ">
-      <div style="padding:20px;">
-        <div class="row ">
-  
-          <div class="col-md-1 col-xs-1"></div>
-  
-          <div class="col-md-12 col-xs-12 text-center">
-            <div id="myCarouse2" class="carousel slide" data-ride="carousel">
-  
-  
-              <div class="carousel-inner ">
-                <div class="item" *ngFor="let vid of videos; let i=index;" [ngClass]="{'active':i==0}">
-                  <!-- <video class="test_video" controls onmouseenter='VideoController(true, this)' onmouseleave='VideoController(false, this)'> -->  
-                  <video class="test_video" onmouseover="this.play()" onmouseout="this.pause()" controls poster="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/{{vid}}.png">
-                    <!-- <source src="../../assets/images/videos/{{vid}}.mp4" type="video/mp4">
-                    <source src="../../assets/images/videos/{{vid}}.ogg" type="video/ogg"> -->
-  
-                    <source src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/{{vid}}.mp4" type="video/mp4">
-                    <!-- <source src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/{{vid}}.mp4" type="video/mp4"> -->
-                   
-                  </video>
-                  <!-- <video class="test_video" onmouseover="this.play()" onmouseout="this.pause()" controls>
-                    <source src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/{{vid}}.mp4" type="video/mp4">
-                  </video> -->
-                
-                </div>
-              </div>
-              <a class="left carousel-control" href="#myCarouse2" data-slide="prev"
-                style="background:transparent !important;opacity:1;">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-                <span class="sr-only">Previous</span>
-              </a>
-              <a class="right carousel-control" href="#myCarouse2" data-slide="next"
-                style="background:transparent !important;opacity:1;">
-                <span class="glyphicon glyphicon-chevron-right"></span>
-                <span class="sr-only">Next</span>
-              </a>
-            </div>
-          </div>
-  
-          <div class="col-md-1 col-xs-1"></div>
-  
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  
-  <!-- ========================================================== -->
-    <section class="Believe">
-      <div class="container-fluid">
-        <div class="row text-center">
-          <h4 class="Shopbycatg_header">We Believe</h4>
-          <img src="../../assets/images/Underline Shaded.svg" style="width: 130px;height: 2px;margin-top: -8px;">
-        </div>
-        <div class="row">
-          <div class="col-md-6 text-center" style="padding: 0px 5%;">
-            <div>
-              <!-- <img src="../../assets/images/ceo2.png" style="border-radius:50%"> -->
-              <img src="../../assets/images/ceo.png" style="height:300px;">
-              <h6>
-                <b style="color: black; text-transform:capitalize;">LAXMI NARAYAN GUPTA</b>
-                <p style="color: #0fa497;font-weight: 600;padding: 5px 0px;">CEO</p>
-              </h6>
-              <p style="color: black;line-height: 22px;letter-spacing: 0.5px;">“ Leading with vision and empathy, I believe in cultivating a company where innovation thrives, teams flourish, and every step forward is fueled by our shared passion for excellence ”
+              <p class="card-text" style="text-align: left; font-size: 15px">
+                {{ detail.image1sub }}
               </p>
             </div>
           </div>
-          <div class="col-md-6 text-center" style="padding: 0px 5%;">
-            <img src="../../assets/images/dir.png" style="height:300px;">
-            <h6>
-              <b style="color: black;text-transform:capitalize;">MANOJ GUPTA</b>
-              <p style="color: #0fa497;font-weight: 600;padding: 5px 0px;">Managing Director</p>
-            </h6>
-            <p style="color: black;line-height: 22px;letter-spacing: 0.5px;">“ I'm committed to fostering a culture of excellence, where every challenge is an opportunity and every success is a testament to our collective dedication. ”
-            </p>
+          <div class="col-md-12">
+            <img src="{{ detail.image2 }}" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: left; font-size: 15px">
+                {{ detail.image2sub }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </section>
-  
-    <div class="container-fluid" style="padding-bottom: 10px;">
-      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xs-12">
-          <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xs-12">
-            <div class="card-two">
-                <h4>Great Value</h4>
-              <!-- <i class="fa fa-google-wallet" aria-hidden="true"></i> -->
-              <p>Most popular brands with widest range of selection at best prices.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12 col-md-12" *ngFor="let item of card3discp">
+      <div class="row crd-brd">
+        <div class="card pad">
+          <h4 class="card-title">{{ item.carddiscp }}</h4>
+        </div>
+        <div
+          class="card col-md-12"
+          style="background-color: beige !important"
+          *ngFor="let detail of item.details"
+        >
+          <div class="card col-sm-3 col-xs-6 col-md-2">
+            <img src="{{ detail.image1 }}" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: center; font-size: 15px">
+                {{ detail.image1des }}
+              </p>
             </div>
           </div>
-  
-          <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xs-12">
-              <!-- <i class="fa fa-truck" aria-hidden="true"></i> -->
-              <div class="card-two">
-                <h4>Nationwide Delivery</h4>
-                <p>Over 20,000 pincodes serviceable across India.</p>
+          <div class="card col-sm-3 col-xs-6 col-md-2">
+            <img src="{{ detail.image2 }}" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: center; font-size: 15px">
+                {{ detail.image2des }}
+              </p>
             </div>
           </div>
-          <!-- <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
+          <div class="card col-sm-3 col-xs-6 col-md-2">
+            <img src="{{ detail.image3 }}" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: center; font-size: 15px">
+                {{ detail.image3des }}
+              </p>
+            </div>
+          </div>
+          <div class="card col-sm-3 col-xs-6 col-md-2">
+            <img src="{{ detail.image4 }}" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: center; font-size: 15px">
+                {{ detail.image4des }}
+              </p>
+            </div>
+          </div>
+          <div class="card col-sm-3 col-xs-6 col-md-2">
+            <img src="{{ detail.image5 }}" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: center; font-size: 15px">
+                {{ detail.image5des }}
+              </p>
+            </div>
+          </div>
+          <div class="card col-sm-3 col-xs-6 col-md-2">
+            <img src="{{ detail.image6 }}" class="card-img-top" alt="..." />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: center; font-size: 15px">
+                {{ detail.image6des }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- =========================================================================== -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12 col-md-3" *ngFor="let item of card1discp">
+      <div class="row crd-brd">
+        <!-- <div class="card pad"> <h4 class="card-title">{{card1dat.carddiscp}}</h4></div> -->
+        <div class="card pad">
+          <h4 class="card-title">{{ item.carddiscp }}</h4>
+        </div>
+        <div *ngFor="let detail of item.details">
+          <div class="card col-sm-3 col-xs-6 col-md-6">
+            <img
+              src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: left; font-size: 10px">
+                {{ detail.image1sub }}
+              </p>
+            </div>
+          </div>
+          <div class="card col-sm-3 col-xs-6 col-md-6">
+            <img
+              src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: left; font-size: 10px">
+                {{ detail.image2sub }}
+              </p>
+            </div>
+          </div>
+          <div class="card col-sm-3 col-xs-6 col-md-6">
+            <img
+              src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: left; font-size: 10px">
+                {{ detail.image3sub }}
+              </p>
+            </div>
+          </div>
+          <div class="card col-sm-3 col-xs-6 col-md-6">
+            <img
+              src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: left; font-size: 10px">
+                {{ detail.image4sub }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12 col-md-3" *ngFor="let item of card1discp">
+      <div class="row crd-brd">
+        <!-- <div class="card pad"> <h4 class="card-title">{{card1dat.carddiscp}}</h4></div> -->
+        <div class="card pad">
+          <h4 class="card-title">{{ item.carddiscp }}</h4>
+        </div>
+        <div *ngFor="let detail of item.details">
+          <div class="card col-sm-3 col-xs-6 col-md-6">
+            <img
+              src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: left; font-size: 10px">
+                {{ detail.image1sub }}
+              </p>
+            </div>
+          </div>
+          <div class="card col-sm-3 col-xs-6 col-md-6">
+            <img
+              src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: left; font-size: 10px">
+                {{ detail.image2sub }}
+              </p>
+            </div>
+          </div>
+          <div class="card col-sm-3 col-xs-6 col-md-6">
+            <img
+              src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: left; font-size: 10px">
+                {{ detail.image3sub }}
+              </p>
+            </div>
+          </div>
+          <div class="card col-sm-3 col-xs-6 col-md-6">
+            <img
+              src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/201_Cup%20Brush%20(Green-260g).png"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <!-- <h5 class="card-title">Card title 1</h5> -->
+              <p class="card-text" style="text-align: left; font-size: 10px">
+                {{ detail.image4sub }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ================================================================== -->
+<section class="pad_b_3per" style="background: #eaf4f4; padding-top: 10px">
+  <div class="container-fluid testimonial">
+    <div style="padding: 20px">
+      <div class="row">
+        <div class="col-md-1 col-xs-1"></div>
+
+        <div class="col-md-12 col-xs-12 text-center">
+          <div id="myCarouse2" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <div
+                class="item"
+                *ngFor="let vid of videos; let i = index"
+                [ngClass]="{ active: i == 0 }"
+              >
+                <!-- <video class="test_video" controls onmouseenter='VideoController(true, this)' onmouseleave='VideoController(false, this)'> -->
+                <video
+                  class="test_video"
+                  onmouseover="this.play()"
+                  onmouseout="this.pause()"
+                  controls
+                  poster="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/{{
+                    vid
+                  }}.png"
+                >
+                  <!-- <source src="../../assets/images/videos/{{vid}}.mp4" type="video/mp4">
+                    <source src="../../assets/images/videos/{{vid}}.ogg" type="video/ogg"> -->
+
+                  <source
+                    src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/{{
+                      vid
+                    }}.mp4"
+                    type="video/mp4"
+                  />
+                  <!-- <source src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/{{vid}}.mp4" type="video/mp4"> -->
+                </video>
+                <!-- <video class="test_video" onmouseover="this.play()" onmouseout="this.pause()" controls>
+                    <source src="https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/{{vid}}.mp4" type="video/mp4">
+                  </video> -->
+              </div>
+            </div>
+            <a
+              class="left carousel-control"
+              href="#myCarouse2"
+              data-slide="prev"
+              style="background: transparent !important; opacity: 1"
+            >
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a
+              class="right carousel-control"
+              href="#myCarouse2"
+              data-slide="next"
+              style="background: transparent !important; opacity: 1"
+            >
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-1 col-xs-1"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================== -->
+<section class="Believe">
+  <div class="container-fluid">
+    <div class="row text-center">
+      <h4 class="Shopbycatg_header">We Believe</h4>
+      <img
+        src="../../assets/images/Underline Shaded.svg"
+        style="width: 130px; height: 2px; margin-top: -8px"
+      />
+    </div>
+    <div class="row">
+      <div class="col-md-6 text-center" style="padding: 0px 5%">
+        <div>
+          <!-- <img src="../../assets/images/ceo2.png" style="border-radius:50%"> -->
+          <img src="../../assets/images/ceo.png" style="height: 300px" />
+          <h6>
+            <b style="color: black; text-transform: capitalize"
+              >LAXMI NARAYAN GUPTA</b
+            >
+            <p style="color: #0fa497; font-weight: 600; padding: 5px 0px">
+              CEO
+            </p>
+          </h6>
+          <p style="color: black; line-height: 22px; letter-spacing: 0.5px">
+            “ Leading with vision and empathy, I believe in cultivating a
+            company where innovation thrives, teams flourish, and every step
+            forward is fueled by our shared passion for excellence ”
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 text-center" style="padding: 0px 5%">
+        <img src="../../assets/images/dir.png" style="height: 300px" />
+        <h6>
+          <b style="color: black; text-transform: capitalize">MANOJ GUPTA</b>
+          <p style="color: #0fa497; font-weight: 600; padding: 5px 0px">
+            Managing Director
+          </p>
+        </h6>
+        <p style="color: black; line-height: 22px; letter-spacing: 0.5px">
+          “ I'm committed to fostering a culture of excellence, where every
+          challenge is an opportunity and every success is a testament to our
+          collective dedication. ”
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container-fluid" style="padding-bottom: 10px">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xs-12">
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xs-12">
+      <div class="card-two">
+        <h4>Great Value</h4>
+        <!-- <i class="fa fa-google-wallet" aria-hidden="true"></i> -->
+        <p>
+          Most popular brands with widest range of selection at best prices.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xs-12">
+      <!-- <i class="fa fa-truck" aria-hidden="true"></i> -->
+      <div class="card-two">
+        <h4>Nationwide Delivery</h4>
+        <p>Over 20,000 pincodes serviceable across India.</p>
+      </div>
+    </div>
+    <!-- <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
               <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
               <h5>Secure Payment</h5>
               <p>Partnered wuth India's most popular and secure payment Solutions.</p>
           </div> -->
-          <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xs-12">
-              <!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> -->
-              <div class="card-two">
-                <h4>Buyer Protection</h4>
-                <p>Commited to buyer interests to provide a smooth shopping experience.</p>
-            </div>
-          </div>
-  
-          <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xs-12">
-              <!-- <i class="fa fa-headphones" aria-hidden="true"></i> -->
-              <div class="card-two">
-                <h4>Available Help Desk on working days</h4>
-                <!-- <p><a href="https://api.whatsapp.com/send?phone=919391928025&text=Hi" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true" style="font-size: 20px;"></i>&nbsp;<span>+91&nbsp;9391928025</span></a></p> -->
-                <p><a href="tel:919100115008"><i class="fa fa-phone" aria-hidden="true" style="font-size: 20px;padding: 0px;"></i>&nbsp;<span>+91&nbsp;9100115008</span></a></p>
-            </div>
-          </div>
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xs-12">
+      <!-- <i class="fa fa-check-square-o" aria-hidden="true"></i> -->
+      <div class="card-two">
+        <h4>Buyer Protection</h4>
+        <p>
+          Commited to buyer interests to provide a smooth shopping experience.
+        </p>
       </div>
-  </div>
-    <div class="sticky-container">
-      <ul class="sticky hidden-xs hidden-sm">
-        <li>
-          <a href='https://www.facebook.com/Powertextool/' target='_blank' class="facebook">
-            <img width="32" height="32" title="" alt="" src="../../assets/img/fb1.png" />
-            <p>Facebook</p>
-          </a>
-        </li>
-        <li>
-          <a href='https://twitter.com/Powertextool/' target='_blank' class="twitter">
-            <img width="32" height="32" title="" alt="" src="../../assets/img/tw11.png" />
-            <p>Twitter</p>
-          </a>
-        </li>
-        <li>
-          <a href='https://in.pinterest.com/Powertextool/' target='_blank' class="google">
-            <img width="32" height="32" title="" alt="" src="../../assets/img/pin1.png" />
-            <p>Pinterest</p>
-          </a>
-        </li>
-        <li>
-          <a href='https://www.linkedin.com/company/powertextool/' target='_blank' class="linkedin">
-            <img width="32" height="32" title="" alt="" src="../../assets/img/li1.png" />
-            <p>Linkedin</p>
-          </a>
-        </li>
-        <li>
-          <a href="https://www.youtube.com/channel/UCfCP1g6zT7mrIYiVMEOlByw" target='_blank' class="youtube">
-            <img width="32" height="32" title="" alt="" src="../../assets/img/yr.png" />
-              <p>Youtube</p>
-            </a>
-        </li>
-  
-      </ul>
     </div>
-  <!-- </div> -->
-  <!-- <ngx-spinner class="loader_spinner"></ngx-spinner> -->
+
+    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3 col-xs-12">
+      <!-- <i class="fa fa-headphones" aria-hidden="true"></i> -->
+      <div class="card-two">
+        <h4>Available Help Desk on working days</h4>
+        <!-- <p><a href="https://api.whatsapp.com/send?phone=919391928025&text=Hi" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true" style="font-size: 20px;"></i>&nbsp;<span>+91&nbsp;9391928025</span></a></p> -->
+        <p>
+          <a href="tel:919100115008"
+            ><i
+              class="fa fa-phone"
+              aria-hidden="true"
+              style="font-size: 20px; padding: 0px"
+            ></i
+            >&nbsp;<span>+91&nbsp;9100115008</span></a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sticky-container">
+  <ul class="sticky hidden-xs hidden-sm">
+    <li>
+      <a
+        href="https://www.facebook.com/Powertextool/"
+        target="_blank"
+        class="facebook"
+      >
+        <img
+          width="32"
+          height="32"
+          title=""
+          alt=""
+          src="../../assets/img/fb1.png"
+        />
+        <p>Facebook</p>
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://twitter.com/Powertextool/"
+        target="_blank"
+        class="twitter"
+      >
+        <img
+          width="32"
+          height="32"
+          title=""
+          alt=""
+          src="../../assets/img/tw11.png"
+        />
+        <p>Twitter</p>
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://in.pinterest.com/Powertextool/"
+        target="_blank"
+        class="google"
+      >
+        <img
+          width="32"
+          height="32"
+          title=""
+          alt=""
+          src="../../assets/img/pin1.png"
+        />
+        <p>Pinterest</p>
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://www.linkedin.com/company/powertextool/"
+        target="_blank"
+        class="linkedin"
+      >
+        <img
+          width="32"
+          height="32"
+          title=""
+          alt=""
+          src="../../assets/img/li1.png"
+        />
+        <p>Linkedin</p>
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://www.youtube.com/channel/UCfCP1g6zT7mrIYiVMEOlByw"
+        target="_blank"
+        class="youtube"
+      >
+        <img
+          width="32"
+          height="32"
+          title=""
+          alt=""
+          src="../../assets/img/yr.png"
+        />
+        <p>Youtube</p>
+      </a>
+    </li>
+  </ul>
+</div>
+<!-- </div> -->
+<!-- <ngx-spinner class="loader_spinner"></ngx-spinner> -->

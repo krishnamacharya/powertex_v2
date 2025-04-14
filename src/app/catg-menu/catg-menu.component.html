@@ -1,20 +1,111 @@
+<!-- Outside of any row/col layout
+<div class="dropdown-wrapper">
+  <button
+    class="btn px-4 py-2 fw-bold text-white"
+    style="background-color: rgb(53, 105, 88);"
+    (click)="toggleDrop(!showDropdown)"
+  >
+    Shop by Categories
+  </button>
 
+   <div
+    class="bg-black border shadow mt-2 p-3"
+    *ngIf="showDropdown"
+    style="width: 400px; "
+  >
+    <div class="row">
+      <div
+        class="col-4"
+        *ngFor="let p of resources | slice: 0:10"
+        (mouseenter)="hoveredCategory = p.Category"
+        (mouseleave)="hoveredCategory = ''"
+      >
+        <div class="fw-bold mb-2" (click)="selected_catg(p.Category)">
+          {{ p.Category }}
+          <i class="fa fa-angle-right float-end"></i>
+        </div>
 
-<div class="navbar">
-    <div *ngFor="let p of resources | slice:0:10" class="dropdown" (click)=selected_catg(p.Category)>
-      <button class="dropbtn">{{p.Category }}
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content over_catg_menu">
-        <ul class="row menu">
-          <li *ngFor="let subp of p.detail" (click)="selected_Sub(p.Category,subp.SubCategory)" class="column">
-              <a href="javascript:void(0)">{{subp['SubCategory'] }}</a>
+        <ul *ngIf="hoveredCategory === p.Category" class="list-unstyled ps-3">
+          <li
+            *ngFor="let subp of p.detail"
+            (click)="selected_Sub(p.Category, subp.SubCategory)"
+          >
+            <a href="javascript:void(0)" class="d-block py-1 text-secondary">
+              {{ subp.SubCategory }}
+            </a>
           </li>
         </ul>
       </div>
     </div>
-    <div>
-      <button class="btn btn-white btn-xs" style="margin: 14px 0px; font-weight: 700;" routerLink="/all-Category">Explore All..</button>
+
+    <div class="text-center mt-3">
+      <a routerLink="/all-Category" class="btn btn-outline-primary btn-sm">
+        Explore All..
+      </a>
     </div>
-    <ngx-spinner class="loader_spinner"></ngx-spinner>
   </div>
+</div> -->
+<div
+  class="position-absolute top-0 start-0 bg-white shadow-sm"
+  style="width: 270px; z-index: 1030;"
+>
+  <!-- Dropdown Button -->
+  <button
+    class="btn text-white w-100 h-20 text-start fw-bold"
+    style="background-color:rgba(13, 121, 112, 0.9019607843); border-radius: 0; height: 43px;"
+    (click)="toggleDrop(!showDropdown)"
+  >
+    <i class="fa fa-bars me-2"></i> Shop by Categories
+  </button>
+
+  <!-- Dropdown Content -->
+  <div
+    class="bg-white border mt-1 px-3 py-2"
+    *ngIf="showDropdown"
+    style="max-height: 600px; overflow-y: auto;"
+  >
+    <div class="row">
+      <div
+        class="col-12 border-bottom py-2"
+        *ngFor="let p of resources | slice: 0:10"
+        (mouseenter)="hoveredCategory = p.Category"
+        (mouseleave)="hoveredCategory = ''"
+      >
+        <div
+          class="fw-semibold d-flex justify-content-between align-items-center text-dark"
+          style="cursor: pointer;"
+          (click)="selected_catg(p.Category)"
+        >
+          {{ p.Category }}
+          <i class="fa fa-angle-right"></i>
+        </div>
+
+        <!-- Subcategories -->
+        <ul
+          *ngIf="hoveredCategory === p.Category"
+          class="list-unstyled ps-3 pt-2"
+        >
+          <li
+            *ngFor="let subp of p.detail"
+            (click)="selected_Sub(p.Category, subp.SubCategory)"
+          >
+            <a
+              href="javascript:void(0)"
+              class="d-block py-1 text-secondary small"
+              style="text-decoration: none;"
+              >{{ subp.SubCategory }}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Explore All Button -->
+    <div class="text-center mt-3">
+      <a routerLink="/all-Category" class="btn btn-outline-primary btn-sm text-black">
+        Explore All..
+      </a>
+    </div>
+    
+  </div>
+</div>

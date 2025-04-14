@@ -14,6 +14,27 @@ import { ErrorModalComponent } from '../authentication-views/error-modal/error-m
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  startIndex = 0;
+  itemsPerPage1 = 7; // Show 5 categories per view
+  endIndex = this.itemsPerPage1;
+  
+  scrollLeft() {
+    if (this.startIndex > 0) {
+      this.startIndex -= this.itemsPerPage1;
+      this.endIndex = this.startIndex + this.itemsPerPage1;
+    }
+  }
+  
+  scrollRight() {
+    if (this.endIndex < this.card1dat.length) {
+      this.startIndex += this.itemsPerPage1;
+      this.endIndex = Math.min(this.startIndex + this.itemsPerPage1, this.card1dat.length);
+    }
+  }
+  
+onImgError($event: ErrorEvent) {
+throw new Error('Method not implemented.');
+}
   resources: any[] = [];
   resources1: any[] = [];
   l: number = 11;
@@ -137,7 +158,7 @@ this.dialog.open(ErrorModalComponent, {
       let sub_c = d.subcategory;
     }
   }
-  selected_catg(cat) {
+  selected_catg(cat: any) {
     let category = cat;
     // this.router.navigate(['/prod-category', category]);
     this.router.navigate(['/Brands',category]);
@@ -150,9 +171,10 @@ card1discp:any=[];
 card1detail:any=[];
 card1image:any=[];
   card1(){
-    this.service.getData3('sup/getcardonelist').subscribe((resp) => {
+    this.service.getData3('get_products_category').subscribe((resp) => {
       this.card1dat = resp;
-      this.card1discp=this.card1dat.data;
+      this.card1discp=this.card1dat[0].data;
+      console.log("hgdfujshgfujsg=============",this.card1dat)
       // this.card1detail=this.card1discp.details;
       // this.card1image=this.card1dat[0].details[0];
       // this.service.resources.next(resp);
@@ -271,7 +293,22 @@ items = Array.from({ length: this.resources.length }, (_, i) => `Item ${i + 1}`)
     }
   }
 
-
+  promoCards = [
+    {
+      discount: '20% Discount',
+      title: 'Orbital Sander Tools',
+      image: 'assets/images/promo1.png'
+    },
+    {
+      discount: '30% Discount',
+      title: 'Ingco Angle Grinder',
+      image: 'assets/images/promo2.png'
+    },
+    {
+      discount: '10% Discount',
+      title: 'Ingco Water Pump',
+      image: 'assets/images/promo3.png'
+    }];
 }
 
 

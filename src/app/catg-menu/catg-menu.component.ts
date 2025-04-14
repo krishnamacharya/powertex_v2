@@ -14,9 +14,13 @@ interface Resources{
   standalone: false,
   templateUrl: './catg-menu.component.html',
   styleUrls: ['./catg-menu.component.scss']
+
 })
 export class CatgMenuComponent implements OnInit {
+  showDropdown = false;         // Controls the main dropdown visibility
+  hoveredCategory: String = '';
   resources:Resources[]=[];
+categoryList: any;
 
   constructor( private service:GlobalServiceService, private router:Router, private dialog: MatDialog, private spinner: NgxSpinnerService) {
 	this.service.getresource.subscribe(data => {
@@ -27,7 +31,10 @@ export class CatgMenuComponent implements OnInit {
 		  }
 	});
    }
-
+   toggleDrop(state: boolean) {
+	this.showDropdown = state;
+	console.log('Dropdown visible:', this.showDropdown);
+  }
   ngOnInit() {
     // this.getprodimg();
     // this.getData1();
@@ -138,8 +145,9 @@ $(leftPaddle).on('click', function() {
     //  this.router.navigate(['/category', b,c,d,e,br]);
 		this.router.navigate(['/Brands',cat,sub]);
   }
-  selected_catg(cat){
+  selected_catg(cat: any){
 	let category=cat;
+	
 	this.router.navigate(['/Brands',category]);
   }
 }
