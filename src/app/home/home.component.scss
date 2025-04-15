@@ -533,3 +533,10 @@ li a img{
         // margin-top: 13% !important;
         width: 100% !important;
 }
+@media (min-width: 992px) {
+    .col-lg-2-4 {
+      flex: 0 0 auto;
+      width: 20%;
+    }
+  }
+  

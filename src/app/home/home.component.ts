@@ -14,6 +14,49 @@ import { ErrorModalComponent } from '../authentication-views/error-modal/error-m
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+
+  products = [
+    {
+      image: 'assets/images/cat1.png',
+      brand: 'Palm',
+      name: 'Circumstances And Owing To The Claims',
+      price: 114.80,
+      oldPrice: null,
+      rating: 4
+    },
+    {
+      image: 'assets/images/cat2.png',
+      brand: 'HTC',
+      name: 'Maxime Placeat Facere Possimus Voluptas',
+      price: 105.20,
+      oldPrice: null,
+      rating: 1
+    },
+    {
+      image: 'assets/images/cat6.png',
+      brand: 'Apple',
+      name: 'Similique Culpa Rerum Officia Deserunt',
+      price: 117.20,
+      oldPrice: null,
+      rating: 3
+    },
+    {
+      image: 'assets/images/cat5.png',
+      brand: 'Canon',
+      name: 'Quis Autem Vel Eum Iure Reprehenderit',
+      price: 128.00,
+      oldPrice: null,
+      rating: 0
+    },
+    {
+      image: 'assets/images/cat4.png',
+      brand: 'Apple',
+      name: 'Voluptates Repudiandae Quo Voluptas',
+      price: 122.00,
+      oldPrice: 140.00,
+      rating: 5
+    }
+  ];
   startIndex = 0;
   itemsPerPage1 = 7; // Show 5 categories per view
   endIndex = this.itemsPerPage1;
@@ -302,13 +345,24 @@ items = Array.from({ length: this.resources.length }, (_, i) => `Item ${i + 1}`)
     {
       discount: '30% Discount',
       title: 'Ingco Angle Grinder',
-      image: 'assets/images/promo2.png'
+      image: 'assets/images/promo1.png'
     },
     {
       discount: '10% Discount',
       title: 'Ingco Water Pump',
-      image: 'assets/images/promo3.png'
+      image: 'assets/images/promo1.png'
     }];
+    professions = [
+      { name: 'Carpenter', image: 'assets/images/carpenter.png' },
+      { name: 'Demolition', image: 'assets/images/demolition2.png' },
+      { name: 'Electrician', image: 'assets/images/electrician.png' },
+      { name: 'Plumber', image: 'assets/images/plumber.png' },
+      { name: 'Repairing', image: 'assets/images/repair.png' },
+      { name: 'Painting', image: 'assets/images/painter.png' },
+      
+    ];
+    
+    
 }
 
 
