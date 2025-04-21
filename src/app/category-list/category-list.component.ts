@@ -52,6 +52,7 @@ export class CategoryListComponent implements OnInit {
   page: any;
   resources2dataproduct: any;
   brand: any;
+p: any;
 
   constructor(private router: Router, private route: ActivatedRoute, private service: GlobalServiceService, public dataService: DataServiceService, private _location: Location,
     private eventemit: ComponentCommunicationService, private dialog: MatDialog, private spinner: NgxSpinnerService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute,) {

@@ -752,43 +752,36 @@
 
 <!---=========product-section cards-->
 <div class="container py-5 product-section">
-  <div class="product-wrapper">
-    <h2 class="section-title mb-4">New Arrival</h2>
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <a class="nav-link active" data-bs-toggle="tab" href="#new-arrival" style="color: #009b77; font-weight: bold;">NEW ARRIVAL</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#best-sellers" style="color: #009b77;font-weight: bold;">BEST SELLERS</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="#special" style="color: #009b77;font-weight: bold;">SPECIAL</a>
+    </li>
+  </ul>
 
-    <div class="row g-4">
-      <div class="col-6 col-sm-4 col-md-3 col-lg-2-4" *ngFor="let product of products">
-        <div class="card h-100 shadow-sm border rounded product-card position-relative">
-          <div class="product-image text-center p-3">
-            <img 
-              [src]="product.image" 
-              [alt]="product.name" 
-              class="img-fluid" 
-              style="height: 160px; object-fit: contain;" 
-            />
-          </div>
+  <div class="tab-content">
+    <!-- New Arrival -->
+    <div class="tab-pane fade show active" id="new-arrival">
+      <ng-container *ngTemplateOutlet="productList; context: { items: newArrival }"></ng-container>
+    </div>
 
-          <div class="card-body p-3">
-            <p class="text-muted mb-1 small brand">{{ product.brand }}</p>
-            <p class="fw-medium mb-1 name">{{ product.name }}</p>
-            <p class="fw-bold text-success mb-1 price">
-              {{ product.price | currency:'USD' }}
-              <del *ngIf="product.oldPrice" class="text-muted small ms-2">{{ product.oldPrice | currency:'USD' }}</del>
-            </p>
-            <div class="rating text-warning small">
-              <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
-                <span [ngClass]="i < product.rating ? 'fas fa-star' : 'far fa-star'"></span>
-              </ng-container>
-            </div>
-          </div>
+    <!-- Best Sellers -->
+    <div class="tab-pane fade" id="best-sellers">
+      <ng-container *ngTemplateOutlet="productList; context: { items: bestSellers }"></ng-container>
+    </div>
 
-          <button class="btn position-absolute cart-btn" style="bottom: 10px; right: 10px;">
-            <i class="fas fa-shopping-cart text-secondary"></i>
-          </button>
-        </div>
-      </div>
+    <!-- Special -->
+    <div class="tab-pane fade" id="special">
+      <ng-container *ngTemplateOutlet="productList; context: { items: specialProducts }"></ng-container>
     </div>
   </div>
 </div>
+
 
 
 
@@ -935,7 +928,7 @@
 
 
 <!-- ========================================================== -->
-<section class="Believe py-4" style="background: url('../../assets/images/image.png') center/cover no-repeat; min-height: 300px;">
+<section class="Believe py-4" style="background: url('../../assets/images/ceo-background.png') center/cover no-repeat; min-height: 300px;">
   <div class="container">
     <div class="row text-center mb-4">
       <div class="col-12">
@@ -1018,46 +1011,55 @@ style="right: -50px;">
 
 
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-5 bg-light">
   <div class="row justify-content-center g-4">
-    <!-- Card 1 -->
+    <!-- Card Template -->
     <div class="col-sm-6 col-md-3">
-      <div class="card-two text-center p-3 h-100 shadow-sm rounded">
-        <h4>Great Value</h4>
-        <p>Most popular brands with widest range of selection at best prices.</p>
+      <div class="card-two text-center p-4 h-100 shadow-lg rounded-4 border-0 bg-white hover-effect">
+        <div class="icon mb-3 text-primary fs-2">
+          <i class="fa fa-star"></i>
+        </div>
+        <h5 class="fw-semibold mb-2">Great Value</h5>
+        <p class="text-muted small">Most popular brands with widest range of selection at best prices.</p>
       </div>
     </div>
 
-    <!-- Card 2 -->
     <div class="col-sm-6 col-md-3">
-      <div class="card-two text-center p-3 h-100 shadow-sm rounded">
-        <h4>Nationwide Delivery</h4>
-        <p>Over 20,000 pincodes serviceable across India.</p>
+      <div class="card-two text-center p-4 h-100 shadow-lg rounded-4 border-0 bg-white hover-effect">
+        <div class="icon mb-3 text-success fs-2">
+          <i class="fa fa-truck"></i>
+        </div>
+        <h5 class="fw-semibold mb-2">Nationwide Delivery</h5>
+        <p class="text-muted small">Over 20,000 pincodes serviceable across India.</p>
       </div>
     </div>
 
-    <!-- Card 3 -->
     <div class="col-sm-6 col-md-3">
-      <div class="card-two text-center p-3 h-100 shadow-sm rounded">
-        <h4>Buyer Protection</h4>
-        <p>Commited to buyer interests to provide a smooth shopping experience.</p>
+      <div class="card-two text-center p-4 h-100 shadow-lg rounded-4 border-0 bg-white hover-effect">
+        <div class="icon mb-3 text-warning fs-2">
+          <i class="fa fa-shield"></i>
+        </div>
+        <h5 class="fw-semibold mb-2">Buyer Protection</h5>
+        <p class="text-muted small">Committed to buyer interests to provide a smooth shopping experience.</p>
       </div>
     </div>
 
-    <!-- Card 4 -->
     <div class="col-sm-6 col-md-3">
-      <div class="card-two text-center p-3 h-100 shadow-sm rounded">
-        <h4>Available Help Desk on working days</h4>
-        <p>
-          <a href="tel:919100115008">
-            <i class="fa fa-phone" style="font-size: 20px;"></i>&nbsp;
-            <span>+91&nbsp;9100115008</span>
+      <div class="card-two text-center p-4 h-100 shadow-lg rounded-4 border-0 bg-white hover-effect">
+        <div class="icon mb-3 text-danger fs-2">
+          <i class="fa fa-headphones"></i>
+        </div>
+        <h5 class="fw-semibold mb-2">Help Desk (Weekdays)</h5>
+        <p class="text-muted small">
+          <a href="tel:919100115008" class="text-decoration-none text-dark">
+            <i class="fa fa-phone"></i>&nbsp;<span>+91 9100115008</span>
           </a>
         </p>
       </div>
     </div>
   </div>
 </div>
+
 
 <div class="sticky-container">
   <ul class="sticky hidden-xs hidden-sm">
@@ -1145,3 +1147,35 @@ style="right: -50px;">
 </div>
 <!-- </div> -->
 <!-- <ngx-spinner class="loader_spinner"></ngx-spinner> -->
+<ng-template #productList let-items="items">
+  <div class="row g-4">
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2-4" *ngFor="let product of items">
+      <div class="card h-100 shadow-sm border rounded product-card position-relative">
+        <div class="product-image text-center p-3">
+          <img 
+            [src]="product.image" 
+            [alt]="product.name" 
+            class="img-fluid" 
+            style="height: 160px; object-fit: contain;" 
+          />
+        </div>
+        <div class="card-body p-3">
+          <p class="text-muted mb-1 small brand">{{ product.brand }}</p>
+          <p class="fw-medium mb-1 name">{{ product.name }}</p>
+          <p class="fw-bold text-success mb-1 price">
+            {{ product.price | currency:'USD' }}
+            <del *ngIf="product.oldPrice" class="text-muted small ms-2">{{ product.oldPrice | currency:'USD' }}</del>
+          </p>
+          <div class="rating text-warning small">
+            <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+              <span [ngClass]="i < product.rating ? 'fa fa-star' : 'fa fa-star-o'"></span>
+            </ng-container>
+          </div>
+        </div>
+        <button class="btn position-absolute cart-btn" style="bottom: 10px; right: 10px;">
+          <i class="fa fa-shopping-cart text-secondary"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

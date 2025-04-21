@@ -1,4 +1,4 @@
-<footer class="footer page-footer bg_footer"style="background-color:#24a887">
+<footer class="footer page-footer bg_footer"style="background-color:#009b77">
   <div class="container">
     <div class="row">
       <div class="col-md-2 col-sm-4  col-xs-6 footer_foc">
@@ -8,7 +8,7 @@
         <p routerLink="/carrers">Careers</p>
       </div>
       <div class="col-md-2 col-sm-4  col-xs-6 footer_foc">
-        <h4 class="txt_greeen">Categories</h4>
+        <h4 class="txt_greeen">Categories</h4> 
         <p *ngFor="let p of resources | slice:0:5" (click)="catg_click(p)">{{p.Category}}</p>
         <p class="view_more" (click)="all_catg()">View More...</p>
       </div>

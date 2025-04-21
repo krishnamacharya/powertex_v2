@@ -15,7 +15,7 @@ import { ErrorModalComponent } from '../authentication-views/error-modal/error-m
 })
 export class HomeComponent implements OnInit {
 
-  products = [
+  newArrival = [
     {
       image: 'assets/images/cat1.png',
       brand: 'Palm',
@@ -30,15 +30,15 @@ export class HomeComponent implements OnInit {
       name: 'Maxime Placeat Facere Possimus Voluptas',
       price: 105.20,
       oldPrice: null,
-      rating: 1
+      rating: 3
     },
     {
-      image: 'assets/images/cat6.png',
+      image: 'assets/images/cat3.png',
       brand: 'Apple',
       name: 'Similique Culpa Rerum Officia Deserunt',
       price: 117.20,
       oldPrice: null,
-      rating: 3
+      rating: 2
     },
     {
       image: 'assets/images/cat5.png',
@@ -46,15 +46,77 @@ export class HomeComponent implements OnInit {
       name: 'Quis Autem Vel Eum Iure Reprehenderit',
       price: 128.00,
       oldPrice: null,
-      rating: 0
+      rating: 1
     },
     {
-      image: 'assets/images/cat4.png',
+      image: 'assets/images/cat6.png',
       brand: 'Apple',
       name: 'Voluptates Repudiandae Quo Voluptas',
       price: 122.00,
       oldPrice: 140.00,
       rating: 5
+    }
+  ];
+
+  bestSellers = [
+    {
+      image: 'assets/images/cat1.png',
+      brand: 'Bosch',
+      name: 'Ut Enim Ad Minim Veniam',
+      price: 135.00,
+      oldPrice: 150.00,
+      rating: 4
+    },
+    {
+      image: 'assets/images/cat2.png',
+      brand: 'HTC',
+      name: 'Facilis Est Et Expedita Distinctio',
+      price: 99.90,
+      oldPrice: null,
+      rating: 5
+    },
+    {
+      image: 'assets/images/cat3.png',
+      brand: 'Canon',
+      name: 'Excepteur Sint Occaecat Cupidatat',
+      price: 149.00,
+      oldPrice: null,
+      rating: 4
+    },
+    {
+      image: 'assets/images/cat2.png',
+      brand: 'HTC',
+      name: 'Facilis Est Et Expedita Distinctio',
+      price: 99.90,
+      oldPrice: null,
+      rating: 5
+    },
+  ];
+
+  specialProducts = [
+    {
+      image: 'assets/images/cat2.png',
+      brand: 'Apple',
+      name: 'Doloremque Laudantium Totam Rem',
+      price: 89.99,
+      oldPrice: 110.00,
+      rating: 5
+    },
+    {
+      image: 'assets/images/cat2.png',
+      brand: 'Palm',
+      name: 'Eaque Ipsa Quae Ab Illo Inventore',
+      price: 119.99,
+      oldPrice: null,
+      rating: 3
+    },
+    {
+      image: 'assets/images/cat4.png',
+      brand: 'Palm',
+      name: 'Eaque Ipsa Quae Ab Illo Inventore',
+      price: 119.99,
+      oldPrice: null,
+      rating: 3
     }
   ];
   startIndex = 0;

@@ -50,11 +50,15 @@ header {
   }
   
   .navbar-nav .nav-link:hover,
-  .navbar-nav .nav-item.active .nav-link {
-    background-color: #0d7970e6;
+  .nav-link.active {
+    background-color: #1c7562; /* Slightly darker green */
+    border-radius: 8px;
     color: #fff !important;
-    border-radius: 5px;
+    padding-left: 12px;
+    padding-right: 12px;
+    transition: all 0.3s ease;
   }
+  
   
   /* Contact Text */
   .text-muted {

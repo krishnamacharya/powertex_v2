@@ -120,7 +120,7 @@ $(leftPaddle).on('click', function() {
   }
   getprodimg() {
 		this.spinner.show();
-    return this.service.getDatawithQueryParams1('14',"menu").subscribe((resp:any) => {  
+    return this.service.getDatawithMethod1 ('get_products_categoryone/').subscribe((resp:any) => {  
 		this.spinner.hide();
 	  this.resources = resp;  
 	  this.service.resources.next(resp);
@@ -133,7 +133,7 @@ $(leftPaddle).on('click', function() {
     });
   }
   modal:any=[1];
-  selected_Sub(cat,sub){
+  selected_Sub(cat: any,sub: string){
     console.log(cat, sub);
     let br='';
     let b=cat;
@@ -142,12 +142,12 @@ $(leftPaddle).on('click', function() {
   let d= btoa(this.modal);
   let e= btoa("All");
     //  this.router.navigate(['/category', b,c,d,e]);
-    //  this.router.navigate(['/category', b,c,d,e,br]);
-		this.router.navigate(['/Brands',cat,sub]);
+     this.router.navigate(['/category', b,c,d,e,br]);
+		// this.router.navigate(['/Brands',cat,sub]);
   }
   selected_catg(cat: any){
 	let category=cat;
 	
-	this.router.navigate(['/Brands',category]);
+	this.router.navigate(['/category',category]);
   }
 }
