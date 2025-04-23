@@ -1,294 +1,191 @@
-<ngx-spinner class="custom_loder">
+<ngx-spinner class="custom_loader">
   <img src="../../../assets/Loader.gif" />
 </ngx-spinner>
-<div style="margin-top: 3%">
-  <!-- <app-catg-menu class="hidden-xs"></app-catg-menu> -->
-</div>
-<div class="container-fluid" style="padding: 30px 25px">
-  <!-- <div *ngIf="resources2.length>0"> -->
-  <div class="row">
-    <div class="col-md-2 cat_filter" *ngIf="showslider && sidemenu">
-      <div class="pad_t_b_5 cat_filter" style="z-index: 0">
-        <h4>Price</h4>
-        <!-- <ng5-slider [(value)]="minValue" [(highValue)]="maxValue" (valueChange)="price_min(minValue,maxValue)" [options]="Options" ></ng5-slider> -->
+
+<div class="container-fluid" style="padding: 30px 65px">
+  <div class="row justify-content-center">
+    <!-- Sidebar -->
+    <div class="col-md-2 cat_filter" *ngIf="showslider && sidemenu" style=" background-color: white;">
+      <div class="pad_t_b_5" style="z-index: 0; background-color: white; padding: 10px; border-radius: 8px; box-shadow: 0 0 6px rgba(0,0,0,0.05)">
+        <!-- Price Filter -->
+        <h4 class="mb-3">Price</h4>
         <ng5-slider
           [(value)]="minValue"
           [(highValue)]="maxValue"
           (Change)="price_min(minValue, maxValue)"
           [options]="Options"
         ></ng5-slider>
-        <div
-          class="col-md-6"
-          style="padding-left: 4px !important; padding-right: 4px !important"
-        >
-          <p>
-            Min value:
+        <div class="row mt-2">
+          <div class="col-6">
+            <p class="mb-1 small fw-medium">Min value:</p>
             <input
               type="number"
-              class="form-control"
-              (keypress)="price_min(minValue, maxValue)"
-              (keyup)="price_min(minValue, maxValue)"
+              class="form-control form-control-sm"
               [(ngModel)]="minValue"
-              min=""
-              oninput="validity.valid||(value='');"
-              style="padding: 4px !important"
-            />
-          </p>
-        </div>
-        <div
-          class="col-md-6"
-          style="padding-left: 4px !important; padding-right: 4px !important"
-        >
-          <p>
-            Max value:
-            <input
-              type="number"
-              class="form-control"
               (keypress)="price_min(minValue, maxValue)"
               (keyup)="price_min(minValue, maxValue)"
-              [(ngModel)]="maxValue"
-              min=""
+              min="0"
               oninput="validity.valid||(value='');"
               style="padding: 4px !important"
             />
-          </p>
+          </div>
+          <div class="col-6">
+            <p class="mb-1 small fw-medium">Max value:</p>
+            <input
+              type="number"
+              class="form-control form-control-sm"
+              [(ngModel)]="maxValue"
+              (keypress)="price_min(minValue, maxValue)"
+              (keyup)="price_min(minValue, maxValue)"
+              min="0"
+              oninput="validity.valid||(value='');"
+              style="padding: 4px !important"
+            />
+          </div>
         </div>
-      </div>
-      <div></div>
-      <div class="pad_t_b_5">
-        <div>
-          <h4>Brand</h4>
-          <ul class="pad_t_b_5 cat_filter">
-            <li style="padding-bottom: 5px" *ngFor="let p of brands">
-              <!-- (click)="filterBrand(p)" -->
-              <span>
-                <input
-                  type="checkbox"
-                  style="width: 20px; height: 20px; margin-top: 0px"
-                  (change)="disc(p.brand)"
-                  [checked]="selected_disc === p.brand"
-                />
-                <!-- [checked]="selected_disc === p.brand" -->
-                <!-- (change)="disc(p.brand)" [checked]="selected_disc === p.brand" -->
-              </span>
-              <span style="vertical-align: super; padding-left: 12px">
-                {{ p.brand }}
-              </span>
-            </li>
-          </ul>
 
-          <h4>Sort By</h4>
-          <ul class="pad_t_b_5 cat_filter">
-            <li style="padding-bottom: 5px">
-              <span (click)="Ascend('acc')" style="cursor: pointer"
-                >Price Low to High</span
-              >
-            </li>
-            <li style="padding-bottom: 5px">
-              <span
-                (click)="Ascend('dec')"
-                class="pricehtolow"
-                style="cursor: pointer"
-                >Price High to Low</span
-              >
-            </li>
-          </ul>
+        <!-- Brand Filter -->
+        <h4 class="mt-4 mb-3">Brand</h4>
+        <ul class="list-unstyled">
+          <li *ngFor="let p of brands" class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              (change)="disc(p.brand)"
+              [checked]="selected_disc === p.brand"
+              id="{{p.brand}}"
+              style="border: 2px solid rgb(102, 96, 96);"
+            />
+            <label class="form-check-label ms-2" for="{{p.brand}}" style="color: rgb(102, 96, 96);">
+              {{ p.brand }}
+            </label>
+          </li>
+          
+        </ul>
 
-          <h4>Discount</h4>
-          <ul class="pad_t_b_5 cat_filter" *ngIf="percenages">
-            <li style="padding-bottom: 5px">
-              <span>
-                <input
-                  type="checkbox"
-                  (change)="clearfilters(0)"
-                  [checked]="selected_disc === 0"
-                  style="width: 20px; height: 20px; margin-top: 0px"
-                />
-              </span>
-              <span style="vertical-align: super; padding-left: 12px"
-                >Clear Filters</span
-              >
+        <!-- Sort By -->
+        <h4 class="mt-4 mb-3">Sort By</h4>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <span (click)="Ascend('acc')" style="cursor: pointer">Price Low to High</span>
+          </li>
+          <li class="mb-2">
+            <span (click)="Ascend('dec')" style="cursor: pointer">Price High to Low</span>
+          </li>
+        </ul>
+
+        <!-- Discount -->
+        <h4 class="mt-4 mb-3">Discount</h4>
+        <ul class="list-unstyled" *ngIf="percenages">
+          <li class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              (change)="clearfilters(0)"
+              [checked]="selected_disc === 0"
+              id="clearFilters"
+              style="border: 2px solid rgb(124, 119, 119);"
+            />
+            <label class="form-check-label ms-2" for="clearFilters" style="color: rgb(102, 96, 96);">
+              Clear Filters
+            </label>
+          </li>
+        
+          <ng-container *ngFor="let discVal of [5, 10, 20, 30, 40, 50]">
+            <li class="form-check mb-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                (change)="disc(discVal)"
+                [checked]="selected_disc === discVal"
+                id="disc{{discVal}}"
+                style="border: 2px solid rgb(124, 119, 119);"
+              />
+              <label class="form-check-label ms-2" for="disc{{discVal}}" style="color: rgb(102, 96, 96);">
+                {{discVal}}% or More 
+                (<span *ngIf="percenages['prdcount(' + discVal + '%)']">{{ percenages["prdcount(" + discVal + "%)"] }}</span>
+                <span *ngIf="!percenages['prdcount(' + discVal + '%)']">0</span>)
+              </label>
             </li>
-            <li style="padding-bottom: 5px">
-              <span>
-                <input
-                  type="checkbox"
-                  (change)="disc(5)"
-                  [checked]="selected_disc === 5"
-                  style="width: 20px; height: 20px; margin-top: 0px"
-                />
-              </span>
-              <span style="vertical-align: super; padding-left: 12px"
-                >5% or More (<span *ngIf="percenages['prdcount(5%)']">{{
-                  percenages["prdcount(5%)"]
-                }}</span>
-                <span *ngIf="!percenages['prdcount(5%)']">0</span>)
-              </span>
-            </li>
-            <li style="padding-bottom: 5px">
-              <span>
-                <input
-                  type="checkbox"
-                  (change)="disc(10)"
-                  [checked]="selected_disc === 10"
-                  style="width: 20px; height: 20px; margin-top: 0px"
-                />
-              </span>
-              <span style="vertical-align: super; padding-left: 12px"
-                >10% or More (<span *ngIf="percenages['prdcount(10%)']">{{
-                  percenages["prdcount(10%)"]
-                }}</span>
-                <span *ngIf="!percenages['prdcount(10%)']">0</span>)
-              </span>
-            </li>
-            <li style="padding-bottom: 5px">
-              <span>
-                <input
-                  type="checkbox"
-                  (change)="disc(20)"
-                  [checked]="selected_disc === 20"
-                  style="width: 20px; height: 20px; margin-top: 0px"
-                />
-              </span>
-              <span style="vertical-align: super; padding-left: 12px"
-                >20% or More (<span *ngIf="percenages['prdcount(20%)']">{{
-                  percenages["prdcount(20%)"]
-                }}</span>
-                <span *ngIf="!percenages['prdcount(20%)']">0</span>)
-              </span>
-            </li>
-            <li style="padding-bottom: 5px">
-              <span>
-                <input
-                  type="checkbox"
-                  (change)="disc(30)"
-                  [checked]="selected_disc === 30"
-                  style="width: 20px; height: 20px; margin-top: 0px"
-                />
-              </span>
-              <span style="vertical-align: super; padding-left: 12px"
-                >30% or More (<span *ngIf="percenages['prdcount(30%)']">{{
-                  percenages["prdcount(30%)"]
-                }}</span>
-                <span *ngIf="!percenages['prdcount(30%)']">0</span>)
-              </span>
-              <!-- <mat-checkbox [checked]="selected_disc === 30">30% or More</mat-checkbox> -->
-            </li>
-            <li style="padding-bottom: 5px">
-              <span>
-                <input
-                  type="checkbox"
-                  (change)="disc(40)"
-                  [checked]="selected_disc === 40"
-                  style="width: 20px; height: 20px; margin-top: 0px"
-                />
-              </span>
-              <span style="vertical-align: super; padding-left: 12px"
-                >40% or More (<span *ngIf="percenages['prdcount(40%)']">{{
-                  percenages["prdcount(40%)"]
-                }}</span>
-                <span *ngIf="!percenages['prdcount(40%)']">0</span>)
-              </span>
-            </li>
-            <li style="padding-bottom: 5px">
-              <span>
-                <input
-                  type="checkbox"
-                  (change)="disc(50)"
-                  [checked]="selected_disc === 50"
-                  style="width: 20px; height: 20px; margin-top: 0px"
-                />
-              </span>
-              <span style="vertical-align: super; padding-left: 12px"
-                >50% or More (<span *ngIf="percenages['prdcount(50%)']">{{
-                  percenages["prdcount(50%)"]
-                }}</span>
-                <span *ngIf="!percenages['prdcount(50%)']">0</span>)
-              </span>
-            </li>
-          </ul>
-        </div>
+          </ng-container>
+        </ul>
+        
       </div>
     </div>
 
+    <!-- Product List Section -->
     <div class="col-md-10" [ngClass]="{ 'col-md-12': sidemenu == false }">
       <div class="row justify-content-start flex-wrap">
         <div
-          *ngFor="
-            let p of resources2data1
-              | paginate : { itemsPerPage: 32, currentPage: Page };
-            let i = index
-          "
+          *ngFor="let p of resources2data1 | paginate : { itemsPerPage: 32, currentPage: Page }; let i = index"
           class="mb-4"
           style="width: 20%;"
         >
-          <div
-            class="card h-100 shadow-sm border-0 product-card position-relative"
-            style="background-color: #fdfbfb"
-          >
-            <!-- Wishlist Icon -->
-            <div *ngIf="log_as_cust" class="position-absolute top-0 end-0 p-2">
-              <i
-                *ngIf="p.wishlist == '1'"
-                class="fa fa-heart text-danger cursor_pointer"
-                (click)="wish_list(p, '0')"
-              ></i>
-              <i
-                *ngIf="p.wishlist != '1'"
-                class="fa fa-heart text-secondary cursor_pointer"
-                (click)="wish_list(p, '1')"
-              ></i>
-            </div>
-      
-            <!-- Image Section -->
-            <div class="text-center px-3 pt-3" (click)="sub_cat(p)">
-              <img
-                [src]="p.low_image_1"
-                (error)="
-                  p.low_image_1 =
-                    'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
-                "
-                class="card-img-top img-fluid"
-                style="height: 120px; object-fit: contain"
-                alt="{{ p.brand }}"
-              />
-            </div>
-      
-            <!-- Card Body -->
-            <div class="card-body ps-4 py-3">
-              <h6 class="text-muted mb-1">{{ p.brand }}</h6>
-              <p class="fw-semibold text-truncate mb-2" title="{{ p.modelno }}">
-                {{ p.modelno }}
-              </p>
-              <div *ngIf="sidemenu">
-                <p class="mb-1">
-                  <span class="fw-bold text-dark">&#8377;{{ p.net_price }}</span>
-                  <span class="text-muted text-decoration-line-through ms-2"
-                    >&#8377;{{ p.mrp }}</span
-                  >
-                </p>
-                <p class="text-success mb-1">{{ p.discount }}% Off</p>
-                <p class="text-muted small mb-0">(Excluding GST)</p>
-              </div>
-            </div>
-          </div>
+        <div class="card h-100 product-card position-relative"
+        style="background-color: #fdfbfb; border-color: rgb(230, 219, 219); border-width: 1.5px; border-style: solid;">
+   
+     <!-- Wishlist Icon -->
+     <div *ngIf="log_as_cust" class="position-absolute top-0 end-0 p-2 z-2 text-end">
+       <i *ngIf="p.wishlist == '1'" class="fa fa-heart text-danger cursor_pointer d-block mb-2"
+          (click)="wish_list(p, '0')"></i>
+       <i *ngIf="p.wishlist != '1'" class="fa fa-heart text-secondary cursor_pointer d-block mb-2"
+          (click)="wish_list(p, '1')"></i>
+   
+       <!-- View Icon below Wishlist -->
+       <i class="fa fa-eye  cursor_pointer d-block" style="color: rgb(102, 96, 96);"></i>
+     </div>
+   
+     <!-- Image Section -->
+     <div class="text-center px-3 pt-3 position-relative" (click)="sub_cat(p)">
+       <img
+         [src]="p.low_image_1"
+         (error)="p.low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'"
+         class="card-img-top img-fluid"
+         style="height: 120px; object-fit: contain"
+         alt="{{ p.brand }}"
+       />
+     </div>
+   
+     <!-- Card Body -->
+     <div class="card-body ps-4 py-3 position-relative">
+       <p class="text-muted mb-1">{{ p.brand }}</p>
+       <p class="fw-semibold text-truncate mb-2" title="{{ p.modelno }}">{{ p.modelno }}</p>
+       <div *ngIf="sidemenu">
+         <p class="mb-1">
+           <span class="fw-bold text-dark">₹{{ p.net_price }}</span>
+           <span 
+           class="text-muted text-decoration-line-through ms-2"
+           *ngIf="p.discount && p.discount > 0"
+         >
+           &#8377;{{ p.mrp }}
+         </span>
+         </p>
+         <p class="text-success mb-1" *ngIf="p.discount && p.discount > 0">
+          {{ p.discount }}% Off
+        </p>
+        
+         <p class="text-muted small mb-0">(Excluding GST)</p>
+       </div>
+   
+       <!-- Cart Icon at bottom-right -->
+       <!-- <i class="fa fa-shopping-cart fa-1x text-success cursor_pointer position-absolute bottom-0 end-0 m-3"></i> -->
+
+     </div>
+   </div>
+   
+
+        
         </div>
       </div>
-      
 
+      <!-- Pagination -->
       <div style="text-align: center; padding: 20px">
-        <pagination-controls
-          (pageChange)="onPageChange($event)"
-        ></pagination-controls>
-        <!-- <pagination-controls [routerLink]="['app-category-list']" [queryParams]="{ page: Page }" (pageChange)="onPageChange($event)">pagenumber</pagination-controls> -->
-        <!-- <pagination-controls (pageChange)= "page = $event"></pagination-controls> -->
-        <!--  <a [routerLink]="['app-category-list']" [queryParams]="{ page: Page }">{{Page}}</a> -->
+        <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
       </div>
     </div>
   </div>
-
-  <!-- </div> -->
 </div>
+
 <ngx-spinner class="loader_spinner"></ngx-spinner>
 
 <!-- Packing Confirm Modal -->
@@ -305,22 +202,13 @@
         <div class="row">
           <div class="col-md-12">
             <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">
-                &times;
-              </button>
+              <button type="button" class="close" data-dismiss="modal">×</button>
             </h4>
-            <!-- <div class="right_mark">
-                <i class="fa fa-check" aria-hidden="true"></i>
-              </div> -->
             <div class="pad_15 text-center content_msg" style="padding: 15% 0">
-              <!-- <span>Do you want to confirm Packing Generation</span>
-                <br> -->
               <table class="table" *ngIf="specftndetails">
                 <tbody *ngFor="let pd of specftndetails">
                   <tr *ngIf="specftndetails.length != 1">
-                    <td>
-                      {{ pd.attribute }}&nbsp;:&nbsp;{{ pd.actual_value }}
-                    </td>
+                    <td>{{ pd.attribute }} : {{ pd.actual_value }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -329,11 +217,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <!-- <button type="button" (click)="generatepacking()" class="btn btn-success fr"
-            data-dismiss="modal">Confirm</button> -->
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
-          No
-        </button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
       </div>
     </div>
   </div>

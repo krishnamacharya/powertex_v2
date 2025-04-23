@@ -1,326 +1,497 @@
-<div class="container pad_t_5per pad_b_5per">
-    <div class="reg_form pad_15">
-      <div class="row">
-        <div class="container-fliud">
-          <div class="wrapper row">
-            <div class="preview col-md-6">
-              <div class="row" class="row_mar_0" *ngIf="details">
-                <div class="col-md-3 hidden-xs hidden-sm" style="padding-top: 30px;">
-                  <img id="zoom_01" *ngFor="let pd of details.high_image | slice:0:4" src="{{pd}}"
-                    [attr.data-zoom-image]="details.high_image_1"
-                    onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
-                    alt="image" style="border: 1px solid lightgray;" (click)="side_img(pd)">
-                </div>
-                <div class="col-md-9 col-xs-12">
-                  <div class="preview-pic ">
-                    <div class="text-center" id="pic-1">
-                      <img id="zoom_01" class="high_image" src="{{select_image}}"
-                        [attr.data-zoom-image]="details.high_image_1"
-                        onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
-                        alt="image">
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- // -->
-                <div class="col-xs-12 visible-xs hidden-sm hidden-md hidden-lg" style="padding-top: 30px;display: flex;">
-                  <div *ngFor="let pd of details.high_image | slice:0:3">
-                    <img id="zoom_01" src="{{pd}}" [attr.data-zoom-image]="details.high_image_1"
-                      onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
-                      alt="image" style="border: 1px solid lightgray;" (click)="side_img(pd)" width="202">
-                  </div>
-                </div>
-                <!-- // -->
-              </div>
-              <!-- <img src="{{details.high_image_1}}"  onError="this.src='https://i5.walmartimages.com/asr/f752abb3-1b49-4f99-b68a-7c4d77b45b40_1.39d6c524f6033c7c58bd073db1b99786.jpeg';"
-              alt="image" style="border-bottom: 1px solid lightgray;" > -->
-            </div>
-            <div class="details col-md-6">
-              <div>
-                <p class="b_r_d"><span><a href="javascript.void(0)" routerLink="/home" style="color: #878787 !important;
-                  ">Home</a></span>&nbsp;>&nbsp;<span
-                    (click)="catg_crumb(details.category)">{{details.category}}</span>&nbsp;>&nbsp;<span
-                    (click)="sub_catg_crumb(details.subcategory)">{{details.subcategory}}</span>&nbsp;>&nbsp;<span>{{details.modelno}}</span>
-                </p>
-              </div>
-              <h3 *ngIf="details.category!='Spare Parts'" class="product-title active_bredcrum">{{details.subcategory }} {{details.modelno}}</h3>
-              <h3 *ngIf="details.category=='Spare Parts'" class="product-title active_bredcrum">{{details.modelno}}</h3>
-              <table class="table" *ngIf="details">
-                <tbody *ngFor="let pd of details.details">
-                  <tr *ngIf="details.details.length!=1">
-                    <td>{{pd.attribute}}&nbsp;:&nbsp;{{pd.actual_value}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <h4>
-                <span class="prodnet_price">
-                  <b> &#8377; {{details.net_price }}</b>
-                </span>
-                <span style="text-decoration:line-through; color: #9e8f8f;padding: 0px 3px;">
-                  &#8377;{{ details.mrp}}</span>
-                <span style="color: #0da550"> {{details.discount}}% Off <span
-                    style="color: #9e8f9d;font-size: small;text-transform: capitalize;">(Excluding GST)</span>
-                  <span class="ratingspan">
-                    {{details.review}} <i class="fa" [ngClass]="{'fa-star-o':item,'fa-star':!item}"></i>
-                  </span>
-                </span>
-              </h4>
-              <p class="row_mar_0"><a class="v_d" href="#details">View Details</a></p>
-              <div class="action">
-                <button class="btn btn-primary" (click)="addToCart(details)" [disabled]="dis_cart()"> Add To
-                  Cart</button>&nbsp;&nbsp;
-                <button class="btn btn-danger" (click)="buyNow(details)" [disabled]="dis_buy()"> Buy Now</button>
-              </div>
+<div class="container my-5">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb px-4 py-3 shadow-sm rounded-3">
+      <li class="breadcrumb-item">
+        <a class="text-decoration-none" routerLink="/home">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <span
+          class="text-primary cursor-pointer"
+          (click)="catg_crumb(details.category)"
+          >{{ details.category }}</span
+        >
+      </li>
+      <li class="breadcrumb-item">
+        <span
+          class="text-primary cursor-pointer"
+          (click)="sub_catg_crumb(details.subcategory)"
+          >{{ details.subcategory }}</span
+        >
+      </li>
+      <li class="breadcrumb-item active fw-semibold" aria-current="page">
+        {{ details.modelno }}
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Product Detail -->
+  <div class="row g-4 align-items-start">
+    <!-- Product Images -->
+    <div class="col-lg-5">
+      <div
+        class="car1"
+        style="
+          background-color: #ffffff;
+          border: 1px solid rgb(211, 205, 205);
+          width: 508px;
+          height: 537px;
+        "
+      >
+        <!-- card content here -->
+
+        <div class="card-body text-center">
+          <img
+            id="zoom_01"
+            class="img-fluid rounded-3 mb-4"
+            [src]="select_image"
+            [attr.data-zoom-image]="details.high_image_1"
+            onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+            alt="{{ details.modelno }}"
+            style="max-height: 400px; object-fit: contain"
+          />
+          <div class="row g-3 justify-content-center">
+            <div
+              class="col-3"
+              *ngFor="let pd of details.high_image | slice : 0 : 4"
+            >
+              <img
+                class="img-thumbnail rounded cursor-pointer border-0 shadow-sm"
+                [src]="pd"
+                (click)="side_img(pd)"
+                onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                alt="thumbnail"
+              />
             </div>
           </div>
         </div>
       </div>
     </div>
-  
-    <div class="reg_form pad_15 mar_t_10">
-      <div class="row" id="details">
-        <mat-tab-group>
-          <mat-tab label="Specifications">
-            <div class="pad_15 specificationdiv">
-              <table class="table" *ngIf="details" style="font-size: 14px !important;">
-                <tbody *ngFor="let pd of details.details">
-                  <tr *ngIf="details.details.length!=1">
-                    <td>{{pd.attribute}}</td>
-                    <td>:</td>
-                    <td>{{pd.actual_value}}</td>
-                  </tr>
-                  <tr *ngIf="pd.attribute==null">
-                    <td>Not Available</td>
-                  </tr>
-                </tbody>
-              </table>
+
+    <!-- Vertical Separator -->
+    <div class="col-auto d-none d-lg-block">
+      <div style="width: 1px; height: 100%; background-color: #e0e0e0"></div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="col-lg-5">
+      <div
+        class="border-2 rounded-4"
+        style="background-color: #ffffff; height: 550px"
+      >
+        <div class="card-body">
+          <h2 class="fw-bold mb-4">
+            <ng-container
+              *ngIf="details.category != 'Spare Parts'; else onlyModel"
+            >
+              {{ details.subcategory }} {{ details.modelno }}
+            </ng-container>
+            <ng-template #onlyModel>{{ details.modelno }}</ng-template>
+          </h2>
+
+          <table class="table table-borderless table-sm mb-4">
+            <tbody *ngFor="let pd of details.details">
+              <tr *ngIf="details.details.length != 1">
+                <td class="fw-semibold text-secondary">{{ pd.attribute }}</td>
+                <td class="text-dark">{{ pd.actual_value }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mb-4">
+            <h3 class="d-inline fw-bold" style="color: #009b77">
+              &#8377; {{ details.net_price }}
+            </h3>
+            <span
+              class="text-muted text-decoration-line-through ms-2"
+              *ngIf="details.discount && details.discount > 0"
+            >
+              &#8377;{{ details.mrp }}
+            </span>
+
+            <!-- Discount Badge -->
+            <span
+              class="badge bg-success ms-2 fs-6 px-2 py-1"
+              *ngIf="details.discount && details.discount > 0"
+            >
+              {{ details.discount }}% OFF
+            </span>
+
+            <div><small class="text-muted">(Excluding GST)</small></div>
+          </div>
+
+          <div class="d-flex align-items-center mb-4">
+            <div class="text-warning fs-5 me-2">
+              <i class="fa fa-star" *ngFor="let i of [1, 2, 3, 4]"></i
+              ><i class="fa fa-star-o"></i>
             </div>
-          </mat-tab>
-          <mat-tab label="Reviews & Ratings">
-            <!-- <div class="row" style="margin:0px !important;padding:12px;" *ngIf="review.length==0">
-              No Reviews
-            </div> -->
-            <div class="col-md-4">
-              <div class="row" style="margin:0px !important;padding:12px;" *ngIf=" loginUserData.user_type !='Admin' ">
-                <b>Product Rating</b>
-                <div>
-                  <ngb-rating [max]="5" [(rate)]="rating" class="rating"></ngb-rating>
-                  <br>
-                  <label for="description">
-                  </label>
+            <span class="text-primary fs-6">{{ details.review }} Ratings</span>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex mb-4">
+            <button
+              class="btn btn-lg px-4 shadow-sm"
+              style="
+                background-color: #009b77;
+                color: white;
+                border: 1px solid #009b77;
+              "
+              (click)="addToCart(details)"
+              [disabled]="dis_cart()"
+            >
+              <i class="fa fa-shopping-cart me-2"></i> Add to Cart
+            </button>
+
+            <button
+              class="btn btn-lg px-4 shadow-sm text-black"
+              style="
+                color: #009b77;
+                border: 2px solid #009b77;
+                background-color: transparent;
+              "
+              (click)="buyNow(details)"
+              [disabled]="dis_buy()"
+            >
+              Buy Now
+            </button>
+          </div>
+
+          <a href="#details" class="text-decoration-none fs-6">
+            <i class="fa fa-info-circle"></i> View Details
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Tabs -->
+  <div class="card mb-4" id="details" style="background-color: #ffffff">
+    <ul class="nav nav-tabs card-header-tabs" id="productTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link active"
+          id="specs-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#specs"
+          type="button"
+          role="tab"
+        >
+          Specifications
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link"
+          id="reviews-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#reviews"
+          type="button"
+          role="tab"
+        >
+          Reviews & Ratings
+        </button>
+      </li>
+    </ul>
+
+    <div class="card-body" style="background-color: #ffffff">
+      <div class="tab-content" id="productTabsContent">
+        <!-- Specifications Tab -->
+
+        <div
+          class="tab-pane fade show active"
+          id="specs"
+          role="tabpanel"
+          style="background-color: #ffffff"
+        >
+          <table class="table table-striped">
+            <tbody *ngFor="let pd of details.details">
+              <tr *ngIf="details.details.length != 1">
+                <td class="fw-bold">{{ pd.attribute }}</td>
+                <td>:</td>
+                <td>{{ pd.actual_value }}</td>
+              </tr>
+              <tr *ngIf="pd.attribute == null">
+                <td colspan="3">Not Available</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Reviews Tab -->
+        <div class="tab-pane fade" id="reviews" role="tabpanel">
+          <div class="row">
+            <!-- Review Form -->
+            <div class="col-md-4" *ngIf="loginUserData.user_type != 'Admin'">
+              <div class="title">
+                <h5 class="card-title">Write a Review</h5>
+                <div class="mb-3">
+                  <label class="form-label">Your Rating</label>
+                  <ngb-rating
+                    [max]="5"
+                    [(rate)]="rating"
+                    class="fs-4 text-warning"
+                  ></ngb-rating>
                 </div>
-                <textarea class="form-control rounded-0" rows="1" name="title" [(ngModel)]="title"
-                  placeholder="Give your Name" minlength="3" maxlength="30"></textarea>
-                <br>
-                <textarea class="form-control rounded-0" rows="3" name="description" [(ngModel)]="description"
-                  placeholder="Give your comments" minlength="3" maxlength="100"></textarea><br>
-                <button type="submit" class="input_btn" (click)="PostRating(rating,title,description)">Submit</button><br>
+                <div class="mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="title"
+                    [(ngModel)]="title"
+                    placeholder="Your Name"
+                  />
+                </div>
+                <div class="mb-3">
+                  <textarea
+                    class="form-control"
+                    rows="3"
+                    name="description"
+                    [(ngModel)]="description"
+                    placeholder="Your Review"
+                  ></textarea>
+                </div>
+                <button
+                  class="btn"
+                  style="background-color: #009b77"
+                  (click)="PostRating(rating, title, description)"
+                >
+                  Submit Review
+                </button>
               </div>
             </div>
-            <div *ngFor="let r of review;let i=index;">
-              <div class="row" style="margin:0px !important;padding:12px;">
-                <div><span><i class="fa fa-user-circle"></i></span><span class="c_u_r_n">{{r.username}}</span> &nbsp;
-                  <span class="c_u_r_n" *ngIf="r.permission==0">{{r.title}}</span> </div>
-                <div style="pointer-events:none;">
+
+            <!-- Customer Reviews -->
+            <div class="col-md-8">
+              <h5 class="mb-4">Customer Reviews</h5>
+
+              <!-- Existing Reviews -->
+              <div
+                *ngFor="let r of review; let i = index"
+                class="mb-4 pb-3 border-bottom"
+              >
+                <div class="d-flex justify-content-between mb-2">
+                  <div>
+                    <span class="fw-bold me-2"
+                      ><i class="fa fa-user-circle me-1"></i
+                      >{{ r.username }}</span
+                    >
+                    <span *ngIf="r.permission == 0" class="text-muted">{{
+                      r.title
+                    }}</span>
+                  </div>
+                  <small class="text-muted">{{
+                    r.updatedate | date : "mediumDate"
+                  }}</small>
+                </div>
+
+                <div class="mb-2" style="pointer-events: none">
                   <app-rating [rating]="r.review"></app-rating>
                 </div>
-                <br>
-                <br>
-                <div class="row" style="margin:0px !important;padding:4px;pointer-events:none;" *ngIf="r.permission==1">
-                  {{r.comments}}</div>
-  
-                <div class="row" style="margin:0px !important;padding:4px;pointer-events:none;color: #c5c2c2;">
-                  {{r.updatedate | date:'mediumDate'}}</div>
-              </div>
-            </div>
-            <div class="col-md-8">
-            <div *ngIf="reviewdetails?.review_dtl">
-              <div class="pad_15"
-                *ngFor="let at of reviewdetails.review_dtl| paginate: { itemsPerPage: 3, currentPage: page}; let i=index">
-                <div [style.backgroundColor]="'#F6FFFC'" *ngIf="reviewdetails?.review_dtl">
-                  <span class="col-md-1">
-                    <i class="fa fa-user-circle-o"></i>
-                  </span>
-                  <mat-card-header style="padding-left: 0px">
-                    <p><b>{{at.title}}</b> </p>
-                  </mat-card-header>
-                  <mat-card-subtitle style="color: #6699FF">
-                    <ngb-rating [max]="5" [readonly]="true" [(rate)]="at.review" class="rating"></ngb-rating>
-                  </mat-card-subtitle>
-                  <mat-card-content>
-                    <p>
-                      {{at.comments}}
-                    </p>
-                    <span class="col-md-11">{{at.timestamp| date: 'dd/MM/yyyy'}}</span>
-                    <span class="col-md-1">{{at.timestamp| date:'HH:mm'}}</span>
-                  </mat-card-content>
-                  <br>
+
+                <div *ngIf="r.permission == 1" class="review-text">
+                  {{ r.comments }}
                 </div>
               </div>
-              <div>
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
-              </div>
-            </div>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
-      </div>
-    </div>
-  
-    <div class="reg_form pad_15 mar_t_10" *ngIf="reviewdetails?.releted_products.length>0">
-      <div class="row  hidden-xs" style="padding-top: 2%;">
-        <div class="col-md-12 all_tools">
-          <div>        
-            <div class="text-center" style="padding-bottom: 15px;">
-            <h4 class="Shopbycatg_header">Related&nbsp;Products</h4>
-            <img src="../../assets/images/Underline Shaded.svg" class="s_bpy_ctg">
-            </div>
-          </div>
-          <div id="Carousel" class="carousel slide" data-ride="carousel" data-pause="hover">
-            <div class="carousel-inner">
-              <div class="item active">
-                <div class="row">
-                  <div class="col-md-3 col-sm-4" *ngFor="let data of reviewdetails.releted_products | slice:0:4 ; let i=index ">
-                    <div (click)="selected_catg(data)" class="imgwrap cat_style pad_15" style="background-color: white !important;"  style="min-height: 200px">
-                      <div class="img-thumbnail" >
-                        <img  src="{{data.Image}}" width="200" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';" class="pointer img-responsive">
-                        <h5 class="C_s fontbold">{{data.subcategory}}</h5>
-                        <div class="text-center">
-                          <p  class="" title="{{data.modelno}}" style="height: 40px;">{{data.modelno}}</p>
-                          <p  class="fontbold" title="{{data.brand}}" style="height: 40px;">{{data.brand}}</p>
-                        </div>
-                      </div>
-                      
-                      
+
+              <!-- Review Details -->
+              <div *ngIf="reviewdetails?.review_dtl">
+                <div
+                  *ngFor="
+                    let at of reviewdetails.review_dtl
+                      | paginate : { itemsPerPage: 3, currentPage: page };
+                    let i = index
+                  "
+                  class="mb-4 pb-3 border-bottom"
+                >
+                  <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-user-circle me-2 fs-4"></i>
+                    <div>
+                      <h6 class="mb-0">{{ at.title }}</h6>
+                      <ngb-rating
+                        [max]="5"
+                        [readonly]="true"
+                        [(rate)]="at.review"
+                        class="text-warning"
+                      ></ngb-rating>
                     </div>
                   </div>
+                  <p class="mb-2">{{ at.comments }}</p>
+                  <small class="text-muted">{{
+                    at.timestamp | date : "dd/MM/yyyy HH:mm"
+                  }}</small>
                 </div>
-              </div>
-              <!-- <div class="item">
-                <div class="row" *ngIf="reviewdetails.releted_products.length>0">
-                  <div class="col-md-3 col-sm-4" *ngFor="let data of reviewdetails.releted_products | slice:4:l " style="min-height: 200px">
-                    <div class="imgwrap cat_style pad_15" (click)="selected_catg(data)">
-                      <div class="img-thumbnail">
-                        <img src="{{data.Image}}" onError="this.src='../../assets/images/emty_img.png';"
-                          alt="{{data.category}}" class="catg_img" style="width:100%">
-                          <div class="text-center">
-                            <h5 class="C_s fontbold">{{data.subcategory}}</h5>
-                            <div class="text-center">
-                              <p  class="" title="{{data.modelno}}" style="height: 40px;">{{data.modelno}}</p>
-                              <p  class="fontbold" title="{{data.brand}}" style="height: 40px;">{{data.brand}}</p>
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-              <div class="item" *ngIf="reviewdetails.releted_products.length>4">
-                <div class="row">
-                  <div class="col-md-3 col-sm-4" *ngFor="let data of reviewdetails.releted_products | slice:4:8 ; let i=index ">
-                    <div (click)="selected_catg(data)" class="imgwrap cat_style pad_15" style="background-color: white !important;"  style="min-height: 200px">
-                      <div class="img-thumbnail" >
-                        <img  src="{{data.Image}}" width="200" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';" class="pointer img-responsive">
-                        <h5 class="C_s fontbold">{{data.subcategory}}</h5>
-                        <div class="text-center">
-                          <p  class="" title="{{data.modelno}}" style="height: 40px;">{{data.modelno}}</p>
-                          <p  class="fontbold" title="{{data.brand}}" style="height: 40px;">{{data.brand}}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ---------- -->
-              <div class="item" *ngIf="reviewdetails.releted_products.length>8">
-                <div class="row">
-                  <div class="col-md-3 col-sm-4" *ngFor="let data of reviewdetails.releted_products | slice:8:12 ; let i=index ">
-                    <div (click)="selected_catg(data)" class="imgwrap cat_style pad_15" style="background-color: white !important;"  style="min-height: 200px">
-                      <div class="img-thumbnail" >
-                        <img  src="{{data.Image}}" width="200" onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';" class="pointer img-responsive">
-                        <h5 class="C_s fontbold">{{data.subcategory}}</h5>
-                        <div class="text-center">
-                          <p  class="" title="{{data.modelno}}" style="height: 40px;">{{data.modelno}}</p>
-                          <p  class="fontbold" title="{{data.brand}}" style="height: 40px;">{{data.brand}}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-  
-            </div>
-            <a data-slide="prev" href="#Carousel" class="left carousel-control">
-              <span>‹</span>
-            </a>
-            <a data-slide="next" href="#Carousel" class="right carousel-control">
-              <span>›</span>
-            </a>
-          </div>
-          <br>
-        </div>
-      </div>
-    </div>
-  
-  
-    <!-- modal pop up start here -->
-    <div class="modal fade" id="alrdyItemAddedModal" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body" style="padding:0;">
-            <div class="row">
-              <div class="col-md-12">
-                <h4 class="alert_heading">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </h4>
-                <div class="right_mark">
-                  <i class="fa fa-check" aria-hidden="true"></i>
-                </div>
-                <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
-                  <span>This Item Already Added to Cart.</span>
-                  <br>
-                  <span>Increase Quantity from Cart.</span>
-                  <!-- <span  [innerHTML]="msg"></span> -->
+
+                <div class="d-flex justify-content-center mt-4">
+                  <pagination-controls
+                    (pageChange)="page = $event"
+                  ></pagination-controls>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger fl" data-dismiss="modal" (click)="gotoPrevious()">Close</button>
-            <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoPrevious()">OK</button>
           </div>
         </div>
       </div>
     </div>
-    <!-- <ngx-spinner class="loader_spinner"></ngx-spinner> -->
-    <ngx-spinner class="custom_loder">
-      <img src="../../../assets/Loader.gif">
-      </ngx-spinner>
-    <!-- modal pop up start here -->
-    <div class="modal fade" id="insertItemModal" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body" style="padding:0;">
-            <div class="row">
-              <div class="col-md-12">
-                <h4 class="alert_heading">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </h4>
-                <div class="right_mark">
-                  <i class="fa fa-check" aria-hidden="true"></i>
-                </div>
-                <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
-                  <span>Item added to cart successfully</span>
-                </div>
+
+    <!-- Related Products -->
+
+    <div *ngIf="reviewdetails?.releted_products.length > 0" class="mb-5">
+      <h5 class="fw-semibold text-muted">Related Products</h5>
+
+      <div class="position-relative">
+        <!-- Left Chevron Icon -->
+        <button
+          class="position-absolute top-50 start-0 translate-middle-y border-0 bg-transparent p-0 related-prev"
+        >
+          <i class="fa fa-chevron-left fs-4 "style="color:#5e5757"></i>
+        </button>
+
+        <!-- Right Chevron Icon -->
+        <button
+          class="position-absolute top-50 end-0 translate-middle-y border-0 bg-transparent p-0 related-next"
+        >
+          <i class="fa fa-chevron-right fs-4 "style="color:#5e5757"></i>
+        </button>
+
+        <!-- Product Cards -->
+        <div class="row gx-3 gy-4 mx-5">
+          <div
+            class="col-lg-2 col-md-4 col-6"
+            style="width: 210px"
+            *ngFor="let data of reviewdetails.releted_products | slice : 0 : 4"
+          >
+            <div
+              class="card h-295 product-card position-relative"
+              style="
+                background-color: #fdfbfb;
+                border-color: rgb(230, 219, 219);
+                border-width: 1.5px;
+                border-style: solid;
+              "
+              (click)="selected_catg(data)"
+            >
+              <!-- Wishlist Icon -->
+              <div
+                *ngIf="log_as_cust"
+                class="position-absolute top-0 end-0 p-2 z-2 text-end"
+              >
+                <i
+                  *ngIf="data.wishlist == '1'"
+                  class="fa fa-heart text-danger cursor_pointer d-block mb-2"
+                ></i>
+                <i
+                  *ngIf="data.wishlist != '1'"
+                  class="fa fa-heart text-secondary cursor_pointer d-block mb-2"
+                ></i>
+
+                <!-- View Icon below Wishlist -->
+                <i
+                  class="fa fa-eye cursor_pointer d-block"
+                  style="color: rgb(102, 96, 96)"
+                ></i>
+              </div>
+
+              <!-- Image Section -->
+              <div class="position-relative">
+                <img
+                  [src]="data.Image"
+                  onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
+                  class="img-fluid rounded"
+                  alt="{{ data.modelno }}"
+                  style="max-height: 130px; object-fit: contain"
+                />
+              </div>
+
+              <!-- Card Body with Reduced Padding and Left-Aligned Text -->
+              <div class="card-body px-1 py-2 text-start position-relative">
+                <h6 class="text-muted mb-1">{{ data.subcategory }}</h6>
+                <h5
+                  class="fw-semibold text-truncate mb-2"
+                  title="{{ data.modelno }}"
+                >
+                  {{ data.modelno }}
+                </h5>
+                <h3 class="mb-0" style="color: #009b77">{{ data.price }}</h3>
+                <span 
+                class="text-muted text-decoration-line-through ms-2"
+                *ngIf="data.discount && data.discount > 0"
+              >
+                &#8377;{{ data.mrp }}
+              </span>
+                <p class="mb-0" style="color: #009b77">{{ data.brand }}</p>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger fl" data-dismiss="modal"
-              (click)="gotoPreviousInsert()">Close</button>
-            <button type="button" class="btn btn-success fr" data-dismiss="modal"
-              (click)="gotoPreviousInsert()">OK</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Modals -->
+  <div class="modal fade" id="alrdyItemAddedModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center p-5">
+          <div class="mb-4">
+            <i class="fas fa-check-circle text-success fa-5x"></i>
+          </div>
+          <h5 class="modal-title mb-3">This Item Already Added to Cart</h5>
+          <p>Increase Quantity from Cart</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            (click)="gotoPrevious()"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+            (click)="gotoPrevious()"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="insertItemModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center p-5">
+          <div class="mb-4">
+            <i class="fas fa-check-circle text-success fa-5x"></i>
+          </div>
+          <h5 class="modal-title mb-3">Item added to cart successfully</h5>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            (click)="gotoPreviousInsert()"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+            (click)="gotoPreviousInsert()"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ngx-spinner class="custom-loader">
+    <img src="../../../assets/Loader.gif" class="img-fluid" />
+  </ngx-spinner>
+</div>
