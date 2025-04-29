@@ -5,17 +5,13 @@
 <div class="container-fluid" style="padding: 30px 65px">
   <div class="row justify-content-center">
     <!-- Sidebar / Filters -->
-    <div class="col-md-2 cat_filter pe-3" style="background-color: white">
-      <div
-        class="pad_t_b_5"
-        style="
-          z-index: 0;
-          background-color: white;
-          padding: 10px;
-          border-radius: 8px;
-          box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
-        "
-      >
+    <div class="col-md-2  pe-3"  style="
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid rgba(133, 132, 132, 0.2);
+    padding: 10px;
+  ">
+   
         <!-- Price Filter -->
         <h4 class="mb-3 text-muted">Price</h4>
         <ngx-slider
@@ -115,7 +111,7 @@
             </label>
           </li>
         </ul>
-      </div>
+      
     </div>
 
     <!-- Product List Section -->
@@ -134,28 +130,30 @@
             class="card h-100 product-card position-relative"
             style="
               background-color: #fdfbfb;
-              border-color: rgb(230, 219, 219);
+              border-color:  rgba(133, 132, 132, 0.2);
               border-width: 1.5px;
               border-style: solid;
             "
           >
-            <div
-              *ngIf="log_as_cust"
-              class="position-absolute top-0 end-0 p-2 z-2 text-end"
-            >
-              <i
-                *ngIf="p.wishlist === '1'"
-                class="fa fa-heart text-danger cursor_pointer d-block"
-                (click)="wish_list()"
-              ></i>
-              <i
-                *ngIf="p.wishlist !== '1'"
-                class="fa fa-heart text-secondary cursor_pointer d-block"
-                (click)="wish_list()"
-              ></i>
-                   <!-- View Icon below Wishlist -->
-       <i class="fa fa-eye  cursor_pointer d-block" style="color: rgb(102, 96, 96);"></i>
-            </div>
+            
+  <div
+  *ngIf="log_as_cust"
+  class="icon-container position-absolute top-0 end-0 p-2 z-2 text-end d-none"
+>
+  <i
+    *ngIf="p.wishlist === '1'"
+    class="fa fa-heart text-danger cursor_pointer d-block"
+    (click)="wish_list()"
+  ></i>
+  <i
+    *ngIf="p.wishlist !== '1'"
+    class="fa fa-heart-o text-secondary cursor_pointer d-block"
+    (click)="wish_list()"
+  ></i>
+  <i
+    class="fa fa-eye cursor_pointer d-block text-muted"
+  ></i>
+</div>
 
             <div
               (click)="sub_cat(p)"

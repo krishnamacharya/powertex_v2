@@ -231,3 +231,8 @@ h6{
     // text-align: center;
     justify-content: center;
 }
+
+.product-card:hover .icon-container {
+    display: block !important;
+  }
+  
