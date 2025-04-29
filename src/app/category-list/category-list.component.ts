@@ -16,7 +16,7 @@ declare var $: any;
   selector: 'app-category-list',
   standalone: false,
   templateUrl: './category-list.component.html',
-  styleUrls: ['./category-list.component.scss']
+  styleUrl: './category-list.component.scss'
 })
 export class CategoryListComponent implements OnInit {
   Page: any = 1;
@@ -54,7 +54,7 @@ export class CategoryListComponent implements OnInit {
   brand: any;
 p: any;
 
-  constructor(private router: Router, private route: ActivatedRoute, private service: GlobalServiceService, public dataService: DataServiceService, private _location: Location,
+  constructor(private router: Router, private route: ActivatedRoute, private service: GlobalServiceService, public dataService: DataServiceService,
     private eventemit: ComponentCommunicationService, private dialog: MatDialog, private spinner: NgxSpinnerService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute,) {
     this.obj.id = 4;
   }
@@ -92,7 +92,7 @@ p: any;
         this.sub_c = params['c'];
         this.modal = atob(params['d']);
         this.select = atob(params['e']);
-        this.brand = atob(params['br']);
+        this.brand = '';
         // this.d=this.category;
         this.e = atob(this.sub_c);
         this.e = encodeURIComponent(this.e)
@@ -117,9 +117,9 @@ p: any;
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-  goBack() {
-  this._location.back();
- }
+//   goBack() {
+//   this._location.back();
+//  }
   /* ================current location====================== */
   /* goToPage(pageNum) {
     
@@ -240,8 +240,8 @@ p: any;
 
     this.sidemenu = false
     this.spinner.show();
-    return this.service.getDatawithMethodParams1('profession/', this.prof).subscribe((resp) => {
-    // return this.service.getDatawithQueryParams1('10.08', this.prof).subscribe((resp) => {
+    // return this.service.getDatawithMethodParams1('profession/', this.prof).subscribe((resp) => {
+    return this.service.getDatawithQueryParams1('10.08', this.prof).subscribe((resp) => {
       if (this.service.response == null) {
         console.log(this.route.routeConfig.component.name);
         this.spinner.show();

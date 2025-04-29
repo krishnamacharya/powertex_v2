@@ -374,6 +374,7 @@ shop_by_prof(p) {
 dispItems(cat,subcat){
   let b:any=cat;
   let c:any=btoa(subcat);
+  console.log(c,"subcat");
   let d=btoa('1');
   let e = btoa("All");
   let br = btoa('Powertex');

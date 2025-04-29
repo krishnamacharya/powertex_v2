@@ -135,14 +135,13 @@ $(leftPaddle).on('click', function() {
   modal:any=[1];
   selected_Sub(cat: any,sub: string){
     console.log(cat, sub);
-    let br='';
     let b=cat;
     let c=btoa(sub);
     
   let d= btoa(this.modal);
   let e= btoa("All");
     //  this.router.navigate(['/category', b,c,d,e]);
-     this.router.navigate(['/category', b,c,d,e,br]);
+     this.router.navigate(['/category', b,c,d,e]);
 		// this.router.navigate(['/Brands',cat,sub]);
   }
   selected_catg(cat: any){
