@@ -26,7 +26,7 @@
   </nav>
 
   <!-- Product Detail -->
-  <div class="row g-4 align-items-start">
+  <div class="row g-4">
     <!-- Product Images -->
     <div class="col-lg-5">
       <div
@@ -34,8 +34,8 @@
         style="
           background-color: #ffffff;
           border: 1px solid rgb(211, 205, 205);
-          width: 508px;
-          height: 537px;
+          width: 509px;
+          height: 480px;
         "
       >
         <!-- card content here -->
@@ -69,9 +69,9 @@
     </div>
 
     <!-- Vertical Separator -->
-    <div class="col-auto d-none d-lg-block">
+    <!-- <div class="col-auto d-none d-lg-block">
       <div style="width: 1px; height: 100%; background-color: #e0e0e0"></div>
-    </div>
+    </div> -->
 
     <!-- Product Details -->
     <div class="col-lg-5">
@@ -80,14 +80,14 @@
         style="background-color: #ffffff; height: 550px"
       >
         <div class="card-body">
-          <h2 class="fw-bold mb-4">
+          <h3 class="fw-bold mb-4">
             <ng-container
               *ngIf="details.category != 'Spare Parts'; else onlyModel"
             >
               {{ details.subcategory }} {{ details.modelno }}
             </ng-container>
             <ng-template #onlyModel>{{ details.modelno }}</ng-template>
-          </h2>
+          </h3>
 
           <table class="table table-borderless table-sm mb-4">
             <tbody *ngFor="let pd of details.details">
@@ -127,8 +127,67 @@
             </div>
             <span class="text-primary fs-6">{{ details.review }} Ratings</span>
           </div>
+          <!-- Quantity & Wishlist -->
+          <div
+            class="d-flex align-items-center justify-content-between mb-4 w-100"
+          >
+            <!-- Quantity Block -->
+            <div class="d-flex flex-column align-items-start mb-4 w-100">
+              <!-- Quantity Block -->
+              <label class="mb-2 fw-semibold">Quantity</label>
+              <div class="input-group mb-3">
+                <button
+                  class="btn border border-secondary bg-white"
+                  type="button"
+                  (click)="decreaseQty()"
+                  style=" border: 1px solid rgb(168, 165, 165) "
+                >
+                  <i
+                    class="fa fa-minus"
+                    style="color: rgb(124, 116, 116); pointer-events: none"
+                  ></i>
+                </button>
+                <input
+                  type="text"
+                  class="form-control text-center px-2"
+                  [(ngModel)]="quantity"
+                  readonly
+                  style="max-width: 50px; border: 1px solid rgb(168, 165, 165);"
+                />
+                <button
+                  class="btn border border-secondary bg-white"
+                  type="button"
+                  (click)="increaseQty()"
+                  style=" border: 1px solid rgb(168, 165, 165) "
+                >
+                  <i
+                    class="fa fa-plus"
+                    style="color: rgb(124, 116, 116); pointer-events: none"
+                  ></i>
+                </button>
+              </div>
 
-          <div class="d-grid gap-2 d-md-flex mb-4">
+              <!-- Wishlist Block Under Quantity -->
+              <div
+                class="d-flex align-items-center mt-2"
+                style="cursor: pointer"
+                (click)="addToWishlist(details)"
+                role="button"
+                aria-label="Add to Wishlist"
+              >
+                <i
+                  class="fa fa-heart fs-4 me-2"
+                  [ngClass]="{
+                    'text-danger': isWishlisted,
+                    'text-secondary': !isWishlisted
+                  }"
+                ></i>
+                <small class="text-muted">Add to Wishlist</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-grid gap-3 d-md-flex mb-4">
             <button
               class="btn btn-lg px-4 shadow-sm"
               style="
@@ -156,9 +215,9 @@
             </button>
           </div>
 
-          <a href="#details" class="text-decoration-none fs-6">
+          <!-- <a href="#details" class="text-decoration-none fs-6">
             <i class="fa fa-info-circle"></i> View Details
-          </a>
+          </a> -->
         </div>
       </div>
     </div>
@@ -203,18 +262,19 @@
           role="tabpanel"
           style="background-color: #ffffff"
         >
-          <table class="table table-striped">
-            <tbody *ngFor="let pd of details.details">
-              <tr *ngIf="details.details.length != 1">
-                <td class="fw-bold">{{ pd.attribute }}</td>
-                <td>:</td>
-                <td>{{ pd.actual_value }}</td>
-              </tr>
-              <tr *ngIf="pd.attribute == null">
-                <td colspan="3">Not Available</td>
-              </tr>
-            </tbody>
-          </table>
+        <table class="table table-striped" style="background-color: #ffffff;">
+          <tbody *ngFor="let pd of details.details">
+            <tr *ngIf="details.details.length != 1">
+              <td class="fw-bold">{{ pd.attribute }}</td>
+              <td>:</td>
+              <td>{{ pd.actual_value }}</td>
+            </tr>
+            <tr *ngIf="pd.attribute == null">
+              <td colspan="3">Not Available</td>
+            </tr>
+          </tbody>
+        </table>
+        
         </div>
 
         <!-- Reviews Tab -->
@@ -301,7 +361,7 @@
                       | paginate : { itemsPerPage: 3, currentPage: page };
                     let i = index
                   "
-                  class="mb-4 pb-3 border-bottom"
+                  class="mb-4 pb-3 border-bottom" 
                 >
                   <div class="d-flex align-items-center mb-2">
                     <i class="fas fa-user-circle me-2 fs-4"></i>
@@ -343,14 +403,14 @@
         <button
           class="position-absolute top-50 start-0 translate-middle-y border-0 bg-transparent p-0 related-prev"
         >
-          <i class="fa fa-chevron-left fs-4 "style="color:#5e5757"></i>
+          <i class="fa fa-chevron-left fs-4" style="color: #5e5757"></i>
         </button>
 
         <!-- Right Chevron Icon -->
         <button
           class="position-absolute top-50 end-0 translate-middle-y border-0 bg-transparent p-0 related-next"
         >
-          <i class="fa fa-chevron-right fs-4 "style="color:#5e5757"></i>
+          <i class="fa fa-chevron-right fs-4" style="color: #5e5757"></i>
         </button>
 
         <!-- Product Cards -->
@@ -411,13 +471,7 @@
                 >
                   {{ data.modelno }}
                 </h5>
-                <h3 class="mb-0" style="color: #009b77">{{ data.price }}</h3>
-                <span 
-                class="text-muted text-decoration-line-through ms-2"
-                *ngIf="data.discount && data.discount > 0"
-              >
-                &#8377;{{ data.mrp }}
-              </span>
+              
                 <p class="mb-0" style="color: #009b77">{{ data.brand }}</p>
               </div>
             </div>

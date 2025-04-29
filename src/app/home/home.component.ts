@@ -265,8 +265,8 @@ this.dialog.open(ErrorModalComponent, {
   }
   selected_catg(cat: any) {
     let category = cat;
-    // this.router.navigate(['/prod-category', category]);
-    this.router.navigate(['/Brands',category]);
+    this.router.navigate(['/prod-category', category]);
+    // this.router.navigate(['/Brands',category]);
   }
   selected_all() {
     this.router.navigateByUrl('/all-Category');
@@ -424,6 +424,7 @@ items = Array.from({ length: this.resources.length }, (_, i) => `Item ${i + 1}`)
       { name: 'Painting', image: 'assets/images/painter.png' },
       
     ];
+   
     
     
 }

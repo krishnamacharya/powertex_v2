@@ -5,8 +5,21 @@
 <div class="container-fluid" style="padding: 30px 65px">
   <div class="row justify-content-center">
     <!-- Sidebar -->
-    <div class="col-md-2 cat_filter" *ngIf="showslider && sidemenu" style=" background-color: white;">
-      <div class="pad_t_b_5" style="z-index: 0; background-color: white; padding: 10px; border-radius: 8px; box-shadow: 0 0 6px rgba(0,0,0,0.05)">
+    <div
+      class="col-md-2 cat_filter"
+      *ngIf="showslider && sidemenu"
+      style="background-color: white"
+    >
+      <div
+        class="pad_t_b_5"
+        style="
+          z-index: 0;
+          background-color: white;
+          padding: 10px;
+          border-radius: 8px;
+          box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+        "
+      >
         <!-- Price Filter -->
         <h4 class="mb-3">Price</h4>
         <ng5-slider
@@ -53,24 +66,31 @@
               type="checkbox"
               (change)="disc(p.brand)"
               [checked]="selected_disc === p.brand"
-              id="{{p.brand}}"
-              style="border: 2px solid rgb(102, 96, 96);"
+              id="{{ p.brand }}"
+              style="border: 2px solid rgb(102, 96, 96)"
             />
-            <label class="form-check-label ms-2" for="{{p.brand}}" style="color: rgb(102, 96, 96);">
+            <label
+              class="form-check-label ms-2"
+              for="{{ p.brand }}"
+              style="color: rgb(102, 96, 96)"
+            >
               {{ p.brand }}
             </label>
           </li>
-          
         </ul>
 
         <!-- Sort By -->
         <h4 class="mt-4 mb-3">Sort By</h4>
         <ul class="list-unstyled">
           <li class="mb-2">
-            <span (click)="Ascend('acc')" style="cursor: pointer">Price Low to High</span>
+            <span (click)="Ascend('acc')" style="cursor: pointer"
+              >Price Low to High</span
+            >
           </li>
           <li class="mb-2">
-            <span (click)="Ascend('dec')" style="cursor: pointer">Price High to Low</span>
+            <span (click)="Ascend('dec')" style="cursor: pointer"
+              >Price High to Low</span
+            >
           </li>
         </ul>
 
@@ -84,13 +104,17 @@
               (change)="clearfilters(0)"
               [checked]="selected_disc === 0"
               id="clearFilters"
-              style="border: 2px solid rgb(124, 119, 119);"
+              style="border: 2px solid rgb(124, 119, 119)"
             />
-            <label class="form-check-label ms-2" for="clearFilters" style="color: rgb(102, 96, 96);">
+            <label
+              class="form-check-label ms-2"
+              for="clearFilters"
+              style="color: rgb(102, 96, 96)"
+            >
               Clear Filters
             </label>
           </li>
-        
+
           <ng-container *ngFor="let discVal of [5, 10, 20, 30, 40, 50]">
             <li class="form-check mb-2">
               <input
@@ -98,18 +122,24 @@
                 type="checkbox"
                 (change)="disc(discVal)"
                 [checked]="selected_disc === discVal"
-                id="disc{{discVal}}"
-                style="border: 2px solid rgb(124, 119, 119);"
+                id="disc{{ discVal }}"
+                style="border: 2px solid rgb(124, 119, 119)"
               />
-              <label class="form-check-label ms-2" for="disc{{discVal}}" style="color: rgb(102, 96, 96);">
-                {{discVal}}% or More 
-                (<span *ngIf="percenages['prdcount(' + discVal + '%)']">{{ percenages["prdcount(" + discVal + "%)"] }}</span>
-                <span *ngIf="!percenages['prdcount(' + discVal + '%)']">0</span>)
+              <label
+                class="form-check-label ms-2"
+                for="disc{{ discVal }}"
+                style="color: rgb(102, 96, 96)"
+              >
+                {{ discVal }}% or More (<span
+                  *ngIf="percenages['prdcount(' + discVal + '%)']"
+                  >{{ percenages["prdcount(" + discVal + "%)"] }}</span
+                >
+                <span *ngIf="!percenages['prdcount(' + discVal + '%)']">0</span
+                >)
               </label>
             </li>
           </ng-container>
         </ul>
-        
       </div>
     </div>
 
@@ -117,70 +147,98 @@
     <div class="col-md-10" [ngClass]="{ 'col-md-12': sidemenu == false }">
       <div class="row justify-content-start flex-wrap">
         <div
-          *ngFor="let p of resources2data1 | paginate : { itemsPerPage: 32, currentPage: Page }; let i = index"
+          *ngFor="
+            let p of resources2data1
+              | paginate : { itemsPerPage: 32, currentPage: Page };
+            let i = index
+          "
           class="mb-4"
-          style="width: 20%;"
+          style="width: 20%"
         >
-        <div class="card h-100 product-card position-relative"
-        style="background-color: #fdfbfb; border-color: rgb(230, 219, 219); border-width: 1.5px; border-style: solid;">
-   
-     <!-- Wishlist Icon -->
-     <div *ngIf="log_as_cust" class="position-absolute top-0 end-0 p-2 z-2 text-end">
-       <i *ngIf="p.wishlist == '1'" class="fa fa-heart text-danger cursor_pointer d-block mb-2"
-          (click)="wish_list(p, '0')"></i>
-       <i *ngIf="p.wishlist != '1'" class="fa fa-heart text-secondary cursor_pointer d-block mb-2"
-          (click)="wish_list(p, '1')"></i>
-   
-       <!-- View Icon below Wishlist -->
-       <i class="fa fa-eye  cursor_pointer d-block" style="color: rgb(102, 96, 96);"></i>
-     </div>
-   
-     <!-- Image Section -->
-     <div class="text-center px-3 pt-3 position-relative" (click)="sub_cat(p)">
-       <img
-         [src]="p.low_image_1"
-         (error)="p.low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'"
-         class="card-img-top img-fluid"
-         style="height: 120px; object-fit: contain"
-         alt="{{ p.brand }}"
-       />
-     </div>
-   
-     <!-- Card Body -->
-     <div class="card-body ps-4 py-3 position-relative">
-       <p class="text-muted mb-1">{{ p.brand }}</p>
-       <p class="fw-semibold text-truncate mb-2" title="{{ p.modelno }}">{{ p.modelno }}</p>
-       <div *ngIf="sidemenu">
-         <p class="mb-1">
-           <span class="fw-bold text-dark">₹{{ p.net_price }}</span>
-           <span 
-           class="text-muted text-decoration-line-through ms-2"
-           *ngIf="p.discount && p.discount > 0"
-         >
-           &#8377;{{ p.mrp }}
-         </span>
-         </p>
-         <p class="text-success mb-1" *ngIf="p.discount && p.discount > 0">
-          {{ p.discount }}% Off
-        </p>
-        
-         <p class="text-muted small mb-0">(Excluding GST)</p>
-       </div>
-   
-       <!-- Cart Icon at bottom-right -->
-       <!-- <i class="fa fa-shopping-cart fa-1x text-success cursor_pointer position-absolute bottom-0 end-0 m-3"></i> -->
+          <div
+            class="card h-100 product-card position-relative"
+            style="
+              background-color: #fdfbfb;
+              border-color: rgb(230, 219, 219);
+              border-width: 1.5px;
+              border-style: solid;
+            "
+          >
+            <!-- Wishlist Icon -->
+            <div class="position-absolute top-0 end-0 p-2 z-2 text-end">
+              <i
+                *ngIf="p.wishlist == '1'"
+                class="fa fa-heart text-danger cursor_pointer d-block mb-2"
+                (click)="wish_list(p, '0')"
+              ></i>
+              <i
+                *ngIf="p.wishlist != '1'"
+                class="fa fa-heart text-secondary cursor_pointer d-block mb-2"
+                (click)="wish_list(p, '1')"
+              ></i>
 
-     </div>
-   </div>
-   
+              <!-- View Icon below Wishlist -->
+              <i
+                class="fa fa-eye cursor_pointer d-block"
+                style="color: rgb(102, 96, 96)"
+              ></i>
+            </div>
 
-        
+            <!-- Image Section -->
+            <div
+              class="text-center px-3 pt-3 position-relative"
+              (click)="sub_cat(p)"
+            >
+              <img
+                [src]="p.low_image_1"
+                (error)="
+                  p.low_image_1 =
+                    'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
+                "
+                class="card-img-top img-fluid"
+                style="height: 120px; object-fit: contain"
+                alt="{{ p.brand }}"
+              />
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body ps-4 py-3 position-relative">
+              <p class="text-muted mb-1">{{ p.brand }}</p>
+              <p class="fw-semibold text-truncate mb-2" title="{{ p.modelno }}">
+                {{ p.modelno }}
+              </p>
+              <div *ngIf="sidemenu">
+                <p class="mb-1">
+                  <span class="fw-bold text-dark">₹{{ p.net_price }}</span>
+                  <span
+                    class="text-muted text-decoration-line-through ms-2"
+                    *ngIf="p.discount && p.discount > 0"
+                  >
+                    &#8377;{{ p.mrp }}
+                  </span>
+                </p>
+                <p
+                  class="text-success mb-1"
+                  *ngIf="p.discount && p.discount > 0"
+                >
+                  {{ p.discount }}% Off
+                </p>
+
+                <p class="text-muted small mb-0">(Excluding GST)</p>
+              </div>
+
+              <!-- Cart Icon at bottom-right -->
+              <!-- <i class="fa fa-shopping-cart fa-1x text-success cursor_pointer position-absolute bottom-0 end-0 m-3"></i> -->
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Pagination -->
+      <!-- Pagination -->    
       <div style="text-align: center; padding: 20px">
-        <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+        <pagination-controls
+          (pageChange)="onPageChange($event)"
+        ></pagination-controls>
       </div>
     </div>
   </div>
@@ -202,7 +260,9 @@
         <div class="row">
           <div class="col-md-12">
             <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">×</button>
+              <button type="button" class="close" data-dismiss="modal">
+                ×
+              </button>
             </h4>
             <div class="pad_15 text-center content_msg" style="padding: 15% 0">
               <table class="table" *ngIf="specftndetails">
@@ -217,7 +277,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+          No
+        </button>
       </div>
     </div>
   </div>

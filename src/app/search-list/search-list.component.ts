@@ -15,6 +15,9 @@ import { ErrorModalComponent } from '../authentication-views/error-modal/error-m
   styleUrls: ['./search-list.component.scss']
 })
 export class SearchListComponent implements OnInit {
+setSort(arg0: string) {
+throw new Error('Method not implemented.');
+}
 
   Page: any = 1;
   category: any;
@@ -46,6 +49,7 @@ export class SearchListComponent implements OnInit {
   user_id: any;
   icon: boolean;
   log_as_cust:boolean=true;
+selected_sort: any;
   constructor(private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute, private service: GlobalServiceService, public dataService: DataServiceService, private dialog: MatDialog) {
 
   }
