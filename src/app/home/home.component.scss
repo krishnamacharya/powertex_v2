@@ -539,4 +539,10 @@ li a img{
       width: 20%;
     }
   }
+  .category-card:hover {
+    border-color: #009b77 !important; /* Green shade */
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+   
+  }
   

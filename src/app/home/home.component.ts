@@ -120,7 +120,7 @@ export class HomeComponent implements OnInit {
     }
   ];
   startIndex = 0;
-  itemsPerPage1 = 7; // Show 5 categories per view
+  itemsPerPage1 = 6; // Show 5 categories per view
   endIndex = this.itemsPerPage1;
   
   scrollLeft() {
@@ -265,8 +265,8 @@ this.dialog.open(ErrorModalComponent, {
   }
   selected_catg(cat: any) {
     let category = cat;
-    this.router.navigate(['/prod-category', category]);
-    // this.router.navigate(['/Brands',category]);
+    // this.router.navigate(['/prod-category', category]);
+    this.router.navigate(['/Brands',category]);
   }
   selected_all() {
     this.router.navigateByUrl('/all-Category');

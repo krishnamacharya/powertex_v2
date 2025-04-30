@@ -9,8 +9,8 @@
         <a routerLink="/home" class="navbar-brand d-flex align-items-center">
           <img
             src="/assets/images/logo.png"
-            alt="Elocart Logo"
-            style="height: 90px"
+            alt="powertextools Logo"
+            style="height: 90px;width: 170px;"
           />
         </a>
       </div>
@@ -20,14 +20,14 @@
         <form class="w-100" style="max-width: 450px">
           <div class="input-group">
             <input
-              class="form-control border-primary rounded-start-pill"
+              class="form-control  rounded-start-pill"style="border-color:#009b77"
               type="search"
               placeholder="Search Products Here"
               [(ngModel)]="search_val"
               name="search"
             />
             <button
-              class="btn btn-primary rounded-end-pill px-3"
+              class="btn  rounded-end-pill px-3"style="background-color:#009b77"
               (click)="search_btn(search_val)"
               type="submit"
             >
@@ -45,13 +45,13 @@
           <!-- Contact Info -->
           <div class="text-end d-none d-md-block">
             <div class="small text-muted">
-              <i class="fa fa-phone me-1 text-primary"></i> Contact Us
+              <i class="fa fa-phone "  style="color: #009b77"></i> Contact Us
             </div>
             <div class="fw-bold small">0123 456 789</div>
           </div>
 
           <!-- Wishlist -->
-          <a
+          <!-- <a
             class="nav-link position-relative d-flex align-items-center px-2"
             routerLink="/wishlist"
           >
@@ -61,14 +61,14 @@
               *ngIf="wishList_count > 0"
               >{{ wishList_count }}</span
             >
-          </a>
+          </a> -->
 
           <!-- My Cart -->
           <a
             class="nav-link position-relative d-flex align-items-center px-2"
             routerLink="/viewcart"
           >
-            <i class="fa fa-shopping-cart fs-5" style="color: #058124"></i>
+            <i class="fa fa-shopping-cart fs-5" style="color: #009b77"></i>
             <span
               class="badge bg-success position-absolute top-0 start-100 translate-middle"
               *ngIf="cartItem_count > 0"
