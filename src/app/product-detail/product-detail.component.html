@@ -432,24 +432,22 @@
             >
               <!-- Wishlist Icon -->
               <div
-                *ngIf="log_as_cust"
-                class="position-absolute top-0 end-0 p-2 z-2 text-end"
-              >
-                <i
-                  *ngIf="data.wishlist == '1'"
-                  class="fa fa-heart text-danger cursor_pointer d-block mb-2"
-                ></i>
-                <i
-                  *ngIf="data.wishlist != '1'"
-                  class="fa fa-heart text-secondary cursor_pointer d-block mb-2"
-                ></i>
-
-                <!-- View Icon below Wishlist -->
-                <i
-                  class="fa fa-eye cursor_pointer d-block"
-                  style="color: rgb(102, 96, 96)"
-                ></i>
-              </div>
+              *ngIf="log_as_cust"
+              class="position-absolute top-0 end-0 p-2 z-2 text-end icon-container d-none"
+            >
+              <i
+                *ngIf="data.wishlist == '1'"
+                class="fa fa-heart text-danger cursor_pointer d-block mb-2"
+              ></i>
+              <i
+                *ngIf="data.wishlist != '1'"
+                class="fa fa-heart-o text-secondary cursor_pointer d-block mb-2"
+              ></i>
+              <i
+                class="fa fa-eye cursor_pointer d-block"
+                style="color: rgb(102, 96, 96)"
+              ></i>
+            </div>
 
               <!-- Image Section -->
               <div class="position-relative">

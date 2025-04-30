@@ -280,6 +280,7 @@ const routes: Routes = [
   { path: "category/:search", component: CategoryListComponent },
   { path: "category/:b/:c/:d/:e", component: CategoryListComponent },
   // { path: "category/:b/:c/:d/:e", component: CategoryListComponent },
+  { path: "category/:b/:c/:d/:e/:br", component: CategoryListComponent },
   { path: "category/:prof", component: CategoryListComponent },
   { path: "product-detail/:productid", component: ProductDetailComponent },
   { path: 'customer-order-print', component: CustomerPoPrintComponent, canActivate: [AuthGuard] },

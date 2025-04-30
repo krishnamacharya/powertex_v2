@@ -16,7 +16,7 @@ declare var $: any;
   selector: 'app-category-list',
   standalone: false,
   templateUrl: './category-list.component.html',
-  styleUrls: ['./category-list.component.scss']
+  styleUrl: './category-list.component.scss'
 })
 export class CategoryListComponent implements OnInit {
   Page: any = 1;
@@ -148,6 +148,14 @@ p: any;
         this.brand = '';
         this.e = (this.sub_c);  // Still encoding for safety in URLs with spaces
         console.log("Received route params:", this.d, this.sub_c, this.modal, this.select);
+
+        this.modal = (params['d']);
+        this.select = (params['e']);
+        this.brand = '';
+        // this.d=this.category;
+        this.e = (this.sub_c);
+        this.e = (this.e)
+        console.log(this.d, "", this.e, "", this.select, this.modal, this.user_id);
         this.getdata1();
       } else {
         this.spinner.show();
