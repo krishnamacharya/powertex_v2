@@ -78,18 +78,23 @@
           },
           "defaultConfiguration": "production"
         },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "powertex_v2:build:production"
-            },
-            "development": {
-              "buildTarget": "powertex_v2:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
+    "serve": {
+  "builder": "@angular-devkit/build-angular:dev-server",
+  "options": {
+    "buildTarget": "powertex_v2:build:development"
+  },
+  "configurations": {
+    "production": {
+      "buildTarget": "powertex_v2:build:production"
+    },
+    "development": {
+      "buildTarget": "powertex_v2:build:development"
+    }
+  },
+  "defaultConfiguration": "development"
+},
+
+
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },
@@ -99,6 +104,7 @@
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
+            
             "assets": [
               {
                 "glob": "**/*",

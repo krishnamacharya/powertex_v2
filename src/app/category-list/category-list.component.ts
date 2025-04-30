@@ -60,60 +60,117 @@ p: any;
   }
   isRoot: boolean;
 
+  // ngOnInit() {
+  //   /* =========================== */
+  //   this.sub = this.route.queryParams.subscribe(params => {
+  //     // Defaults to 0 if no query param provided.
+  //     this.page = +params['page'] || 0;
+  //   });
+
+  //   // $("#success-alert").hide();
+  //   this.alert = false;
+  //   this.token = localStorage.getItem('token');
+  //   console.log("token", this.token);
+
+  //   this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
+  //   // console.log("token",this.loginUserData.user_type);
+  //   this.sub = this.route.params.subscribe(params => {
+  //     this.prof = params['search'];
+  //     this.profession = params['profession'];
+  //     if (this.token == null) {
+  //       this.user_id = '';
+  //     } else {
+  //       this.user_id = this.loginUserData.user_id;
+  //       if (this.loginUserData.user_type != 'Customer' || this.loginUserData.user_type != 'Guest') {
+  //         this.log_as_cust = false;
+  //       }
+  //     }
+
+  //     console.log("search", this.prof);
+  //     if (this.prof === undefined) {
+  //       this.d = params['b'];
+  //       this.sub_c = params['c'];
+  //       this.modal = atob(params['d']);
+  //       this.select = atob(params['e']);
+  //       this.brand = ('');
+  //       // this.d=this.category;
+  //       this.e = atob(this.sub_c);
+  //       this.e = encodeURIComponent(this.e)
+  //       console.log(this.d, "", this.e, "", this.select, this.modal, this.user_id);
+  //       this.getdata1();
+  //     }
+  //     else {
+  //       this.spinner.show();
+  //       this.getsearch();
+  //     }
+  //     this.spinner.show
+  //   },
+  //     error => {
+  //       this.spinner.hide();
+  //       this.dialog.open(ErrorModalComponent, {
+  //   data: { errorModal:true }
+  // });
+  //       // console.log(error);
+  //     });
+
+  // }
+
   ngOnInit() {
-    /* =========================== */
     this.sub = this.route.queryParams.subscribe(params => {
-      // Defaults to 0 if no query param provided.
       this.page = +params['page'] || 0;
     });
-
-    // $("#success-alert").hide();
+  
     this.alert = false;
     this.token = localStorage.getItem('token');
     console.log("token", this.token);
-
+  
     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
-    // console.log("token",this.loginUserData.user_type);
+  
     this.sub = this.route.params.subscribe(params => {
       this.prof = params['search'];
       this.profession = params['profession'];
+  
       if (this.token == null) {
         this.user_id = '';
       } else {
         this.user_id = this.loginUserData.user_id;
-        if (this.loginUserData.user_type != 'Customer' || this.loginUserData.user_type != 'Guest') {
+        if (this.loginUserData.user_type !== 'Customer' && this.loginUserData.user_type !== 'Guest') {
           this.log_as_cust = false;
         }
       }
-
+  
       console.log("search", this.prof);
       if (this.prof === undefined) {
         this.d = params['b'];
         this.sub_c = params['c'];
-        this.modal = atob(params['d']);
-        this.select = atob(params['e']);
+        this.modal = (params['d']);
+        this.select = params['e'];
+        this.brand = '';
+        this.e = (this.sub_c);  // Still encoding for safety in URLs with spaces
+        console.log("Received route params:", this.d, this.sub_c, this.modal, this.select);
+
+        this.modal = (params['d']);
+        this.select = (params['e']);
         this.brand = '';
         // this.d=this.category;
-        this.e = atob(this.sub_c);
-        this.e = encodeURIComponent(this.e)
+        this.e = (this.sub_c);
+        this.e = (this.e)
         console.log(this.d, "", this.e, "", this.select, this.modal, this.user_id);
         this.getdata1();
-      }
-      else {
+      } else {
         this.spinner.show();
         this.getsearch();
       }
-      this.spinner.show
-    },
-      error => {
-        this.spinner.hide();
-        this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
-        // console.log(error);
+  
+      this.spinner.show;
+    }, error => {
+      this.spinner.hide();
+      this.dialog.open(ErrorModalComponent, {
+        data: { errorModal: true }
       });
-
+    });
   }
+  
   ngOnDestroy() {
     this.sub.unsubscribe();
   }

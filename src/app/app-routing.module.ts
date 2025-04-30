@@ -279,6 +279,7 @@ const routes: Routes = [
   { path: "store-location", component: StoreLocationComponent },
   { path: "category/:search", component: CategoryListComponent },
   { path: "category/:b/:c/:d/:e", component: CategoryListComponent },
+  // { path: "category/:b/:c/:d/:e", component: CategoryListComponent },
   { path: "category/:b/:c/:d/:e/:br", component: CategoryListComponent },
   { path: "category/:prof", component: CategoryListComponent },
   { path: "product-detail/:productid", component: ProductDetailComponent },
@@ -628,7 +629,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: false })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
