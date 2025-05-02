@@ -308,6 +308,7 @@ import { WhStatusComponent } from './wh-manager/wh-status/wh-status.component';
 import { WhStockComponent } from './wh-manager/wh-stock/wh-stock.component';
 import { WhSubcatgComponent } from './wh-manager/wh-stock/wh-subcatg/wh-subcatg.component';
 import { WhModalComponent } from './wh-manager/wh-stock/wh-modal/wh-modal.component';
+import { BrandProtectionComponent } from './brand-protection/brand-protection.component';
 
 @NgModule({
   declarations: [
@@ -594,7 +595,8 @@ import { WhModalComponent } from './wh-manager/wh-stock/wh-modal/wh-modal.compon
     WhStatusComponent,
     WhStockComponent,
     WhSubcatgComponent,
-    WhModalComponent
+    WhModalComponent,
+    BrandProtectionComponent
     
   ],
   imports: [

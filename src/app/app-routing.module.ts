@@ -261,6 +261,7 @@ import { WhStatusComponent } from './wh-manager/wh-status/wh-status.component';
 import { WhModalComponent } from './wh-manager/wh-stock/wh-modal/wh-modal.component';
 import { WhStockComponent } from './wh-manager/wh-stock/wh-stock.component';
 import { WhSubcatgComponent } from './wh-manager/wh-stock/wh-subcatg/wh-subcatg.component';
+import { BrandProtectionComponent } from './brand-protection/brand-protection.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -295,6 +296,8 @@ const routes: Routes = [
   { path: "viewcart", component: ViewCartComponent, canActivate: [AuthGuard] },
   // { path: "viewcart", component: ViewCartComponent },
   { path: "myOrders", component: MyOrdersComponent },
+  
+  { path: 'brand-protection', component: BrandProtectionComponent },
 
   //online
   { path: "OnlinePurchase", component: OnlinePurchaseComponent, canActivate: [AuthGuard] },
