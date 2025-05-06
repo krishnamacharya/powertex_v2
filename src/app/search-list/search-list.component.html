@@ -5,108 +5,114 @@
 <div class="container-fluid" style="padding: 30px 65px">
   <div class="row justify-content-center">
     <!-- Sidebar / Filters -->
-    <div class="col-md-2  pe-3"  style="
-    background-color: white;
-    border-radius: 8px;
-    border: 1px solid rgba(133, 132, 132, 0.2);
-    padding: 10px;
-  ">
-   
-        <!-- Price Filter -->
-        <h4 class="mb-3 text-muted">Price</h4>
-        
-        <div class="row mt-2">
-          <div class="col-6">
-            <p class="mb-1 small fw-medium">Min</p>
-            <input
-              type="text"
-              class="form-control form-control-sm"
-              (change)="price_min(minValue, maxValue)"
-              [(ngModel)]="minValue"
-              style="padding: 4px !important"
-            />
-          </div>
-          <div class="col-6">
-            <p class="mb-1 small fw-medium">Max</p>
-            <input
-              type="text"
-              class="form-control form-control-sm"
-              (change)="price_min(minValue, maxValue)"
-              [(ngModel)]="maxValue"
-              style="padding: 4px !important"
-            />
-          </div>
-        </div>
-        <!-- Sort By Section (aligned like Discount) -->
-        <h4 class="mt-4 mb-3 text-muted">Sort By</h4>
-        <ul class="list-unstyled">
-          <li class="form-check mb-2">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              [checked]="selected_sort === 'asc'"
-              (change)="setSort('asc')"
-              style="border: 2px solid rgb(102, 96, 96)"
-            />
-            <label
-              class="form-check-label ms-2"
-              style="color: rgb(102, 96, 96); cursor: pointer"
-            >
-              Price Low to High
-            </label>
-          </li>
-          <li class="form-check mb-2">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              [checked]="selected_sort === 'desc'"
-              (change)="setSort('desc')"
-              style="border: 2px solid rgb(102, 96, 96)"
-            />
-            <label
-              class="form-check-label ms-2"
-              style="color: rgb(102, 96, 96); cursor: pointer"
-            >
-              Price High to Low
-            </label>
-          </li>
-          <li class="form-check mb-2">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              [checked]="selected_sort === 'popularity'"
-              (change)="setSort('popularity')"
-              style="border: 2px solid rgb(102, 96, 96)"
-            />
-            <label
-              class="form-check-label ms-2"
-              style="color: rgb(102, 96, 96); cursor: pointer"
-            >
-              Popularity
-            </label>
-          </li>
-        </ul>
+    <div
+      class="col-md-2 pe-3"
+      style="
+        background-color: white;
+        border-radius: 8px;
+        border: 1px solid rgba(133, 132, 132, 0.2);
+        padding: 10px;
+      "
+    >
+      <!-- Price Filter -->
+      <h4 class="mb-3 text-muted">Price</h4>
 
-        <!-- Discount Filter -->
-        <h4 class="mt-4 mb-3 text-muted">Discount</h4>
-        <ul class="list-unstyled">
-          <li *ngFor="let d of [10, 20, 30, 40, 50]" class="form-check mb-2">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              [checked]="selected_disc === d"
-              (change)="disc(d)"
-              style="border: 2px solid rgb(102, 96, 96)"
-            />
-            <label
-              class="form-check-label ms-2"
-              style="color: rgb(102, 96, 96)"
-            >
-              {{ d }}% or More
-            </label>
-          </li>
-        </ul>
-      
+      <div class="row mt-2">
+        <div class="col-6">
+          <p class="mb-1 small fw-medium">Min</p>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            (change)="price_min(minValue, maxValue)"
+            [(ngModel)]="minValue"
+            style="padding: 4px !important"
+          />
+        </div>
+        <div class="col-6">
+          <p class="mb-1 small fw-medium">Max</p>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            (change)="price_min(minValue, maxValue)"
+            [(ngModel)]="maxValue"
+            style="padding: 4px !important"
+          />
+        </div>
+      </div>
+      <!-- Sort By Section (aligned like Discount) -->
+      <h4 class="mt-4 mb-3 text-muted">Sort By</h4>
+      <ul class="list-unstyled">
+        <li class="form-check mb-2">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            [checked]="selected_sort === 'asc'"
+            (change)="setSort('asc')"
+            style="border: 2px solid rgb(102, 96, 96)"
+          />
+          <label
+            class="form-check-label ms-2"
+            style="color: rgb(102, 96, 96); cursor: pointer"
+          >
+            Price Low to High
+          </label>
+        </li>
+        <li class="form-check mb-2">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            [checked]="selected_sort === 'desc'"
+            (change)="setSort('desc')"
+            style="border: 2px solid rgb(102, 96, 96)"
+          />
+          <label
+            class="form-check-label ms-2"
+            style="color: rgb(102, 96, 96); cursor: pointer"
+          >
+            Price High to Low
+          </label>
+        </li>
+        <li class="form-check mb-2">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            [checked]="selected_sort === 'popularity'"
+            (change)="setSort('popularity')"
+            style="border: 2px solid rgb(102, 96, 96)"
+          />
+          <label
+            class="form-check-label ms-2"
+            style="color: rgb(102, 96, 96); cursor: pointer"
+          >
+            Popularity
+          </label>
+        </li>
+      </ul>
+      <!-- Image below all filters -->
+      <div class="text-center mt-4">
+        <img
+          src="assets/images/image.png"
+          alt="Promotional Filter Banner"
+          class="img-fluid rounded shadow-sm"
+          style="height: 200px; width: 250px"
+        />
+      </div>
+      <!-- Discount Filter -->
+      <h4 class="mt-4 mb-3 text-muted">Discount</h4>
+      <ul class="list-unstyled">
+        <li *ngFor="let d of [10, 20, 30, 40, 50]" class="form-check mb-2">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            [checked]="selected_disc === d"
+            (change)="disc(d)"
+            style="border: 2px solid rgb(102, 96, 96)"
+          />
+          <label class="form-check-label ms-2" style="color: rgb(102, 96, 96)">
+            {{ d }}% or More
+          </label>
+        </li>
+      </ul>
     </div>
 
     <!-- Product List Section -->
@@ -125,30 +131,27 @@
             class="card h-100 product-card position-relative"
             style="
               background-color: #fdfbfb;
-              border-color:  rgba(133, 132, 132, 0.2);
+              border-color: rgba(133, 132, 132, 0.2);
               border-width: 1.5px;
               border-style: solid;
             "
           >
-            
-  <div
-  *ngIf="log_as_cust"
-  class="icon-container position-absolute top-0 end-0 p-2 z-2 text-end d-none"
->
-  <i
-    *ngIf="p.wishlist === '1'"
-    class="fa fa-heart text-danger cursor_pointer d-block"
-    (click)="wish_list()"
-  ></i>
-  <i
-    *ngIf="p.wishlist !== '1'"
-    class="fa fa-heart-o text-secondary cursor_pointer d-block"
-    (click)="wish_list()"
-  ></i>
-  <i
-    class="fa fa-eye cursor_pointer d-block text-muted"
-  ></i>
-</div>
+            <div
+              *ngIf="log_as_cust"
+              class="icon-container position-absolute top-0 end-0 p-2 z-2 text-end d-none"
+            >
+              <i
+                *ngIf="p.wishlist === '1'"
+                class="fa fa-heart text-danger cursor_pointer d-block"
+                (click)="wish_list()"
+              ></i>
+              <i
+                *ngIf="p.wishlist !== '1'"
+                class="fa fa-heart-o text-secondary cursor_pointer d-block"
+                (click)="wish_list()"
+              ></i>
+              <i class="fa fa-eye cursor_pointer d-block text-muted"></i>
+            </div>
 
             <div
               (click)="sub_cat(p)"

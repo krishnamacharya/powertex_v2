@@ -103,7 +103,7 @@ export class HomeComponent implements OnInit {
       rating: 5
     },
     {
-      image: 'assets/images/cat2.png',
+      image: 'assets/images/cat1.png',
       brand: 'Palm',
       name: 'Eaque Ipsa Quae Ab Illo Inventore',
       price: 119.99,

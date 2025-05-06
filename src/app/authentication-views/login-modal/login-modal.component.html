@@ -1,491 +1,327 @@
-<!--login new start here -->
-<div class="login_modal_content loginmodalContent">
-    <div #loginModal>
-  
-      <div class="modal-body" style="padding:0;background: #f4f4f4;">
+
+<!-- White background wrapper -->
+<div class="d-flex align-items-center justify-content-center position-relative">
+
+  <!-- Login form card split into two sections -->
+  <div class="card shadow-lg custom-card d-flex flex-row"
+       style="width: 650px; height: 550px; position: relative; z-index: 2; background-color: rgb(244, 248, 247); border: none;">
+
+    <!-- Close Icon Button -->
+    <button type="button"
+            class="position-absolute"
+            aria-label="Close"
+            (click)="closeLoginModal()"
+            style="top: 15px; right: 15px; z-index: 3; background: transparent; border: none; font-size: 28px; color: black;">
+      &times;
+    </button>
+
+    <!-- Left Image Section -->
+    <div class="w-50 d-flex align-items-center justify-content-center" style="background-color: #ecf5f3;">
+      <img src="/assets/images/login3.png" alt="Login Visual" style="width: 300px;height: 450px;">
+    </div>
+
+    <!-- Right Login Form Section -->
+    <div class="w-50 p-4 d-flex align-items-center justify-content-center">
+      <div style="width: 100%;">
+        <h4 class="text-center">Welcome back!</h4>
+        <form #loginForm="ngForm" (ngSubmit)="gotoLogin()">
+
+          <!-- Email / Mobile Input -->
+          <div class="mb-3">
+          
+            <mat-form-field appearance="fill" class="full-width">
+
+
+              <input type="text"
+                     matInput required
+                     id="userId"
+                     class="form-control py-2"
+                     style="border-radius: 10px;"
+                     [(ngModel)]="loginData.userId"
+                     placeholder="Enter Email / Mobile"
+                     name="userId"
+                     #userId="ngModel"
+                     pattern="^[6-9][0-9]{9}$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                     appEnterkey />
+              <mat-error *ngIf="userId.invalid && (userId.dirty || userId.touched)">
+                <div *ngIf="userId.errors['required']">Email / Mobile is required</div>
+                <div *ngIf="userId.errors['pattern']">Enter valid Email / Mobile</div>
+              </mat-error>
+              <div *ngIf="checkUser.status==0 && guestId=='2'" class="validation_msg">UserId not found</div>
+            </mat-form-field>
+          </div>
+
+          <!-- Password Input -->
+          <div class="mb-3">
+            <mat-form-field appearance="fill" class="full-width">
+              <input [type]="show ? 'text' : 'password'"
+                     matInput required
+                     id="password"
+                     [(ngModel)]="loginData.password"
+                     placeholder="Enter Password"
+                     class="form-control py-2"
+                     style="border-radius: 10px;"
+                     name="password"
+                     #password="ngModel" 
+                     />
+                     <span class="fa"
+                     [ngClass]="show ? 'fa-eye-slash' : 'fa-eye'"
+                     (click)="toggleShow($event)"
+                     style="cursor: pointer; font-size: 20px; color: rgba(0,0,0,0.54);"></span>
+            
+            </mat-form-field>
+            <a class="forgot-password" (click)="gotoForgotPassword('2')">Forgot Password?</a>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center mb-2">
+            <button type="submit"
+                    [disabled]="!loginForm.valid"
+                    class="login_acunt"
+                    style="background-color: #009b77; padding: 6px 20px; font-size: 14px;">
+              SUBMIT
+            </button>
+          </div>
+
+          <!-- Error Message -->
+          <div class="alert alert-danger alert-dismissible" *ngIf="displaMsg==true">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Please check your credentials!</strong>
+          </div>
+
+          <!-- Create Account Prompt -->
+          <p class="text-center text-black mb-1">New here? Create an Account.</p>
+          <div class="text-center mb-2">
+            <button id="create-account-login"
+                    class="login_acunt"
+                    style="background-color: #009b77;"
+                    (click)="gotoRegister()">
+              CREATE AN ACCOUNT
+            </button>
+          </div>
+
+          <!-- Note -->
+          <p class="text-center text-black" style="font-size: 12px;">Note: Out of India? Use email to login.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Success Alert -->
+<div class="smallSuccess_alert" *ngIf="alert" style="bottom:30%; margin-left:40%; width:30%;">
+  <strong>
+    <i class="fa fa-check add_icon" *ngIf="icon && !icon2"></i>
+    <i class="fa fa-close remove_icon" *ngIf="!icon && icon2"></i>
+    {{wish_alert}}
+  </strong>
+</div>
+
+<!-- Modal Popups -->
+<!-- Login Status Modal -->
+<div class="modal fade" id="loginStatusModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
         <div class="row">
           <div class="col-md-12">
-            <div class="col-md-5 col-lg-5 col-sm-5 col-xs-12 width_40">
-              <span class="login_text">
-                <span>Login</span>
-              </span>
-              <p class="login_texttt">
-                <span>Get access to your Orders, Wishlist and Recommendations</span>
-              </p>
-              <div class="regimgawrap">
-                <img src="/assets/reg_img.png" class="img-responsive img-center login_side_down_img" />
-              </div>
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
             </div>
-    
-  <!-- LOGIN CODE -->
-  
-            <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12 width_60" *ngIf="showLogin" id="loginWrap">
-              <div class="signup mar_t_50">
-                <!-- <h4 class="login_type"></h4> -->
-                <form #loginForm="ngForm">
-                  <div class="mar_t_30">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_30">
-                      <div class="username">
-                        <mat-form-field>
-                          <input type="text" matInput required  id="userId" [(ngModel)]="loginData.userId"
-                            placeholder="Enter Email / Mobile" name="userId" #userId="ngModel" pattern="^[6-9][0-9]{9}$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" appEnterkey>
-                        </mat-form-field>
-                        <div *ngIf="userId.invalid && (userId.dirty || userId.touched)" class="validation_msg">
-                          <p class="validation_msg" *ngIf="userId.errors['required']"> Enter Email / Mobile is required</p>
-                          <p class="validation_msg" *ngIf="userId.errors['pattern']">Enter Valid Email / Mobile</p>
-                        </div>
-                        <div *ngIf="checkUser.status==0 && guestId=='2'" class="validation_msg">
-                          UserId is Not Existed
-                        </div>
-                      </div>
-                    </div>
-  
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_20">
-                      <div class="user-login1111">
-                        <mat-form-field  style="width:275px !important;">
-                          <input [type]="show ? 'text' : 'password'"   matInput required  id="password" [(ngModel)]="loginData.password"
-                            placeholder="Enter Password" name="password" #password="ngModel" >
-                            <mat-icon matSuffix (click)="toggleShow($event)" *ngIf="loginData.password"><i *ngIf="!show" class="fa fa-eye eye"  ></i><i *ngIf="show" class="fa fa-eye-slash eye" ></i></mat-icon>
-                          <!-- <div [hidden]="password.valid ||  password.untouched" class="validation_msg">
-                          password is required
-                        </div> -->
-                        </mat-form-field>
-                      </div>
-                      <!-- <a tabindex="5" class="forgot-password" style="float:left" (click)="gotoForgotPassword('1')">Guest
-                        User?
-                      </a> -->
-                      <a tabindex="5" class="forgot-password" (click)="gotoForgotPassword('2')">Forgot Your Password?</a>
-                    </div>
-  
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_30">
-                      <div class="text-center">
-                        <button type="submit" [disabled]="!loginForm.valid" class="login_acunt" (click)="gotoLogin()">SUBMIT</button>
-                      </div>
-                    </div>
-  
-                    <div class="alert alert-dismissible alert-danger" *ngIf="displaMsg==true">
-                      <button type="button" class="close" data-dismiss="alert">&times;</button>
-                      <strong>Please check your credentials!</strong>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_30">
-                      <div class="text-center">
-                        <p>New here? Create a New Account.</p>
-                      </div>
-                    </div>
-  
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div class="text-center">
-                        <button type="submit" id="create-account-login" value="Create a new account" (click)="gotoRegister()">CREATE
-                          AN ACCOUNT</button>
-                      </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <div>
-                        <p>Note: Out of India, please use email for login.</p>
-                        </div>
-                        </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-  
-  <!-- LOGIN CODE END -->
-  
-  <!-- FORGOT PASSWORD -->
-            <div class="col-md-7 col-lg-7 col-sm-12 col-xs-12 width_60" *ngIf="showForgotPswd">
-              <div class="signup mar_t_50" *ngIf="guestId=='1'">
-                <!-- <h4 class="login_type"></h4> -->
-                <form #loginForm="ngForm">
-                  <div class="mar_t_30">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                      <mat-form-field>
-                        <input type="text" matInput required [readonly]="checkUser.status==1" id="userId" [(ngModel)]="loginData.userId"
-                          placeholder="Enter Email / Mobile" name="userId" #userId="ngModel">
-                      </mat-form-field>
-  
-                      <div *ngIf="checkUser.status==0 && guestId=='2'" class="validation_msg">
-                        UserId is Not Existed
-                      </div>
-                    </div>
-  
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" *ngIf="guestuser">
-                      <mat-form-field>
-                        <input type="password" matInput required [readonly]="checkUser.status==1" id="setpassword"
-                          [(ngModel)]="loginData.setpassword" placeholder="EnterPassword" name="setpassword" #setpassword="ngModel">
-                      </mat-form-field>
-                    </div>
-                    <div class="username">
-                      <a tabindex="5" class="forgot-password" style="float:left" (click)="guestpswd('1')">Go a head?</a>
-                      <a tabindex="5" class="forgot-password" (click)="guestpswd('2')">Set Password?</a>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_30" *ngIf="guestuser">
-                      <div class="text-center">
-                        <button type="submit" class="login_acunt" (click)="loginAsGuest()">SUBMIT</button>
-                      </div>
-                    </div>
-  
-                  </div>
-                </form>
-              </div>
-              <div class="signup mar_t_50" *ngIf="guestId=='2'">
-                <!-- <h4 class="login_type"></h4> -->
-                <form #loginForm="ngForm">
-                  <div class="mar_t_30">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_30">
-                      <div class="username">
-                        <mat-form-field>
-                          <input type="text" matInput required [readonly]="checkUser.status==1" id="userId" [(ngModel)]="loginData.userId"
-                            placeholder="Enter Email / Mobile" name="userId" #userId="ngModel">
-                        </mat-form-field>
-                        <!-- <div *ngIf="checkUser.status==0 && guestId=='2'" class="validation_msg">
-                          UserId is Not Existed
-                        </div> -->
-                      </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_20" *ngIf="checkUser.status==1">
-                      <div class="user-login1111">
-                        <mat-form-field>
-                          <input type="text" matInput required  id="otp" minlength="4" [(ngModel)]="loginData.otp"
-                            placeholder="Enter OTP" name="otp" #otp="ngModel">
-                          <!-- <div [hidden]="otp.valid ||  otp.untouched" class="validation_msg">
-                        OTP is required
-                      </div> -->
-                        </mat-form-field>
-                      </div>
-                      <span *ngIf="!showResendbtn && counter!=0" class="theem_color">Your OTP will expire on {{otpTimer}}
-                        seconds
-                      </span>
-                      <a tabindex="5" *ngIf="showResendbtn" class="forgot-password" (click)="resendPassword()">Resend OTP</a>
-                    </div>
-  
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_20" *ngIf="checkUser.status==0 && guestId=='1'">
-                      <div class="user-login1111">
-                        <mat-form-field>
-                          <input type="text" matInput required  id="otp" minlength="6" [(ngModel)]="loginData.otp"
-                            placeholder="Enter OTP" name="otp" #otp="ngModel">
-                          <!-- <div [hidden]="otp.valid ||  otp.untouched" class="validation_msg">
-                        OTP is required
-                      </div> -->
-                        </mat-form-field>
-                      </div>
-                      <span *ngIf="!showResendbtn" class="theem_color">Your OTP will expire on {{otpTimer}} seconds</span>
-                      <a tabindex="5" *ngIf="showResendbtn" class="forgot-password" (click)="resendPassword()">Resend OTP</a>
-                    </div>
-  
-                    <div *ngIf="checkUser.status==0 && guestId=='1'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_20">
-                      <div class="user-login1111">
-                        <mat-form-field>
-                          <input type="password" matInput  id="setpassword" [(ngModel)]="loginData.setpassword"
-                            placeholder="Enter Password" name="setpassword" #setpassword="ngModel" minlength="6" required>
-                        </mat-form-field>
-                      </div>
-                    </div>
-  
-                    <div *ngIf="guestId=='1'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_30">
-                      <div class="text-center">
-                        <button *ngIf="checkUser.status!=0 && checkUser.status!=1" type="submit" [disabled]="loginForm.invalid"
-                          class="login_acunt sendotpbtn" (click)="callOTP()">
-                          Send OTP </button>
-                        <button *ngIf="checkUser.status==0" type="submit" [disabled]="loginForm.invalid" class="login_acunt"
-                          (click)="verifyOTP(guestId)">
-                          Submit </button>
-                        <button *ngIf="checkUser.status==1" type="submit" [disabled]="loginForm.invalid" class="login_acunt"
-                          (click)="verifyOTP('2')">
-                          Submit </button>
-                      </div>
-                    </div>
-                    <div *ngIf="guestId=='2'" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_30">
-                      <div class="text-center">
-                        <button *ngIf="checkUser.status!=1" type="submit" [disabled]="loginForm.invalid" class="login_acunt sendotpbtn"
-                          (click)="getOTP()">
-                          Send OTP </button>
-                        <button *ngIf="checkUser.status==1" type="submit" [disabled]="loginForm.invalid" class="login_acunt"
-                          (click)="verifyOTP(guestId)">
-                          Submit </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-  
-            <div class="col-md-7 col-lg-7 col-sm-7 col-xs-12 width_60" *ngIf="showResetPswd">
-              <div class="signup mar_t_50">
-                <!-- <h4 class="login_type"></h4> -->
-                <form #resetPswdForm="ngForm">
-                  <div class="mar_t_30">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mar_t_20">
-                      <div class="user-login1111">
-                        <mat-form-field>
-                          <input type="password" matInput  id="setpassword" [(ngModel)]="loginData.setpassword"
-                            placeholder="Enter New Password" name="setpassword" #setpassword="ngModel" minlength="6"
-                            required>
-                          <!-- <div [hidden]="setpassword.valid ||  setpassword.untouched" class="validation_msg">
-                          New Password is required
-                        </div> -->
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 mar_t_20">
-                      <div class="user-login1111">
-                        <mat-form-field>
-                          <input type="password"  matInput id="confirmPassword" minlength="6" [(ngModel)]="loginData.confirmPassword"
-                            placeholder="Enter confirm Password" name="confirmPassword" #confirmPassword="ngModel"
-                            required>
-                          <!-- <div [hidden]="setpassword.valid ||  setpassword.untouched" class="validation_msg">
-                          New Password is required
-                        </div> -->
-                        </mat-form-field>
-                      </div>
-                    </div>
-  
-                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 mar_t_30">
-                      <div class="text-center">
-                        <button type="submit" [disabled]="!resetPswdForm.valid" (click)="resetPassword()" class="login_acunt">Reset
-                          Password
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>{{message}}</span>
             </div>
           </div>
         </div>
       </div>
-      <ngx-spinner class="loader_spinner"></ngx-spinner>
-    </div>
-  </div>
-  <!-- login new end here -->
-  
-  <!-- success small alert -->
-  <div class="smallSuccess_alert" *ngIf="alert" style="bottom:30%;margin-left:40%;width: 30%;">
-    <strong>
-      <i class="fa fa-check add_icon" *ngIf="icon && !icon2"></i>
-      <i class="fa fa-close remove_icon" *ngIf="!icon && icon2"></i> {{wish_alert}} </strong>
-  </div>
-  
-  <!-- modal pop up start here -->
-  <div class="modal fade" id="loginStatusModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body" style="padding:0;">
-          <div class="row">
-            <div class="col-md-12">
-              <h4 class="alert_heading">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </h4>
-              <div class="right_mark">
-                <i class="fa fa-check" aria-hidden="true"></i>
-              </div>
-              <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
-                <span>{{message}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="schemeModal" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body" style="padding:0;">
+</div>
+
+<!-- Scheme Details Modal -->
+<div class="modal fade" id="schemeModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading1">Scheme's Details</h4>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <div class="row">
+                <div class="col-md-6" *ngFor="let data of schemes_data; let i=index">
+                  <div class="scheme_data">
+                    <div class="scheme_tar">
+                      <h4 class="text-center" style="color:green !important;">Scheme {{i+1}}</h4>
+                      <h4 class="text-center">Target {{data.scheme_value}}</h4>
+                    </div>
+                    <h5 class="text-center">{{data.scheme_benfit1}}</h5>
+                    <h5 class="text-center">{{data.scheme_benfit2}}</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row">
-              <div class="col-md-12">
-                <h4 class="alert_heading1">
-                    Scheme's Details
-                </h4>
-                <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
-                 <div class="row">
-                   <div class="col-md-6" *ngFor="let data of schemes_data; let i=index">
-                    <div class="scheme_data">
-                      <div class="scheme_tar">
-                          <h4 class="text-center" style="color:green !important;">Scheme {{i+1}}</h4>
-                          <h4 class="text-center">Target {{data.scheme_value}}</h4>
-                      </div>
-                      <h5 class="text-center">{{data.scheme_benfit1}}</h5>
-                      <h5 class="text-center">{{data.scheme_benfit2}}</h5>
-                    </div>
-                   </div>
-                 </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 text-center">
-                    <b><a routerLink="/schemes-list" data-dismiss="modal"><i class="fa fa-arrow-right" style="font-size:17px"></i>know more</a></b>
-                  </div>
-                </div>
+              <div class="col-md-12 text-center">
+                <b><a routerLink="/schemes-list" data-dismiss="modal"><i class="fa fa-arrow-right" style="font-size:17px"></i>know more</a></b>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="showcredit()">OK</button>
           </div>
         </div>
       </div>
-    </div>
-  <!-- Modal popup end here -->
-  
-  <!-- modal pop up start here -->
-  <div class="modal fade" id="loginOtpVerifyModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body" style="padding:0;">
-          <div class="row">
-            <div class="col-md-12">
-              <h4 class="alert_heading">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </h4>
-              <div class="right_mark">
-                <i class="fa fa-check" aria-hidden="true"></i>
-              </div>
-              <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
-                <span>OTP Verified Successfully</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="showcredit()">OK</button>
       </div>
     </div>
   </div>
-  <!-- Modal popup end here -->
-  
-  <!-- modal pop up start here -->
-  <div class="modal fade" id="loginResetPwdModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body" style="padding:0;">
-          <div class="row">
-            <div class="col-md-12">
-              <h4 class="alert_heading">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </h4>
-              <div class="right_mark">
-                <i class="fa fa-check" aria-hidden="true"></i>
-              </div>
-              <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
-                <span>Password Updated Successfully</span>
-              </div>
+</div>
+
+<!-- OTP Verification Modal -->
+<div class="modal fade" id="loginOtpVerifyModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>OTP Verified Successfully</span>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
-  <!-- Modal popup end here -->
-  
-  
-  <!-- <ngx-smart-modal identifier="loginModal" #loginModal>
-    <div class="modal-header">
-      <h4 class="modal-title text-center">LOGIN</h4>
-    </div>
-  
-    <div class="modal-body">
-      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-  
-        <div class="form-group pad_t_10per pad_b_10per">
-          <label class="control-label col-md-3" for="userId">UserId</label>
-          <div class="col-md-9">
-            <input type="text" required class="form-control" id="userId" [(ngModel)]="loginData.userId" placeholder="Enter Email / Mobile"
-              name="userId" #userId="ngModel">
-            <div [hidden]="userId.valid ||  userId.untouched" class="alert alert-danger">
-              UserId is required
+</div>
+
+<!-- Password Reset Success Modal -->
+<div class="modal fade" id="loginResetPwdModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body" style="padding:0;">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="alert_heading">
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </h4>
+            <div class="right_mark">
+              <i class="fa fa-check" aria-hidden="true"></i>
+            </div>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <span>Password Updated Successfully</span>
             </div>
           </div>
-  
-        </div>
-  
-        <div class="form-group pad_b_10per">
-          <label class="control-label col-md-3" for="password">Password</label>
-          <div class="col-md-9">
-            <input type="password" required class="form-control" id="password" [(ngModel)]="loginData.password"
-              placeholder="Enter Password" name="password" #password="ngModel">
-            <div [hidden]="password.valid ||  password.untouched" class="alert alert-danger">
-              password is required
-            </div>
-          </div>
-  
-        </div>
-  
-        <div class="form-group">
-          <div class="text-center">
-            <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Submit</button>
-          </div>
-        </div>
-  
-      </form>
-  
-      <div class="pad_b_10per">
-        <div class="col-md-6" (click)="gotoForgotPassword()">
-          <a href="javascript:void(0)">Forgot Password</a>
-        </div>
-  
-        <div class="col-md-6" (click)="gotoRegister()">
-          <a class="pull-right" href="javascript:void(0)">Register</a>
         </div>
       </div>
-    </div>
-  </ngx-smart-modal> -->
-  
-  <div id="creditstatus" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <!-- <div class="modal-header alert_heading">
-          <button type="button" class="close" data-dismiss="modal"></button>
-          <h4 class="modal-title text-center"></h4>
-          <div class="right_mark">
-            <i class="fa fa-question" aria-hidden="true"></i>
-          </div>
-        </div> -->
-        <div class="modal-body text-center" *ngIf="this.loginUserData && this.loginUserData.alert==true && this.loginUserData.alert1==false">
-          <h4>You have exceeded credit limit amount!!!</h4>
-        </div>
-        <div class="modal-body text-center" *ngIf="this.loginUserData && this.loginUserData.alert1==true && this.loginUserData.alert==false">
-          <h4>You have exceeded credit period days!!!</h4>
-        </div>
-        <div class="modal-body text-center" *ngIf="this.loginUserData && this.loginUserData.alert==true && this.loginUserData.alert1==true">
-          <h4>You have exceeded credit limit amount and credit period days!!!</h4>
-        </div>
-       
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
-  
-  <div id="creditdays" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header alert_heading">
-          <button type="button" class="close" data-dismiss="modal"></button>
-          <h4 class="modal-title text-center"></h4>
-          <!-- <div class="right_mark">
-            <i class="fa fa-question" aria-hidden="true"></i>
-          </div> -->
-        </div>
-        <div class="modal-body text-center">
-          <h4>Sorry, You have exceeded credit period days !!!</h4>
-        </div>
-       
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
-        </div>
+</div>
+
+<!-- Credit Limit Exceeded Modal -->
+<div id="creditstatus" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Conditional Messages -->
+      <div class="modal-body text-center" *ngIf="loginUserData?.alert && !loginUserData?.alert1">
+        <h4>You have exceeded credit limit amount!!!</h4>
+      </div>
+      <div class="modal-body text-center" *ngIf="loginUserData?.alert1 && !loginUserData?.alert">
+        <h4>You have exceeded credit period days!!!</h4>
+      </div>
+      <div class="modal-body text-center" *ngIf="loginUserData?.alert && loginUserData?.alert1">
+        <h4>You have exceeded credit limit amount and credit period days!!!</h4>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button class="btn btn-success" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
+</div>
+
+<!-- Credit Days Exceeded Modal -->
+<div id="creditdays" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert_heading">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h4 class="modal-title text-center">Credit Period Limit</h4>
+      </div>
+      <div class="modal-body text-center">
+        <h4>Sorry, You have exceeded credit period days !!!</h4>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button class="btn btn-success" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- CSS for background and overlay -->
+<style>
+  .bg-image {
+    background-image: url('/assets/images/image.png'); /* replace with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.6); /* dark semi-transparent overlay */
+  }
+  .custom-card {
+  position: relative; /* for stacking context */
+  z-index: 2;
+  background: transparent;
+  border: none;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Make inputs full width */
+.full-width {
+  width: 60px;
+}
+
+/* Style your button */
+.login_acunt {
+  width: 100%;
+  padding: 10px;
+  background-color: #009b77;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+.login_acunt:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Utility margin class */
+
+</style>
+

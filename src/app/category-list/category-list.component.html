@@ -104,7 +104,16 @@
             </label>
           </li>
         </ul>
-
+           <!-- Image below all filters -->
+           <div class="text-center mt-4">
+            <img
+              src="assets/images/image.png"
+              alt="Promotional Filter Banner"
+              class="img-fluid rounded shadow-sm"
+              style=" height: 200px;width: 250px;"
+            />
+          </div>
+  
         <!-- Discount -->
         <h4 class="mt-4 mb-3">Discount</h4>
         <ul class="list-unstyled" *ngIf="percenages">
@@ -151,6 +160,7 @@
             </li>
           </ng-container>
         </ul>
+          
       </div>
     </div>
 
@@ -190,6 +200,7 @@
               <i
                 class="fa fa-eye cursor_pointer d-block"
                 style="color: rgb(102, 96, 96)"
+                (click)="sub_cat(p)"
               ></i>
             </div>
           
@@ -210,7 +221,7 @@
                 alt="{{ p.brand }}"
               />
             </div>
-
+ 
             <!-- Card Body -->
             <div class="card-body ps-4 py-3 position-relative">
               <p class="text-muted mb-1">{{ p.brand }}</p>
