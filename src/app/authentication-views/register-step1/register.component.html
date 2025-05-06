@@ -1,1018 +1,254 @@
-<div class="pad_b_5per" [ngClass]="{'container pad_t_5per':styleId!=1}">
-  <div class="row">
+<!-- Wrapper for modal layout -->
+<div class="d-flex align-items-center justify-content-center position-relative">
 
-    <div class="total_forms">
-      <div class="col-sm-12 first" *ngIf="reg1">
-        <div class="reg_form">
-          <div class="col-sm-3 mar_l_n15">
-            <div class="left_side_div">
-              <img src="" class="img-responsive img-center regbg" />
-              <span class="txt_onImg" style="margin-left:0px;" *ngIf="!loginUserData">Customer Registration</span>
-              <span class="txt_onImg" style="margin-left:0px;" *ngIf="loginUserData && loginUserData.designation=='Marketing Manager'">Dealer Registration</span>
-              <img src="./assets/reg_img.png" class="img_onImg" />
-            </div>
-          </div>
-          <div class="col-sm-9 mar_r_n15 regformWrap">
-            <div class="rht_side_div pad_t_15">
-              <form #registerForm="ngForm" (keydown.enter)="$event.preventDefault()">
-                <div class="form-group row">
-                  <div class="col-sm-12">
-                    <span class="theme_green f_size_13 f_wt_600 txt_green">I am Willing to join as a</span>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div>
-                    <div class="col-sm-6">
-                      <label for="association" class="col-form-label">User Role
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <select class='select-option form-control' [(ngModel)]="registerModel.user_type" required
-                          name="association" #association="ngModel">
-                          <option [ngValue]="undefined" disabled selected>select</option>
-                          <option class='option' *ngFor="let usertype of response" [ngValue]="usertype.User_type">
-                            {{usertype.User_type}}</option>
-                        </select>
-                        <div [hidden]="association.valid ||  association.untouched" class="validation_msg">
-                          User Role is required
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="companyname" class="col-form-label">Mobile Number
-                        <span class="txt_red f_size_12">
-                          <span style="color:#0fa497;font-weight: 600;">(Exclude Country Code)</span>
-                        </span>
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="number" maxlength="10" required class="form-control" id="mobile"
-                          [(ngModel)]="registerModel.mobile" (blur)="verifyUser(registerModel.mobile,'mobile')"
-                          placeholder="Enter Mobile Number" name="mobile" #mobile="ngModel" pattern="^[6-9][0-9]{9}$">
-                        <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
-                          <p *ngIf="mobile.errors.required && !mobileValidation">Mobile Number is required</p>
-                          <p *ngIf="mobile.errors.pattern">Enter Valid Mobile Number</p>
-                        </div>
-                        <div *ngIf="mobileValidation" class="validation_msg">Mobile Number already exist.</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div>
-                    <div class="col-sm-6">
-                      <label for="firstname" class="firstname">First Name
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="text" required class="form-control" id="firstname"
-                          [(ngModel)]="registerModel.first_name" placeholder="Enter First Name" name="firstname"
-                          #firstname="ngModel" pattern="[a-zA-Z ]*" minlength="3" maxlength="20">
-                        <div *ngIf="firstname.invalid && (firstname.dirty || firstname.touched)" class="validation_msg">
-                          <p *ngIf="firstname.errors.required">First Name is required</p>
-                          <p *ngIf="firstname.errors.pattern">Enter Valid First Name</p>
-                          <p *ngIf="firstname.errors.minlength">name should be minimum 3 characters</p>
-                          <p *ngIf="firstname.errors.maxlength">name should be maximum 20 characters</p>
-                        </div>
+  <!-- Signup Modal Card -->
+  <div class="card d-flex flex-row"
+       style="--card-width: 1000px; width: var(--card-width); max-width: 100%; height: auto; position: relative; z-index: 2; background-color: rgb(244, 248, 247); border: none;">
 
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="lastname" class="lastname">Last Name
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="text" required class="form-control" id="lastname"
-                          [(ngModel)]="registerModel.last_name" placeholder="Enter Last Name" name="lastname"
-                          #lastname="ngModel" pattern="[a-zA-Z ]*" minlength="3" maxlength="20">
-                        <div *ngIf="lastname.invalid && (lastname.dirty || lastname.touched)" class="validation_msg">
-                          <p *ngIf="lastname.errors.required">Last Name is required</p>
-                          <p *ngIf="lastname.errors.pattern">Enter Valid Last Name</p>
-                          <p *ngIf="lastname.errors.minlength">It should not be below 3 letters</p>
-                          <p *ngIf="lastname.errors.maxlength">name should be maximum 20 characters</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+    <!-- Left Image Section -->
+    <div class="w-50 d-flex flex-column align-items-center justify-content-center text-center p-4"
+         style="background-color: #ecf5f3;">
+      <img src="/assets/images/image1.png" alt="Signup Visual" style="width: 230px; height: 300px;">
 
-                <div class="form-group row">
-                  <div>
-                    <div class="col-sm-6">
-                      <label for="email" class="col-form-label">Email Id
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="email" required class="form-control" id="email" [(ngModel)]="registerModel.email"
-                          (blur)="verifyUser(registerModel.email,'email')" placeholder="Enter Email Id" name="email"
-                          #email="ngModel" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
-                        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation_msg">
-                          <p *ngIf="email.errors.required && !mailValidation">Email Id is required</p>
-                          <p *ngIf="email.errors.pattern">Enter Valid Email Id</p>
-                        </div>
-                        <div *ngIf="mailValidation" class="validation_msg">Email Id already exist.</div>
-                      </div>
-                    </div>
-
-
-                    <div class="col-sm-6">
-                      <label for="salatation" class="col-form-label">Gender
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <select class="select-option form-control" [(ngModel)]="registerModel.salatation" required
-                        name="salatation" #salatation="ngModel">
-                        <option [ngValue]="undefined" selected>Select</option>
-                        <option value="Mr">Male</option>
-                        <option value="Ms">Female</option>
-                      </select>
-                      <div [hidden]="salatation.valid ||  salatation.untouched" class="validation_msg">
-                        Gender is required
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div>
-                    <div class="col-sm-6">
-                      <label  for="password">Password
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div >
-                        <input type="password" required class="form-control" app-register
-                          [(ngModel)]="registerModel.password" placeholder="Enter password" name="password"
-                          #password="ngModel" minlength="6">
-                        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="validation_msg">
-                          <p *ngIf="password.errors.required"> password is required</p>
-                          <p *ngIf="password.errors.minlength">password minlength is 6</p>
-                          <!-- pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" -->
-                          <!-- <p *ngIf="password.errors.pattern">Minimum eight characters, at least one letter, one number and one special character</p> -->
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="cnfPassword">Confirm Password
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="password" required class="form-control" [(ngModel)]="registerModel.cnfPassword"
-                          placeholder="Enter Confirm Password" name="cnfPassword" #cnfPassword="ngModel"
-                          validateEqual="password">
-
-                        <!-- <div *ngIf="cnfPassword.invalid && (cnfPassword.dirty || cnfPassword.touched)" class="validation_msg">
-                            <p *ngIf="cnfPassword.errors.required"> Confirm Password is required</p> -->
-                        <p class="validation_msg"
-                          *ngIf="registerModel.cnfPassword!=registerModel.password && (cnfPassword.dirty || cnfPassword.touched)">
-                          Password
-                          and Confirm Password should match</p>
-                        <!-- </div> -->
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-sm-12">
-                    <span class="txt_black">
-                      <strong>Note : </strong>The Email Id / Mobile Number will be your name which will be used to
-                      login.</span>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-sm-12">
-                    <div class="pull-left">
-                      <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_red border_red"
-                        (click)="resetForm(registerForm)">
-                        <i class="fa fa-refresh" aria-hidden="true"></i> Clear
-                      </button>
-                    </div>
-                    <!-- [disabled]="registerForm.invalid" -->
-                    <div class="pull-right">
-                      <button type="submit" [disabled]="(mobileValidation || mailValidation) || !registerForm.valid"
-                        class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="gotoNext()">Next
-                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-12 second" *ngIf="dealerReg">
-        <div class="reg_form">
-          <div class="col-sm-3 mar_l_n15">
-            <div class="left_side_div">
-              <img src="" class="img-responsive img-center"
-                style=" background:url('./assets/logins_bg.png') no-repeat left bottom; background-size:cover; min-height:650px;" />
-              <span class="txt_onImg" style="margin-left: 50px;">{{association}}</span>
-              <br>
-              <span class="txt_onImg" style="padding-top: 40px;margin-left: 50px;">Registration</span>
-              <img src="./assets/reg_img.png" class="img_onImg" style="margin-bottom:50px;" />
-            </div>
-          </div>
-          <div class="col-sm-9 mar_r_n15">
-            <div class="rht_side_div pad_t_15">
-              <form #dealerRegForm="ngForm">
-
-                <div class="form-group row">
-                  <div>
-                    <div class="col-sm-6" *ngIf="association=='Employee' || association=='Branch'">
-                      <label for="designation" >Designation
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <select class='select-option form-control' required [(ngModel)]="userRegModel.designation"
-                          name="designation" #designation="ngModel">
-                          <option [ngValue]="undefined" disabled selected>--Select--</option>
-                          <option class='option' *ngFor="let data of designationsList | async"
-                            [ngValue]="data.Designation">{{data.Designation}}</option>
-                        </select>
-                        <div [hidden]="designation.valid ||  designation.untouched" class="validation_msg">
-                          Designation is required
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6" *ngIf="association=='Employee'|| association=='Branch'">
-                      <label for="assignment">Assigned To
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <select class='select-option form-control' required [(ngModel)]="userRegModel.company_code"
-                          name="assignment" #assignment="ngModel">
-                          <option [ngValue]="undefined" disabled selected>--Select--</option>
-                          <option class='option' *ngFor="let company of comapnyCodesList | async"
-                            [ngValue]="company.company_code">{{company.companyname}}-{{company.company_code}}</option>
-                        </select>
-                        <div [hidden]="assignment.valid ||  assignment.untouched" class="validation_msg">
-                          Branch is required
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div>
-                    <div class="col-sm-6">
-                      <label  for="shopAddress"
-                        *ngIf="association=='Employee' || association=='Branch' || association=='Vendor'">Address
-                        1
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <label  for="shopAddress" *ngIf="association=='Customer'">Shipping Address 1
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <label  for="shopAddress" *ngIf="association=='Dealer'|| association=='Sub Dealer'">Shop
-                        Address 1
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <label  for="shopAddress" *ngIf="association=='Supplier'">Corporate Address 1
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <textarea type="text" required class="form-control" id="shopAddress"
-                          [(ngModel)]="userRegModel.address1" placeholder="Enter Address 1" name="shopAddress"
-                          #shopAddress="ngModel" minlength="3"></textarea>
-                        <div *ngIf="shopAddress.invalid && (shopAddress.dirty || shopAddress.touched)"
-                          class="validation_msg">
-                          <p *ngIf="shopAddress.errors.required">Address is required</p>
-                          <p *ngIf="shopAddress.errors.minlength">Address should be minimum 3 characters</p>
-                          <p *ngIf="shopAddress.errors.maxlength">Address should be maximum 50 characters</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="address2">Address 2
-                        <!-- <sub class="txt_red f_size_25">*</sub> -->
-                      </label>
-                      <div>
-                        <textarea type="text" class="form-control" id="address2" [(ngModel)]="userRegModel.address2"
-                          placeholder="Enter Address 2" name="address2" #address2="ngModel" minlength="3"></textarea>
-                        <div *ngIf="address2.invalid && (address2.dirty || address2.touched)" class="validation_msg">
-                          <!-- <p *ngIf="address2.errors.required">Address is required</p> -->
-                          <p *ngIf="address2.errors.minlength">Address should be minimum 3 characters</p>
-                          <p *ngIf="address2.errors.maxlength">Address should be maximum 50 characters</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row" *ngIf="association=='Vendor'">
-                  <div>
-                    <div class="col-sm-6">
-                      <label  for="address3">Address 3
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <textarea type="text" required class="form-control" id="address3"
-                          [(ngModel)]="userRegModel.address3" placeholder="Enter address3" name="address3"
-                          #address3="ngModel"></textarea>
-                        <div [hidden]="address3.valid ||  address3.untouched" class="validation_msg">
-                          Address is required
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="address4">Vendor Code
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="text" required class="form-control" id="address4"
-                          [(ngModel)]="userRegModel.address4" placeholder="Enter Vendor Code" name="address4"
-                          #address4="ngModel" />
-                        <div [hidden]="address4.valid ||  address4.untouched" class="validation_msg">
-                          Vendor Code is required
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-
-                <div class="form-group row">
-                  <div>
-                    <div class="col-sm-6">
-                      <label for="country">Country
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <select class='select-option form-control' required [(ngModel)]="userRegModel.country"
-                          name="country" #country="ngModel" id="country"
-                          (change)="onSelectCountry(userRegModel.country)">
-                          <option [ngValue]="undefined" disabled selected>--Select--</option>
-                          <option class='option' *ngFor="let countries of countriesList" [ngValue]="countries.country">
-                            {{countries.country  | titlecase}}</option>
-                        </select>
-                        <div [hidden]="country.valid ||  country.untouched" class="validation_msg">
-                          Country is required
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="state">State
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <select class='select-option form-control' [(ngModel)]="userRegModel.state" required
-                          name="state" #state="ngModel" id="state" (change)="onSelectState(userRegModel.state)">
-                          <option [ngValue]="undefined" disabled selected>--select--</option>
-                          <option class='option' *ngFor="let states of response1" [ngValue]="states.state">
-                            {{states.state | titlecase}}</option>
-                        </select>
-                        <div [hidden]="state.valid ||  state.untouched" class="validation_msg">
-                          State is required
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div>
-                    <div class="col-sm-6">
-                      <label  for="district">District
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <select class='select-option form-control' [(ngModel)]="userRegModel.district" required
-                          name="district" #district="ngModel" id="district"
-                          (change)="onSelectDistrict(userRegModel.district)">
-                          <option [ngValue]="undefined" disabled selected>--select--</option>
-                          <option class='option' *ngFor="let districts of response2" [ngValue]="districts.district">
-                            {{districts.district | titlecase}}</option>
-                        </select>
-                        <div [hidden]="district.valid ||  district.untouched" class="validation_msg">
-                          District is required
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="city">City/Region
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input class='select-option form-control' [(ngModel)]="userRegModel.city" required type="text"
-                          name="city" #city="ngModel" id="city" list="bbb" placeholder="City">
-                        <datalist id="bbb">
-                          <option [ngValue]="undefined" disabled selected>City</option>
-                          <option class='option' *ngFor="let cities of response3" [ngValue]="cities.city">
-                            {{cities.city| titlecase}}
-                          </option>
-                        </datalist>
-                        <!-- <select class='select-option form-control' [(ngModel)]="userRegModel.city" required name="city"
-                            #city="ngModel">
-                            <option [ngValue]="undefined" disabled selected>--select--</option>
-                            <option class='option' *ngFor="let cities of response3" [ngValue]="cities.city">{{cities.city | titlecase}}</option>
-                          </select> -->
-                        <div [hidden]="city.valid ||  city.untouched" class="validation_msg">
-                          City is required
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row"
-                  *ngIf="association=='Dealer' || association=='Sub Dealer' || association=='Supplier'">
-                  <div>
-                    <div class="col-sm-6">
-                      <label  for="business_name"
-                        *ngIf="association=='Dealer' || association=='Sub Dealer'">Firm
-                        / Shop Name
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <label for="business_name" *ngIf="association=='Supplier'">Firm / Shop Name
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="text" required class="form-control" id="business_name"
-                          [(ngModel)]="userRegModel.business_name" placeholder="Enter Firm / Shop Name"
-                          name="business_name" #business_name="ngModel">
-                        <div [hidden]="business_name.valid ||  business_name.untouched" class="validation_msg">
-                          Firm / Shop Name is required
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label  for="pincode">Pincode
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="text" required class="form-control" id="pincode" maxlength="6"
-                          pattern="^[1-9][0-9]{5}$" [(ngModel)]="userRegModel.pin" placeholder="Enter Pincode"
-                          name="pincode" #pincode="ngModel">
-                        <div *ngIf="pincode.invalid && (pincode.dirty || pincode.touched)" class="validation_msg">
-                          <p *ngIf="pincode.errors.required"> pincode is required</p>
-                          <p *ngIf="pincode.errors.pattern">Enter Valid pincode</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row" *ngIf="association=='Dealer'">
-                  <div>
-                    <div class="col-sm-6">
-                      <label  for="zone">Zone
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="text" class="form-control" id="zone" [(ngModel)]="userRegModel.zone"
-                          placeholder="Enter zone" name="zone" #zone="ngModel" required readonly>
-                        <div [hidden]="zone.valid ||  zone.untouched" class="validation_msg">
-                          zone is required
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="gst">GST-IN
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="number" class="form-control gst1" id="gstcode" [(ngModel)]="userRegModel.gstcode"
-                          name="gstcode" #gstcode="ngModel" readonly>
-                        <input type="text" class="form-control gst2" required id="gst" [(ngModel)]="userRegModel.gst"
-                          onkeyup="this.value = this.value.toUpperCase();"
-                          pattern="^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[0-9]{1}[a-zA-Z]{1}[0-9a-zA-Z]{1}$"
-                          placeholder="Enter GSTIN" name="gst" #gst="ngModel">
-                        <div *ngIf="gst.invalid && (gst.dirty || gst.touched)" class="validation_msg">
-                          <p *ngIf="gst.errors.required"> GST-IN is required</p>
-                          <p *ngIf="gst.errors.pattern">Enter Valid GST-IN</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row" *ngIf="association=='Supplier'">
-                  <div class="col-sm-12">
-                    <label for="gst">Website URL
-                      <sub class="txt_red f_size_25">*</sub>
-                    </label>
-                    <div>
-                      <input type="text" class="form-control" id="url" [(ngModel)]="userRegModel.url"
-                        placeholder="Enter Website URL" name="url" #url="ngModel" required pattern="https?://.+">
-                      <div *ngIf="url.invalid && (url.dirty || url.touched)" class="validation_msg">
-                        <p *ngIf="url.errors.required"> Website URL is required</p>
-                        <p *ngIf="url.errors.pattern">Enter Valid Website URL</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row" *ngIf="association!='Employee' && association!='Branch'">
-                  <div>
-                    <div class="col-sm-6">
-                      <label for="offcEmail"
-                        *ngIf="association=='Dealer'|| association=='Supplier'|| association=='Sub Dealer'|| association=='Vendor'">Official
-                        Email Id
-
-                      </label>
-                      <label for="offcEmail" *ngIf="association=='Customer'">Alternate Email Id
-                        <!-- <sub class="txt_red f_size_25">*</sub> -->
-                      </label>
-                      <div>
-                        <input type="text" class="form-control" id="offcEmail" [(ngModel)]="userRegModel.Off_email"
-                          placeholder="Enter Official Email Id" name="offcEmail" #offcEmail="ngModel"
-                          pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
-                        <div *ngIf="offcEmail.invalid && (offcEmail.dirty || offcEmail.touched)" class="validation_msg">
-                          <p *ngIf="offcEmail.errors.required"> Official Email Id is required</p>
-                          <p *ngIf="offcEmail.errors.pattern">Enter Valid Official Email Id</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="ofcNo"
-                        *ngIf="association=='Dealer'|| association=='Supplier' || association=='Sub Dealer'|| association=='Vendor'">Office
-                        Phone Number
-                        <!-- <sub class="txt_red f_size_25">*</sub> -->
-                      </label>
-                      <label for="ofcNo" *ngIf="association=='Customer'">Alternate Mobile Number.
-                        <!-- <sub class="txt_red f_size_25">*</sub> -->
-                      </label>
-                      <div>
-                        <input type="text" class="form-control" id="ofcNo" [(ngModel)]="userRegModel.Off_mobile"
-                          placeholder="Enter Office Phone Number" name="ofcNo" #ofcNo="ngModel" maxlength="10"
-                          pattern="^[6-9][0-9]{9}$">
-                        <div *ngIf="ofcNo.invalid && (ofcNo.dirty || ofcNo.touched)" class="validation_msg">
-                          <p *ngIf="ofcNo.errors.required">Office Phone Number is required</p>
-                          <p *ngIf="ofcNo.errors.pattern">Enter Valid Office Phone Number</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-sm-12" *ngIf="association=='Sub Dealer'">
-                    <label for="shopeeCode">Shopee Code
-                      <sub class="txt_red f_size_25">*</sub>
-                    </label>
-                    <div>
-                      <input type="tel" required class="form-control" id="shopeeCode"
-                        [(ngModel)]="userRegModel.shopeeCode" placeholder="Enter Shopee Code" name="shopeeCode"
-                        #shopeeCode="ngModel">
-                      <div [hidden]="shopeeCode.valid ||  shopeeCode.untouched" class="validation_msg">
-                        Shopee Code is required
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-               
-
-
-                <div class="form-group row" *ngIf="loginUserData==null || loginUserData.role=='Admin'">
-                  <div class="col-sm-12">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" required [(ngModel)]="userRegModel.terms" name="terms">
-                        <span>I Agree
-                          <span class="txt_green">Terms & Conditions</span>
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row" *ngIf="loginUserData==null || loginUserData.role=='Admin'">
-                  <div class="col-sm-12">
-                    <div class="pull-left">
-                      <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_red border_red"
-                        (click)="gotoPrevious()">
-                        <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Previous</button>
-                    </div>
-                    <div class="pull-right">
-                      <button type="submit" [disabled]="dealerRegForm.invalid"
-                        class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
-                        (click)="regSubmit(dealerRegForm)">Submit
-                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row" *ngIf="loginUserData!=null && loginUserData.designation=='Marketing Manager'">
-                  <div class="col-sm-12">
-                    <div class="pull-left">
-                      <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_red border_red"
-                        (click)="gotoPrevious()">
-                        <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Previous</button>
-                    </div>
-                    <!-- [disabled]="registerForm.invalid" -->
-                    <div class="pull-right">
-                      <button type="submit" [disabled]=" !dealerRegForm.valid"
-                        class="btn btn-primary brdr_radius_50 btn_w bg_green border_green" (click)="gotoNext1()">Next
-                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="col-sm-12 second" *ngIf="dealerReg1">
-        <div class="reg_form">
-          <div class="col-sm-3 mar_l_n15">
-            <div class="left_side_div">
-              <img src="" class="img-responsive img-center"
-                style=" background:url('./assets/logins_bg.png') no-repeat left bottom; background-size:cover; min-height:650px;" />
-              <span class="txt_onImg" style="margin-left: 50px;">{{association}}</span>
-              <br>
-              <span class="txt_onImg" style="padding-top: 40px;margin-left: 50px;">Registration</span>
-              <img src="./assets/reg_img.png" class="img_onImg" style="margin-bottom:50px;" />
-            </div>
-          </div>
-          <div class="col-sm-9 mar_r_n15">
-            <div class="rht_side_div pad_t_15">
-              <form #dealerReg1Form="ngForm">
-
-                <div class="form-group row">
-                  <div>
-                    <div class="col-sm-6">
-
-                      <label  for="move_to">Select Branch
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <select class='select-option form-control' [(ngModel)]="delRegModel.move_to" required
-                          name="move_to" #move_to="ngModel" id="move_to" >
-                          <option [ngValue]="undefined" disabled selected>Select</option>
-                          <option class='option' *ngFor="let data of branchesList | async"
-                            [ngValue]="data.company_code">
-                            {{data.companyname}}-{{data.company_code}}</option>
-                        </select>
-                        <div [hidden]="move_to.valid ||  move_to.untouched" class="validation_msg">
-                          Branch is required
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="col-sm-6">
-
-                      <label for="shopeeCode">Marketing Manager
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="text" class='form-control' [(ngModel)]="delRegModel.handling_marketing_manager"
-                          name="handling_marketing_manager" #handling_marketing_manager="ngModel" readonly>
-
-                      </div>
-                      <div [hidden]="handling_marketing_manager.valid ||  handling_marketing_manager.untouched"
-                        class="validation_msg">
-                        Marketing Manager is required
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <div>
-
-                    <div class="col-sm-6">
-
-                      <label for="turnover">Annual Turnover
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <input type="text" required class="form-control" name="turnover" id="turnover"
-                          [(ngModel)]="delRegModel.turnover" placeholder="Enter Turnover" #turnover="ngModel">
-
-                      </div>
-                      <div [hidden]="turnover.valid ||  turnover.untouched" class="validation_msg">
-                        Annual Turnover is required
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <label for="category_profile">Category Profile
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div>
-                        <select class='select-option form-control' required [(ngModel)]="delRegModel.category_profile"
-                          name="category" #category="ngModel">
-                          <option [ngValue]="undefined" disabled selected>Select</option>
-                          <option class='option' *ngFor="let data of categoryList | async" [ngValue]="data.category">
-                            {{data.category}}_{{data.avg_val }}% Discount</option>
-                        </select>
-                        <div [hidden]="category.valid ||  category.untouched" class="validation_msg">
-                          Category Profile is required
-                        </div>
-                      </div>
-                    </div>
-                   
-                  </div>
-                </div>
-
-                <!-- <div class="form-group row">
-                  <div >
-
-                    <div class="col-sm-6">
-
-                      <label  for="credit_limit">Credit Limit Amount
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div >
-                        <input type="text" required class="form-control" name="credit_limit" id="credit_limit"
-                          [(ngModel)]="delRegModel.credit_limit" placeholder="Enter Credit Limit"
-                          #credit_limit="ngModel">
-
-                      </div>
-                      <div [hidden]="credit_limit.valid ||  credit_limit.untouched" class="validation_msg">
-                        Credit Limit Amount is required
-                      </div>
-                    </div>
-                     <div class="col-sm-6">
-
-                      <label  for="credit_period">Credit Period Days
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div >
-                        <input type="text" required class="form-control" name="credit_period" id="credit_period"
-                          [(ngModel)]="delRegModel.credit_period" placeholder="Enter Credit Period"
-                          #credit_period="ngModel">
-                        <div [hidden]="credit_period.valid ||  credit_period.untouched" class="validation_msg">
-                          Credit Period Days is required
-                        </div>
-                      </div>
-
-                    </div> 
-                  </div>
-                </div> -->
-
-                <!-- <div class="form-group row">
-                  <div >
-                     <div class="col-sm-6">
-
-
-                      <label  for="transport_dtl">Select Transport Name
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div >
-                        <select class='select-option form-control' [(ngModel)]="delRegModel.transport_dtl"
-                          name="transport_dtl" #transport_dtl="ngModel" id="transport_dtl">
-                          <option [ngValue]="undefined" disabled selected>Select</option>
-                          <option class='option' *ngFor="let data of transportdetails" [ngValue]="data.tranportid">
-                            {{data.transport_name}}</option>
-                        </select>
-                        <div [hidden]="transport_dtl.valid ||  transport_dtl.untouched" class="validation_msg">
-                          Transport Name is required
-                        </div>
-                      </div>
-                    </div> 
-                   <div class="col-sm-6">
-
-                      <label  for="type">Select Image Type
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div >
-                        <select class="form-control" [(ngModel)]="product.type" id="type" #type="ngModel"
-                          name="types">
-                          <option [ngValue]="undefined" disabled selected>--Select Image Type--</option>
-                          <option *ngFor="let t of types" [ngValue]="t.name">
-                            {{t.name}}
-                          </option>
-                        </select>
-                        <div [hidden]="type.valid ||  type.untouched" class="validation_msg">
-                          Image Type is required
-                        </div>
-                      </div>
-                    </div> 
-                  </div>
-                </div> -->
-                <!-- <div class="form-group row">
-                  <div >
-                    <div class="col-sm-6">
-                      <label  for="transport_dtl">Select Image to Upload
-                        <sub class="txt_red f_size_25">*</sub>
-                      </label>
-                      <div >
-                        <input id="file-upload" name="file" #file="ngModel" accept='image/*'
-                          (change)="productfileUpload($event)" [(ngModel)]="product.file" type="file"
-                          placeholder="Upload file..." />
-                        <div *ngIf="image">
-                          <img [src]="image" height="150" width="150">
-                        </div>
-                        <div class="row">
-                          <div></div>
-                          <div class="col-sm-3 mar_b_10_mbl">
-                            <button type="button" class="btn upload_btn" (click)="uploadData()">
-                              Upload</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-                <div class="form-group row" *ngIf="loginUserData!=null || loginUserData.designation=='Marketing Manager'">
-                  <div class="col-sm-12">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox" required [(ngModel)]="userRegModel.terms" name="terms">
-                        <span>I Agree
-                          <span class="txt_green">Terms & Conditions</span>
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group row" *ngIf="loginUserData!=null || loginUserData.designation=='Marketing Manager'">
-                  <div class="col-sm-12">
-                    <div class="pull-left">
-                      <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_red border_red"
-                        (click)="gotoPrevious1()">
-                        <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Previous</button>
-                    </div>
-                    <div class="pull-right">
-                      <button type="submit" [disabled]="dealerReg1Form.invalid"
-                        class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
-                        (click)="delregSubmit(dealerReg1Form)">Submit
-                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Terms Note -->
+      <p class="text-muted small mt-4 mb-3" style="max-width: 80%;">
+        By continuing, you're agreeing to our
+        <a href="#">Terms of Service</a>, <a href="#">Refund Policy</a>, and
+        <a href="#">Privacy Policy</a>.
+      </p>
     </div>
 
-  </div>
-  <ngx-spinner class="loader_spinner"></ngx-spinner>
-</div>
+    <!-- Right Form Section -->
+    <div class="w-50 p-5 d-flex align-items-center justify-content-center">
+      <div style="width: 100%;">
+        <h4 class="text-center mb-4">Create an Account</h4>
 
-<!-- success small alert -->
-<div class="smallSuccess_alert" *ngIf="alert" style="top:10%;margin-left: 50%;">
-  <strong>
-    <i class="fa fa-close remove_icon"></i> {{wish_alert}} </strong>
-</div>
-
-<!-- Modal pop-up start here -->
-<div id="successModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"></button>
-        <h4 class="modal-title text-center">Registration</h4>
-      </div>
-      <div class="modal-body text-center">
-        <p>Dear User, Your Details submitted succesfully!!!</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal pop-up end here -->
-
-<!-- Modal pop-up start here -->
-<div id="otpModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"></button>
-        <h4 class="modal-title text-center">Enter OTP</h4>
-      </div>
-      <div class="modal-body text-center">
-        <form #otpForm="ngForm">
-
-          <div class="form-group pad_t_10per pad_b_10per">
-            <label class="control-label col-md-3" for="otp">Enter OTP</label>
-            <div class="col-md-9">
-              <input type="text" required class="form-control" autofocus minlength="4" id="otp"
-                [(ngModel)]="otpModal.otp" placeholder="Enter OTP" name="otp" #otp="ngModel">
-              <div [hidden]="otp.valid ||  otp.untouched" class="alert alert-danger">
-                otp is required
-              </div>
-              <div class="toppad float-right">
-                <span *ngIf="!showResendbtn && counter!=0" class="theem_color">Your OTP will expire on {{otpTimer}}
-                  seconds
-                </span>
-                <a tabindex="5" *ngIf="showResendbtn" class="forgot-password" (click)="resendPassword()">Resend OTP</a>
-              </div>
-            </div>
-
+        <form>
+          <!-- Name Field -->
+          <div class="form-group mb-3">
+            <label for="firstName" class="fw-bold">First Name</label>
+            <input type="text" class="form-control" id="firstName" placeholder="First Name"
+                   [(ngModel)]="registerModel.first_name" name="firstName" />
           </div>
+
+          <!-- Email -->
+          <div class="form-group mb-3">
+            <label for="email" class="fw-bold">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="john@example.com"
+                   [(ngModel)]="registerModel.email" name="email" />
+          </div>
+
+          <!-- Password -->
+          <div class="form-group mb-3">
+            <label for="password" class="fw-bold">Password</label>
+            <div class="input-group">
+              <input [type]="passwordVisible ? 'text' : 'password'" class="form-control" id="password"
+                     placeholder="At least 8 characters" [(ngModel)]="registerModel.password" name="password" />
+              <span class="input-group-text"
+                    style="border-color: #0fa497; border-radius: 5px; cursor: pointer;"
+                    (click)="togglePasswordVisibility()">
+                <i class="fa" [ngClass]="passwordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group mb-3">
+            <label for="confirmPassword" class="fw-bold">Confirm Password</label>
+            <div class="input-group">
+              <input [type]="confirmPasswordVisible ? 'text' : 'password'" class="form-control"
+                     id="confirmPassword" placeholder="At least 8 characters"
+                     [(ngModel)]="registerModel.cnfPassword" name="confirmPassword" />
+              <span class="input-group-text"
+                    style="border-color: #0fa497; border-radius: 5px; cursor: pointer;"
+                    (click)="toggleConfirmPasswordVisibility()">
+                <i class="fa" [ngClass]="confirmPasswordVisible ? 'fa-eye' : 'fa-eye-slash'"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Mobile Number -->
+          <div class="form-group mb-3">
+            <label for="mobileNumber" class="fw-bold">Mobile Number (optional)</label>
+            <input type="tel" class="form-control" id="mobileNumber" placeholder="+1xxxxxxxxxx"
+                   [(ngModel)]="registerModel.mobileNumber" name="mobileNumber" />
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center mb-3">
+            <button class="btn btn-primary btn-block w-100"
+                    style="background-color: #009b77; border: none"
+                    type="submit"
+                    (click)="submitReg(dealerReg)">
+              Create Account
+            </button>
+          </div>
+
+          <!-- Already have account -->
+          <p class="text-center">
+            Already have an account?
+            <a href="#" style="color: #009b77; font-weight: 500">Sign In</a>
+          </p>
+
+          <ngx-spinner class="loader_spinner"></ngx-spinner>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Cancel</button>
-        <button type="submit" [disabled]="!otpForm.valid" (click)="submitOTP(otpModal.otp)"
-          class="btn btn-success fr">Submit</button>
-      </div>
     </div>
+
   </div>
 </div>
-<!-- <app-otp-modal></app-otp-modal> -->
 
-<!-- Modal popup start here -->
-<!-- <div id="otpStatusModal" class="modal fade" role="dialog">
+  <!-- Modal pop-up end here -->
+
+  <!-- Modal pop-up start here -->
+  <div id="otpModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"></button>
-          <h4 class="modal-title text-center">OTP Validation</h4>
+          <h4 class="modal-title text-center">Enter OTP</h4>
         </div>
         <div class="modal-body text-center">
-          <p>
-            <span>{{message}}</span>
-          </p>
+          <form #otpForm="ngForm">
+            <div class="form-group pad_t_10per pad_b_10per">
+              <label class="control-label col-md-3" for="otp">Enter OTP</label>
+              <div class="col-md-9">
+                <input
+                  type="text"
+                  required
+                  class="form-control"
+                  autofocus
+                  minlength="4"
+                  id="otp"
+                  [(ngModel)]="otpModal.otp"
+                  placeholder="Enter OTP"
+                  name="otp"
+                  #otp="ngModel"
+                />
+                <div
+                  [hidden]="otp.valid || otp.untouched"
+                  class="alert alert-danger"
+                >
+                  otp is required
+                </div>
+                <div class="toppad float-right">
+                  <span
+                    *ngIf="!showResendbtn && counter != 0"
+                    class="theem_color"
+                    >Your OTP will expire on {{ otpTimer }}
+                    seconds
+                  </span>
+                  <a
+                    tabindex="5"
+                    *ngIf="showResendbtn"
+                    class="forgot-password"
+                    (click)="resendPassword()"
+                    >Resend OTP</a
+                  >
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success btn-center" data-dismiss="modal">Okk</button>
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+            Cancel
+          </button>
+          <button
+            type="submit"
+            [disabled]="!otpForm.valid"
+            (click)="submitOTP(otpModal.otp)"
+            class="btn btn-success fr"
+          >
+            Submit
+          </button>
         </div>
       </div>
     </div>
-  </div> -->
-<!-- Modal popup end here -->
+  </div>
+  <!-- <app-otp-modal></app-otp-modal> -->
 
-<!-- Modal popup start here -->
-<!-- <div id="otpStatusokModal" class="modal fade" role="dialog">
+  <!-- modal pop up start here -->
+  <div class="modal fade" id="otpStatusokModal" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"></button>
-          <h4 class="modal-title text-center"></h4>
-        </div>
-        <div class="modal-body text-center">
-          <p>
-            <span>You have Successfully Registered.</span>
-          </p>
+        <div class="modal-body" style="padding: 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">
+                  &times;
+                </button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div
+                class="pad_15 text-center content_msg"
+                style="padding: 10% 0"
+              >
+                <span
+                  >You have Successfully Registered. <br />Our Team Will Contact
+                  You Soon.</span
+                >
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoPreviousreg()">Ok</button>
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-success fr"
+            data-dismiss="modal"
+            (click)="gotoPreviousreg()"
+          >
+            OK
+          </button>
         </div>
-      </div>
-    </div>
-  </div> -->
-
-<!-- modal pop up start here -->
-<div class="modal fade" id="otpStatusokModal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body" style="padding:0;">
-        <div class="row">
-          <div class="col-md-12">
-            <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </h4>
-            <div class="right_mark">
-              <i class="fa fa-check" aria-hidden="true"></i>
-            </div>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
-              <span>You have Successfully Registered. <br>Our Team Will Contact You Soon.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoPreviousreg()">OK</button>
       </div>
     </div>
   </div>
-</div>
-<!-- Modal popup end here -->
+  <!-- Modal popup end here -->
 
-<div class="modal fade" id="internalusersuccessModal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body" style="padding:0;">
-        <div class="row">
-          <div class="col-md-12">
-            <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </h4>
-            <div class="right_mark">
-              <i class="fa fa-check" aria-hidden="true"></i>
-            </div>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
-              <span>User Created Successfully.</span>
+  <div class="modal fade" id="internalusersuccessModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding: 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">
+                  &times;
+                </button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div
+                class="pad_15 text-center content_msg"
+                style="padding: 10% 0"
+              >
+                <span>User Created Successfully.</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="gotoPreviousreg()">OK</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-success fr"
+            data-dismiss="modal"
+            (click)="gotoPreviousreg()"
+          >
+            OK
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>

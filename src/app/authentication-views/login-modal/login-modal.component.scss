@@ -46,7 +46,7 @@
 }
 
 button.login_close {
-    -webkit-appearance: none;
+    // -webkit-appearance: none;
     padding: 7px;
     cursor: pointer;
     background: #fff;
@@ -65,7 +65,7 @@ background: #f4f4f4;
 border-radius: 3px;
 // height: 30px;
 width: 100%;
-color: #232f3e;
+color: #d9dde0;
 //  border-bottom: 1px solid #0fb475;
 }
 .signup [type='password'] {
@@ -74,7 +74,7 @@ background: #f4f4f4;
 border-radius: 3px;
 //  height: 30px;
 width: 100%;
-color: #232f3e;
+color: #e1e5eb;
 //  border-bottom: 1px solid #0fb475;
 }
 .signup [type=submit] {
@@ -85,7 +85,7 @@ min-width: 80px;
 color: white;
 }
 .signup p {
-color: #232f3e;
+color: #d9dee4;
 font-size: 12px;
 font-weight: bold;
 }
@@ -217,7 +217,7 @@ color: white;
 }
 #create-account-login{
     min-width: 70%;
-    background: #131836;
+    background: #f8f8fc;
     margin-bottom: 1rem;
 }
 .signup{

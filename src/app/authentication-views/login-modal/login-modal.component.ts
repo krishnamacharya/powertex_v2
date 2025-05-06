@@ -8,6 +8,7 @@ import { ToasterService } from '../../toastr-service.service';
 import { ShowHideDirective } from './show-hide.directive';
 import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatDialogContainer } from '@angular/material/dialog';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { RegisterComponent } from '../register-step1/register.component';
 
 declare var $: any;
 @Component({
@@ -57,6 +58,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     loginUserData: any;
     cartItem_count:any;
   }>(MAT_DIALOG_DATA);
+  showLoginModal: boolean;
 
   constructor(private authService: GlobalServiceService, private route: Router,public dialog: MatDialog,
   private spinner: NgxSpinnerService, private toasterService: ToasterService) {
@@ -102,6 +104,11 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     }, 1000)
   };
 
+  closeLoginModal() {
+    this.showLoginModal = false; // <-- Change to false
+    console.log("Modal closed");
+  }
+  
   closeModal() {
     this.loginData = {};
     this.showForgotPswd = false;
@@ -236,12 +243,18 @@ showcredit(){
       this.data.cartItem_count = data['cartcount'];
     })
   }
-
   gotoRegister() {
+    // Close the current Login modal
     this.dialog.getDialogById(this.container._config.id ?? '')?.close();
-    this.route.navigate(['/registration', 1]);
-
-  };
+  
+    // Open the Register modal
+    this.dialog.open(RegisterComponent, {
+      width: '500px',
+      disableClose: true, // Optional
+      data: {} // Optional: pass any data to RegisterComponent
+    });
+  }
+  
 userid:any
 newuserid:any
   gotoForgotPassword(id) {
@@ -300,6 +313,7 @@ else{
         // console.log(error);
       });
   };
+
 
   callOTP() {
 

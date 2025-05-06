@@ -56,6 +56,7 @@ export class RegisterComponent implements OnInit {
   loginUserData: any;
   gstdata: any;
   openTab: string;
+form: any;
   constructor(private route: Router, private regService: GlobalServiceService,
     private activeRoute: ActivatedRoute, private dataService: DataServiceService,
     private eventEmit: ComponentCommunicationService, private dialog: MatDialog,
@@ -137,7 +138,19 @@ export class RegisterComponent implements OnInit {
       });
   };
 
+  passwordVisible: boolean = false;
+  confirmPasswordVisible: boolean = false;
 
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+    const passwordInput = document.getElementById('password') as HTMLInputElement;
+    passwordInput.type = this.passwordVisible ? 'text' : 'password';
+  }
+    toggleConfirmPasswordVisibility() {
+    this.confirmPasswordVisible = !this.confirmPasswordVisible;
+    const confirmPasswordInput = document.getElementById('confirmPassword') as HTMLInputElement;
+    confirmPasswordInput.type = this.confirmPasswordVisible ? 'text' : 'password';
+  }
   onSelectCountry(country) {
     this.country = country;
     this.getDatawith1Param('15', country);

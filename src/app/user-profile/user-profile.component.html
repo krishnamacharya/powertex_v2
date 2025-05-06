@@ -1,515 +1,385 @@
-<div class="container pad_t_5per pad_b_5per user_profile">
-  <p class="bread-crumb1">
-    <span>
-      <!-- <a href="javascript.void(0)" routerLink="/home" style="
-          color: #878787 !important;
-      ">Home</a> -->
-    <a href="javascript.void(0)" routerLink="/dashboard" style="color: #878787 !important; ">Dashboard</a>
-    </span>&nbsp;>&nbsp; 
-    <span>Profile</span>
+<div class="container py-5 user_profile">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <mat-tab-group (selectedTabChange)="tabChanged($event)" mat-align-tabs="start">
 
-  </p>
-  <div class="reg_form mar_b_30">
-    <mat-tab-group (selectedTabChange)="tabChanged($event)">
-
-      <mat-tab label="Profile Information" class="left_label">
-        <h4 class="mar_b_30"
-          style="background: #0fa497; margin-top: -10px;margin: -10px -15px 0 -15px;padding: 10px;color: #fff !important;">
-          Personal
-          Information
-        </h4>
-        <form #profileForm="ngForm" style="margin-top: 30px;">
-          <div class="pad_t_b_20 reg_form">
-            <div class="row">
-              <!-- <span class="p_info_h" (click)="editPersonalInfo()">Personal
-                Information<i class="fa fa-pencil-square-o pad_l_10 cursor_pointer theem_color" aria-hidden="true"></i>
-              </span> -->
-              <!-- <span class="p_info_h">Personal Information</span> -->
-              <button type="button" class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fr"
-              (click)="editprofile()">Edit&nbsp;
-              <!-- <i class="fa fa-long-arrow-right" aria-hidden="true"></i> -->
-              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-            </button>
+        <mat-tab label="Profile Information">
+          <div class="p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="mb-0 text-success">Personal Information</h4>
+              <button type="button" class="btn btn-outline-success rounded-pill" (click)="editprofile()">
+                Edit <i class="fa fa-pencil-square-o ml-2" aria-hidden="true"></i>
+              </button>
             </div>
-            <div class="mar_10">
-              <div class="col-md-12 ">
-                <div class="col-md-6">
-                  <!-- <label>First Name</label> -->
-                  <mat-form-field>
-                    <input type="text" [disabled]="edit" required name="first_name" #first_name="ngModel" matInput
-                      placeholder="First Name" onkeypress="return (event.charCode > 64 && 
+
+            <form #profileForm="ngForm" class="row g-3">
+              <div class="col-md-6">
+                <mat-form-field class="w-100">
+                  <mat-label>First Name</mat-label>
+                  <input type="text" [disabled]="edit" required name="first_name" #first_name="ngModel" matInput
+                    placeholder="First Name" onkeypress="return (event.charCode > 64 &&
                       event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"
-                      [(ngModel)]="loginUserData.first_name">
-                  </mat-form-field>
-
-                </div>
-                <div class="col-md-6">
-                  <!-- <label>Last Name</label> -->
-                  <mat-form-field>
-                    <input matInput [disabled]="edit" required name="last_name" placeholder="Last Name" onkeypress="return (event.charCode > 64 && 
+                    [(ngModel)]="loginUserData.first_name">
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="w-100">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput [disabled]="edit" required name="last_name" placeholder="Last Name" onkeypress="return (event.charCode > 64 &&
                     event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)"
-                      [(ngModel)]="loginUserData.last_name">
-                  </mat-form-field>
-                </div>
+                    [(ngModel)]="loginUserData.last_name">
+                </mat-form-field>
               </div>
 
-              <div class="col-md-12">
-                <div class="col-md-6">
-                  <label>Gender</label>
-                  <mat-radio-group [disabled]="edit" required name="radio" class="example-radio-group"
-                    [(ngModel)]="loginUserData.salatation">
-                    <mat-radio-button name="Ms" value="Ms"></mat-radio-button>
-                    <label for="color-2">
-                      <span></span>
-                    </label>
-                    <span class="radio_text">Female</span>
-                    <mat-radio-button name="Mr" value="Mr" class="pad_l_15"></mat-radio-button>
-                    <label for="color-1">
-                      <span></span>
-                    </label>
-                    <span class="radio_text">Male</span>
-                  </mat-radio-group>
-                </div>
-
+              <div class="col-md-6">
+                <label class="form-label">Gender</label>
+                <mat-radio-group [disabled]="edit" required name="radio" class="d-flex align-items-center"
+                  [(ngModel)]="loginUserData.salatation">
+                  <mat-radio-button name="Ms" value="Ms">Female</mat-radio-button>
+                  <mat-radio-button name="Mr" value="Mr" class="ml-3">Male</mat-radio-button>
+                </mat-radio-group>
               </div>
-            </div>
-            <br>
 
-            <div class="row">
-              <div class="col-md-12">
-                <button *ngIf="!edit" [disabled]="profileForm.invalid" type="submit"
-                  class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
-                  (click)="updateIserInfoData(1,'user')">Update
-                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+              <div class="col-12 mt-4" *ngIf="!edit">
+                <button [disabled]="profileForm.invalid" type="submit"
+                  class="btn btn-success rounded-pill">Update
+                  <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
                 </button>
               </div>
-            </div>
-          </div>
-        </form>
-        <form #profileUserForm="ngForm" style="margin-top: 30px;">
-          <div class="reg_form pad_t_b_20">
-            <div class="col-md-12">
-              <div class="col-md-6">
+            </form>
 
-                <!-- <label>Email</label> -->
-                <mat-form-field>
-                  <!-- <span class="fr" (click)="editUserEmail=!editUserEmail"><i
-                      class="fa fa-pencil-square-o pad_l_10 cursor_pointer theem_color" aria-hidden="true"></i></span> -->
+            <hr class="my-4">
+
+            <form #profileUserForm="ngForm" class="row g-3">
+              <div class="col-md-6">
+                <mat-form-field class="w-100">
+                  <mat-label>Email Id</mat-label>
                   <input type="email" [disabled]="editUserEmail" required name="email" matInput placeholder="Email Id"
                     [(ngModel)]="loginUserData.email" #email="ngModel"
                     pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                  <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+                    <p *ngIf="email.errors['pattern']">Enter Valid Email</p>
+                  </mat-error>
                 </mat-form-field>
-                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation_msg">
-                  <p class="validation_msg" *ngIf="email.errors['pattern']">Enter Valid Email</p>
-                </div>
               </div>
               <div class="col-md-6">
-
-                <mat-form-field>
-                  <!-- <span class="fr" (click)="editUserMobile=!editUserMobile"><i
-                      class="fa fa-pencil-square-o pad_l_10 cursor_pointer theem_color" aria-hidden="true"></i></span> -->
+                <mat-form-field class="w-100">
+                  <mat-label>Mobile Number</mat-label>
                   <input type="text" [disabled]="editUserMobile" #mobile="ngModel" maxlength="12" required name="mobile"
                     matInput placeholder="Mobile Number" [(ngModel)]="loginUserData.mobile" pattern="^[6-9][0-9]{11}$">
+                  <mat-error *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)">
+                    <p *ngIf="mobile.errors['pattern']">Enter Valid Mobile</p>
+                  </mat-error>
                 </mat-form-field>
-                <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
-                  <p class="validation_msg" *ngIf="mobile.errors['pattern']">Enter Valid Mobile</p>
-                </div>
               </div>
-            </div>
-            <div class="col-md-12" *ngIf="showOtp && (!editUserEmail ||!editUserMobile)">
-              <div class="col-md-6">
-                <mat-form-field>
+
+              <div class="col-md-6" *ngIf="showOtp && (!editUserEmail ||!editUserMobile)">
+                <mat-form-field class="w-100">
+                  <mat-label>Enter OTP</mat-label>
                   <input type="number" required name="otp" matInput placeholder="Enter OTP" [(ngModel)]="otp">
                 </mat-form-field>
+              </div>
 
+              <div class="col-12 mt-4">
+                <div *ngIf="!editUserEmail && !showOtp">
+                  <button [disabled]="profileUserForm.invalid" type="submit"
+                    class="btn btn-success rounded-pill mr-2" (click)="updateIserInfoData(2,loginUserData.email)">Update Email
+                    <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                  </button>
+                  <button type="submit" class="btn btn-secondary rounded-pill" (click)="cancelEditData()">Cancel
+                    <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div *ngIf="showOtp">
+                  <button [disabled]="profileUserForm.invalid" type="submit"
+                    class="btn btn-success rounded-pill" (click)="submitOtp(otp)">Submit
+                    <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div *ngIf="!editUserMobile && !showOtp">
+                  <button [disabled]="profileUserForm.invalid" type="submit"
+                    class="btn btn-success rounded-pill mr-2" (click)="updateIserInfoData(2,loginUserData.mobile)">Update Mobile No
+                    <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                  </button>
+                  <button type="submit" class="btn btn-secondary rounded-pill" (click)="cancelEditData()">Cancel
+                    <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12" *ngIf="!editUserEmail && !showOtp">
-                <button [disabled]="profileUserForm.invalid" type="submit"
-                  class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
-                  (click)="updateIserInfoData(2,loginUserData.email)">Update Email
-                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                </button>
-                <button type="submit" class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
-                  (click)="cancelEditData()">Cancel
-                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="col-md-12" *ngIf="showOtp">
-                <button [disabled]="profileUserForm.invalid" type="submit"
-                  class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
-                  (click)="submitOtp(otp)">Submit
-                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                </button>
-              </div>
-              <div class="col-md-12" *ngIf="!editUserMobile && !showOtp">
-                <button [disabled]="profileUserForm.invalid" type="submit"
-                  class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
-                  (click)="updateIserInfoData(2,loginUserData.mobile)">Update Mobile No
-                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                </button>
-                <button type="submit" class="margin_l5 btn btn-primary brdr_radius_50 btn_w bg_green border_green fl"
-                  (click)="cancelEditData()">Cancel
-                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
+            </form>
 
-        <form #profileUserForms="ngForm" style="margin-top: 30px;">
-          <div class="reg_form pad_t_b_20">
-            <div class="col-md-12">
+            <hr class="my-4">
+
+            <form #profileUserForms="ngForm" class="row g-3">
               <div class="col-md-6">
-                <mat-form-field>
+                <mat-form-field class="w-100">
+                  <mat-label>Address1</mat-label>
                   <input type="text" [disabled]="editUserEmail" required name="address1" matInput placeholder="Address1"
                     [(ngModel)]="loginUserData.address1" #address1="ngModel"
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                    pattern="^[a-zA-Z0-9\s,'-]*$">
+                  <mat-error *ngIf="address1.invalid && (address1.dirty || address1.touched)">
+                    <p *ngIf="address1.errors['pattern']">Enter Valid address1</p>
+                  </mat-error>
                 </mat-form-field>
-                <div *ngIf="address1.invalid && (address1.dirty || address1.touched)" class="validation_msg">
-                  <p class="validation_msg" *ngIf="address1.errors['pattern']">Enter Valid address1</p>
-                </div>
               </div>
 
               <div class="col-md-6">
-                <mat-form-field>
-                  <input type="text" [disabled]="editUserMobile" #address2="ngModel" maxlength="12" required name="address2"
-                    matInput placeholder="Address2" [(ngModel)]="loginUserData.address2" pattern="^[6-9][0-9]{11}$">
+                <mat-form-field class="w-100">
+                  <mat-label>Address2</mat-label>
+                  <input type="text" [disabled]="editUserMobile" #address2="ngModel" required name="address2"
+                    matInput placeholder="Address2" [(ngModel)]="loginUserData.address2" pattern="^[a-zA-Z0-9\s,'-]*$">
+                  <mat-error *ngIf="address2.invalid && (address2.dirty || address2.touched)">
+                    <p *ngIf="address2.errors['pattern']">Enter Valid address2</p>
+                  </mat-error>
                 </mat-form-field>
-                <div *ngIf="address2.invalid && (address2.dirty || address2.touched)" class="validation_msg">
-                  <p class="validation_msg" *ngIf="address2.errors['pattern']">Enter Valid address2</p>
-                </div>
               </div>
 
               <div class="col-md-6">
-                <mat-form-field>
+                <mat-form-field class="w-100">
+                  <mat-label>State</mat-label>
                   <input type="text" [disabled]="editUserEmail" required name="state" matInput placeholder="State"
                     [(ngModel)]="loginUserData.state" #state="ngModel"
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                    pattern="^[a-zA-Z\s]*$">
+                  <mat-error *ngIf="state.invalid && (state.dirty || state.touched)">
+                    <p *ngIf="state.errors['pattern']">Enter Valid State</p>
+                  </mat-error>
                 </mat-form-field>
-                <div *ngIf="state.invalid && (state.dirty || state.touched)" class="validation_msg">
-                  <p class="validation_msg" *ngIf="state.errors['pattern']">Enter Valid State</p>
-                </div>
               </div>
 
               <div class="col-md-6">
-                <mat-form-field>
+                <mat-form-field class="w-100">
+                  <mat-label>City</mat-label>
                   <input type="text" [disabled]="editUserEmail" required name="city" matInput placeholder="City"
                     [(ngModel)]="loginUserData.city" #city="ngModel"
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                    pattern="^[a-zA-Z\s]*$">
+                  <mat-error *ngIf="city.invalid && (city.dirty || city.touched)">
+                    <p *ngIf="city.errors['pattern']">Enter Valid City</p>
+                  </mat-error>
                 </mat-form-field>
-                <div *ngIf="city.invalid && (city.dirty || city.touched)" class="validation_msg">
-                  <p class="validation_msg" *ngIf="city.errors['pattern']">Enter Valid City</p>
-                </div>
               </div>
-              
+
               <div class="col-md-6">
-                <mat-form-field>
+                <mat-form-field class="w-100">
+                  <mat-label>Country</mat-label>
                   <input type="text" [disabled]="editUserEmail" required name="country" matInput placeholder="Country"
                     [(ngModel)]="loginUserData.country" #country="ngModel"
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                    pattern="^[a-zA-Z\s]*$">
+                  <mat-error *ngIf="country.invalid && (country.dirty || country.touched)">
+                    <p *ngIf="country.errors['pattern']">Enter Valid Country</p>
+                  </mat-error>
                 </mat-form-field>
-                <div *ngIf="country.invalid && (country.dirty || country.touched)" class="validation_msg">
-                  <p class="validation_msg" *ngIf="country.errors['pattern']">Enter Valid Country</p>
-                </div>
               </div>
 
               <div class="col-md-6">
-                <mat-form-field>
+                <mat-form-field class="w-100">
+                  <mat-label>Pincode</mat-label>
                   <input type="text" [disabled]="editUserEmail" required name="pin" matInput placeholder="Pincode"
                     [(ngModel)]="loginUserData.pin" #pin="ngModel"
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                    pattern="^[0-9]{6}$">
+                  <mat-error *ngIf="pin.invalid && (pin.dirty || pin.touched)">
+                    <p *ngIf="pin.errors['pattern']">Enter Valid Pin (6 digits)</p>
+                  </mat-error>
                 </mat-form-field>
-                <div *ngIf="pin.invalid && (pin.dirty || pin.touched)" class="validation_msg">
-                  <p class="validation_msg" *ngIf="pin.errors['pattern']">Enter Valid Pin</p>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Change Password">
+          <div class="p-4">
+            <h4 class="mb-4 text-success">Change Password</h4>
+
+            <form #changePwdForm="ngForm" class="row g-3">
+              <div class="col-md-12">
+                <mat-form-field class="w-100">
+                  <mat-label>Enter New Password</mat-label>
+                  <input type="password" name="setpassword" minlength="6" matInput id="setpassword"
+                    [(ngModel)]="loginData.setpassword" placeholder="Enter New Password" #setpassword="ngModel" required>
+                </mat-form-field>
+              </div>
+              <div class="col-md-12">
+                <mat-form-field class="w-100">
+                  <mat-label>Confirm Password</mat-label>
+                  <input type="password" minlength="6" matInput id="confirmPassword"
+                    [(ngModel)]="loginData.confirmPassword" placeholder="Enter confirm Password" name="confirmPassword"
+                    #confirmPassword="ngModel" required>
+                </mat-form-field>
+                <div *ngIf="loginData.setpassword!=loginData.confirmPassword" class="text-danger mt-2">
+                  New Password and confirm password should match.
                 </div>
               </div>
 
-            </div>
-          </div>
-        </form>
-      </mat-tab>
-
-      <mat-tab label="Change Password" class="mat-tab-label-content">
-        <div class="mar_b_30">
-          <h4
-            style="background: #0fa497; margin-top: -10px;margin: -10px -15px 0 -15px;padding: 10px;color: #fff !important;">
-            Change
-            Password</h4>
-        </div>
-
-        <form #changePwdForm="ngForm">
-          <div class="col-md-12">
-            <div class="col-md-12">
-              <mat-form-field>
-                <input type="password" name="setpassword" minlength="6" matInput id="setpassword"
-                  [(ngModel)]="loginData.setpassword" placeholder="Enter New Password" #setpassword="ngModel" required>
-              </mat-form-field>
-            </div>
-            <div class="col-md-12">
-              <mat-form-field>
-                <input type="password" minlength="6" matInput id="confirmPassword"
-                  [(ngModel)]="loginData.confirmPassword" placeholder="Enter confirm Password" name="confirmPassword"
-                  #confirmPassword="ngModel" required>
-              </mat-form-field>
-            </div>
-            <div *ngIf="loginData.setpassword!=loginData.confirmPassword" class="validation_msg">
-              New Password and confirm password should be match.
-            </div>
-          </div>
-
-          <div class="col-md-12">
-            <div class="mar_b_30">
-              <h4 style="color:#0fa497 !important;">
-                <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
-                  [disabled]="!changePwdForm.valid" (click)="changePassword(changePwdForm,loginData.confirmPassword)">
-                  Update
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-success rounded-pill"
+                  [disabled]="!changePwdForm.valid || loginData.setpassword!=loginData.confirmPassword" (click)="changePassword(changePwdForm,loginData.confirmPassword)">
+                  Update <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
                 </button>
-              </h4>
+              </div>
+            </form>
+
+            <div class="note_points mt-4">
+              <h5 class="text-success">Note:</h5>
+              <ul>
+                <li>
+                  <p>Be at least 6 characters in length</p>
+                </li>
+                <li>
+                  <p>Not be same as your current password</p>
+                </li>
+                <li>
+                  <p>Not contain common passwords.</p>
+                </li>
+              </ul>
             </div>
           </div>
+        </mat-tab>
 
-        </form>
-
-        <div class="note_points">
-          <h3 class="instructions">Note:</h3>
-          <ul>
-            <li>
-              <p>Be at least 6 characters in length</p>
-            </li>
-            <li>
-              <p>Not be same as your current password</p>
-            </li>
-            <li>
-              <p>Not contain common passwords.</p>
-            </li>
-          </ul>
-        </div>
-
-      </mat-tab>
-
-      <mat-tab label="Manage Addresses" class="left_label"
-        *ngIf="(loginUserData.user_type=='Customer' || loginUserData.user_type=='Dealer' || loginUserData.user_type=='Guest' )">
-
-        <h4
-          style="background: #0fa497; margin-top: -10px;margin: -10px -15px 0 -15px;padding: 10px;color: #fff !important;">
-          Manage Address
-        </h4>
-        <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
-          (click)="addNewAdd('new',2)" style="margin-top: 20px;">
-          <i class="fa fa-map-marker" aria-hidden="true"></i> Add New Address
-        </button>
-
-        <mat-grid-list cols="2" rowHeight="2:1" *ngIf="!newAddress">
-          <mat-grid-tile *ngFor="let address of shipingAddress; let i = index">
-            <!-- <mat-list *ngIf="!newAddress">
-              <mat-list-item> -->
-            <div class="mat_addr_styles">
-              <div class="user_data_addr">
-                <p>
-                  <span matLine>
-                    <b>{{address.Contact_person}}</b>
-                  </span>
-                  <span class="fr pad_l_20">
-                    <a href="javascript:void(0)" class="txt_red" (click)="deleteAddress(address.seq_no)" title="Edit">
-                      <i class="fa fa-trash" aria-hidden="true"></i>
-                    </a>
-                  </span>
-                  <span class="fr">
-                    <a href="javascript:void(0)" class="txt_red" (click)="addNewAdd(address,1)" title="Edit">
-                      <i class="fa fa-pencil" aria-hidden="true"></i>
-                    </a>
-                  </span>
-
-                </p>
-                <!-- <h3 matLine> {{address.Contact_person}} </h3> -->
-                <p matLine>
-                  <span> {{address.mobile}}, </span>
-                </p>
-                <p matLine>
-                  <span> {{address.address1}}, </span>
-                  <span> {{address.address2}}, </span>
-                </p>
-                <p matLine>
-                  <span> {{address.city}}, </span>
-                  <span> {{address.state}}. </span>
-                </p>
-                <!-- <p matLine>
-                  <span> {{address.state}}. </span>
-                </p> -->
-              </div>
-              <mat-radio-group class="example-radio-group mat_rad">
-                <mat-radio-button name="seqno" value="{{address.default1}}" [checked]="address.default1==1"
-                  (change)="setasDefault(address)"></mat-radio-button>
-              </mat-radio-group>
+        <mat-tab label="Manage Addresses"
+          *ngIf="(loginUserData.user_type=='Customer' || loginUserData.user_type=='Dealer' || loginUserData.user_type=='Guest' )">
+          <div class="p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="mb-0 text-success">Manage Address</h4>
+              <button type="submit" class="btn btn-outline-success rounded-pill" (click)="addNewAdd('new',2)">
+                <i class="fa fa-map-marker mr-2" aria-hidden="true"></i> Add New Address
+              </button>
             </div>
-            <!-- </mat-list-item>
-            </mat-list> -->
-          </mat-grid-tile>
-        </mat-grid-list>
 
-        <div class="newAddress" *ngIf="newAddress">
-          <h4 *ngIf="addressId==2" class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">New Address:</h4>
-          <h4 *ngIf="addressId==1" class="f_wt_600 txt_decr_undl txt_black pad_t_b_10">Edit Address:</h4>
-          <form #newAddForm="ngForm">
-            <div class="form-group row">
-              <div>
-                <div class="col-sm-3">
-                  <label for="name" >Full Name
-                    <sub class="txt_red f_size_25">*</sub>
-                  </label>
-                  <div>
+            <div class="row row-cols-1 row-cols-md-2 g-4" *ngIf="!newAddress">
+              <div class="col" *ngFor="let address of shipingAddress; let i = index">
+                <div class="card h-100 shadow-sm">
+                  <div class="card-body d-flex justify-content-between align-items-start">
+                    <div>
+                      <h6 class="card-title mb-1"><b>{{address.Contact_person}}</b></h6>
+                      <p class="card-text mb-0">{{address.mobile}}</p>
+                      <p class="card-text mb-0">{{address.address1}}, {{address.address2}}</p>
+                      <p class="card-text mb-0">{{address.city}}, {{address.state}}.</p>
+                    </div>
+                    <div class="d-flex flex-column align-items-end">
+                      <mat-radio-group class="mb-2">
+                        <mat-radio-button name="seqno" value="{{address.default1}}" [checked]="address.default1==1"
+                          (change)="setasDefault(address)">Default</mat-radio-button>
+                      </mat-radio-group>
+                      <div>
+                        <a href="javascript:void(0)" class="text-danger mr-2" (click)="deleteAddress(address.seq_no)" title="Delete">
+                          <i class="fa fa-trash" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="text-primary" (click)="addNewAdd(address,1)" title="Edit">
+                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="newAddress mt-4" *ngIf="newAddress">
+              <h5 *ngIf="addressId==2" class="text-success mb-3">New Address:</h5>
+              <h5 *ngIf="addressId==1" class="text-success mb-3">Edit Address:</h5>
+              <form #newAddForm="ngForm" class="row g-3">
+                <div class="col-md-6">
+                  <mat-form-field class="w-100">
+                    <mat-label>Full Name</mat-label>
                     <input type="text" class="form-control" #name="ngModel" required id="name" name="name"
                       [(ngModel)]="edipShipAddress.Contact_person" placeholder="Enter Full Name">
-                  </div>
-                  <div [hidden]="name.valid ||  name.untouched" class="validation_msg">
-                    Full Name is required
-                  </div>
+                    <mat-error *ngIf="name.invalid && name.touched">
+                      Full Name is required
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-                <div class="col-sm-3">
-                  <label for="mobile" >Mobile Number
-                    <sub class="txt_red f_size_25">*</sub>
-                  </label>
-                  <div>
+                <div class="col-md-6">
+                  <mat-form-field class="w-100">
+                    <mat-label>Mobile Number</mat-label>
                     <input type="text" class="form-control" #mobile="ngModel" required id="mobile"
                       [(ngModel)]="edipShipAddress.mobile" name="mobile" placeholder="Enter Mobile Number"
                       maxlength="10" pattern="^[6-9][0-9]{9}$">
-                  </div>
-                  <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="validation_msg">
-                    <p *ngIf="mobile.errors['required']">Mobile Number is required</p>
-                    <p *ngIf="mobile.errors['pattern']">Enter Valid Mobile Number</p>
-                  </div>
+                    <mat-error *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)">
+                      <p *ngIf="mobile.errors['required']">Mobile Number is required</p>
+                      <p *ngIf="mobile.errors['pattern']">Enter Valid Mobile Number</p>
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-                <div class="col-sm-3">
-                  <label for="hno">Address 1
-                    <sub class="txt_red f_size_25">*</sub>
-                  </label>
-                  <div>
+                <div class="col-md-6">
+                  <mat-form-field class="w-100">
+                    <mat-label>Address 1</mat-label>
                     <input type="text" class="form-control" #address1="ngModel" required
                       [(ngModel)]="edipShipAddress.address1" id="address1" name="address1"
                       placeholder="Enter House Number">
-                  </div>
-                  <div [hidden]="address1.valid ||  address1.untouched" class="validation_msg">
-                    Address is required
-                  </div>
+                    <mat-error *ngIf="address1.invalid && address1.touched">
+                      Address is required
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-                <div class="col-sm-3">
-                  <label for="street">Address 2
-                    <sub class="txt_red f_size_25">*</sub>
-                  </label>
-                  <div>
+                <div class="col-md-6">
+                  <mat-form-field class="w-100">
+                    <mat-label>Address 2</mat-label>
                     <input type="text" required class="form-control" #address2="ngModel"
                       [(ngModel)]="edipShipAddress.address2" id="address2" name="address2"
                       placeholder="Enter Street Name">
-                  </div>
-                  <div [hidden]="address2.valid ||  address2.untouched" class="validation_msg">
-                    Address is required
-                  </div>
+                    <mat-error *ngIf="address2.invalid && address2.touched">
+                      Address is required
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-              </div>
-            </div>
 
-            <div class="form-group row">
-              <div>
-
-                <!-- <div class="col-sm-3">
-                  <label  for="country">Country
-                    <sub class="txt_red f_size_25">*</sub>
-                  </label>
-                  <div >
-                    <select class='select-option form-control' required [(ngModel)]="edipShipAddress.country" name="country"
-                      #country="ngModel" (change)="onSelectCountry(edipShipAddress.country)">
-                      <option [ngValue]="undefined" disabled selected>--Select--</option>
-                      <option class='option' *ngFor="let countries of countriesList| async" [ngValue]="countries.country">{{countries.country}}</option>
-                    </select>
-                    <div [hidden]="country.valid ||  country.untouched" class="validation_msg">
-                      Country is required
-                    </div>
-                  </div>
-                </div> -->
-                <div class="col-sm-3">
-                  <label for="shopAddress">State
-                    <sub class="txt_red f_size_25">*</sub>
-                  </label>
-                  <div>
-                    <select class='select-option form-control' [(ngModel)]="edipShipAddress.state" required name="state"
-                      #state="ngModel" (change)="onSelectState(edipShipAddress.state)">
-                      <option [ngValue]="undefined" disabled selected>--select--</option>
-                      <option class='option' *ngFor="let states of response1" [ngValue]="states.state">{{states.state}}
-                      </option>
-                    </select>
-                    <div [hidden]="state.valid ||  state.untouched" class="validation_msg">
+                <div class="col-md-4">
+                  <mat-form-field class="w-100">
+                    <mat-label>State</mat-label>
+                    <mat-select [(ngModel)]="edipShipAddress.state" required name="state"
+                      #state="ngModel" (selectionChange)="onSelectState(edipShipAddress.state)">
+                      <mat-option [value]="undefined" disabled>--select--</mat-option>
+                      <mat-option *ngFor="let states of response1" [value]="states.state">{{states.state}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="state.invalid && state.touched">
                       State is required
-                    </div>
-                  </div>
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-                <div class="col-sm-3">
-                  <label for="city">District
-                    <sub class="txt_red f_size_25">*</sub>
-                  </label>
-                  <div>
-                    <select class='select-option form-control' [(ngModel)]="edipShipAddress.district" required
-                      name="district" #district="ngModel" (change)="onSelectDistrict(edipShipAddress.district)">
-                      <option [ngValue]="undefined" disabled selected>--select--</option>
-                      <option class='option' *ngFor="let districts of response2" [ngValue]="districts.district">
-                        {{districts.district}}</option>
-                    </select>
-                    <div [hidden]="district.valid ||  district.untouched" class="validation_msg">
+                <div class="col-md-4">
+                  <mat-form-field class="w-100">
+                    <mat-label>District</mat-label>
+                    <mat-select [(ngModel)]="edipShipAddress.district" required
+                      name="district" #district="ngModel" (selectionChange)="onSelectDistrict(edipShipAddress.district)">
+                      <mat-option [value]="undefined" disabled>--select--</mat-option>
+                      <mat-option *ngFor="let districts of response2" [value]="districts.district">{{districts.district}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="district.invalid && district.touched">
                       District is required
-                    </div>
-                  </div>
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-                <div class="col-sm-3">
-                  <label for="shopAddress">City/Region
-                    <sub class="txt_red f_size_25">*</sub>
-                  </label>
-                  <div>
-                    <select class='select-option form-control' [(ngModel)]="edipShipAddress.city" required name="city"
+                <div class="col-md-4">
+                  <mat-form-field class="w-100">
+                    <mat-label>City/Region</mat-label>
+                    <mat-select [(ngModel)]="edipShipAddress.city" required name="city"
                       #city="ngModel">
-                      <option [ngValue]="undefined" disabled selected>--select--</option>
-                      <option class='option' *ngFor="let cities of response3" [ngValue]="cities.city">{{cities.city}}
-                      </option>
-                    </select>
-                    <div [hidden]="city.valid ||  city.untouched" class="validation_msg">
+                      <mat-option [value]="undefined" disabled>--select--</mat-option>
+                      <mat-option *ngFor="let cities of response3" [value]="cities.city">{{cities.city}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="city.invalid && city.touched">
                       City is required
-                    </div>
-                  </div>
+                    </mat-error>
+                  </mat-form-field>
                 </div>
-              </div>
-            </div>
-          </form>
-          <hr>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="fl">
-                <button type="submit" class="btn btn-primary brdr_radius_50 btn_w bg_green border_green"
-                  (click)="cancelNewAdd()">
-                  <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Cancel
-                </button>
-              </div>
-              <div class="fr">
-                <button type="submit" [disabled]="newAddForm.invalid" (click)="saveAddress()"
-                  class="btn btn-primary brdr_radius_50 btn_w bg_green border_green">Save
-                  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-                </button>
-              </div>
+
+                <div class="col-12 mt-4">
+                  <button type="button" class="btn btn-secondary rounded-pill mr-2" (click)="cancelNewAdd()">
+                    <i class="fa fa-long-arrow-left mr-2" aria-hidden="true"></i> Cancel
+                  </button>
+                  <button type="submit" [disabled]="newAddForm.invalid" (click)="saveAddress()"
+                    class="btn btn-success rounded-pill">Save
+                    <i class="fa fa-long-arrow-right ml-2" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
+        </mat-tab>
 
-        </div>
-      </mat-tab>
-      <!-- <mat-tab label="Brand Discount " class="left_label"
-      *ngIf="( loginUserData.user_type=='Dealer' )">
-      <h4 class="mar_b_30"
-      style="background: #0fa497; margin-top: -10px;margin: -10px -15px 0 -15px;padding: 10px;color: #fff !important;">
-      Brand Discount
-    </h4>
-   
-    </mat-tab> -->
-      <mat-tab label="Logout" class="left_label"></mat-tab>
+        <mat-tab label="Logout"></mat-tab>
 
-    </mat-tab-group>
+      </mat-tab-group>
+    </div>
   </div>
 </div>
 

@@ -41,9 +41,9 @@ export class GlobalServiceService {
   // imageurl = 'http://120.138.8.118:8002'
 
 
-  // apiUrl = "http://192.168.20.187:8000/get/";
-  // posturl = "http://192.168.20.187:8000/";
-  // imageurl = "http://192.168.20.187:8000";
+  // apiUrl = "http://192.168.0.155:8000/get/";
+  // posturl = "http://192.168.0.155:8000/";
+  // imageurl = "http://192.168.0.155:8000";
 
   // apiUrl = "http://192.168.20.198:8000/get/";
   // posturl = "http://192.168.20.198:8000/";
