@@ -1,0 +1,321 @@
+
+<!-- <ngx-spinner class="custom_loader">
+  <img src="../../../assets/Loader.gif" />
+</ngx-spinner> -->
+
+<div class="container-fluid" style="padding: 30px 65px">
+    <div class="row justify-content-center">
+      <!-- Sidebar -->
+      <div
+        class="col"
+        *ngIf="showslider && sidemenu"
+        style="
+          background-color: white;
+          border-radius: 8px;
+          border: 1px solid rgba(133, 132, 132, 0.2);
+        "
+      >
+        <div
+          class="pad_t_b_5"
+          style="
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            border-color: rgb(114, 110, 110);
+          "
+        >
+          <!-- Price Filter -->
+          <h4 class="mb-3">Price</h4>
+        
+          <div class="row mt-2">
+            <div class="col-6">
+              <p class="mb-1 small fw-medium">Min value:</p>
+              <input
+                type="number"
+                class="form-control form-control-sm"
+                [(ngModel)]="minValue"
+                (keypress)="price_min(minValue, maxValue)"
+                (keyup)="price_min(minValue, maxValue)"
+                min="0"
+                oninput="validity.valid||(value='');"
+                style="padding: 4px !important"
+              />
+            </div>
+            <div class="col-6">
+              <p class="mb-1 small fw-medium">Max value:</p>
+              <input
+                type="number"
+                class="form-control form-control-sm"
+                [(ngModel)]="maxValue"
+                (keypress)="price_min(minValue, maxValue)"
+                (keyup)="price_min(minValue, maxValue)"
+                min="0"
+                oninput="validity.valid||(value='');"
+                style="padding: 4px !important"
+              />
+            </div>
+          </div>
+  
+          <!-- Brand Filter -->
+          <h4  class="mt-4 mb-3">Brand</h4>
+          <ul class="list-unstyled">
+            <li *ngFor="let p of brands" class="form-check mb-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                (change)="disc(p.brand)"
+                [checked]="selected_disc === p.brand"
+                id="{{ p.brand }}"
+                style="border: 2px solid rgb(102, 96, 96)" 
+              />
+              <label
+                class="form-check-label ms-2"
+                for="{{ p.brand }}"
+                style="color: rgb(102, 96, 96)"
+              >
+                {{ p.brand }}
+              </label>
+            </li>
+          </ul>
+          <!-- Sort By -->
+          <h4 class="mt-4 mb-3">Sort By</h4>
+          <ul class="list-unstyled">
+            <li class="mb-2 d-flex align-items-center">
+              <input
+                type="checkbox"
+                class="form-check-input me-2"
+                (change)="Ascend('acc')"
+                name="sortOption"
+                style="border: 1px solid rgb(124, 119, 119)"
+              />
+              <label style="cursor: pointer" class="form-check-label">
+                Price Low to High
+              </label>
+            </li>
+            <li class="mb-2 d-flex align-items-center">
+              <input
+                type="checkbox"
+                class="form-check-input me-2"
+                (change)="Ascend('dec')"
+                name="sortOption"
+                style="border: 1px solid rgb(124, 119, 119)"
+              />
+              <label style="cursor: pointer" class="form-check-label">
+                Price High to Low
+              </label>
+            </li>
+          </ul>
+             <!-- Image below all filters -->
+             <div class="text-center mt-4">
+              <img
+                src="assets/images/image.png"
+                alt="Promotional Filter Banner"
+                class="img-fluid rounded shadow-sm"
+                style=" height: 200px;width: 250px;"
+              />
+            </div>
+    
+          <!-- Discount -->
+          <h4 class="mt-4 mb-3">Discount</h4>
+          <ul class="list-unstyled" *ngIf="percenages">
+            <li class="form-check mb-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                (change)="clearfilters(0)"
+                [checked]="selected_disc === 0"
+                id="clearFilters"
+                style="border: 1px solid rgb(124, 119, 119)"
+              />
+              <label
+                class="form-check-label ms-2"
+                for="clearFilters"
+                style="color: rgb(102, 96, 96)"
+              >
+                Clear Filters
+              </label>
+            </li>
+  
+            <ng-container *ngFor="let discVal of [5, 10, 20, 30, 40, 50]">
+              <li class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  (change)="disc(discVal)"
+                  [checked]="selected_disc === discVal"
+                  id="disc{{ discVal }}"
+                  style="border: 1px solid rgb(124, 119, 119)"
+                />
+                <label
+                  class="form-check-label ms-2"
+                  for="disc{{ discVal }}"
+                  style="color: rgb(102, 96, 96)"
+                >
+                  {{ discVal }}% or More (<span
+                    *ngIf="percenages['prdcount(' + discVal + '%)']"
+                    >{{ percenages["prdcount(" + discVal + "%)"] }}</span
+                  >
+                  <span *ngIf="!percenages['prdcount(' + discVal + '%)']">0</span
+                  >)
+                </label>
+              </li>
+            </ng-container>
+          </ul>
+            
+        </div>
+      </div>
+  
+      <!-- Product List Section -->
+      <div class="col-md-10" [ngClass]="{ 'col-md-12': sidemenu == false }">
+        <div class="row justify-content-start flex-wrap">
+          <div
+            *ngFor="
+              let p of resources2
+                | paginate : { itemsPerPage: 25, currentPage: Page };
+              let i = index
+            "
+            class="mb-4"
+            style="width: 20%"
+          >
+            <div
+              class="card h-100 product-card position-relative"
+              style="
+                background-color: #fdfbfb;
+                border-color: rgba(133, 132, 132, 0.2);
+                border-width: 1.5px;
+                border-style: solid;
+              "
+            >
+            <div
+            class="card product-card position-relative"
+            *ngFor="let p of resources2dataproduct"
+            (mouseenter)="p.showIcons = true"
+            (mouseleave)="p.showIcons = false"
+          >
+            <!-- Product content here (image, name, price, etc.) -->
+          
+            <!-- Wishlist + Eye Icons -->
+            <div
+              class="position-absolute top-0 end-0 p-2 z-2 text-end icon-container"
+              [ngClass]="{ 'd-none': !p.showIcons }"
+            >
+              <i
+                *ngIf="p.wishlist == '1'"
+                class="fa fa-heart text-danger cursor_pointer d-block mb-2"
+                (click)="wish_list(p, '0')"
+              ></i>
+              <i
+                *ngIf="p.wishlist != '1'"
+                class="fa fa-heart-o text-secondary cursor_pointer d-block mb-2"
+                (click)="wish_list(p, '1')"
+              ></i>
+              <i
+                class="fa fa-eye cursor_pointer d-block"
+                style="color: rgb(102, 96, 96)"
+                (click)="sub_cat(p)"
+              ></i>
+            </div>
+          </div>
+          
+  
+              <!-- Image Section -->
+              <div
+                class="text-center px-3 pt-3 position-relative"
+                (click)="sub_cat(p)"
+              >
+                <img
+                  [src]="p.low_image_1"
+                  (error)="
+                    p.low_image_1 =
+                      'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
+                  "
+                  class="card-img-top img-fluid"
+                  style="height: 120px; object-fit: contain"
+                  alt="{{ p.brand }}"
+                />
+              </div>
+   
+              <!-- Card Body -->
+              <div class="card-body ps-4 py-3 position-relative">
+                <p class="text-muted mb-1">{{ p.brand }}</p>
+                <p class="fw-semibold text-truncate mb-2" title="{{ p.modelno }}">
+                  {{ p.modelno }}
+                </p>
+                <div *ngIf="sidemenu">
+                  <p class="mb-1">
+                    <span class="fw-bold"style="color: #009b77">₹{{ p.net_price }}</span>
+                    <span
+                      class="text-muted text-decoration-line-through ms-2"
+                      *ngIf="p.discount && p.discount > 0"
+                    >
+                      &#8377;{{ p.mrp }}
+                    </span>
+                  </p>
+                  <p
+                    class="text-success mb-1"
+                    *ngIf="p.discount && p.discount > 0"
+                  >
+                    {{ p.discount }}% Off
+                  </p>
+  
+                  <p class="text-muted small mb-0">(Excluding GST)</p>
+                </div>
+  
+                <!-- Cart Icon at bottom-right -->
+                <!-- <i class="fa fa-shopping-cart fa-1x text-success cursor_pointer position-absolute bottom-0 end-0 m-3"></i> -->
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Pagination -->
+        <div style="text-align: center; padding: 20px">
+          <pagination-controls
+            (pageChange)="onPageChange($event)"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- <ngx-spinner class="loader_spinner"></ngx-spinner> -->
+  
+  <!-- Packing Confirm Modal -->
+  <div
+    class="modal fade"
+    id="SpecificationModal"
+    tabindex="-1"
+    data-backdrop="static"
+    role="dialog"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding: 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">
+                  ×
+                </button>
+              </h4>
+              <div class="pad_15 text-center content_msg" style="padding: 15% 0">
+                <table class="table" *ngIf="specftndetails">
+                  <tbody *ngFor="let pd of specftndetails">
+                    <tr *ngIf="specftndetails.length != 1">
+                      <td>{{ pd.attribute }} : {{ pd.actual_value }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
