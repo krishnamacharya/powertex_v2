@@ -242,3 +242,27 @@ color: white;
 } 
 
 
+@media (max-width: 768px) {
+    .custom-card {
+      flex-direction: column !important;
+      width: 90% !important;
+      height: auto !important;
+    }
+  
+    .custom-card > div {
+      width: 100% !important;
+    }
+  
+    .custom-card img {
+      width: 80% !important;
+      height: auto !important;
+      margin: 20px 0;
+    }
+  
+    .position-absolute[aria-label="Close"] {
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+    }
+  }
+  

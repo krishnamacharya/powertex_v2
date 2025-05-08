@@ -2,16 +2,32 @@
 <div class="d-flex align-items-center justify-content-center position-relative">
 
   <!-- Signup Modal Card -->
-  <div class="card d-flex flex-row"
-       style="--card-width: 1000px; width: var(--card-width); max-width: 100%; height: auto; position: relative; z-index: 2; background-color: rgb(244, 248, 247); border: none;">
-
+  <div
+  class="card shadow-lg custom-card d-flex flex-row"
+  style="
+    width: 650px;
+    height: 580 px;
+    position: relative;
+    z-index: 2;
+    background-color: rgb(244, 248, 247);
+    border: none;
+  "
+>
+ <!-- Close Icon Button -->
+ <button type="button"
+ class="position-absolute"
+ aria-label="Close"
+ (click)="closeLoginModal()"
+ style="top: 15px; right: 15px; z-index: 3; background: transparent; border: none; font-size: 28px; color: black;">
+&times;
+</button>
     <!-- Left Image Section -->
     <div class="w-50 d-flex flex-column align-items-center justify-content-center text-center p-4"
-         style="background-color: #ecf5f3;">
-      <img src="/assets/images/image1.png" alt="Signup Visual" style="width: 230px; height: 300px;">
+     style="background-color: #d0ece6; width: 800px;">
+      <img src="/assets/images/register1.png" alt="Signup Visual" style="width: 250px; height: 400px;">
 
       <!-- Terms Note -->
-      <p class="text-muted small mt-4 mb-3" style="max-width: 80%;">
+      <p class="text-muted small mt-4 mb-3 text-success" style="max-width: 80%;">
         By continuing, you're agreeing to our
         <a href="#">Terms of Service</a>, <a href="#">Refund Policy</a>, and
         <a href="#">Privacy Policy</a>.
@@ -252,3 +268,47 @@
       </div>
     </div>
   </div>
+<!-- CSS for background and overlay -->
+<style>
+  .bg-image {
+    background-image: url('/assets/images/image.png'); /* replace with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.6); /* dark semi-transparent overlay */
+  }
+  .custom-card {
+  position: relative; /* for stacking context */
+  z-index: 2;
+  background: transparent;
+  border: none;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Make inputs full width */
+.full-width {
+  width: 60px;
+}
+
+/* Style your button */
+.login_acunt {
+  width: 100%;
+  padding: 10px;
+  background-color: #009b77;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+.login_acunt:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Utility margin class */
+
+</style>

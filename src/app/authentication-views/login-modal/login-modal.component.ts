@@ -249,7 +249,6 @@ showcredit(){
   
     // Open the Register modal
     this.dialog.open(RegisterComponent, {
-      width: '500px',
       disableClose: true, // Optional
       data: {} // Optional: pass any data to RegisterComponent
     });

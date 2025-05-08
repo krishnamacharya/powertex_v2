@@ -1,122 +1,180 @@
-
 <!-- White background wrapper -->
 <div class="d-flex align-items-center justify-content-center position-relative">
-
   <!-- Login form card split into two sections -->
-  <div class="card shadow-lg custom-card d-flex flex-row"
-       style="width: 650px; height: 550px; position: relative; z-index: 2; background-color: rgb(244, 248, 247); border: none;">
-
+  <div
+    class="card shadow-lg custom-card d-flex flex-row"
+    style="
+      width: 650px;
+      height: 550px;
+      position: relative;
+      z-index: 999;
+      background-color: rgb(244, 248, 247);
+      border: none;
+    "
+  >
     <!-- Close Icon Button -->
-    <button type="button"
-            class="position-absolute"
-            aria-label="Close"
-            (click)="closeLoginModal()"
-            style="top: 15px; right: 15px; z-index: 3; background: transparent; border: none; font-size: 28px; color: black;">
+    <button
+      type="button"
+      class="position-absolute"
+      aria-label="Close"
+      (click)="closeLoginModal()"
+      style="
+        top: 15px;
+        right: 15px;
+        z-index: 3;
+        background: transparent;
+        border: none;
+        font-size: 28px;
+        color: black;
+      "
+    >
       &times;
     </button>
 
     <!-- Left Image Section -->
-    <div class="w-50 d-flex align-items-center justify-content-center" style="background-color: #ecf5f3;">
-      <img src="/assets/images/login3.png" alt="Login Visual" style="width: 300px;height: 450px;">
+    <div
+      class="w-50 d-flex align-items-center justify-content-center"
+      style="background-color: #d0ece6"
+    >
+      <img
+        src="/assets/images/login3.png"
+        alt="Login Visual"
+        style="width: 300px; height: 450px"
+      />
     </div>
 
     <!-- Right Login Form Section -->
     <div class="w-50 p-4 d-flex align-items-center justify-content-center">
-      <div style="width: 100%;">
+      <div style="width: 100%">
         <h4 class="text-center">Welcome back!</h4>
         <form #loginForm="ngForm" (ngSubmit)="gotoLogin()">
-
           <!-- Email / Mobile Input -->
           <div class="mb-3">
-          
             <mat-form-field appearance="fill" class="full-width">
-
-
-              <input type="text"
-                     matInput required
-                     id="userId"
-                     class="form-control py-2"
-                     style="border-radius: 10px;"
-                     [(ngModel)]="loginData.userId"
-                     placeholder="Enter Email / Mobile"
-                     name="userId"
-                     #userId="ngModel"
-                     pattern="^[6-9][0-9]{9}$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
-                     appEnterkey />
-              <mat-error *ngIf="userId.invalid && (userId.dirty || userId.touched)">
-                <div *ngIf="userId.errors['required']">Email / Mobile is required</div>
-                <div *ngIf="userId.errors['pattern']">Enter valid Email / Mobile</div>
+              <input
+                type="text"
+                matInput
+                required
+                id="userId"
+                class="form-control py-2"
+                style="border-radius: 10px"
+                [(ngModel)]="loginData.userId"
+                placeholder="Enter Email / Mobile"
+                name="userId"
+                #userId="ngModel"
+                pattern="^[6-9][0-9]{9}$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                appEnterkey
+              />
+              <mat-error
+                *ngIf="userId.invalid && (userId.dirty || userId.touched)"
+              >
+                <div *ngIf="userId.errors['required']">
+                  Email / Mobile is required
+                </div>
+                <div *ngIf="userId.errors['pattern']">
+                  Enter valid Email / Mobile
+                </div>
               </mat-error>
-              <div *ngIf="checkUser.status==0 && guestId=='2'" class="validation_msg">UserId not found</div>
+              <div
+                *ngIf="checkUser.status == 0 && guestId == '2'"
+                class="validation_msg"
+              >
+                UserId not found
+              </div>
             </mat-form-field>
           </div>
 
           <!-- Password Input -->
           <div class="mb-3">
             <mat-form-field appearance="fill" class="full-width">
-              <input [type]="show ? 'text' : 'password'"
-                     matInput required
-                     id="password"
-                     [(ngModel)]="loginData.password"
-                     placeholder="Enter Password"
-                     class="form-control py-2"
-                     style="border-radius: 10px;"
-                     name="password"
-                     #password="ngModel" 
-                     />
-                     <span class="fa"
-                     [ngClass]="show ? 'fa-eye-slash' : 'fa-eye'"
-                     (click)="toggleShow($event)"
-                     style="cursor: pointer; font-size: 20px; color: rgba(0,0,0,0.54);"></span>
-            
+              <input
+                [type]="show ? 'text' : 'password'"
+                matInput
+                required
+                id="password"
+                [(ngModel)]="loginData.password"
+                placeholder="Enter Password"
+                class="form-control py-2"
+                style="border-radius: 10px"
+                name="password"
+                #password="ngModel"
+              />
+              <span
+                class="fa"
+                [ngClass]="show ? 'fa-eye-slash' : 'fa-eye'"
+                (click)="toggleShow($event)"
+                style="
+                  cursor: pointer;
+                  font-size: 20px;
+                  color: rgba(0, 0, 0, 0.54);
+                "
+              ></span>
             </mat-form-field>
-            <a class="forgot-password" (click)="gotoForgotPassword('2')">Forgot Password?</a>
+            <a class="forgot-password" (click)="gotoForgotPassword('2')"
+              >Forgot Password?</a
+            >
           </div>
 
           <!-- Submit Button -->
           <div class="text-center mb-2">
-            <button type="submit"
-                    [disabled]="!loginForm.valid"
-                    class="login_acunt"
-                    style="background-color: #009b77; padding: 6px 20px; font-size: 14px;">
+            <button
+              type="submit"
+              [disabled]="!loginForm.valid"
+              class="login_acunt"
+              style="
+                background-color: #009b77;
+                padding: 6px 20px;
+                font-size: 14px;
+              "
+            >
               SUBMIT
             </button>
           </div>
 
           <!-- Error Message -->
-          <div class="alert alert-danger alert-dismissible" *ngIf="displaMsg==true">
+          <div
+            class="alert alert-danger alert-dismissible"
+            *ngIf="displaMsg == true"
+          >
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>Please check your credentials!</strong>
           </div>
 
           <!-- Create Account Prompt -->
-          <p class="text-center text-black mb-1">New here? Create an Account.</p>
+          <p class="text-center text-black mb-1">
+            New here? Create an Account.
+          </p>
           <div class="text-center mb-2">
-            <button id="create-account-login"
-                    class="login_acunt"
-                    style="background-color: #009b77;"
-                    (click)="gotoRegister()">
+            <button
+              id="create-account-login"
+              class="login_acunt"
+              style="background-color: #009b77"
+              (click)="gotoRegister()"
+            >
               CREATE AN ACCOUNT
             </button>
           </div>
 
           <!-- Note -->
-          <p class="text-center text-black" style="font-size: 12px;">Note: Out of India? Use email to login.</p>
+          <p class="text-center text-black" style="font-size: 12px">
+            Note: Out of India? Use email to login.
+          </p>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-
-
-
 <!-- Success Alert -->
-<div class="smallSuccess_alert" *ngIf="alert" style="bottom:30%; margin-left:40%; width:30%;">
+<div
+  class="smallSuccess_alert"
+  *ngIf="alert"
+  style="bottom: 30%; margin-left: 40%; width: 30%"
+>
   <strong>
     <i class="fa fa-check add_icon" *ngIf="icon && !icon2"></i>
     <i class="fa fa-close remove_icon" *ngIf="!icon && icon2"></i>
-    {{wish_alert}}
+    {{ wish_alert }}
   </strong>
 </div>
 
@@ -125,24 +183,30 @@
 <div class="modal fade" id="loginStatusModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-body" style="padding:0;">
+      <div class="modal-body" style="padding: 0">
         <div class="row">
           <div class="col-md-12">
             <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">×</button>
+              <button type="button" class="close" data-dismiss="modal">
+                ×
+              </button>
             </h4>
             <div class="right_mark">
               <i class="fa fa-check" aria-hidden="true"></i>
             </div>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
-              <span>{{message}}</span>
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0">
+              <span>{{ message }}</span>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">
+          OK
+        </button>
       </div>
     </div>
   </div>
@@ -152,35 +216,56 @@
 <div class="modal fade" id="schemeModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-body" style="padding:0;">
+      <div class="modal-body" style="padding: 0">
         <div class="row">
           <div class="col-md-12">
             <h4 class="alert_heading1">Scheme's Details</h4>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0">
               <div class="row">
-                <div class="col-md-6" *ngFor="let data of schemes_data; let i=index">
+                <div
+                  class="col-md-6"
+                  *ngFor="let data of schemes_data; let i = index"
+                >
                   <div class="scheme_data">
                     <div class="scheme_tar">
-                      <h4 class="text-center" style="color:green !important;">Scheme {{i+1}}</h4>
-                      <h4 class="text-center">Target {{data.scheme_value}}</h4>
+                      <h4 class="text-center" style="color: green !important">
+                        Scheme {{ i + 1 }}
+                      </h4>
+                      <h4 class="text-center">
+                        Target {{ data.scheme_value }}
+                      </h4>
                     </div>
-                    <h5 class="text-center">{{data.scheme_benfit1}}</h5>
-                    <h5 class="text-center">{{data.scheme_benfit2}}</h5>
+                    <h5 class="text-center">{{ data.scheme_benfit1 }}</h5>
+                    <h5 class="text-center">{{ data.scheme_benfit2 }}</h5>
                   </div>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-12 text-center">
-                <b><a routerLink="/schemes-list" data-dismiss="modal"><i class="fa fa-arrow-right" style="font-size:17px"></i>know more</a></b>
+                <b
+                  ><a routerLink="/schemes-list" data-dismiss="modal"
+                    ><i class="fa fa-arrow-right" style="font-size: 17px"></i
+                    >know more</a
+                  ></b
+                >
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success fr" data-dismiss="modal" (click)="showcredit()">OK</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-success fr"
+          data-dismiss="modal"
+          (click)="showcredit()"
+        >
+          OK
+        </button>
       </div>
     </div>
   </div>
@@ -190,24 +275,30 @@
 <div class="modal fade" id="loginOtpVerifyModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-body" style="padding:0;">
+      <div class="modal-body" style="padding: 0">
         <div class="row">
           <div class="col-md-12">
             <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">×</button>
+              <button type="button" class="close" data-dismiss="modal">
+                ×
+              </button>
             </h4>
             <div class="right_mark">
               <i class="fa fa-check" aria-hidden="true"></i>
             </div>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0">
               <span>OTP Verified Successfully</span>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">
+          OK
+        </button>
       </div>
     </div>
   </div>
@@ -217,24 +308,30 @@
 <div class="modal fade" id="loginResetPwdModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-body" style="padding:0;">
+      <div class="modal-body" style="padding: 0">
         <div class="row">
           <div class="col-md-12">
             <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">×</button>
+              <button type="button" class="close" data-dismiss="modal">
+                ×
+              </button>
             </h4>
             <div class="right_mark">
               <i class="fa fa-check" aria-hidden="true"></i>
             </div>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+            <div class="pad_15 text-center content_msg" style="padding: 10% 0">
               <span>Password Updated Successfully</span>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success fr" data-dismiss="modal">
+          OK
+        </button>
       </div>
     </div>
   </div>
@@ -245,13 +342,22 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- Conditional Messages -->
-      <div class="modal-body text-center" *ngIf="loginUserData?.alert && !loginUserData?.alert1">
+      <div
+        class="modal-body text-center"
+        *ngIf="loginUserData?.alert && !loginUserData?.alert1"
+      >
         <h4>You have exceeded credit limit amount!!!</h4>
       </div>
-      <div class="modal-body text-center" *ngIf="loginUserData?.alert1 && !loginUserData?.alert">
+      <div
+        class="modal-body text-center"
+        *ngIf="loginUserData?.alert1 && !loginUserData?.alert"
+      >
         <h4>You have exceeded credit period days!!!</h4>
       </div>
-      <div class="modal-body text-center" *ngIf="loginUserData?.alert && loginUserData?.alert1">
+      <div
+        class="modal-body text-center"
+        *ngIf="loginUserData?.alert && loginUserData?.alert1"
+      >
         <h4>You have exceeded credit limit amount and credit period days!!!</h4>
       </div>
       <div class="modal-footer">
@@ -283,7 +389,7 @@
 <!-- CSS for background and overlay -->
 <style>
   .bg-image {
-    background-image: url('/assets/images/image.png'); /* replace with your image path */
+    background-image: url("/assets/images/image.png"); /* replace with your image path */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -293,35 +399,33 @@
     background-color: rgba(0, 0, 0, 0.6); /* dark semi-transparent overlay */
   }
   .custom-card {
-  position: relative; /* for stacking context */
-  z-index: 2;
-  background: transparent;
-  border: none;
-  padding: 20px;
-  border-radius: 8px;
-}
+    position: relative; /* for stacking context */
+    z-index: 2;
+    background: transparent;
+    border: none;
+    padding: 20px;
+    border-radius: 8px;
+  }
 
-/* Make inputs full width */
-.full-width {
-  width: 60px;
-}
+  /* Make inputs full width */
+  .full-width {
+    width: 60px;
+  }
 
-/* Style your button */
-.login_acunt {
-  width: 100%;
-  padding: 10px;
-  background-color: #009b77;
-  color: #fff;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-}
-.login_acunt:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
-}
+  /* Style your button */
+  .login_acunt {
+    width: 100%;
+    padding: 10px;
+    background-color: #009b77;
+    color: #fff;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  }
+  .login_acunt:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
 
-/* Utility margin class */
-
+  /* Utility margin class */
 </style>
-
