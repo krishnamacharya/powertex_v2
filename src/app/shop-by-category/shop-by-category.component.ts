@@ -180,9 +180,9 @@ export class ShopByCategoryComponent {
       });
   }
   
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.sub.unsubscribe();
+  // }
   goBack() {
   this._location.back();
  }
@@ -365,6 +365,7 @@ export class ShopByCategoryComponent {
 
   
   sub_cat(p) {
+  
 
     console.log(p);
     if (p.productid) {
@@ -376,11 +377,12 @@ export class ShopByCategoryComponent {
       localStorage.setItem('key', JSON.stringify(obj));
       console.log(p);
       // this.obj.setCategory(p);
-
-      this.router.navigateByUrl('/product-detail');
+      console.log("clicked") 
+      // this.router.navigateByUrl('/product-detail');
       this.router.navigate(['/product-detail', p.productid]);
     }
     else {
+     
       this.sidemenu = true
       this.d = p.category
       this.e = p.subcategory

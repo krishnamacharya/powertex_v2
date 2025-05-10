@@ -408,4 +408,36 @@ width: 50%;
   .product-card:hover .icon-container {
     display: block !important;
   }
-  
+  @media (max-width: 768px) {
+  .car1 {
+    width: 100% !important;
+    height: auto !important;
+    padding: 10px;
+  }
+
+  .car1 img#zoom_01 {
+    max-height: 250px !important;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .car1 .row.g-3 {
+    gap: 0.5rem !important;
+  }
+
+  .car1 .col-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+@media (max-width: 480px) {
+  .car1 img#zoom_01 {
+    max-height: 200px !important;
+  }
+
+  .car1 .col-3 {
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+  }
+}

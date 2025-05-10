@@ -5,20 +5,30 @@
   <div
   class="card shadow-lg custom-card d-flex flex-row"
   style="
-    width: 650px;
+    width: 700px;
     height: 580 px;
     position: relative;
     z-index: 2;
     background-color: rgb(244, 248, 247);
     border: none;
-  "
+  "*ngIf="showLoginModal"
 >
- <!-- Close Icon Button -->
- <button type="button"
- class="position-absolute"
- aria-label="Close"
- (click)="closeLoginModal()"
- style="top: 15px; right: 15px; z-index: 3; background: transparent; border: none; font-size: 28px; color: black;">
+
+<button
+type="button"
+class="position-absolute"
+aria-label="Close"
+(click)="closeLoginModal()"
+style="
+  top: 15px;
+  right: 15px;
+  z-index: 3;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  color: black;
+"
+>
 &times;
 </button>
     <!-- Left Image Section -->

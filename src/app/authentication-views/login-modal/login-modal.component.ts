@@ -58,7 +58,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     loginUserData: any;
     cartItem_count:any;
   }>(MAT_DIALOG_DATA);
-  showLoginModal: boolean;
+  showLoginModal = true;
+
 
   constructor(private authService: GlobalServiceService, private route: Router,public dialog: MatDialog,
   private spinner: NgxSpinnerService, private toasterService: ToasterService) {
@@ -243,7 +244,10 @@ showcredit(){
       this.data.cartItem_count = data['cartcount'];
     })
   }
-  gotoRegister() {
+   gotoRegister() {
+    console.log(
+      "clickeddddddddddddddddddddddd"
+    )
     // Close the current Login modal
     this.dialog.getDialogById(this.container._config.id ?? '')?.close();
   

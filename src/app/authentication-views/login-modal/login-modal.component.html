@@ -10,7 +10,7 @@
       z-index: 999;
       background-color: rgb(244, 248, 247);
       border: none;
-    "
+    "*ngIf="showLoginModal"
   >
     <!-- Close Icon Button -->
     <button
@@ -86,30 +86,35 @@
 
           <!-- Password Input -->
           <div class="mb-3">
-            <mat-form-field appearance="fill" class="full-width">
-              <input
-                [type]="show ? 'text' : 'password'"
-                matInput
-                required
-                id="password"
-                [(ngModel)]="loginData.password"
-                placeholder="Enter Password"
-                class="form-control py-2"
-                style="border-radius: 10px"
-                name="password"
-                #password="ngModel"
-              />
-              <span
-                class="fa"
-                [ngClass]="show ? 'fa-eye-slash' : 'fa-eye'"
-                (click)="toggleShow($event)"
-                style="
-                  cursor: pointer;
-                  font-size: 20px;
-                  color: rgba(0, 0, 0, 0.54);
-                "
-              ></span>
+            <mat-form-field appearance="fill" class="full-width" style="width: 100%">
+              <div style="display: flex; align-items: center; width: 100%">
+                <input
+                  [type]="show ? 'text' : 'password'"
+                  matInput
+                  required
+                  id="password"
+                  [(ngModel)]="loginData.password"
+                  placeholder="Enter Password"
+                  class="form-control py-2"
+                  style="border-radius: 10px; flex: 1"
+                  name="password"
+                  #password="ngModel"
+                />
+                <span
+                  class="fa"
+                  [ngClass]="show ? 'fa-eye-slash' : 'fa-eye'"
+                  (click)="toggleShow($event)"
+                  style="
+                    cursor: pointer;
+                    font-size: 20px;
+                    color: rgba(0, 0, 0, 0.54);
+                    margin-left: -35px;
+                    margin-right: 10px;
+                  "
+                ></span>
+              </div>
             </mat-form-field>
+            
             <a class="forgot-password" (click)="gotoForgotPassword('2')"
               >Forgot Password?</a
             >
@@ -163,7 +168,7 @@
       </div>
     </div>
   </div>
-</div>
+
 
 <!-- Success Alert -->
 <div
@@ -218,7 +223,7 @@
     <div class="modal-content">
       <div class="modal-body" style="padding: 0">
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12">    
             <h4 class="alert_heading1">Scheme's Details</h4>
             <div class="pad_15 text-center content_msg" style="padding: 10% 0">
               <div class="row">
