@@ -56,7 +56,12 @@ export class RegisterComponent implements OnInit {
   loginUserData: any;
   gstdata: any;
   openTab: string;
+<<<<<<< HEAD
   form: any;
+=======
+form: any;
+  showLoginModal: boolean=true;
+>>>>>>> 850761b3c5b3dd85d845edea063c5c8f76dd91ca
   constructor(private route: Router, private regService: GlobalServiceService,
     private activeRoute: ActivatedRoute, private dataService: DataServiceService,
     private eventEmit: ComponentCommunicationService, private dialog: MatDialog,
@@ -218,7 +223,11 @@ export class RegisterComponent implements OnInit {
         // console.log(error);
       });
   };
-
+  closeLoginModal() {
+    this.showLoginModal = false; // <-- Change to false
+    console.log("Modal closed2");
+  }
+  
 
 
   resetForm(form) {

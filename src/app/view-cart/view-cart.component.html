@@ -1,176 +1,141 @@
-<div *ngIf="carItems.length > 0">
-  <div class="container py-5">
-    <div class="row g-4">
-      <!-- Left Column: Cart Items -->
-      <div class="col-md-8">
-        <div class="p-4 rounded shadow-sm bg-white">
-          <h4 class="fw-bold text-uppercase mb-4">My Cart <span *ngIf="carItems.length>0">({{carItems.length}})</span></h4>
+<!-- Cart Exists -->
+<div *ngIf="carItems.length > 0" class="container py-5">
+  <div class="row g-4">
+    <!-- Left Column: Cart Items -->
+    <div class="col-md-8">
+      <div class="p-4 rounded shadow-sm bg-white">
+        <h4 class="fw-bold text-uppercase mb-4">
+          My Cart <span>({{ carItems.length }})</span>
+        </h4>
 
-          <div *ngIf="carItems.length>0">
-            <div *ngFor="let item of carItems" class="border-bottom pb-3 mb-3">
-              <div class="d-flex align-items-start">
-                <img [src]="item.url" class="img-thumbnail" style="width: 100px; height: auto; object-fit: cover;">
-                <div class="ms-3 flex-grow-1">
-                  <div class="fw-semibold text-dark mb-1">{{item.subcategory}} {{ item.modelno}}</div>
-                  <div class="mb-2">
-                    <span class="text-success fw-bold">₹{{item.enduserprice}}</span>
-                    <span *ngIf="item.discount_a > 0" class="text-muted text-decoration-line-through ms-2">₹{{item.mrp}}</span>
-                    <span *ngIf="item.discount_a > 0" class="ms-2 "style="color:#009b77">({{item.discount_a}}% off)</span>
-                  </div>
-               
-                </div>
-                <div class="d-flex justify-content-end align-items-center gap-3 w-100 mt-2">
-                  <!-- Quantity Block -->
-                  <div class="input-group input-group-sm" style="max-width: 120px;">
-                    <button
-                      class="btn border border-secondary bg-white"
-                      type="button"
-                      (click)="decrement(item)"
-                      style="border: 1px solid rgb(168, 165, 165);"
-                    >
-                      <i class="fa fa-minus" style="color: rgb(124, 116, 116); pointer-events: none;"></i>
-                    </button>
-                    <input
-                      type="text"
-                      class="form-control text-center px-2"
-                      [(ngModel)]="item.qty"
-                      (change)="select_qty(item)"
-                      readonly
-                      style="max-width: 50px; border: 1px solid rgb(168, 165, 165);"
-                    />
-                    <button
-                      class="btn border border-secondary bg-white"
-                      type="button"
-                      (click)="increment(item)"
-                      style="border: 1px solid rgb(168, 165, 165);"
-                    >
-                      <i class="fa fa-plus" style="color: rgb(124, 116, 116); pointer-events: none;"></i>
-                    </button>
-                  </div>
-                
-                  <!-- Delete Icon -->
-                  <button class="btn p-1.5 border" style="border-color: black;" (click)="remove(item.productid)">
-                    <i class="fa fa-trash" style="color: rgb(90, 85, 85); font-size: 1.1rem;"></i>
-                  </button>
-                  
-                </div>
-                
+        <div *ngFor="let item of carItems" class="border-bottom pb-3 mb-3">
+          <div class="d-flex align-items-start">
+            <img [src]="item.url" class="img-thumbnail" style="width: 100px; height: auto; object-fit: cover;" />
+            <div class="ms-3 flex-grow-1">
+              <div class="fw-semibold text-dark mb-1">{{ item.subcategory }} {{ item.modelno }}</div>
+              <div class="mb-2">
+                <span class="text-success fw-bold">₹{{ item.enduserprice }}</span>
+                <span *ngIf="item.discount_a > 0" class="text-muted text-decoration-line-through ms-2">₹{{ item.mrp }}</span>
+                <span *ngIf="item.discount_a > 0" class="ms-2" style="color: #009b77;">({{ item.discount_a }}% off)</span>
               </div>
             </div>
 
-            <div class="d-flex justify-content-between mt-4 border-top pt-3">
-              <button 
-                class="btn1" 
-                (click)="remove('All')" 
-                style="border: 1px solid #130c0c; color: rgb(87, 83, 83); border-radius: 8px; padding: 10px 20px;background-color: #ffffff;">
-                Remove all
-              </button>
-              <button 
-                class="btn1" 
-                (click)="change()" 
-                style="border: 1px solid #009b77; color:#009b77; border-radius: 8px; padding: 10px 20px; background-color: #ffffff;">
-                Add +
+            <div class="d-flex justify-content-end align-items-center gap-3 w-100 mt-2">
+              <!-- Quantity Block -->
+              <div class="input-group input-group-sm" style="max-width: 120px;">
+                <button class="btn border border-secondary bg-white" (click)="decrement(item)" style="border: 1px solid rgb(168, 165, 165);">
+                  <i class="fa fa-minus" style="color: rgb(124, 116, 116); pointer-events: none;"></i>
+                </button>
+                <input type="text" class="form-control text-center px-2" [(ngModel)]="item.qty" (change)="select_qty(item)" readonly style="max-width: 50px; border: 1px solid rgb(168, 165, 165);" />
+                <button class="btn border border-secondary bg-white" (click)="increment(item)" style="border: 1px solid rgb(168, 165, 165);">
+                  <i class="fa fa-plus" style="color: rgb(124, 116, 116); pointer-events: none;"></i>
+                </button>
+              </div>
+
+              <!-- Delete Icon -->
+              <button class="btn p-1.5 border" style="border-color: black;" (click)="remove(item.productid)">
+                <i class="fa fa-trash" style="color: rgb(90, 85, 85); font-size: 1.1rem;"></i>
               </button>
             </div>
-            
-            
-            
           </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4 border-top pt-3">
+          <button class="btn1" (click)="remove('All')" style="border: 1px solid #130c0c; color: rgb(87, 83, 83); border-radius: 8px; padding: 10px 20px; background-color: #ffffff;">
+            Remove all
+          </button>
+          <button class="btn1" (click)="change()" style="border: 1px solid #009b77; color: #009b77; border-radius: 8px; padding: 10px 20px; background-color: #ffffff;">
+            Add +
+          </button>
         </div>
       </div>
+    </div>
 
-      <!-- Right Column: Cart Summary -->
-      <div class="col-md-4">
-        <div class="bg-white p-4 rounded shadow-sm mb-4" *ngIf="carItems.length > 0">
-          <h4 class="fw-bold mb-3">Cart Total</h4>
-          <div class="d-flex justify-content-between mb-2">
-            <span>Taxable Amount</span>
-            <span>{{cartdata.endusergrandtotal | currency:'INR'}}</span>
-          </div>
-          <div class="d-flex justify-content-between mb-2">
-            <span>Extra Discount</span>
-            <span>{{pricedetails.devicediscamount | currency:'INR'}}</span>
-          </div>
-          <div class="d-flex justify-content-between mb-2">
-            <span>GST Amount (18%)</span>
-            <span>{{cartdata.grand_tax | currency:'INR'}}</span>
-          </div>
-          <div class="d-flex justify-content-between mb-2">
-            <span>Transport Charges</span>
-            <span>{{pricedetails.trasnport_charges | currency:'INR'}}</span>
-          </div>
-          <div class="d-flex justify-content-between border-top pt-2 fw-bold">
-            <span>Grand Total</span>
-            <span>{{grandtotal + (pricedetails.trasnport_charges) | currency:'INR'}}</span>
-          </div>
-          <button class="btn w-60 mt-3" style="background-color:#009b77"(click)="gotoCheckout()">Proceed To Purchase</button>
+    <!-- Right Column: Cart Summary -->
+    <div class="col-md-4">
+      <div class="bg-white p-4 rounded shadow-sm mb-4">
+        <h4 class="fw-bold mb-3">Cart Total</h4>
+        <div class="d-flex justify-content-between mb-2">
+          <span>Taxable Amount</span>
+          <span>{{ cartdata.endusergrandtotal | currency: 'INR' }}</span>
         </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span>Extra Discount</span>
+          <span>{{ pricedetails.devicediscamount | currency: 'INR' }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span>GST Amount (18%)</span>
+          <span>{{ cartdata.grand_tax | currency: 'INR' }}</span>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span>Transport Charges</span>
+          <span>{{ pricedetails.trasnport_charges | currency: 'INR' }}</span>
+        </div>
+        <div class="d-flex justify-content-between border-top pt-2 fw-bold">
+          <span>Grand Total</span>
+          <span>{{ grandtotal + pricedetails.trasnport_charges | currency: 'INR' }}</span>
+        </div>
+        <button class="btn w-60 mt-3" style="background-color: #009b77;" (click)="gotoCheckout()">Proceed To Purchase</button>
+      </div>
 
-        <div class="bg-white p-4 rounded shadow-sm" *ngIf="carItems.length > 0">
-          <h4 class="fw-bold mb-3">Promocode</h4>
-          <div class="row g-2">
-            <div class="col-sm-6">
-              <input type="text" class="form-control" [(ngModel)]="promocode" placeholder="Enter Promocode" />
-            </div>
-            <div class="col-sm-6 d-flex gap-2">
-              <button class="btn  w-50" (click)="applycode(promocode)"style="background-color:#009b77">Apply</button>
-              <button 
-              class="btn btn-outline-dark w-50" 
-              (click)="deletecode()" 
-              style="background-color: transparent; box-shadow: none;"
-              onmouseover="this.style.backgroundColor='transparent'; this.style.color='black';"
-              onmouseout="this.style.backgroundColor='transparent'; this.style.color='black';"
-            >
-              <i class="fa fa-trash" style="color:black"></i>
+      <div class="bg-white p-4 rounded shadow-sm">
+        <h4 class="fw-bold mb-3">Promocode</h4>
+        <div class="row g-2">
+          <div class="col-sm-6">
+            <input type="text" class="form-control" [(ngModel)]="promocode" placeholder="Enter Promocode" />
+          </div>
+          <div class="col-sm-6 d-flex gap-2">
+            <button class="btn w-50" (click)="applycode(promocode)" style="background-color: #009b77;">Apply</button>
+            <button class="btn btn-outline-dark w-50" (click)="deletecode()" style="background-color: transparent; box-shadow: none;">
+              <i class="fa fa-trash" style="color: black;"></i>
             </button>
-            
-            </div>
           </div>
-          <div class="mt-2 text-success" *ngIf="applycodedetails && messagep">
-            <strong>Promocode Applied! You saved <span class="text-danger">{{applycodedetails.promo_amount | currency}}</span></strong>
-          </div>
-          <div class="mt-2 text-danger" *ngIf="applycodedetails && !messagep">
-            <strong>This Promocode is not applicable</strong>
-          </div>
+        </div>
+
+        <div class="mt-2 text-success" *ngIf="applycodedetails && messagep">
+          <strong>Promocode Applied! You saved <span class="text-danger">{{ applycodedetails.promo_amount | currency }}</span></strong>
+        </div>
+        <div class="mt-2 text-danger" *ngIf="applycodedetails && !messagep">
+          <strong>This Promocode is not applicable</strong>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Empty Cart -->
-  <div class="container py-5" *ngIf="carItems.length==0">
-    <div class="text-center">
-      <p class="text-muted">Home &gt; Cart</p>
-      <h4 class="fw-bold mb-3">My Cart</h4>
-      <img src="../assets/empty_shopping_cart.png" class="img-fluid mb-3" style="max-width: 200px;">
-      <p class="text-muted">No Products are Available In your Cart</p>
-      <button class="btn btn-success" routerLink="/home">Continue Shopping</button>
-    </div>
+<!-- Empty Cart -->
+<div *ngIf="carItems.length === 0" class="container py-5">
+  <div class="text-center "style="margin-top:50px">
+
+   
+    <img src="assets/images/empty_shopping.png" class="img-fluid mb-3" style="max-width: 200px;">
+    <p class="text-muted">No Products are Available In your Cart</p>
+    <button class="btn" style="background-color: #009b77; margin-bottom: 50px;" routerLink="/home">Continue Shopping</button>
   </div>
+</div>
 
-  <!-- Alert -->
-  <div class="position-fixed bottom-0 end-0 m-4 alert alert-success d-flex align-items-center" *ngIf="alert" role="alert">
-    <i class="fa fa-check me-2"></i>
-    <strong>{{wish_alert}}</strong>
-  </div>
+<!-- Alert -->
+<div class="position-fixed bottom-0 end-0 m-4 alert alert-success d-flex align-items-center" *ngIf="alert" role="alert">
+  <i class="fa fa-check me-2"></i>
+  <strong>{{ wish_alert }}</strong>
+</div>
 
-  <ngx-spinner class="loader_spinner"></ngx-spinner>
+<ngx-spinner class="loader_spinner"></ngx-spinner>
 
-  <!-- Delete Confirmation Modal -->
-  <div id="confirmModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Delete</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body text-center">
-          <p>Are you sure?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success" (click)="deleteConfirm()">Yes</button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-        </div>
+<!-- Delete Confirmation Modal -->
+<div id="confirmModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p>Are you sure?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="deleteConfirm()">Yes</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
       </div>
     </div>
   </div>

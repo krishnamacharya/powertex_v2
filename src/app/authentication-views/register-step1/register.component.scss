@@ -171,3 +171,32 @@
 @media screen and (min-width: 1024px) and (max-width: 1200px){
  
 }
+@media (max-width: 768px) {
+  .custom-card {
+    flex-direction: column !important;
+    width: 90% !important;
+    height: auto !important;
+  }
+
+  .custom-card .w-50 {
+    width: 100% !important;
+  }
+
+  .custom-card .p-5 {
+    padding: 1.5rem !important;
+  }
+
+  .custom-card img {
+    width: 120px !important;
+    height: 140px !important;
+  }
+
+  .custom-card .text-muted {
+    max-width: 100% !important;
+    font-size: 0.75rem;
+  }
+
+  .custom-card h4 {
+    font-size: 1.25rem !important;
+  }
+}

@@ -309,6 +309,7 @@ import { WhStockComponent } from './wh-manager/wh-stock/wh-stock.component';
 import { WhSubcatgComponent } from './wh-manager/wh-stock/wh-subcatg/wh-subcatg.component';
 import { WhModalComponent } from './wh-manager/wh-stock/wh-modal/wh-modal.component';
 import { BrandProtectionComponent } from './brand-protection/brand-protection.component';
+import { ShopByCategoryComponent } from './shop-by-category/shop-by-category.component';
 
 @NgModule({
   declarations: [
@@ -596,7 +597,8 @@ import { BrandProtectionComponent } from './brand-protection/brand-protection.co
     WhStockComponent,
     WhSubcatgComponent,
     WhModalComponent,
-    BrandProtectionComponent
+    BrandProtectionComponent,
+    ShopByCategoryComponent
     
   ],
   imports: [

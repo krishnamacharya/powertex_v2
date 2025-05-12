@@ -262,6 +262,7 @@ import { WhModalComponent } from './wh-manager/wh-stock/wh-modal/wh-modal.compon
 import { WhStockComponent } from './wh-manager/wh-stock/wh-stock.component';
 import { WhSubcatgComponent } from './wh-manager/wh-stock/wh-subcatg/wh-subcatg.component';
 import { BrandProtectionComponent } from './brand-protection/brand-protection.component';
+import { ShopByCategoryComponent } from './shop-by-category/shop-by-category.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -289,6 +290,7 @@ const routes: Routes = [
   { path: 'paymentsuccessfull', component: PaymentsuccessfullComponent },
   { path: "Brands/:b/:c", component: BrandsComponent },
   { path: "Brands/:b", component: BrandsComponent },
+  { path: "shop-by-category/:category", component: ShopByCategoryComponent },
 
   //Registered Customer-User
   // { path: "wishlist", component: WishListComponent, canActivate: [AuthGuard] },

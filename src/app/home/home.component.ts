@@ -120,8 +120,9 @@ export class HomeComponent implements OnInit {
     }
   ];
   startIndex = 0;
-  itemsPerPage1 = 6; // Show 5 categories per view
+  itemsPerPage1 = 7; // Show 5 categories per view
   endIndex = this.itemsPerPage1;
+  catg_prod_list: any[];
   
   scrollLeft() {
     if (this.startIndex > 0) {
@@ -249,25 +250,30 @@ this.dialog.open(ErrorModalComponent, {
     this.router.navigate(['/search', data]);
 
   }
-  catg_prod(data) {
-    // this.spinner.show();
-    let category = data.Category;
+  selected_catg(cat: any) {
 
-    return this.service.getDatawithQueryParams1('4.8', category).subscribe((resp) => {
-      // this.spinner.hide();
-      this.resources1 = JSON.parse(new TextDecoder().decode(new Uint8Array(resp))); this.getprod_deatils();
-    })
+    let category = cat;
+    console.log('Selected Category:', category);
+    // this.router.navigate(['/prod-category', category]);
+    this.router.navigate(['/shop-by-category',category]); // ✅ match the route
+
   }
+  catg_prod(data) {
+    const category = data.Category;
+  
+    this.service.getDatawithQueryParams1('4.8', category).subscribe((resp) => {
+      this.resources1 = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
+      this.catg_prod_list = this.resources1;  // 👈 store the array here
+      this.getprod_deatils();
+    });
+  }
+  
   getprod_deatils() {
     for (let d of this.resources1) {
       let sub_c = d.subcategory;
     }
   }
-  selected_catg(cat: any) {
-    let category = cat;
-    // this.router.navigate(['/prod-category', category]);
-    this.router.navigate(['/Brands',category]);
-  }
+ 
   selected_all() {
     this.router.navigateByUrl('/all-Category');
   }

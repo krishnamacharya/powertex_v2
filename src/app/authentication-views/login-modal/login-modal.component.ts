@@ -58,7 +58,12 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     loginUserData: any;
     cartItem_count:any;
   }>(MAT_DIALOG_DATA);
+<<<<<<< HEAD
   showLoginModal: boolean=true;
+=======
+  showLoginModal = true;
+
+>>>>>>> 850761b3c5b3dd85d845edea063c5c8f76dd91ca
 
   constructor(private authService: GlobalServiceService, private route: Router,public dialog: MatDialog,
   private spinner: NgxSpinnerService, private toasterService: ToasterService) {
@@ -243,13 +248,19 @@ showcredit(){
       this.data.cartItem_count = data['cartcount'];
     })
   }
-  gotoRegister() {
+   gotoRegister() {
+    console.log(
+      "clickeddddddddddddddddddddddd"
+    )
     // Close the current Login modal
     this.dialog.getDialogById(this.container._config.id ?? '')?.close();
   
     // Open the Register modal
     this.dialog.open(RegisterComponent, {
+<<<<<<< HEAD
       // width: '500px',
+=======
+>>>>>>> 850761b3c5b3dd85d845edea063c5c8f76dd91ca
       disableClose: true, // Optional
       data: {} // Optional: pass any data to RegisterComponent
     });
