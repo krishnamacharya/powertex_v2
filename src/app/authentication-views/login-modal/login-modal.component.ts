@@ -58,7 +58,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     loginUserData: any;
     cartItem_count:any;
   }>(MAT_DIALOG_DATA);
-  showLoginModal: boolean;
+  showLoginModal: boolean=true;
 
   constructor(private authService: GlobalServiceService, private route: Router,public dialog: MatDialog,
   private spinner: NgxSpinnerService, private toasterService: ToasterService) {
@@ -249,7 +249,7 @@ showcredit(){
   
     // Open the Register modal
     this.dialog.open(RegisterComponent, {
-      width: '500px',
+      // width: '500px',
       disableClose: true, // Optional
       data: {} // Optional: pass any data to RegisterComponent
     });

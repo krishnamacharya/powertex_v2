@@ -6,7 +6,7 @@ import { GlobalServiceService } from "../../global-service.service";
 import { DataServiceService } from "../../data-service.service";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ComponentCommunicationService } from '../.././component-communication.service';
-import { ToasterService} from '../../toastr-service.service';
+import { ToasterService } from '../../toastr-service.service';
 import { Directive, HostListener } from '@angular/core';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
   regData: any = [];
   userRegModel: any = {};
   delRegModel: any = {};
-  transportdetails:any
+  transportdetails: any
   otpModal: any = {};
   obj: any = {};
   @Input() styleId: number;
@@ -56,38 +56,38 @@ export class RegisterComponent implements OnInit {
   loginUserData: any;
   gstdata: any;
   openTab: string;
-form: any;
+  form: any;
   constructor(private route: Router, private regService: GlobalServiceService,
     private activeRoute: ActivatedRoute, private dataService: DataServiceService,
     private eventEmit: ComponentCommunicationService, private dialog: MatDialog,
-    private spinner: NgxSpinnerService , private toasterService:ToasterService) {
-    this.activeRoute.params.subscribe((params:any) => {
+    private spinner: NgxSpinnerService, private toasterService: ToasterService) {
+    this.activeRoute.params.subscribe((params: any) => {
       this.routeParams = params.id;
     },
-     error => {         
-      this.spinner.hide();
-      this.dialog.open(ErrorModalComponent, {
-        data: { errorModal:true }
-      });
+      error => {
+        this.spinner.hide();
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
+        });
         // console.log(error);
       });
   }
   /*  @HostListener('paste', ['$event']) blockPaste(e: KeyboardEvent) {
     e.preventDefault();
-  }  */ 
+  }  */
 
-   @HostListener('copy', ['$event']) blockCopy(e: KeyboardEvent) {
+  @HostListener('copy', ['$event']) blockCopy(e: KeyboardEvent) {
     e.preventDefault();
-  } 
+  }
 
-   @HostListener('cut', ['$event']) blockCut(e: KeyboardEvent) {
+  @HostListener('cut', ['$event']) blockCut(e: KeyboardEvent) {
     e.preventDefault();
-  } 
-  categoryList:any
+  }
+  categoryList: any
   ngOnInit() {
-    
+
     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
-   
+
     this.alert = false;
     window.scrollTo(0, 0);
     this.country = 'INDIA';
@@ -96,32 +96,32 @@ form: any;
       this.userTypeId = 37;
     } else {
       this.userTypeId = 38;
-      if(this.loginUserData.user_type=='Employee'){
-          this.registerModel.user_type='Employee';
-          this.registerModel.credit_period=this.loginUserData.credit_period;
-          this.registerModel.credit_limit=this.loginUserData.credit_limit;
-          this.registerModel.shipment_point=this.loginUserData.shipment_point;
-          this.registerModel.payment_terms=this.loginUserData.payment_terms;
-         }
+      if (this.loginUserData.user_type == 'Employee') {
+        this.registerModel.user_type = 'Employee';
+        this.registerModel.credit_period = this.loginUserData.credit_period;
+        this.registerModel.credit_limit = this.loginUserData.credit_limit;
+        this.registerModel.shipment_point = this.loginUserData.shipment_point;
+        this.registerModel.payment_terms = this.loginUserData.payment_terms;
+      }
       this.designationsList = this.dataService.getOnLoadServices(36);
       this.comapnyCodesList = this.dataService.getOnLoadServices(3.1);
     }
-    if(this.loginUserData!=null){
-    if(this.loginUserData.designation=="Marketing Manager"){
-      this.userTypeId = 37;
-      this.registerModel.user_type='Dealer';
-      this.branchesList = this.dataService.getOnLoadServices(1.8);
-      console.log(this.branchesList,"brancheslist")
-      this.categoryList = this.dataService.getOnLoadServices(50);
-      this.gettransportdata()
-      this.delRegModel.handling_marketing_manager=this.loginUserData.first_name+" "+this.loginUserData.last_name+"-"+this.loginUserData.email 
+    if (this.loginUserData != null) {
+      if (this.loginUserData.designation == "Marketing Manager") {
+        this.userTypeId = 37;
+        this.registerModel.user_type = 'Dealer';
+        this.branchesList = this.dataService.getOnLoadServices(1.8);
+        console.log(this.branchesList, "brancheslist")
+        this.categoryList = this.dataService.getOnLoadServices(50);
+        this.gettransportdata()
+        this.delRegModel.handling_marketing_manager = this.loginUserData.first_name + " " + this.loginUserData.last_name + "-" + this.loginUserData.email
+      }
     }
-  }
     this.getOnLoadServices(this.userTypeId, '19');
     this.getDatawith1Param('15', this.country);
   };
 
-  
+
   getOnLoadServices(param1, param2) {
     this.spinner.show();
     this.regService.forkJoinMethodForInputID1(param1, param2).subscribe((data) => {
@@ -132,9 +132,9 @@ form: any;
     },
       error => {
         this.spinner.hide();
-         this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
+        });
       });
   };
 
@@ -146,7 +146,7 @@ form: any;
     const passwordInput = document.getElementById('password') as HTMLInputElement;
     passwordInput.type = this.passwordVisible ? 'text' : 'password';
   }
-    toggleConfirmPasswordVisibility() {
+  toggleConfirmPasswordVisibility() {
     this.confirmPasswordVisible = !this.confirmPasswordVisible;
     const confirmPasswordInput = document.getElementById('confirmPassword') as HTMLInputElement;
     confirmPasswordInput.type = this.confirmPasswordVisible ? 'text' : 'password';
@@ -165,25 +165,25 @@ form: any;
     },
       error => {
         this.spinner.hide();
-         this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
+        });
       });
   };
 
   onSelectState(state) {
     this.state = state;
     this.getDatawith2Param('16', this.country, state);
-    this.regService.getDatawithQueryParams2('15.1',this.country,state).subscribe((data) => {
+    this.regService.getDatawithQueryParams2('15.1', this.country, state).subscribe((data) => {
       this.spinner.hide();
       this.gstdata = data;
       this.get_gst();
     })
   }
-  get_gst(){
-    for(let p of this.gstdata){
-      this.userRegModel.gstcode=p.gstcode;
-      this.userRegModel.zone=p.zone;
+  get_gst() {
+    for (let p of this.gstdata) {
+      this.userRegModel.gstcode = p.gstcode;
+      this.userRegModel.zone = p.zone;
     }
   }
   getDatawith2Param(input_id, param1, param2) {
@@ -194,9 +194,9 @@ form: any;
     },
       error => {
         this.spinner.hide();
-         this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
+        });
       });
   };
 
@@ -212,9 +212,9 @@ form: any;
     },
       error => {
         this.spinner.hide();
-         this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
+        });
         // console.log(error);
       });
   };
@@ -258,7 +258,7 @@ form: any;
     this.registerModel.passing_param = 1;
     if (this.registerModel.user_type == 'Customer' || this.registerModel.user_type == 'Dealer') {
       var regMoethod = 'sendotp/';
-      var mobile="91"+this.registerModel.mobile;
+      var mobile = "91" + this.registerModel.mobile;
       this.regService.getDatawithQuery(regMoethod, mobile).subscribe((data) => {
         this.spinner.hide();
         if (data['status'] == 'otp sended !!!') {
@@ -266,16 +266,16 @@ form: any;
           this.timer();
         } else {
           alert(data['status']);
-          
+
         }
       },
         error => {
           this.spinner.hide();
-           this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
+          this.dialog.open(ErrorModalComponent, {
+            data: { errorModal: true }
+          });
           this.toasterService.warning('error');
-          
+
           // console.log(error);
         });
     } else {
@@ -317,15 +317,15 @@ form: any;
       this.spinner.hide();
       if (data['Status'] == "Success .. ") {
         this.userRegModel = {};
-      //  form.reset();
+        //  form.reset();
         this.reg1 = true;
         this.dealerReg = false;
         //alert('You have Successfully Registered In');
         if (this.registerModel.user_type == 'Customer' || this.registerModel.user_type == 'Employee') {
           $("#internalusersuccessModal").modal('show');
         }
-        else{
-        $("#otpStatusokModal").modal('show');
+        else {
+          $("#otpStatusokModal").modal('show');
         }
         // if (this.registerModel.user_type != 'Employee') {
         //   this.ngxSmartService.getModal('loginModal').open();
@@ -337,28 +337,28 @@ form: any;
       ,
       error => {
         this.spinner.hide();
-         this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
+        });
         // console.log(error);
       }
     );
   };
 
   gotoPreviousreg() {
-    console.log("this.registerModel",this.registerModel);
-    
+    console.log("this.registerModel", this.registerModel);
+
     if (this.registerModel.user_type == 'Employee' || this.registerModel.user_type == 'Vendor') {
       //alert("enter");
       this.userRegModel = {};
-      this.registerModel= {};
-     // this.openTab='list';
-       return this.route.navigateByUrl("/INTERNAL USERS");
+      this.registerModel = {};
+      // this.openTab='list';
+      return this.route.navigateByUrl("/INTERNAL USERS");
       // this.ngxSmartService.getModal('loginModal').open();
     } else if (this.registerModel.user_type == 'Customer') {
       this.route.navigateByUrl("home");
       this.dialog.open(LoginModalComponent, {
-        data: {  }
+        data: {}
       });
     } else {
       this.route.navigateByUrl("home");
@@ -368,7 +368,7 @@ form: any;
   submitOTP(otp) {
     this.spinner.show();
     var regMoethod = 'sendotp/';
-    var mobile="91"+this.registerModel.mobile;
+    var mobile = "91" + this.registerModel.mobile;
     var otpValidBody = { "otp": otp, "phone": mobile };
     this.regService.postData(otpValidBody, regMoethod).subscribe((data) => {
       this.spinner.hide();
@@ -383,33 +383,33 @@ form: any;
     },
       error => {
         this.spinner.hide();
-         this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
+        });
         // console.log(error);
       });
   };
 
 
   verifyUser(data, field) {
-    
+
     //  this.spinner.show();
-    if(field=="mobile"){
-      data="91"+data
+    if (field == "mobile") {
+      data = "91" + data
     }
     this.regService.getDatawithQueryParams1(4.9, data).subscribe((data) => {
       //   this.spinner.hide();
       if (data['status'] == "1") {
         if (field == 'email') {
           this.mailValidation = true;
-        } 
-        if (field == 'mobile'){
+        }
+        if (field == 'mobile') {
           this.mobileValidation = true;
         }
       } else {
         if (field == 'email') {
           this.mailValidation = false;
-        } 
+        }
         if (field == 'mobile') {
           this.mobileValidation = false;
         }
@@ -417,34 +417,34 @@ form: any;
     },
       error => {
         this.spinner.hide();
-         this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
+        });
         // console.log(error);
       });
   }
 
-  checkIfBranch(data){
-    console.log("data",data);
-    if(data === "Branch"){
+  checkIfBranch(data) {
+    console.log("data", data);
+    if (data === "Branch") {
       return false;
     }
     return true;
   }
   gotoNext1() {
-      this.association = this.registerModel.user_type;
-      this.reg1 = false;
-      this.dealerReg = false;
-      this.dealerReg1=true
-    
+    this.association = this.registerModel.user_type;
+    this.reg1 = false;
+    this.dealerReg = false;
+    this.dealerReg1 = true
+
 
   };
   gotoPrevious1() {
     this.reg1 = false;
     this.dealerReg = true;
-    this.dealerReg1=false;
+    this.dealerReg1 = false;
   };
- 
+
   gettransportdata() {
     this.regService.getDataOnlyWithMethod("transport1").subscribe((resp1) => {
       this.transportdetails = resp1;
@@ -454,7 +454,7 @@ form: any;
 
   types = [
     { name: 'Advance cheque/GST Copy' },
-   // { name: 'Service' },
+    // { name: 'Service' },
     // { name: 'Pending' }
 
 
@@ -481,11 +481,11 @@ form: any;
   // response: any
   // product: any = {}
   // uploadData() {
-    
+
   //   if (this.product.type && (this.product.file || this.product.order)) {
   //     this.methodname = "ImageUploadView/";
   //     if(this.image){
-        
+
   //     this.body = { "processes": this.product.type, "userid": this.profileData.user_id, "image": this.image ,"descripts":this.product.order};
   //     }
   //     else{
@@ -495,7 +495,7 @@ form: any;
   //       console.log(data);
   //       // this.product = {}
   //       this.image = ''
-     
+
   //       if (data['status1']=="Success") {
 
   //         // $('#succModal').modal('show');
@@ -506,8 +506,8 @@ form: any;
   //       error => {
 
   //          this.dialog.open(ErrorModalComponent, {
-    //   data: { errorModal:true }
-    // });
+  //   data: { errorModal:true }
+  // });
   //         // console.log(error);
   //       });
   //   }
@@ -517,7 +517,7 @@ form: any;
   // }
   // url:any
   // getdata() {
-    
+
   //   this.methodname = "ImageUploadView/";
   //   this.regService.getDatawithMethodParams3(this.methodname,this.profileData.user_id,"","").subscribe((data) => {
   //     this.response = data
@@ -534,72 +534,72 @@ form: any;
   //   error => {
 
   //      this.dialog.open(ErrorModalComponent, {
-    //   data: { errorModal:true }
-    // });
+  //   data: { errorModal:true }
+  // });
   //     // console.log(error);
   //   })
-  
+
   // }
-  delregSubmit(form){
-   
+  delregSubmit(form) {
+
     this.registerModel.passing_param = 1;
     this.registerModel.status = 'p';
-    this.delRegModel.handling_marketing_manager=this.loginUserData.user_id
-    this.delRegModel.company_code=this.delRegModel.move_to
-  console.log(this.registerModel);
+    this.delRegModel.handling_marketing_manager = this.loginUserData.user_id
+    this.delRegModel.company_code = this.delRegModel.move_to
+    console.log(this.registerModel);
 
-  var body = Object.assign({}, this.registerModel, this.userRegModel, this.delRegModel);
-  var regMoethod = 'api/registration/';
-  this.regService.postData(body, regMoethod).subscribe((data) => {
-    //alert("entry");
-    this.spinner.hide();
-    if (data['Status'] == "Success .. ") {
-      this.userRegModel = {};
-      this.delRegModel = {};
-    //  form.reset();
-      this.reg1 = true;
-      this.dealerReg = false;
-      this.dealerReg1=false
-      //alert('You have Successfully Registered In');
-      $("#internalusersuccessModal").modal('show');
-     
-    } else {
-      alert(data['Status']);
-    }
-  }
-    ,
-    error => {
+    var body = Object.assign({}, this.registerModel, this.userRegModel, this.delRegModel);
+    var regMoethod = 'api/registration/';
+    this.regService.postData(body, regMoethod).subscribe((data) => {
+      //alert("entry");
       this.spinner.hide();
-       this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
-      // console.log(error);
+      if (data['Status'] == "Success .. ") {
+        this.userRegModel = {};
+        this.delRegModel = {};
+        //  form.reset();
+        this.reg1 = true;
+        this.dealerReg = false;
+        this.dealerReg1 = false
+        //alert('You have Successfully Registered In');
+        $("#internalusersuccessModal").modal('show');
+
+      } else {
+        alert(data['Status']);
+      }
     }
-  );
+      ,
+      error => {
+        this.spinner.hide();
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
+        });
+        // console.log(error);
+      }
+    );
   }
   resendPassword() {
-  
+
     this.callOTP();
   }
   callOTP() {
 
     this.spinner.show();
     var regMoethod = 'sendotp/';
-    var mobile="91"+this.registerModel.mobile;
+    var mobile = "91" + this.registerModel.mobile;
 
-      this.regService.getDatawithQuery(regMoethod, mobile).subscribe((data) => {
+    this.regService.getDatawithQuery(regMoethod, mobile).subscribe((data) => {
+      this.spinner.hide();
+      this.otpData = data;
+      this.showResendbtn = false;
+      this.timer();
+    },
+      error => {
         this.spinner.hide();
-        this.otpData = data;
-        this.showResendbtn = false;
-        this.timer();
-      },
-        error => {
-          this.spinner.hide();
-           this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
-          // console.log(error);
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
         });
+        // console.log(error);
+      });
   };
   otpTimer: any = 60;
   counter: any;
