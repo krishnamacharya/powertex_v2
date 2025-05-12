@@ -61,7 +61,7 @@ export class UserProfileComponent implements OnInit {
     this.getUserData();
     this.getUserAddresses();
   }
-
+// thisis for check
   getUserData() {
     this.spinner.show();
     this.globalService.getDatawithQueryParams1(5.2, this.loginUserData.user_id).subscribe((data) => {
