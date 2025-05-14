@@ -123,3 +123,24 @@
   margin-top: 2rem;
 }
 }
+.user_profile .list-group-item {
+  border: 1px solid #e2dfdf;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  padding: 18px;
+}
+
+.user_profile .list-group-item:hover,
+.user_profile .list-group-item.active {
+  border: 1px solid #009b77; /* Full green border */
+  background-color: #f5f5f5;
+  font-weight: 500;
+  color: #009b77;
+}
+
+
+.user_profile img {
+  
+  border-radius: 4px;
+}

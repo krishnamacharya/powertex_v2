@@ -167,8 +167,8 @@ constructor(@Inject(GlobalServiceService) private service: GlobalServiceService,
     this.get_banners();
     this.get_sideBanners();
     // this.spinner.hide();
-    this.card2();
-    this.card3();
+    // this.card2();
+    // this.card3();
   }
 
   images: any = ["slide1", "slide2", "slide3", "slide4", "slide5", "slide6", "slide7", "slide8", "slide9", "slide10", "slide11", "slide12"];
@@ -314,47 +314,45 @@ this.dialog.open(ErrorModalComponent, {
   card3dat: any;
   card3discp:any;
 
-  card2(){
-    this.service.getData3('sup/getcardtwolist').subscribe((resp) => {
-      this.card2dat = resp;
-      this.card2discp=this.card2dat.data;
-    console.log(this.card2dat,"card2dat");     
-    },
-      error => {
-        // this.spinner.hide();
-        // //this.ngxSmartService.getModal('errorModal').open();
-this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal:true }
-        });
-      });
+//   card2(){
+//     this.service.getData3('sup/getcardtwolist').subscribe((resp) => {
+//       this.card2dat = resp;
+//       this.card2discp=this.card2dat.data;
+//     console.log(this.card2dat,"card2dat");     
+//     },
+//       error => {
+        
+// this.dialog.open(ErrorModalComponent, {
+//       data: { errorModal:true }
+//     });
+//         this.dialog.open(ErrorModalComponent, {
+//           data: { errorModal:true }
+//         });
+//       });
 
 
-    // console.log(this.card1details,"card1details");
-  }
 
-  card3(){
-    this.service.getData3('sup/getcardthreelist').subscribe((resp) => {
-      this.card3dat = resp;
-      this.card3discp=this.card3dat.data;
-    console.log(this.card3dat,"card3dat");     
-    },
-      error => {
-        // this.spinner.hide();
-        // //this.ngxSmartService.getModal('errorModal').open();
-this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal:true }
-        });
-      });
+//   }
+
+//   card3(){
+//     this.service.getData3('sup/getcardthreelist').subscribe((resp) => {
+//       this.card3dat = resp;
+//       this.card3discp=this.card3dat.data;
+//     console.log(this.card3dat,"card3dat");     
+//     },
+//       error => {
+      
+// this.dialog.open(ErrorModalComponent, {
+//       data: { errorModal:true }
+//     });
+//         this.dialog.open(ErrorModalComponent, {
+//           data: { errorModal:true }
+//         });
+//       });
 
 
-    // console.log(this.card1details,"card1details");
-  }
+  
+//   }
 
 
 //   shop_by_prof(data) {

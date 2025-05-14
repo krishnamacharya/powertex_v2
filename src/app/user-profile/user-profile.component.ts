@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToasterService } from './../toastr-service.service';
 import { ErrorModalComponent } from '../authentication-views/error-modal/error-modal.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 @Component({
   selector: 'app-user-profile',
@@ -44,7 +45,8 @@ export class UserProfileComponent implements OnInit {
   showOtp: any;
   otpField: any;
   otp: any;
-
+  modalService: NgbModal;
+  selectedTabIndex: number = 0;
   constructor(private authService: GlobalServiceService, private spinner: NgxSpinnerService, private globalService: GlobalServiceService, private route: Router, private eventEmmit: ComponentCommunicationService, private dataService: DataServiceService, private dialog: MatDialog, private toasterService: ToasterService) {
   }
 
@@ -328,11 +330,11 @@ export class UserProfileComponent implements OnInit {
     this.newAddress = false;
   };
 
-  tabChanged(data) {
-    if (data.tab.textLabel == 'Logout') {
-      this.logOut();
-    }
-  };
+  // tabChanged(data) {
+  //   if (data.tab.textLabel == 'Logout') {
+  //     this.logOut();
+  //   }
+  // };
 
   logOut() {
 
@@ -361,7 +363,7 @@ export class UserProfileComponent implements OnInit {
         // console.log(error);
       });
   };
-
+ 
   changePassword(form, password) {
     this.spinner.show();
     if (this.loginData.setpassword == this.loginData.confirmPassword) {
@@ -410,6 +412,13 @@ export class UserProfileComponent implements OnInit {
 
   editprofile(){
     this.route.navigateByUrl('/Supplier-Profile-Edit');
+  }
+ openChangePasswordModal(content: any) {
+    this.modalService.open(content, { size: 'lg' });
+  }
+    // Your existing methods and properties
+  tabChanged(event: any) {
+    this.selectedTabIndex = event.index;
   }
 
 }
