@@ -18,7 +18,7 @@ import { ComponentCommunicationService } from './component-communication.service
 import { DataServiceService } from './data-service.service';
 import { GlobalServiceService } from './global-service.service';
 import { ToasterService } from './toastr-service.service';
-import { TokenInterceptorService } from './token-http-interceptor.service';
+// import { TokenInterceptorService } from './token-http-interceptor.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FooterComponent } from './footer/footer.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
@@ -620,7 +620,7 @@ import { ShopByCategoryComponent } from './shop-by-category/shop-by-category.com
     NgxSliderModule
 ],
   providers: [DatePipe,FilterPipe, NgxSpinnerService, GlobalServiceService, DataServiceService, Broadcaster, ComponentCommunicationService, 
-    BnNgIdleService,ShowHideDirective, ToasterService, { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
+    BnNgIdleService,ShowHideDirective, ToasterService,
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

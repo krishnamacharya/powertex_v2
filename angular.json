@@ -83,6 +83,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "buildTarget": "powertex_v2:build:development"
+            
           },
           "configurations": {
             "production": {

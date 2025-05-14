@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 // import { Http, RequestOptions, Headers } from "@angular/http";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, forkJoin } from "rxjs";
+import { BehaviorSubject, forkJoin, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -32,9 +32,9 @@ export class GlobalServiceService {
 
   // }
 
-  // apiUrl = "https://www.pptshopee.in/get/";
-  // posturl = "https://www.pptshopee.in/";
-  // imageurl = "https://www.pptshopee.in";
+  apiUrl = "https://www.pptshopee.in/get/";
+  posturl = "https://www.pptshopee.in/";
+  imageurl = "https://www.pptshopee.in";
 
   // // apiUrl = 'http://120.138.8.118:8002/get/';
   // posturl = 'http://120.138.8.118:8002/';
@@ -59,9 +59,9 @@ export class GlobalServiceService {
   //  posturl = "http://192.168.20.122:8000/";
   //  imageurl = "http://192.168.20.122:8000"
 
-apiUrl = "http://192.168.0.155:8000/get/";
-  posturl = "http://192.168.0.155:8000/";
-  imageurl = "http://192.168.0.155:8000"
+// apiUrl = "http://192.168.0.155:8000/get/";
+//   posturl = "http://192.168.0.155:8000/";
+//   imageurl = "http://192.168.0.155:8000"
 
   updateData(body, methodName) {
     return this.http.put(this.posturl + methodName, body, this.options);
@@ -238,6 +238,12 @@ apiUrl = "http://192.168.0.155:8000/get/";
       this.posturl + methodName,
       this.options
     );
+  }
+
+  vposturl="http://192.168.0.223:8001/get_product_category/";
+
+  getdata1():Observable<any>{
+    return this.http.get<any>(this.vposturl)
   }
   getDatawithMethodParam1(methodName, param1) {
     return this.http.get(

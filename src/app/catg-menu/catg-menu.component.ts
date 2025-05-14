@@ -6,8 +6,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ErrorModalComponent } from '../authentication-views/error-modal/error-modal.component';
 declare var $: any;
 interface Resources {
-	Category: String,
-	detail: any
+	category: any,
+	subcategory: any
 }
 @Component({
 	selector: 'app-catg-menu',
@@ -18,9 +18,10 @@ interface Resources {
 })
 export class CatgMenuComponent implements OnInit {
 	showDropdown = false;         // Controls the main dropdown visibility
-	hoveredCategory: String = '';
+	hoveredCategory: any = '';
 	resources: Resources[] = [];
 	categoryList: any;
+	hideTimeout: any;
 
 	constructor(private service: GlobalServiceService, private router: Router, private dialog: MatDialog, private spinner: NgxSpinnerService) {
 		this.service.getresource.subscribe(data => {
@@ -35,6 +36,17 @@ export class CatgMenuComponent implements OnInit {
 		this.showDropdown = state;
 		console.log('Dropdown visible:', this.showDropdown);
 	}
+	onMouseEnter(category: string) {
+		clearTimeout(this.hideTimeout);
+		this.hoveredCategory = category;
+	}
+
+	onMouseLeave() {
+		this.hideTimeout = setTimeout(() => {
+			this.hoveredCategory = '';
+		}, 300); // 300ms delay before hiding
+	}
+
 	ngOnInit() {
 		// this.getprodimg();
 		// this.getData1();
@@ -118,19 +130,23 @@ export class CatgMenuComponent implements OnInit {
 			$('.menu').animate({ scrollLeft: '0' }, scrollDuration);
 		});
 	}
+
+
+
 	getprodimg() {
 		this.spinner.show();
-		return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp: any) => {
+		return this.service.getdata1().subscribe((resp: any) => {
 			this.spinner.hide();
-			this.resources = resp;
-			this.service.resources.next(resp);
+			this.resources = resp.data;
+			console.log("vamsi", this.resources)
+			// this.service.resources.next(resp);
 		},
-			error => {
+			(error: any) => {
 				this.spinner.hide();
 				this.dialog.open(ErrorModalComponent, {
 					data: { errorModal: true }
 				});
-				// console.log(error);
+				console.log(error);
 			});
 	}
 	modal: any = [1];
@@ -148,27 +164,33 @@ export class CatgMenuComponent implements OnInit {
 	// }
 
 
-selected_Sub(cat: any, sub: string) {
-  const b = cat;
-  const c = sub;
-  const d = (this.modal[0]);
-  const e = "All";
+	selected_Sub(cat: any, sub: string) {
+		const b = cat;
+		const c = sub;
+		const d = (this.modal[0]);
+		const e = "All";
 
-  console.log("Navigating to: ", b, c, d, e);
+		console.log("Navigating to: ", b, c, d, e);
 
-  this.router.navigate(['/category', b,c,d,e]).then(success => {
-    if (success) {
-      console.log("Navigation successful");
-    } else {
-      console.error("Navigation failed");
-    }
-  });
-}
+		this.router.navigate(['/category', b, c, d, e]).then(success => {
+			if (success) {
+				console.log("Navigation successful");
+			} else {
+				console.error("Navigation failed");
+			}
+		});
+	}
 
-	  
+
 	selected_catg(cat: any) {
 		let category = cat;
 
 		this.router.navigate(['/category', category]);
+	}
+
+	activeCategory: string | null = null;
+
+	toggleSubcategory(category: string) {
+		this.activeCategory = this.activeCategory === category ? null : category;
 	}
 }
