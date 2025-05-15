@@ -11,7 +11,7 @@ export class GlobalServiceService {
   response: any;
   sessionState: any;
   token: any;
-  key2:any;
+  key2: any;
   resources = new BehaviorSubject<any>([]);
   getresource = this.resources.asObservable();
   constructor(public http: HttpClient) {
@@ -37,7 +37,7 @@ export class GlobalServiceService {
   imageurl = "https://www.pptshopee.in";
 
   apiUrl1 = 'http://192.168.0.223:8001/get/';
-    posturl1:any = 'http://192.168.0.223:8001/';
+  geturl1 = ' http://192.168.0.223:8001/'
   imageurl1 = 'http://192.168.0.223:8001/'
 
 
@@ -59,9 +59,16 @@ export class GlobalServiceService {
   //  posturl = "http://192.168.20.122:8000/";
   //  imageurl = "http://192.168.20.122:8000"
 
-// apiUrl = "http://192.168.0.155:8000/get/";
-//   posturl = "http://192.168.0.155:8000/";
-//   imageurl = "http://192.168.0.155:8000"
+  // apiUrl = "http://192.168.0.155:8000/get/";
+  //   posturl = "http://192.168.0.155:8000/";
+  //   imageurl = "http://192.168.0.155:8000"
+
+
+  //New code 
+
+  UrlData(endpoint: string): string {
+    return `${this.geturl1}${endpoint}`;
+  }
 
   updateData(body, methodName) {
     return this.http.put(this.posturl + methodName, body, this.options);
@@ -240,9 +247,9 @@ export class GlobalServiceService {
     );
   }
 
-  vposturl="http://192.168.0.223:8001/get_product_category/";
+  vposturl = "http://192.168.0.223:8001/get_product_category/";
 
-  getdata1():Observable<any>{
+  getdata1(): Observable<any> {
     return this.http.get<any>(this.vposturl)
   }
   getDatawithMethodParam1(methodName, param1) {
@@ -251,16 +258,18 @@ export class GlobalServiceService {
       this.options
     );
   }
-vbannerurl = "http://192.168.0.223:8001/get_banner/";
+  // vbannerurl = "http://192.168.0.223:8001/get_banner/";
 
-getBannerData(): Observable<any> {
-  return this.http.get<any>(this.vbannerurl);
-}
+  // getBannerData(): Observable<any> {
+  //   return this.http.get<any>(this.vbannerurl);
+  // }
 
-//  getBannerData(): Observable<any> {
-//        return this.http.get<any>(this.posturl1('get_banner/'))
-//     }
-  
+
+
+  getBannerData(): Observable<any> {
+    return this.http.get<any>(this.UrlData('get_banner/'))
+  }
+
 
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(
