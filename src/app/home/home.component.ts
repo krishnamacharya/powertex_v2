@@ -208,7 +208,7 @@ this.dialog.open(ErrorModalComponent, {
   }
 
   get_banners() {
-    return this.service.getDatawithQueryParams1('1.01', "d").subscribe((resp) => {
+     this.service.getBannerData().subscribe((resp:any) => {
 
       this.banners = resp;
 
@@ -226,13 +226,9 @@ this.dialog.open(ErrorModalComponent, {
   }
   
   get_sideBanners() {
-    return this.service.getcheckdata('sidebanners/', "s").subscribe((resp) => {
+     this.service.getBannerData().subscribe((resp) => {
 
       this.sidebanners = resp;
-      this.sidebanners1 = this.sidebanners.filter((e) => e.Slider == 'SLIDER1')
-      this.sidebanners2 = this.sidebanners.filter((e) => e.Slider == 'SLIDER2')
-      this.sidebanners3 = this.sidebanners.filter((e) => e.Slider == 'SLIDER3')
-      this.sidebanners4 = this.sidebanners.filter((e) => e.Slider == 'SLIDER4')
 
     },
       error => {
