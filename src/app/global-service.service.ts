@@ -36,9 +36,9 @@ export class GlobalServiceService {
   posturl = "https://www.pptshopee.in/";
   imageurl = "https://www.pptshopee.in";
 
-  // // apiUrl = 'http://120.138.8.118:8002/get/';
-  // posturl = 'http://120.138.8.118:8002/';
-  // imageurl = 'http://120.138.8.118:8002'
+  apiUrl1 = 'http://192.168.0.223:8001/get/';
+    posturl1:any = 'http://192.168.0.223:8001/';
+  imageurl1 = 'http://192.168.0.223:8001/'
 
 
   // apiUrl = "http://192.168.0.155:8000/get/";
@@ -251,6 +251,17 @@ export class GlobalServiceService {
       this.options
     );
   }
+vbannerurl = "http://192.168.0.223:8001/get_banner/";
+
+getBannerData(): Observable<any> {
+  return this.http.get<any>(this.vbannerurl);
+}
+
+//  getBannerData(): Observable<any> {
+//        return this.http.get<any>(this.posturl1('get_banner/'))
+//     }
+  
+
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1 + "&fromdate=" +
