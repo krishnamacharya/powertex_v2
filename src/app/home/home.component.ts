@@ -173,22 +173,20 @@ constructor(@Inject(GlobalServiceService) private service: GlobalServiceService,
 
   images: any = ["slide1", "slide2", "slide3", "slide4", "slide5", "slide6", "slide7", "slide8", "slide9", "slide10", "slide11", "slide12"];
 
-  get_prof() {
-    return this.service.getDatawithInput_id('61').subscribe((resp) => {
-      this.prof = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
+get_prof() {
+  this.service.getProfessionData().subscribe(
+    (resp) => {
+      this.prof = { data: resp }.data;
       console.log(this.prof, "prof");
     },
-      error => {
-        // this.spinner.hide();
-        // //this.ngxSmartService.getModal('errorModal').open();
-this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal:true }
-        });
+    (error) => {
+      this.dialog.open(ErrorModalComponent, {
+        data: { errorModal: true }
       });
-  }
+    }
+  );
+}
+
   getprodimg() {
     return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp) => {
       this.resources = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
@@ -208,7 +206,7 @@ this.dialog.open(ErrorModalComponent, {
   }
 
   get_banners() {
-     this.service.getBannerData().subscribe((resp:any) => {
+    return this.service.getDatawithQueryParams1('1.01', "d").subscribe((resp) => {
 
       this.banners = resp;
 
@@ -226,9 +224,13 @@ this.dialog.open(ErrorModalComponent, {
   }
   
   get_sideBanners() {
-     this.service.getBannerData().subscribe((resp) => {
+    return this.service.getcheckdata('sidebanners/', "s").subscribe((resp) => {
 
       this.sidebanners = resp;
+      this.sidebanners1 = this.sidebanners.filter((e) => e.Slider == 'SLIDER1')
+      this.sidebanners2 = this.sidebanners.filter((e) => e.Slider == 'SLIDER2')
+      this.sidebanners3 = this.sidebanners.filter((e) => e.Slider == 'SLIDER3')
+      this.sidebanners4 = this.sidebanners.filter((e) => e.Slider == 'SLIDER4')
 
     },
       error => {

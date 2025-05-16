@@ -123,7 +123,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.loginMoethod = 'login/';
     this.body = { "username": this.loginData.userId, "password": this.loginData.password };
-    this.authService.postData(this.body, this.loginMoethod).subscribe((data) => {
+    this.authService.postdata(this.body, this.loginMoethod).subscribe((data) => {
       this.spinner.hide();
       console.log("login data",data);
       this.logindata=data

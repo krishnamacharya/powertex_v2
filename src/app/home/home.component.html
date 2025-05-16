@@ -689,96 +689,96 @@
   </section>
 
   <!--================shopby profession-->
-  <section class="shop-by-profession py-5" style="background: #f9f9f9">
-    <div class="container">
-      <h2 class="text-center mb-4">Shop by Profession</h2>
+<section class="shop-by-profession py-5" style="background: #f9f9f9">
+  <div class="container">
+    <h2 class="text-center mb-4">Shop by Profession</h2>
 
-      <div id="professionCarousel" class="carousel slide" data-bs-ride="false">
-        <!-- Carousel Indicators -->
-        <div class="carousel-indicators">
-          <button
-            *ngFor="let prof of professions; let i = index"
-            type="button"
-            data-bs-target="#professionCarousel"
-            [attr.data-bs-slide-to]="i"
-            [class.active]="i === 0"
-            [attr.aria-current]="i === 0 ? 'true' : null"
-            [attr.aria-label]="'Slide ' + (i + 1)"
-          ></button>
-        </div>
-
-        <div class="carousel-inner">
-          <!-- First slide -->
-          <div class="carousel-item active">
-            <div class="row text-center justify-content-center">
-              <div
-                class="col-6 col-sm-4 col-md-2"
-                *ngFor="let prof of professions.slice(0, 5)"
-              >
-                <div class="card border-0 bg-transparent">
-                  <img
-                    [src]="prof.image"
-                    [alt]="prof.name"
-                    class="img-fluid mb-2"
-                    style="height: 150px; width: 100%; object-fit: contain"
-                  />
-                  <p class="font-weight-medium">{{ prof.name }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Second slide -->
-          <div class="carousel-item" *ngIf="professions.length > 5">
-            <div class="row text-center justify-content-center">
-              <div
-                class="col-6 col-sm-4 col-md-2"
-                *ngFor="let prof of professions.slice(5, 10)"
-              >
-                <div class="card border-0 bg-transparent">
-                  <img
-                    [src]="prof.image"
-                    [alt]="prof.name"
-                    class="img-fluid mb-2"
-                    style="height: 150px; width: 100%; object-fit: contain"
-                  />
-                  <p class="font-weight-medium">{{ prof.name }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Carousel Controls -->
-        <a
-          class="carousel-control-prev"
-          href="#professionCarousel"
-          role="button"
-          data-bs-slide="prev"
-        >
-          <span
-            class="carousel-control-prev-icon"
-            aria-hidden="true"
-            style="filter: brightness(0)"
-          ></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a
-          class="carousel-control-next"
-          href="#professionCarousel"
-          role="button"
-          data-bs-slide="next"
-        >
-          <span
-            class="carousel-control-next-icon"
-            aria-hidden="true"
-            style="filter: brightness(0)"
-          ></span>
-          <span class="sr-only">Next</span>
-        </a>
+    <div id="professionCarousel" class="carousel slide" data-bs-ride="false">
+      <!-- Carousel Indicators -->
+      <div class="carousel-indicators">
+        <button
+          *ngFor="let item of prof; let i = index"
+          type="button"
+          data-bs-target="#professionCarousel"
+          [attr.data-bs-slide-to]="i"
+          [class.active]="i === 0"
+          [attr.aria-current]="i === 0 ? 'true' : null"
+          [attr.aria-label]="'Slide ' + (i + 1)"
+        ></button>
       </div>
+
+      <div class="carousel-inner">
+        <!-- First slide -->
+        <div class="carousel-item active">
+          <div class="row text-center justify-content-center">
+            <div
+              class="col-6 col-sm-4 col-md-2"
+              *ngFor="let item of prof.slice(0, 5)"
+            >
+              <div class="card border-0 bg-transparent">
+                <img
+                  [src]="item.image"
+                  [alt]="item.shotform"
+                  class="img-fluid mb-2"
+                  style="height: 150px; width: 100%; object-fit: contain"
+                />
+                <p class="font-weight-medium">{{ item.profession }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Second slide -->
+        <div class="carousel-item" *ngIf="prof.length > 5">
+          <div class="row text-center justify-content-center">
+            <div
+              class="col-6 col-sm-4 col-md-2"
+              *ngFor="let item of prof.slice(5, 10)"
+            >
+              <div class="card border-0 bg-transparent">
+                <img
+                  [src]="item.image"
+                  [alt]="item.shotform"
+                  class="img-fluid mb-2"
+                  style="height: 150px; width: 100%; object-fit: contain"
+                />
+                <p class="font-weight-medium">{{ item.shotform }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carousel Controls -->
+      <a
+        class="carousel-control-prev"
+        href="#professionCarousel"
+        role="button"
+        data-bs-slide="prev"
+      >
+        <span
+          class="carousel-control-prev-icon"
+          aria-hidden="true"
+          style="filter: brightness(0)"
+        ></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#professionCarousel"
+        role="button"
+        data-bs-slide="next"
+      >
+        <span
+          class="carousel-control-next-icon"
+          aria-hidden="true"
+          style="filter: brightness(0)"
+        ></span>
+        <span class="sr-only">Next</span>
+      </a>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- ========================================================== -->
   <section
