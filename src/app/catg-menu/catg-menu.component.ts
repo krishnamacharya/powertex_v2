@@ -172,4 +172,11 @@ selected_Sub(cat: any, sub: string) {
 
 		this.router.navigate(['/category', category]);
 	}
+
+	get hoveredSubcategories() {
+  const found = this.resources.find(r => r.category === this.hoveredCategory);
+  return found?.subcategory || [];
+}
+
+
 }

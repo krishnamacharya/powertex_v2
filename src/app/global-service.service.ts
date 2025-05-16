@@ -7,6 +7,9 @@ import { BehaviorSubject, forkJoin, Observable } from "rxjs";
   providedIn: "root"
 })
 export class GlobalServiceService {
+  getBannerData() {
+    throw new Error('Method not implemented.');
+  }
   options: any;
   response: any;
   sessionState: any;
@@ -136,6 +139,13 @@ export class GlobalServiceService {
   postData(body, methodName) {
     return this.http.post(this.posturl + methodName, body, this.options);
   }
+
+  loginurl = "http://192.168.0.223:8001/";
+
+  postdata(body, methodName) {
+  return this.http.post(this.loginurl+ methodName, body, this.options);
+}
+
   postData1(methodName, param1) {
     return this.http.post(this.posturl + methodName + "/" + "?param_other1=" + param1, this.options);
   }
@@ -228,6 +238,10 @@ export class GlobalServiceService {
   getDatawithInput_id(input_id) {
     return this.http.get(this.apiUrl + "?input_id=" + input_id, this.options);
   }
+  proffesionurl="192.168.0.223:8001/get_Profession/";
+  getDatawithInput_id1(input_id) {
+    return this.http.get(this.proffesionurl );
+  }
   getDatawithMethodParams1(methodName, param1) {
     return this.http.get(
       this.posturl + methodName + "?param_other1=" + param1,
@@ -258,6 +272,17 @@ export class GlobalServiceService {
       this.options
     );
   }
+professionUrl = "http://192.168.0.223:8001/get_Profession/";
+
+getProfessionData(): Observable<any> {
+  return this.http.get<any>(this.professionUrl);
+}
+
+
+//  getBannerData(): Observable<any> {
+//        return this.http.get<any>(this.posturl1('get_banner/'))
+//     }
+  
   // vbannerurl = "http://192.168.0.223:8001/get_banner/";
 
   // getBannerData(): Observable<any> {
@@ -266,9 +291,9 @@ export class GlobalServiceService {
 
 
 
-  getBannerData(): Observable<any> {
-    return this.http.get<any>(this.UrlData('get_banner/'))
-  }
+  // getBannerData(): Observable<any> {
+  //   return this.http.get<any>(this.UrlData('get_banner/'))
+  // }
 
   //register
 
