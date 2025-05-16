@@ -62,8 +62,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   showLoginModal = true;
 
 
-  constructor(private authService: GlobalServiceService, private route: Router, public dialog: MatDialog, 
-     public dialogRef: MatDialogRef<LoginModalComponent>,
+  constructor(private authService: GlobalServiceService, private route: Router, public dialog: MatDialog,
+    public dialogRef: MatDialogRef<LoginModalComponent>,
     private spinner: NgxSpinnerService, private toasterService: ToasterService) {
     // console.log(data); 
   }
@@ -201,14 +201,19 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         console.log("login data", data);
         this.logindata = data;
 
-      // Save username or user info to localStorage
-      // localStorage.setItem('username', data.first_name || data.username);
+        // Save username or user info to localStorage
+        // localStorage.setItem('username', data.first_name || data.username);
+        this.route.navigateByUrl('/home');
+        const username = (data as any).first_name || (data as any).username;
+        localStorage.setItem('username', username);
 
-      // ✅ Close the modal
-      this.dialogRef.close();
+        // ✅ Notify other components
+        this.authService.setUsername(username);
+        // ✅ Close the modal
+        this.dialogRef.close();
 
-      // ✅ Redirect to home
-      this.route.navigateByUrl('/home');
+        // ✅ Redirect to home
+
       },
       (error) => {
         this.spinner.hide();

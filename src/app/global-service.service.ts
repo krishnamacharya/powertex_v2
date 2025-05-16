@@ -788,4 +788,18 @@ export class GlobalServiceService {
   check_user() {
     return JSON.parse(localStorage.getItem("loginUserData"));
   }
+
+
+  //new version code
+
+   private usernameSource = new BehaviorSubject<string | null>(null);
+  username$ = this.usernameSource.asObservable();
+
+  setUsername(name: string) {
+    this.usernameSource.next(name);
+  }
+
+  getUsername(): string | null {
+    return localStorage.getItem('username');
+  }
 }

@@ -93,6 +93,7 @@
                 style="color: #009b77"
                 >Login</span
               >
+              <span *ngIf="username; else loginLink"> {{ username }}</span>
             </a>
           </ng-container>
           <ng-container *ngIf="token">
