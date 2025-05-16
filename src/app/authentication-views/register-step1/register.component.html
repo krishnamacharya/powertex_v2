@@ -49,7 +49,7 @@ style="
       <div style="width: 100%;">
         <h4 class="text-center mb-4">Create an Account</h4>
 
-        <form>
+        <form #dealerReg="ngForm" (ngSubmit)="submitReg(dealerReg)">
           <!-- Name Field -->
           <div class="form-group mb-3">
             <label for="firstName" class="fw-bold">First Name</label>
@@ -105,7 +105,7 @@ style="
             <button class="btn btn-primary btn-block w-100"
                     style="background-color: #009b77; border: none"
                     type="submit"
-                    (click)="submitReg(dealerReg)">
+                    >
               Create Account
             </button>
           </div>
@@ -168,7 +168,7 @@ style="
                     tabindex="5"
                     *ngIf="showResendbtn"
                     class="forgot-password"
-                    (click)="resendPassword()"
+                  
                     >Resend OTP</a
                   >
                 </div>
@@ -183,9 +183,10 @@ style="
           <button
             type="submit"
             [disabled]="!otpForm.valid"
-            (click)="submitOTP(otpModal.otp)"
+           
             class="btn btn-success fr"
           >
+           <!-- (click)="submitOTP(otpModal.otp)" -->
             Submit
           </button>
         </div>

@@ -295,6 +295,16 @@ getProfessionData(): Observable<any> {
   //   return this.http.get<any>(this.UrlData('get_banner/'))
   // }
 
+  //register
+
+  registerUser(data: any): Observable<any> {
+    return this.http.post(this.UrlData('api/register/'), data);
+  }
+
+   // POST Method
+  LoginUser(body:any) {
+    return this.http.post(this.UrlData('api/login/'), body);
+  }
 
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(

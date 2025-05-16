@@ -6,9 +6,10 @@ import { GlobalServiceService } from '../../global-service.service';
 import { HeaderComponent } from '../../header/header.component';
 import { ToasterService } from '../../toastr-service.service';
 import { ShowHideDirective } from './show-hide.directive';
-import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatDialogContainer } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatDialogContainer } from '@angular/material/dialog';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { RegisterComponent } from '../register-step1/register.component';
+import { HomeComponent } from '../../home/home.component';
 
 declare var $: any;
 @Component({
@@ -31,7 +32,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   @ViewChild(HeaderComponent) HeaderComponent;
   password = "secret";
   show = false;
-    
+
   @ViewChild(ShowHideDirective) input: ShowHideDirective;
   checkUser: any = {};
   otpData: any = {};
@@ -51,20 +52,21 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   guestuser: any;
 
   displaMsg: boolean = false;
-  schemes_data: any=[];
+  schemes_data: any = [];
   container = inject(MatDialogContainer);
   data = inject<{
     token: string;
     loginUserData: any;
-    cartItem_count:any;
+    cartItem_count: any;
   }>(MAT_DIALOG_DATA);
   showLoginModal = true;
 
 
-  constructor(private authService: GlobalServiceService, private route: Router,public dialog: MatDialog,
-  private spinner: NgxSpinnerService, private toasterService: ToasterService) {
-      // console.log(data); 
-    }
+  constructor(private authService: GlobalServiceService, private route: Router, public dialog: MatDialog, 
+     public dialogRef: MatDialogRef<LoginModalComponent>,
+    private spinner: NgxSpinnerService, private toasterService: ToasterService) {
+    // console.log(data); 
+  }
 
   /* success()
   {
@@ -109,7 +111,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.showLoginModal = false; // <-- Change to false
     console.log("Modal closed");
   }
-  
+
   closeModal() {
     this.loginData = {};
     this.showForgotPswd = false;
@@ -118,124 +120,150 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.checkUser = {};
     this.showResendbtn = false;
   }
-  logindata:any
+  logindata: any
+  // gotoLogin() {
+  //   this.spinner.show();
+  //   this.loginMoethod = 'login/';
+  //   this.body = { "email": this.loginData.userId, "password": this.loginData.password };
+  //   this.authService.LoginUser(this.body).subscribe((data) => {
+  //     this.spinner.hide();
+  //     console.log("login data",data);
+  //     this.logindata=data
+  //      this.route.navigateByUrl("./home");
+  //     // if (data['status'] == "Your request is under process") {
+  //     //   this.toasterService.error("Please Contact Powertex");
+  //     // }
+  //     // if (data['status'] == "success") {
+  //     //   // this.dialogRef.close();
+  //     //   this.dialog.getDialogById(this.container._config.id ?? '')?.close();
+
+  //     //   this.message = data['status'];
+  //     //   this.token = data['token'];
+
+  //     //   localStorage.setItem('token', this.token);
+  //     //   this.loginUserData = this.logindata.data;
+  //     //   if(this.loginUserData.role =='Dealer'||this.loginUserData.role =='Branch Manager'){
+  //     //     //  alert(this.loginUserData.user_type);
+  //     //     this.check_schemes();
+
+  //     //   }
+
+
+  //     //   localStorage.setItem('loginUserData', JSON.stringify(this.loginUserData));
+  //     //   /*   ==========================================toaster binding with logged in user name=============================================================== */
+  //     //   this.toasterService.success('Hi' + '  ' + this.loginUserData.first_name + '  ' + 'you are logged in successfully');
+  //     //   /* alert(this.loginUserData.first_name)  */
+
+  //     //   /*   alert(JSON.stringify(this.loginUserData)) */
+
+  //     //   /* ========================================================================================================= */
+
+  //     //   /*  =============================code responsible for redirecting to home page======================================================= */
+  //     //   if (this.loginUserData.user_type != 'Customer' && this.loginUserData.user_type != 'Guest') {
+  //     //     this.route.navigateByUrl("dashboard");
+  //     //   }
+  //     //   // else {
+  //     //   //   this.route.navigateByUrl("home");
+  //     //   // }
+  //     //   /*  =====================================================**code responsible for redirecting to home page ends**============================ */
+  //     //   this.data.token = data['token'];
+  //     //   this.data.loginUserData = this.logindata.data;
+  //     //   if (this.loginUserData.user_type == 'Customer' || this.loginUserData.user_type == 'Dealer' || this.loginUserData.user_type == 'Guest') {
+  //     //     this.ItemsCount();
+  //     //   }
+  //     //   if (this.loginUserData.designation == 'Warehouse Manager' || this.loginUserData.designation == 'Accounts Manager') {
+  //     //     // Commented for Notification
+  //     //     // this.headerComponent.getNotificationCount();
+  //     //   }
+
+  //     // } else {
+  //     //   this.displaMsg = true;
+  //     //   setTimeout(() => {
+  //     //     this.displaMsg = false;
+  //     //   }, 3000);
+  //     // }
+  //   },
+
+
+
+
+  // closeDialog() {
+  //   this.dialogRef.close();
+  // }
   gotoLogin() {
     this.spinner.show();
     this.loginMoethod = 'login/';
-    this.body = { "username": this.loginData.userId, "password": this.loginData.password };
-    this.authService.postdata(this.body, this.loginMoethod).subscribe((data) => {
-      this.spinner.hide();
-      console.log("login data",data);
-      this.logindata=data
-      if (data['status'] == "Your request is under process") {
-        this.toasterService.error("Please Contact Powertex");
-      }
-      if (data['status'] == "success") {
-        // this.dialogRef.close();
-        this.dialog.getDialogById(this.container._config.id ?? '')?.close();
+    this.body = { "email": this.loginData.userId, "password": this.loginData.password };
 
-        this.message = data['status'];
-        this.token = data['token'];
-      
-        localStorage.setItem('token', this.token);
-        this.loginUserData = this.logindata.data;
-        if(this.loginUserData.role =='Dealer'||this.loginUserData.role =='Branch Manager'){
-          //  alert(this.loginUserData.user_type);
-          this.check_schemes();
-         
-        }
-        
-        
-        localStorage.setItem('loginUserData', JSON.stringify(this.loginUserData));
-        /*   ==========================================toaster binding with logged in user name=============================================================== */
-        this.toasterService.success('Hi' + '  ' + this.loginUserData.first_name + '  ' + 'you are logged in successfully');
-        /* alert(this.loginUserData.first_name)  */
+    this.authService.LoginUser(this.body).subscribe(
+      (data) => {
+        this.spinner.hide();
+        console.log("login data", data);
+        this.logindata = data;
 
-        /*   alert(JSON.stringify(this.loginUserData)) */
+      // Save username or user info to localStorage
+      // localStorage.setItem('username', data.first_name || data.username);
 
-        /* ========================================================================================================= */
+      // ✅ Close the modal
+      this.dialogRef.close();
 
-        /*  =============================code responsible for redirecting to home page======================================================= */
-        if (this.loginUserData.user_type != 'Customer' && this.loginUserData.user_type != 'Guest') {
-          this.route.navigateByUrl("dashboard");
-        }
-        // else {
-        //   this.route.navigateByUrl("home");
-        // }
-        /*  =====================================================**code responsible for redirecting to home page ends**============================ */
-        this.data.token = data['token'];
-        this.data.loginUserData = this.logindata.data;
-        if (this.loginUserData.user_type == 'Customer' || this.loginUserData.user_type == 'Dealer' || this.loginUserData.user_type == 'Guest') {
-          this.ItemsCount();
-        }
-        if (this.loginUserData.designation == 'Warehouse Manager' || this.loginUserData.designation == 'Accounts Manager') {
-          // Commented for Notification
-          // this.headerComponent.getNotificationCount();
-        }
-
-      } else {
-        this.displaMsg = true;
-        setTimeout(() => {
-          this.displaMsg = false;
-        }, 3000);
-      }
-    },
-
-      error => {
+      // ✅ Redirect to home
+      this.route.navigateByUrl('/home');
+      },
+      (error) => {
         this.spinner.hide();
         this.dialog.open(ErrorModalComponent, {
-          data: { errorModal:true }
+          data: { errorModal: true }
         });
-        // console.log(error);
-      });
+      }
+    );
+  }
 
-  };
-  schemesdata:any=[]
-  check_schemes(){
-    this.schemes_data=[]
-    return this.authService.getDatawithMethodParams1("Schemelis/",this.loginUserData.user_id).subscribe(resp=>{
-      console.log("sch_data",resp);
-       this.schemesdata=resp;
+  schemesdata: any = []
+  check_schemes() {
+    this.schemes_data = []
+    return this.authService.getDatawithMethodParams1("Schemelis/", this.loginUserData.user_id).subscribe(resp => {
+      console.log("sch_data", resp);
+      this.schemesdata = resp;
       //localStorage.setItem('schemes_data', JSON.stringify(this.schemes_data));
-      if(this.schemesdata.length>0 ){
-        for(let i=0;i<this.schemesdata.length;i++){
-         
-       
-          if(this.schemesdata[i].active==1){
-           
+      if (this.schemesdata.length > 0) {
+        for (let i = 0; i < this.schemesdata.length; i++) {
+
+
+          if (this.schemesdata[i].active == 1) {
+
             this.schemes_data.push(this.schemesdata[i])
-            console.log(this.schemes_data,"schemes")
-       
-        }
+            console.log(this.schemes_data, "schemes")
+
+          }
         }
       }
-      else{
-        if(this.loginUserData.alert==true || this.loginUserData.alert1==true){
-    
+      else {
+        if (this.loginUserData.alert == true || this.loginUserData.alert1 == true) {
+
           $('#creditstatus').modal('show')
         }
-       
+
       }
-      if(this.schemes_data.length>0)
-      {
+      if (this.schemes_data.length > 0) {
         $("#schemeModal").modal('show');
 
       }
-      else{
-        if(this.loginUserData.alert==true || this.loginUserData.alert1==true){
-    
+      else {
+        if (this.loginUserData.alert == true || this.loginUserData.alert1 == true) {
+
           $('#creditstatus').modal('show')
         }
       }
     })
   }
-showcredit(){
-  if(this.loginUserData.alert==true || this.loginUserData.alert1==true){
-    
-    $('#creditstatus').modal('show')
+  showcredit() {
+    if (this.loginUserData.alert == true || this.loginUserData.alert1 == true) {
+
+      $('#creditstatus').modal('show')
+    }
+
   }
-  
-}
   ItemsCount() {
     this.spinner.show();
     this.authService.getDatawithQueryParams1('4.4', this.loginUserData.user_id).subscribe((data) => {
@@ -244,55 +272,55 @@ showcredit(){
       this.data.cartItem_count = data['cartcount'];
     })
   }
-   gotoRegister() {
+  gotoRegister() {
     console.log(
       "clickeddddddddddddddddddddddd"
     )
     // Close the current Login modal
     this.dialog.getDialogById(this.container._config.id ?? '')?.close();
-  
+
     // Open the Register modal
     this.dialog.open(RegisterComponent, {
       disableClose: true, // Optional
       data: {} // Optional: pass any data to RegisterComponent
     });
   }
-  
-userid:any
-newuserid:any
+
+  userid: any
+  newuserid: any
   gotoForgotPassword(id) {
 
     this.guestId = id;
-      if(isNaN(this.loginData.userId)){
-    this.authService.getDatawithQueryParams1(4.9, this.loginData.userId).subscribe((data) => {
-      // this.spinner.hide();
-      this.checkUser = data;
-       if (this.checkUser.status == "1") {
-      console.log(this.checkUser);
-    this.guestuser = false;
-    this.showLogin = false;
-    this.showForgotPswd = true;
-    this.callOTP();
-       }
-  })
-}
-else{
-  this.authService.getDatawithQueryParams1(4.9, "91"+this.loginData.userId).subscribe((data) => {
-    // this.spinner.hide();
-    this.checkUser = data;
-     if (this.checkUser.status == "1") {
-    console.log(this.checkUser);
-  this.guestuser = false;
-  this.showLogin = false;
-  this.showForgotPswd = true;
-  this.callOTP();
-     }
-})
-}
+    if (isNaN(this.loginData.userId)) {
+      this.authService.getDatawithQueryParams1(4.9, this.loginData.userId).subscribe((data) => {
+        // this.spinner.hide();
+        this.checkUser = data;
+        if (this.checkUser.status == "1") {
+          console.log(this.checkUser);
+          this.guestuser = false;
+          this.showLogin = false;
+          this.showForgotPswd = true;
+          this.callOTP();
+        }
+      })
+    }
+    else {
+      this.authService.getDatawithQueryParams1(4.9, "91" + this.loginData.userId).subscribe((data) => {
+        // this.spinner.hide();
+        this.checkUser = data;
+        if (this.checkUser.status == "1") {
+          console.log(this.checkUser);
+          this.guestuser = false;
+          this.showLogin = false;
+          this.showForgotPswd = true;
+          this.callOTP();
+        }
+      })
+    }
   };
 
   resendPassword() {
-  
+
     this.callOTP();
   }
 
@@ -311,7 +339,7 @@ else{
         this.spinner.hide();
         this.dialog.open(ErrorModalComponent, {
 
-          data: { errorModal:true }
+          data: { errorModal: true }
         });
         // console.log(error);
       });
@@ -322,24 +350,8 @@ else{
 
     this.spinner.show();
     var regMoethod = 'sendotp/';
-    if(isNaN(this.loginData.userId)){
-    this.authService.getDatawithQuery(regMoethod, this.loginData.userId).subscribe((data) => {
-      this.spinner.hide();
-      this.otpData = data;
-      this.showResendbtn = false;
-      this.timer();
-    },
-      error => {
-        this.spinner.hide();
-        this.dialog.open(ErrorModalComponent, {
-
-          data: { errorModal:true }
-        });
-        // console.log(error);
-      });
-    }
-    else{
-      this.authService.getDatawithQuery(regMoethod,"91"+ this.loginData.userId).subscribe((data) => {
+    if (isNaN(this.loginData.userId)) {
+      this.authService.getDatawithQuery(regMoethod, this.loginData.userId).subscribe((data) => {
         this.spinner.hide();
         this.otpData = data;
         this.showResendbtn = false;
@@ -348,23 +360,39 @@ else{
         error => {
           this.spinner.hide();
           this.dialog.open(ErrorModalComponent, {
-  
-            data: { errorModal:true }
+
+            data: { errorModal: true }
+          });
+          // console.log(error);
+        });
+    }
+    else {
+      this.authService.getDatawithQuery(regMoethod, "91" + this.loginData.userId).subscribe((data) => {
+        this.spinner.hide();
+        this.otpData = data;
+        this.showResendbtn = false;
+        this.timer();
+      },
+        error => {
+          this.spinner.hide();
+          this.dialog.open(ErrorModalComponent, {
+
+            data: { errorModal: true }
           });
           // console.log(error);
         });
     }
   };
-code:any
+  code: any
   verifyOTP(guestId) {
     this.spinner.show();
     var regMoethod = 'sendotp/';
-    this.code="91"
-    if(isNaN(this.loginData.userId)){
-    var otpValidBody = { "otp": this.loginData.otp, "phone": this.loginData.userId };
+    this.code = "91"
+    if (isNaN(this.loginData.userId)) {
+      var otpValidBody = { "otp": this.loginData.otp, "phone": this.loginData.userId };
     }
-    else{
-      var otpValidBody = { "otp": this.loginData.otp, "phone": this.code+this.loginData.userId };
+    else {
+      var otpValidBody = { "otp": this.loginData.otp, "phone": this.code + this.loginData.userId };
     }
     this.authService.postData(otpValidBody, regMoethod).subscribe((data) => {
       this.spinner.hide();
@@ -386,31 +414,31 @@ code:any
         this.spinner.hide();
         this.dialog.open(ErrorModalComponent, {
 
-          data: { errorModal:true }
+          data: { errorModal: true }
         });
         // console.log(error);
       });
   };
 
   resetPassword() {
-   
+
     this.spinner.show();
-   
-    
+
+
     if (this.loginData.setpassword == this.loginData.confirmPassword) {
-      if(isNaN(this.loginData.userId)){
+      if (isNaN(this.loginData.userId)) {
         var resetPswdBody = { "username": this.loginData.userId, "password": this.loginData.setpassword };
       }
-      else{
-        this.code="91"
-        var resetPswdBody = { "username": this.code+this.loginData.userId, "password": this.loginData.setpassword };
+      else {
+        this.code = "91"
+        var resetPswdBody = { "username": this.code + this.loginData.userId, "password": this.loginData.setpassword };
       }
       var regMoethod = 'reset_password/';
-      
+
       this.authService.postData(resetPswdBody, regMoethod).subscribe((data) => {
         this.spinner.hide();
         if (data['status'] == 1) {
-        
+
           // $("#loginResetPwdModal").modal('show');
           this.wish_alert = "Password Updated Successfully"
           this.toasterService.success('password was successfully updated');
@@ -425,7 +453,7 @@ code:any
           this.showResendbtn = false;
         } else {
           //alert('your password should not be similar to old password');
-        
+
           this.wish_alert = "your password should not be similar to old password"
           this.toasterService.error(data['status']);
           this.addwish();
@@ -436,8 +464,8 @@ code:any
         error => {
           this.spinner.hide();
           this.dialog.open(ErrorModalComponent, {
-  
-            data: { errorModal:true }
+
+            data: { errorModal: true }
           });
           // console.log(error);
         });
@@ -456,13 +484,13 @@ code:any
       this.alert = false;
     }, 5000);
   }
-  guestlogin:any
+  guestlogin: any
   loginAsGuest() {
     this.spinner.show();
     let regMoethod = 'guest_user/';
     let resetPswdBody = { "username": this.loginData.userId, "password": this.loginData.setpassword };
     this.authService.postData(resetPswdBody, regMoethod).subscribe((data) => {
-      this.guestlogin=data
+      this.guestlogin = data
       this.spinner.hide();
       if (data['status'] == 'success') {
         this.token = data['token'];
@@ -472,9 +500,9 @@ code:any
         this.dialog.getDialogById(this.container._config.id ?? '')?.close();
         localStorage.setItem('loginUserData', JSON.stringify(this.loginUserData));
         this.route.navigateByUrl("home");
-        
+
         this.data.token = data['token'];
-       
+
 
         this.data.loginUserData = this.guestlogin.data;
       } else {
@@ -486,7 +514,7 @@ code:any
         this.spinner.hide();
         this.dialog.open(ErrorModalComponent, {
 
-          data: { errorModal:true }
+          data: { errorModal: true }
         });
         // console.log(error);
       });
@@ -508,8 +536,7 @@ code:any
 
   ngAfterViewInit() {
   }
-  toggleShow(ev)
-  {
+  toggleShow(ev) {
     this.show = !this.show;
   }
 
