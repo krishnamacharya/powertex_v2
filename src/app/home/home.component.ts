@@ -165,7 +165,7 @@ constructor(@Inject(GlobalServiceService) private service: GlobalServiceService,
     // this.resources = JSON.parse(localStorage.getItem('get_products_categoryone'));
     this.get_prof();
     this.get_banners();
-    this.get_sideBanners();
+    // this.get_sideBanners();
     // this.spinner.hide();
     // this.card2();
     // this.card3();
@@ -206,7 +206,7 @@ this.dialog.open(ErrorModalComponent, {
   }
 
   get_banners() {
-    return this.service.getDatawithQueryParams1('1.01', "d").subscribe((resp) => {
+    return this.service.getBannerData().subscribe((resp) => {
 
       this.banners = resp;
 
@@ -223,27 +223,27 @@ this.dialog.open(ErrorModalComponent, {
       });
   }
   
-  get_sideBanners() {
-    return this.service.getcheckdata('sidebanners/', "s").subscribe((resp) => {
+//   get_sideBanners() {
+//     return this.service.getBannerData().subscribe((resp) => {
 
-      this.sidebanners = resp;
-      this.sidebanners1 = this.sidebanners.filter((e) => e.Slider == 'SLIDER1')
-      this.sidebanners2 = this.sidebanners.filter((e) => e.Slider == 'SLIDER2')
-      this.sidebanners3 = this.sidebanners.filter((e) => e.Slider == 'SLIDER3')
-      this.sidebanners4 = this.sidebanners.filter((e) => e.Slider == 'SLIDER4')
+//       // this.sidebanners = resp;
+//       // this.sidebanners1 = this.sidebanners.filter((e) => e.Slider == 'SLIDER1')
+//       // this.sidebanners2 = this.sidebanners.filter((e) => e.Slider == 'SLIDER2')
+//       // this.sidebanners3 = this.sidebanners.filter((e) => e.Slider == 'SLIDER3')
+//       // this.sidebanners4 = this.sidebanners.filter((e) => e.Slider == 'SLIDER4')
 
-    },
-      error => {
-        // this.spinner.hide();
-        // //this.ngxSmartService.getModal('errorModal').open();
-this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal:true }
-        });
-      });
-  }
+//     },
+//       error => {
+//         // this.spinner.hide();
+//         // //this.ngxSmartService.getModal('errorModal').open();
+// this.dialog.open(ErrorModalComponent, {
+//       data: { errorModal:true }
+//     });
+//         this.dialog.open(ErrorModalComponent, {
+//           data: { errorModal:true }
+//         });
+//       });
+//   }
   ImgClick(data){
     this.router.navigate(['/search', data]);
 
@@ -280,7 +280,7 @@ card1discp:any=[];
 card1detail:any=[];
 card1image:any=[];
   card1(){
-    this.service.getData3('get_products_category').subscribe((resp) => {
+    this.service.getData3('get_product_category').subscribe((resp) => {
       this.card1dat = resp;
       this.card1discp=this.card1dat[0].data;
       console.log("hgdfujshgfujsg=============",this.card1dat)

@@ -426,6 +426,50 @@ p: any;
     }
 
   }
+getSubcategoryData(category: string) {
+  this.spinner.show();
+  this.resources2data1 = [];
+
+  this.service.getSubcategoryList(category).subscribe(
+    (resp: any) => {
+      console.log("--Subcategory Response--", resp);
+      this.spinner.hide();
+      this.resources2 = resp;
+      this.resources2data1 = this.resources2.data;
+
+      // Optional: image path parsing
+      if (this.resources2data1) {
+        for (let i = 0; i < this.resources2data1.length; i++) {
+          const img = this.resources2data1[i]?.low_image_1;
+          if (img?.includes("Powertexmodel")) {
+            const splitImg = img.split("Powertexmodel");
+            this.resources2data1[i].low_image_1 =
+              'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + splitImg[1];
+          }
+        }
+      }
+
+      // Optional: price range setup
+      if (this.resources2?.price?.[0]) {
+        this.minValue = this.resources2.price[0].min_price;
+        this.maxValue = this.resources2.price[0].max_price;
+        this.min = this.minValue;
+        this.max = this.maxValue;
+        this.Options = {
+          floor: this.minValue,
+          ceil: this.maxValue
+        };
+      }
+    },
+    (error) => {
+      this.spinner.hide();
+      this.dialog.open(ErrorModalComponent, {
+        data: { errorModal: true }
+      });
+    }
+  );
+}
+
 
   onPageChange(Page: number) {
     this.Page = Page;

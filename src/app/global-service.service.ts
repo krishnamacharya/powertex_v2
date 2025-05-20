@@ -7,9 +7,7 @@ import { BehaviorSubject, forkJoin, Observable } from "rxjs";
   providedIn: "root"
 })
 export class GlobalServiceService {
-  getBannerData() {
-    throw new Error('Method not implemented.');
-  }
+
   options: any;
   response: any;
   sessionState: any;
@@ -205,7 +203,7 @@ export class GlobalServiceService {
     return this.http.get(this.apiUrl + "/" + methodName + "/", this.options);
   }
   getData3(methodName) {
-    return this.http.get(this.posturl + methodName + "/", this.options);
+    return this.http.get(this.geturl1 + methodName + "/", this.options);
   }
 
   getDataOnlyWithMethod(methodName) {
@@ -277,10 +275,14 @@ professionUrl = "http://192.168.0.223:8001/get_Profession/";
 getProfessionData(): Observable<any> {
   return this.http.get<any>(this.professionUrl);
 }
+vbannerurl = "http://192.168.0.223:8001/get_banner/";
 
+getBannerData(): Observable<any> {
+  return this.http.get<any>(this.vbannerurl);
+}
 
 //  getBannerData(): Observable<any> {
-//        return this.http.get<any>(this.posturl1('get_banner/'))
+//        return this.http.get<any>(this.geturl1('get_banner/'))
 //     }
   
   // vbannerurl = "http://192.168.0.223:8001/get_banner/";
@@ -676,6 +678,48 @@ getProfessionData(): Observable<any> {
     );
   }
   getDatawithQueryParams7User_idBrand(
+    input_id,
+    param1,
+    param2,
+    param3,
+    param4,
+    param5,
+    param6,
+    param7,
+    brand,
+    userid
+  ) {
+    return this.http.get(
+      this.apiUrl +
+      "?input_id=" +
+      input_id +
+      "&param_other1=" +
+      param1 +
+      "&param_other2=" +
+      param2 +
+      "&param_other3=" +
+      param3 +
+      "&param_other4=" +
+      param4 +
+      "&param_other5=" +
+      param5 +
+      "&param_other6=" +
+      param6 +
+      "&param_other7=" +
+      param7 +
+      "&brand=" +
+      brand +
+      "&user_id=" +
+      userid,
+      this.options
+    );
+  }
+  getSubcategoryList(category: string) {
+  const url = `http://192.168.0.223:8001/get_subcategory_list/?category=${encodeURIComponent(category)}`;
+  return this.http.get(url, this.options); // assuming this.options has headers, etc.
+}
+
+  getDatawithQueryParams7User_idBrand1(
     input_id,
     param1,
     param2,
