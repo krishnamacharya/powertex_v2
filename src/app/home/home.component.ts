@@ -280,7 +280,7 @@ card1discp:any=[];
 card1detail:any=[];
 card1image:any=[];
   card1(){
-    this.service.getData3('get_product_category').subscribe((resp) => {
+    this.service.getData3('get_products_category/').subscribe((resp) => {
       this.card1dat = resp;
       this.card1discp=this.card1dat[0].data;
       console.log("hgdfujshgfujsg=============",this.card1dat)

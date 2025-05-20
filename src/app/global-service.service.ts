@@ -203,7 +203,7 @@ export class GlobalServiceService {
     return this.http.get(this.apiUrl + "/" + methodName + "/", this.options);
   }
   getData3(methodName) {
-    return this.http.get(this.geturl1 + methodName + "/", this.options);
+    return this.http.get(this.posturl + methodName + "/", this.options);
   }
 
   getDataOnlyWithMethod(methodName) {
@@ -714,10 +714,6 @@ getBannerData(): Observable<any> {
       this.options
     );
   }
-  getSubcategoryList(category: string) {
-  const url = `http://192.168.0.223:8001/get_subcategory_list/?category=${encodeURIComponent(category)}`;
-  return this.http.get(url, this.options); // assuming this.options has headers, etc.
-}
 
   getDatawithQueryParams7User_idBrand1(
     input_id,
