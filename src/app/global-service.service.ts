@@ -7,9 +7,7 @@ import { BehaviorSubject, forkJoin, Observable } from "rxjs";
   providedIn: "root"
 })
 export class GlobalServiceService {
-  getBannerData() {
-    throw new Error('Method not implemented.');
-  }
+
   options: any;
   response: any;
   sessionState: any;
@@ -818,7 +816,9 @@ getProfessionData(): Observable<any> {
   //new version code
 
    private usernameSource = new BehaviorSubject<string | null>(null);
+    private accessSource = new BehaviorSubject<string | null>(null);
   username$ = this.usernameSource.asObservable();
+  access$=this.accessSource.asObservable();
 
   setUsername(name: string) {
     this.usernameSource.next(name);
@@ -826,5 +826,13 @@ getProfessionData(): Observable<any> {
 
   getUsername(): string | null {
     return localStorage.getItem('username');
+  }
+
+  setAccessToken(access:any){
+    this.accessSource.next(access)
+  }
+
+  getAccessToken():any|null{
+    return localStorage.getItem('access')
   }
 }

@@ -201,14 +201,16 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         console.log("login data", data);
         this.logindata = data;
 
-        // Save username or user info to localStorage
-        // localStorage.setItem('username', data.first_name || data.username);
-        this.route.navigateByUrl('/home');
-        const username = (data as any).first_name || (data as any).username;
-        localStorage.setItem('username', username);
+        
 
+        const username = (data as any).first_name || (data as any).username;
+        const access = (data as any).access || (data as any).access;
+        localStorage.setItem('username', username);
+        localStorage.setItem("access",access)
+        this.route.navigateByUrl('/home');
         // ✅ Notify other components
         this.authService.setUsername(username);
+         this.authService.setAccessToken(access);
         // ✅ Close the modal
         this.dialogRef.close();
 
