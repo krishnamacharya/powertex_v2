@@ -7,6 +7,9 @@ import { BehaviorSubject, forkJoin, Observable } from "rxjs";
   providedIn: "root"
 })
 export class GlobalServiceService {
+  getSubcategoryList(category: string):void {
+   
+  }
 
   options: any;
   response: any;
@@ -281,11 +284,11 @@ getProfessionData(): Observable<any> {
 //        return this.http.get<any>(this.posturl1('get_banner/'))
 //     }
   
-  // vbannerurl = "http://192.168.0.223:8001/get_banner/";
+  vbannerurl = "http://192.168.0.223:8001/get_banner/";
 
-  // getBannerData(): Observable<any> {
-  //   return this.http.get<any>(this.vbannerurl);
-  // }
+  getBannerData(): Observable<any> {
+    return this.http.get<any>(this.vbannerurl);
+  }
 
 
 
