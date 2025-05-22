@@ -22,7 +22,7 @@ export class CatgMenuComponent implements OnInit {
 	hoveredCategory: String = '';
 	resources: Resources[] = [];
 	categoryList: any;
-
+hoverTimeout: any; 
 	constructor(private service: GlobalServiceService, private router: Router, private dialog: MatDialog, private spinner: NgxSpinnerService) {
 		this.service.getresource.subscribe(data => {
 			this.resources = data
@@ -178,5 +178,15 @@ selected_Sub(cat: any, sub: string) {
   return found?.subcategory || [];
 }
 
+onHoverEnter(category: string) {
+  clearTimeout(this.hoverTimeout); // cancel any pending close
+  this.hoveredCategory = category;
+}
+
+onHoverLeave() {
+  this.hoverTimeout = setTimeout(() => {
+    this.hoveredCategory = '';
+  }, 300); // 300ms delay before closing dropdown
+}
 
 }

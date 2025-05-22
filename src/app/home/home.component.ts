@@ -161,7 +161,7 @@ constructor(@Inject(GlobalServiceService) private service: GlobalServiceService,
     // this.spinner.show();
     this.card1();
     // this.getproddata();
-    this.getprodimg();
+    // this.getprodimg();
     // this.resources = JSON.parse(localStorage.getItem('get_products_categoryone'));
     this.get_prof();
     this.get_banners();
@@ -187,23 +187,23 @@ get_prof() {
   );
 }
 
-  getprodimg() {
-    return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp) => {
-      this.resources = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
-      this.service.resources.next(resp);
+//   getprodimg() {
+//     return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp) => {
+//       this.resources = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
+//       this.service.resources.next(resp);
      
-    },
-      error => {
-        // this.spinner.hide();
-        // //this.ngxSmartService.getModal('errorModal').open();
-this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal:true }
-        });
-      });
-  }
+//     },
+//       error => {
+//         // this.spinner.hide();
+//         // //this.ngxSmartService.getModal('errorModal').open();
+// this.dialog.open(ErrorModalComponent, {
+//       data: { errorModal:true }
+//     });
+//         this.dialog.open(ErrorModalComponent, {
+//           data: { errorModal:true }
+//         });
+//       });
+//   }
 
   get_banners() {
     return this.service.getBannerData().subscribe((resp) => {
@@ -275,37 +275,24 @@ this.dialog.open(ErrorModalComponent, {
   selected_all() {
     this.router.navigateByUrl('/all-Category');
   }
-card1dat:any;
-card1discp:any=[];
-card1detail:any=[];
-card1image:any=[];
-  card1(){
-    this.service.getData3('get_products_category/').subscribe((resp) => {
-      this.card1dat = resp;
-      this.card1discp=this.card1dat[0].data;
-      console.log("hgdfujshgfujsg=============",this.card1dat)
-      // this.card1detail=this.card1discp.details;
-      // this.card1image=this.card1dat[0].details[0];
-      // this.service.resources.next(resp);
-    // console.log(this.card1dat,"card1dat");
-    // console.log(this.card1discp,"card1discp");
-    // console.log(this.card1detail,"card1detail");
-     
+
+ card1dat: any = [];
+card1discp: any[] = [];
+
+card1() {
+  
+  this.service.getdata1().subscribe(
+    (resp: any) => {
+      this.card1dat = resp.data;
+      this.card1discp = this.card1dat[0]?.data || [];
     },
-      error => {
-        // this.spinner.hide();
-        // //this.ngxSmartService.getModal('errorModal').open();
-this.dialog.open(ErrorModalComponent, {
-      data: { errorModal:true }
-    });
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal:true }
-        });
+    error => {
+      this.dialog.open(ErrorModalComponent, {
+        data: { errorModal: true }
       });
-
-
-    // console.log(this.card1details,"card1details");
-  }
+    }
+  );
+}
 
   card2dat: any;
   card2discp: any;
