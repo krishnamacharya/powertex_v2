@@ -262,7 +262,20 @@ export class GlobalServiceService {
     );
   }
 
+<<<<<<< HEAD
  getDatawithMethodParam1(methodName, param1) {
+=======
+  // vposturl = "http://192.168.0.223:8001/get_product_category/";
+
+  // getdata1(): Observable<any> {
+  //   return this.http.get<any>(this.vposturl)
+  // }
+   getdata1(): Observable<any> {
+    return this.http.get(this.UrlData('get_product_category/'));
+  }
+
+  getDatawithMethodParam1(methodName, param1) {
+>>>>>>> 01432d83dc2cf34ddcfbf68a344ca9eac99640fb
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1,
       this.options

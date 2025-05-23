@@ -161,7 +161,7 @@ export class HomeComponent implements OnInit {
     // this.spinner.show();
     this.card1();
     // this.getproddata();
-    this.getprodimg();
+    // this.getprodimg();
     // this.resources = JSON.parse(localStorage.getItem('get_products_categoryone'));
     this.get_prof();
     this.get_banners();
@@ -187,6 +187,7 @@ export class HomeComponent implements OnInit {
     );
   }
 
+<<<<<<< HEAD
   getprodimg() {
     return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp) => {
       this.resources = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
@@ -204,6 +205,25 @@ export class HomeComponent implements OnInit {
         });
       });
   }
+=======
+//   getprodimg() {
+//     return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp) => {
+//       this.resources = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
+//       this.service.resources.next(resp);
+     
+//     },
+//       error => {
+//         // this.spinner.hide();
+//         // //this.ngxSmartService.getModal('errorModal').open();
+// this.dialog.open(ErrorModalComponent, {
+//       data: { errorModal:true }
+//     });
+//         this.dialog.open(ErrorModalComponent, {
+//           data: { errorModal:true }
+//         });
+//       });
+//   }
+>>>>>>> 01432d83dc2cf34ddcfbf68a344ca9eac99640fb
 
   get_banners() {
     this.service.getBannerData().subscribe((resp) => {
@@ -275,6 +295,7 @@ export class HomeComponent implements OnInit {
   selected_all() {
     this.router.navigateByUrl('/all-Category');
   }
+<<<<<<< HEAD
   card1dat: any;
   card1discp: any = [];
   card1detail: any = [];
@@ -301,11 +322,26 @@ export class HomeComponent implements OnInit {
         this.dialog.open(ErrorModalComponent, {
           data: { errorModal: true }
         });
+=======
+
+ card1dat: any = [];
+card1discp: any[] = [];
+
+card1() {
+  
+  this.service.getdata1().subscribe(
+    (resp: any) => {
+      this.card1dat = resp.data;
+      this.card1discp = this.card1dat[0]?.data || [];
+    },
+    error => {
+      this.dialog.open(ErrorModalComponent, {
+        data: { errorModal: true }
+>>>>>>> 01432d83dc2cf34ddcfbf68a344ca9eac99640fb
       });
-
-
-    // console.log(this.card1details,"card1details");
-  }
+    }
+  );
+}
 
   card2dat: any;
   card2discp: any;
