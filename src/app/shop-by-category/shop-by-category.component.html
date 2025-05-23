@@ -195,9 +195,9 @@
           (click)="sub_cat(p)"
         >
           <img
-            [src]="p.low_image_1"
+            [src]="p.high_image_1"
             (error)="
-              p.low_image_1 =
+              p.high_image_1 =
                 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
             "
             class="card-img-top img-fluid"
@@ -234,28 +234,29 @@
 
         <!-- Card Body -->
         <div class="card-body ps-4 py-3 position-relative">
+             <p class="fw-semibold text-truncate mb-2 text-muted" >{{ p.long_name }}</p>
           <p class="text-muted mb-1">{{ p.brand }}</p>
           <p class="fw-semibold text-truncate mb-2" title="{{ p.modelno }}">
             {{ p.modelno }}
           </p>
           <div *ngIf="sidemenu">
             <p class="mb-1">
-              <span class="fw-bold" style="color: #009b77">₹{{ p.net_price }}</span>
+              <span class="fw-bold" style="color: #009b77">₹{{ p.mrp }}</span>
               <span
                 class="text-muted text-decoration-line-through ms-2"
-                *ngIf="p.discount_eu1 && p.discount_eu1 > 0"
+                *ngIf="p.discount_percent && p.discount_percent > 0"
               >
                 &#8377;{{ p.mrp }}
               </span>
             </p>
             <p
               class="text-success mb-1"
-              *ngIf="p.discount_eu1 && p.discount_eu1 > 0"
+              *ngIf="p.discount_percent && p.discount_percent > 0"
             >
-              {{ p.discount_eu1 }}% Off
+              {{ p.discount_percent }}% Off
             </p>
 
-            <p class="text-muted small mb-0">(Excluding GST)</p>
+            <p class="text-muted small mb-0">(Including GST)</p>
           </div>
         </div>
       </div>

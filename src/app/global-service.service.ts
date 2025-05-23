@@ -260,11 +260,17 @@ export class GlobalServiceService {
 
 
 
-
 getProductsByCategory(category: string): Observable<any> {
-  return this.http.get(this.UrlData('get_category_wise/') + '?category=' + encodeURIComponent(category));
-}
+  const token = localStorage.getItem('access'); // Or use a token service
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
 
+  return this.http.get(
+    this.UrlData('get_list/') + '?category=' + encodeURIComponent(category),
+    { headers }
+  );
+}
 
 
 

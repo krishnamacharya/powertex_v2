@@ -186,9 +186,10 @@ ngOnInit() {
   // }
 getProductsByCategory(category: string): void {
   this.service.getProductsByCategory(category).subscribe((data: any) => {
-    this.resources2dataproduct = data.data;
+    this.resources2dataproduct = data.Done;
   });
 }
+
 
 
 
