@@ -121,17 +121,18 @@ export class ShopByCategoryComponent {
 
   // }
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const category = params.get('category');
-      console.log('Received Category:', category);
-  
-      if (category) {
-        // Call your function to fetch category-wise products
-        this.card1({ Category: category });
-      }
-    });
-  }
+ngOnInit() {
+  this.route.paramMap.subscribe(params => {
+    const category = params.get('category');
+    console.log('Received Category:', category);
+
+    if (category) {
+      // Call your function to fetch category-wise products
+      this.getProductsByCategory(category);
+    }
+  });
+}
+
   card1(arg0: { Category: string; }) {
     this.spinner.show();
     this.p1 =arg0.Category;;
@@ -183,6 +184,14 @@ export class ShopByCategoryComponent {
   // ngOnDestroy() {
   //   this.sub.unsubscribe();
   // }
+getProductsByCategory(category: string): void {
+  this.service.getProductsByCategory(category).subscribe((data: any) => {
+    this.resources2dataproduct = data.data;
+  });
+}
+
+
+
   goBack() {
   this._location.back();
  }

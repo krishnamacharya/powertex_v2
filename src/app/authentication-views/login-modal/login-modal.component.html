@@ -1,6 +1,15 @@
-<!-- White background wrapper -->
-<div class="d-flex align-items-center justify-content-center position-relative">
-  <!-- Login form card split into two sections -->
+<!-- Overlay / backdrop -->
+<div
+  *ngIf="showLoginModal"
+  class="modal-backdrop fade show"
+  style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 998;"
+  (click)="closeLoginModal()"
+></div>
+
+<!-- Your existing modal card below -->
+<div
+  class="d-flex align-items-center justify-content-center position-relative"
+>
   <div
     class="card shadow-lg custom-card d-flex flex-row"
     style="
@@ -10,7 +19,8 @@
       z-index: 999;
       background-color: rgb(244, 248, 247);
       border: none;
-    "*ngIf="showLoginModal"
+    "
+    *ngIf="showLoginModal"
   >
     <!-- Close Icon Button -->
     <button

@@ -279,7 +279,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       this.data.cartItem_count = data['cartcount'];
     })
   }
-  gotoRegister() {
+   gotoRegister() {
     console.log(
       "clickeddddddddddddddddddddddd"
     )
@@ -340,7 +340,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
       console.log(this.checkUser);
       // if (data.status == "1") {
       this.callOTP();
-      // }
+      // }  
     },
       error => {
         this.spinner.hide();
@@ -351,7 +351,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         // console.log(error);
       });
   };
-
+   
 
   callOTP() {
 
