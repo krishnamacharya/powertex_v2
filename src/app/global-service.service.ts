@@ -49,11 +49,6 @@ export class GlobalServiceService {
 
 
 
-  //New code 
-
-  UrlData(endpoint: string): string {
-    return `${this.geturl1}${endpoint}`;
-  }
 
   updateData(body, methodName) {
     return this.http.put(this.posturl + methodName, body, this.options);
@@ -242,18 +237,28 @@ export class GlobalServiceService {
       this.options
     );
   }
-
-  
-   getdata1(): Observable<any> {
-    return this.http.get(this.UrlData('get_product_category/'));
-  }
-
   getDatawithMethodParam1(methodName, param1) {
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1,
       this.options
     );
   }
+
+  ///--New Code Start-----------------------------------------------------------
+
+
+    //New code 
+
+  UrlData(endpoint: string): string {
+    return `${this.geturl1}${endpoint}`;
+  }
+
+  
+   getdata1(): Observable<any> {
+    return this.http.get(this.UrlData('get_product_category/'));
+  }
+
+
 
 
 getProductsByCategory(category: string): Observable<any> {
@@ -282,7 +287,7 @@ getProductsByCategory(category: string): Observable<any> {
   LoginUser(body:any) {
     return this.http.post(this.UrlData('api/login/'), body);
   }
-//-------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------- New Logic end
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1 + "&fromdate=" +
