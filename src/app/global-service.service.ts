@@ -284,6 +284,10 @@ vbannerurl = "http://192.168.0.223:8001/get_banner/";
 getBannerData(): Observable<any> {
   return this.http.get<any>(this.vbannerurl);
 }
+getProductsByCategory(category: string): Observable<any> {
+  return this.http.get(this.UrlData('get_category_wise/') + '?category=' + encodeURIComponent(category));
+}
+
 
 //  getBannerData(): Observable<any> {
 //        return this.http.get<any>(this.geturl1('get_banner/'))

@@ -82,7 +82,7 @@
           </a>
 
           <!-- Login / Profile -->
-          <ng-container *ngIf="!token">
+          <ng-container *ngIf="!username; else loginLink">
             <a
               class="nav-link d-flex align-items-center px-2"
               (click)="openLoginModal()"
@@ -93,15 +93,16 @@
                 style="color: #009b77"
                 >Login</span
               >
-              <span *ngIf="username; else loginLink"> {{ username }}</span>
+            
             </a>
           </ng-container>
-          <ng-container *ngIf="token">
+          <ng-container *ngIf="username; else loginLink">
             <a
               class="nav-link d-flex align-items-center px-2"
               routerLink="/profile"
             >
               <i class="fa fa-user fs-5"></i>
+                <span > {{ username }}</span>
             </a>
           </ng-container>
         </div>
