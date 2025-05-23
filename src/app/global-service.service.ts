@@ -45,27 +45,8 @@ export class GlobalServiceService {
   imageurl1 = 'http://192.168.0.223:8001/'
 
 
-  // apiUrl = "http://192.168.0.155:8000/get/";
-  // posturl = "http://192.168.0.155:8000/";
-  // imageurl = "http://192.168.0.155:8000";
-
-  // apiUrl = "http://192.168.20.198:8000/get/";
-  // posturl = "http://192.168.20.198:8000/";
-  // imageurl = "http://192.168.20.198:8000";
-
-  // apiUrl = "http://192.168.20.197:8000/get/";
-  // posturl = "http://192.168.20.197:8000/";
-  // imageurl = "http://192.168.20.197:8000";
 
 
-
-  //  apiUrl = "http://192.168.20.122:8000/get/";
-  //  posturl = "http://192.168.20.122:8000/";
-  //  imageurl = "http://192.168.20.122:8000"
-
-  // apiUrl = "http://192.168.0.155:8000/get/";
-  //   posturl = "http://192.168.0.155:8000/";
-  //   imageurl = "http://192.168.0.155:8000"
 
 
   //New code 
@@ -262,7 +243,16 @@ export class GlobalServiceService {
     );
   }
 
- getDatawithMethodParam1(methodName, param1) {
+  // vposturl = "http://192.168.0.223:8001/get_product_category/";
+
+  // getdata1(): Observable<any> {
+  //   return this.http.get<any>(this.vposturl)
+  // }
+   getdata1(): Observable<any> {
+    return this.http.get(this.UrlData('get_product_category/'));
+  }
+
+  getDatawithMethodParam1(methodName, param1) {
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1,
       this.options
@@ -271,13 +261,27 @@ export class GlobalServiceService {
 
   // vposturl = "http://192.168.0.223:8001/get_product_category/";
 
-  // getdata1(): Observable<any> {
-  //   return this.http.get<any>(this.vposturl)
+// getBannerData(): Observable<any> {
+//   return this.http.get<any>(this.vbannerurl);
+// }
+getProductsByCategory(category: string): Observable<any> {
+  return this.http.get(this.UrlData('get_category_wise/') + '?category=' + encodeURIComponent(category));
+}
+
+
+//  getBannerData(): Observable<any> {
+//        return this.http.get<any>(this.geturl1('get_banner/'))
+//     }
+  
+  // vbannerurl = "http://192.168.0.223:8001/get_banner/";
+
+  // getBannerData(): Observable<any> {
+  //   return this.http.get<any>(this.vbannerurl);
   // }
  
-  getdata1(): Observable<any> {
-    return this.http.get<any>(this.UrlData('get_product_category/'))
-  }
+  // getdata1(): Observable<any> {
+  //   return this.http.get<any>(this.UrlData('get_product_category/'))
+  // }
 
   getBannerData(): Observable<any> {
     return this.http.get<any>(this.UrlData('get_banner/'))

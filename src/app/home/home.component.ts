@@ -187,23 +187,23 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  getprodimg() {
-    return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp) => {
-      this.resources = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
-      this.service.resources.next(resp);
-
-    },
-      error => {
-        // this.spinner.hide();
-        // //this.ngxSmartService.getModal('errorModal').open();
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal: true }
-        });
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal: true }
-        });
-      });
-  }
+//   getprodimg() {
+//     return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp) => {
+//       this.resources = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
+//       this.service.resources.next(resp);
+     
+//     },
+//       error => {
+//         // this.spinner.hide();
+//         // //this.ngxSmartService.getModal('errorModal').open();
+// this.dialog.open(ErrorModalComponent, {
+//       data: { errorModal:true }
+//     });
+//         this.dialog.open(ErrorModalComponent, {
+//           data: { errorModal:true }
+//         });
+//       });
+//   }
 
   get_banners() {
     this.service.getBannerData().subscribe((resp) => {
@@ -293,6 +293,22 @@ card1() {
     }
   );
 }
+
+  card2dat: any;
+  card2discp: any;
+  card3dat: any;
+  card3discp: any;
+
+  //   card2(){
+  //     this.service.getData3('sup/getcardtwolist').subscribe((resp) => {
+  //       this.card2dat = resp;
+  //       this.card2discp=this.card2dat.data;
+  //     console.log(this.card2dat,"card2dat");     
+  //     },
+  //       error => {
+
+  // this.dialog.open(ErrorModalComponent, {
+  //       data: { errorModal:true }
   //     });
   //         this.dialog.open(ErrorModalComponent, {
   //           data: { errorModal:true }
