@@ -262,9 +262,6 @@ export class GlobalServiceService {
     );
   }
 
-<<<<<<< HEAD
- getDatawithMethodParam1(methodName, param1) {
-=======
   // vposturl = "http://192.168.0.223:8001/get_product_category/";
 
   // getdata1(): Observable<any> {
@@ -275,7 +272,6 @@ export class GlobalServiceService {
   }
 
   getDatawithMethodParam1(methodName, param1) {
->>>>>>> 01432d83dc2cf34ddcfbf68a344ca9eac99640fb
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1,
       this.options
@@ -284,13 +280,9 @@ export class GlobalServiceService {
 
   // vposturl = "http://192.168.0.223:8001/get_product_category/";
 
-<<<<<<< HEAD
-  // getdata1(): Observable<any> {
-  //   return this.http.get<any>(this.vposturl)
-=======
-getBannerData(): Observable<any> {
-  return this.http.get<any>(this.vbannerurl);
-}
+// getBannerData(): Observable<any> {
+//   return this.http.get<any>(this.vbannerurl);
+// }
 getProductsByCategory(category: string): Observable<any> {
   return this.http.get(this.UrlData('get_category_wise/') + '?category=' + encodeURIComponent(category));
 }
@@ -304,12 +296,11 @@ getProductsByCategory(category: string): Observable<any> {
 
   // getBannerData(): Observable<any> {
   //   return this.http.get<any>(this.vbannerurl);
->>>>>>> 9f935aba40a332f18cc95e7b2497196fdfabceae
   // }
  
-  getdata1(): Observable<any> {
-    return this.http.get<any>(this.UrlData('get_product_category/'))
-  }
+  // getdata1(): Observable<any> {
+  //   return this.http.get<any>(this.UrlData('get_product_category/'))
+  // }
 
   getBannerData(): Observable<any> {
     return this.http.get<any>(this.UrlData('get_banner/'))

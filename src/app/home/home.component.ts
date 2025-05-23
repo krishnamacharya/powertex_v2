@@ -187,25 +187,6 @@ export class HomeComponent implements OnInit {
     );
   }
 
-<<<<<<< HEAD
-  getprodimg() {
-    return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp) => {
-      this.resources = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
-      this.service.resources.next(resp);
-
-    },
-      error => {
-        // this.spinner.hide();
-        // //this.ngxSmartService.getModal('errorModal').open();
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal: true }
-        });
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal: true }
-        });
-      });
-  }
-=======
 //   getprodimg() {
 //     return this.service.getDatawithMethod1('get_products_categoryone/').subscribe((resp) => {
 //       this.resources = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
@@ -223,7 +204,6 @@ export class HomeComponent implements OnInit {
 //         });
 //       });
 //   }
->>>>>>> 01432d83dc2cf34ddcfbf68a344ca9eac99640fb
 
   get_banners() {
     this.service.getBannerData().subscribe((resp) => {
@@ -295,34 +275,6 @@ export class HomeComponent implements OnInit {
   selected_all() {
     this.router.navigateByUrl('/all-Category');
   }
-<<<<<<< HEAD
-  card1dat: any;
-  card1discp: any = [];
-  card1detail: any = [];
-  card1image: any = [];
-  card1() {
-    this.service.getData3('get_products_category/').subscribe((resp) => {
-      this.card1dat = resp;
-      this.card1discp = this.card1dat[0].data;
-      console.log("hgdfujshgfujsg=============", this.card1dat)
-      // this.card1detail=this.card1discp.details;
-      // this.card1image=this.card1dat[0].details[0];
-      // this.service.resources.next(resp);
-      // console.log(this.card1dat,"card1dat");
-      // console.log(this.card1discp,"card1discp");
-      // console.log(this.card1detail,"card1detail");
-
-    },
-      error => {
-        // this.spinner.hide();
-        // //this.ngxSmartService.getModal('errorModal').open();
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal: true }
-        });
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal: true }
-        });
-=======
 
  card1dat: any = [];
 card1discp: any[] = [];
@@ -337,7 +289,6 @@ card1() {
     error => {
       this.dialog.open(ErrorModalComponent, {
         data: { errorModal: true }
->>>>>>> 01432d83dc2cf34ddcfbf68a344ca9eac99640fb
       });
     }
   );
