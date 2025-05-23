@@ -206,8 +206,8 @@ export class HomeComponent implements OnInit {
   }
 
   get_banners() {
-    return this.service.getBannerData().subscribe((resp) => {
-console.log(resp)
+    this.service.getBannerData().subscribe((resp) => {
+      console.log(resp)
       this.banners = resp;
 
     },
@@ -222,29 +222,29 @@ console.log(resp)
         });
       });
   }
-  
-//   get_sideBanners() {
-//     return this.service.getBannerData().subscribe((resp) => {
 
-//       // this.sidebanners = resp;
-//       // this.sidebanners1 = this.sidebanners.filter((e) => e.Slider == 'SLIDER1')
-//       // this.sidebanners2 = this.sidebanners.filter((e) => e.Slider == 'SLIDER2')
-//       // this.sidebanners3 = this.sidebanners.filter((e) => e.Slider == 'SLIDER3')
-//       // this.sidebanners4 = this.sidebanners.filter((e) => e.Slider == 'SLIDER4')
+  //   get_sideBanners() {
+  //     return this.service.getBannerData().subscribe((resp) => {
 
-//     },
-//       error => {
-//         // this.spinner.hide();
-//         // //this.ngxSmartService.getModal('errorModal').open();
-// this.dialog.open(ErrorModalComponent, {
-//       data: { errorModal:true }
-//     });
-//         this.dialog.open(ErrorModalComponent, {
-//           data: { errorModal:true }
-//         });
-//       });
-//   }
-  ImgClick(data){
+  //       // this.sidebanners = resp;
+  //       // this.sidebanners1 = this.sidebanners.filter((e) => e.Slider == 'SLIDER1')
+  //       // this.sidebanners2 = this.sidebanners.filter((e) => e.Slider == 'SLIDER2')
+  //       // this.sidebanners3 = this.sidebanners.filter((e) => e.Slider == 'SLIDER3')
+  //       // this.sidebanners4 = this.sidebanners.filter((e) => e.Slider == 'SLIDER4')
+
+  //     },
+  //       error => {
+  //         // this.spinner.hide();
+  //         // //this.ngxSmartService.getModal('errorModal').open();
+  // this.dialog.open(ErrorModalComponent, {
+  //       data: { errorModal:true }
+  //     });
+  //         this.dialog.open(ErrorModalComponent, {
+  //           data: { errorModal:true }
+  //         });
+  //       });
+  //   }
+  ImgClick(data) {
     this.router.navigate(['/search', data]);
 
   }
@@ -275,12 +275,12 @@ console.log(resp)
   selected_all() {
     this.router.navigateByUrl('/all-Category');
   }
-card1dat:any;
-card1discp:any=[];
-card1detail:any=[];
-card1image:any=[];
-  card1(){
-    this.service.getData3('get_product_category').subscribe((resp) => {
+  card1dat: any;
+  card1discp: any = [];
+  card1detail: any = [];
+  card1image: any = [];
+  card1() {
+    this.service.getData3('get_products_category/').subscribe((resp) => {
       this.card1dat = resp;
       this.card1discp = this.card1dat[0].data;
       console.log("hgdfujshgfujsg=============", this.card1dat)

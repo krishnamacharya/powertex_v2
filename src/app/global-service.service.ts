@@ -262,39 +262,31 @@ export class GlobalServiceService {
     );
   }
 
-  vposturl = "http://192.168.0.223:8001/get_product_category/";
-
-  getdata1(): Observable<any> {
-    return this.http.get<any>(this.vposturl)
-  }
-  getDatawithMethodParam1(methodName, param1) {
+ getDatawithMethodParam1(methodName, param1) {
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1,
       this.options
     );
   }
-professionUrl = "http://192.168.0.223:8001/get_Profession/";
 
-getProfessionData(): Observable<any> {
-  return this.http.get<any>(this.professionUrl);
-}
+  // vposturl = "http://192.168.0.223:8001/get_product_category/";
 
-
-//  getBannerData(): Observable<any> {
-//        return this.http.get<any>(this.posturl1('get_banner/'))
-//     }
-  
-  vbannerurl = "http://192.168.0.223:8001/get_banner/";
+  // getdata1(): Observable<any> {
+  //   return this.http.get<any>(this.vposturl)
+  // }
+ 
+  getdata1(): Observable<any> {
+    return this.http.get<any>(this.UrlData('get_product_category/'))
+  }
 
   getBannerData(): Observable<any> {
-    return this.http.get<any>(this.vbannerurl);
+    return this.http.get<any>(this.UrlData('get_banner/'))
   }
 
 
-
-  // getBannerData(): Observable<any> {
-  //   return this.http.get<any>(this.UrlData('get_banner/'))
-  // }
+  getProfessionData(): Observable<any> {
+    return this.http.get<any>(this.UrlData('get_Profession/'))
+  }
 
   //register
 
@@ -306,7 +298,7 @@ getProfessionData(): Observable<any> {
   LoginUser(body:any) {
     return this.http.post(this.UrlData('api/login/'), body);
   }
-
+//-------------------------------------------------------------------------------------------------------
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1 + "&fromdate=" +
@@ -677,6 +669,44 @@ getProfessionData(): Observable<any> {
     );
   }
   getDatawithQueryParams7User_idBrand(
+    input_id,
+    param1,
+    param2,
+    param3,
+    param4,
+    param5,
+    param6,
+    param7,
+    brand,
+    userid
+  ) {
+    return this.http.get(
+      this.apiUrl +
+      "?input_id=" +
+      input_id +
+      "&param_other1=" +
+      param1 +
+      "&param_other2=" +
+      param2 +
+      "&param_other3=" +
+      param3 +
+      "&param_other4=" +
+      param4 +
+      "&param_other5=" +
+      param5 +
+      "&param_other6=" +
+      param6 +
+      "&param_other7=" +
+      param7 +
+      "&brand=" +
+      brand +
+      "&user_id=" +
+      userid,
+      this.options
+    );
+  }
+
+  getDatawithQueryParams7User_idBrand1(
     input_id,
     param1,
     param2,

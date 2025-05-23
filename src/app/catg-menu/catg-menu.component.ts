@@ -121,7 +121,7 @@ export class CatgMenuComponent implements OnInit {
 	}
 	getprodimg() {
 		this.spinner.show();
-		return this.service.getdata1().subscribe((resp: any) => {
+		 this.service.getdata1().subscribe((resp: any) => {
 			this.spinner.hide();
 			this.resources = resp.data;
 			// this.service.resources.next(resp);
