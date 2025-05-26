@@ -58,7 +58,9 @@ export class ShopByCategoryComponent {
   resources2dataproduct: any;
   brand: any;
   p: any;
-
+  selectedBrand: string | null = null;
+  selectedDiscount: number = 0;
+  sortOrder: 'asc' | 'desc' | null = null; 
   constructor(private router: Router, private route: ActivatedRoute, private service: GlobalServiceService, public dataService: DataServiceService, private _location: Location,
     private eventemit: ComponentCommunicationService, private dialog: MatDialog, private spinner: NgxSpinnerService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute,) {
     this.obj.id = 4;
@@ -207,55 +209,55 @@ getProductsByCategory(category: string): void {
   } */
   /* ======================================= */
   percenages: any = [];
-  clearfilters(p) {
-    this.selected_disc = p;
-    if (this.prof != undefined) {
-      this.spinner.show();
-      this.getsearch();
-    }
-    else {
-      {
+  // clearfilters(p) {
+  //   this.selected_disc = p;
+  //   if (this.prof != undefined) {
+  //     this.spinner.show();
+  //     this.getsearch();
+  //   }
+  //   else {
+  //     {
 
-        this.spinner.show();
-        this.order = '',
-          this.range = [];
-        return this.service.getDatawithQueryParamsBrand('10', this.d, this.e, this.select, this.modal, this.brand).subscribe((resp) => {
-          this.spinner.hide();
-          console.log(resp);
-          this.resources2 = resp;
+  //       this.spinner.show();
+  //       this.order = '',
+  //         this.range = [];
+  //       return this.service.getDatawithQueryParamsBrand('10', this.d, this.e, this.select, this.modal, this.brand).subscribe((resp) => {
+  //         this.spinner.hide();
+  //         console.log(resp);
+  //         this.resources2 = resp;
 
-          this.resources2data = this.resources2.data;
-          this.percenages = this.resources2.count[0];
-          this.minValue = this.resources2.price[0].min_price;
-          this.maxValue = this.resources2.price[0].max_price;
-          this.min = this.minValue;
-          this.max = this.maxValue;
-          this.Options = {
-            floor: this.minValue,
-            ceil: this.resources2.price[0].max_price,
-            // step: 1
-          };
-          if (this.resources2data.length >= 1) {
+  //         this.resources2data = this.resources2.data;
+  //         this.percenages = this.resources2.count[0];
+  //         this.minValue = this.resources2.price[0].min_price;
+  //         this.maxValue = this.resources2.price[0].max_price;
+  //         this.min = this.minValue;
+  //         this.max = this.maxValue;
+  //         this.Options = {
+  //           floor: this.minValue,
+  //           ceil: this.resources2.price[0].max_price,
+  //           // step: 1
+  //         };
+  //         if (this.resources2data.length >= 1) {
 
-            this.showslider = true;
+  //           this.showslider = true;
 
-          }
-          else {
-            this.showslider = false;
-          }
+  //         }
+  //         else {
+  //           this.showslider = false;
+  //         }
 
-        },
-          error => {
-            this.spinner.hide();
-            this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
-            // console.log(error);
-          });
+  //       },
+  //         error => {
+  //           this.spinner.hide();
+  //           this.dialog.open(ErrorModalComponent, {
+  //   data: { errorModal:true }
+  // });
+  //           // console.log(error);
+  //         });
 
-      }
-    }
-  }
+  //     }
+  //   }
+  // }
   brands: any = [];
   class: any = 'C_s';
   css1: any = 'img-thumbnail';
@@ -328,6 +330,7 @@ getProductsByCategory(category: string): void {
       }
       console.log("prof", resp);
       this.resources2 = resp;
+     
       // this.spinner.hide(); 
       // this.resources2data1 = this.resources2.data;
       this.resources2data1 = this.resources2;
@@ -407,48 +410,48 @@ getProductsByCategory(category: string): void {
   resources3: any
   resources2data1: any = []
   //price order-filter
-  Ascend(order) {
+  // Ascend(order) {
 
-    this.resources2data1 = []
-    this.spinner.show();
-    this.order = "";
-    this.order = order;
-    // this.range=[];
-    if (this.prof != undefined) {
-      this.getProfesionorderwise(this.order);
-    }
-    else {
-      return this.service.getDatawithQueryParams7User_idBrand('7.3', this.d, this.e, this.select, this.modal, order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
-        console.log("--S1")
-        this.spinner.hide();
-        this.resources2 = resp;
-        this.resources2data1 = this.resources2.data;
-        for (var i = 0; i < this.resources2.data.length; i++) {
-          if (this.resources2.data[i]) {
-            var text = this.resources2.data[i].low_image_1.split("Powertexmodel");
-            this.resources2data1[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
-          }
-        }
-        this.minValue = this.resources2.price[0].min_price;
-        this.maxValue = this.resources2.price[0].max_price;
-        this.min = this.minValue;
-        this.max = this.maxValue;
-        this.Options = {
-          floor: this.minValue,
-          ceil: this.resources2.price[0].max_price,
-          // step: 1
-        };
-      },
-        error => {
-          this.spinner.hide();
-          this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
-          // console.log(error);
-        });
-    }
+  //   this.resources2data1 = []
+  //   this.spinner.show();
+  //   this.order = "";
+  //   this.order = order;
+  //   // this.range=[];
+  //   if (this.prof != undefined) {
+  //     this.getProfesionorderwise(this.order);
+  //   }
+  //   else {
+  //     return this.service.getDatawithQueryParams7User_idBrand('7.3', this.d, this.e, this.select, this.modal, order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
+  //       console.log("--S1")
+  //       this.spinner.hide();
+  //       this.resources2 = resp;
+  //       this.resources2data1 = this.resources2.data;
+  //       for (var i = 0; i < this.resources2.data.length; i++) {
+  //         if (this.resources2.data[i]) {
+  //           var text = this.resources2.data[i].low_image_1.split("Powertexmodel");
+  //           this.resources2data1[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
+  //         }
+  //       }
+  //       this.minValue = this.resources2.price[0].min_price;
+  //       this.maxValue = this.resources2.price[0].max_price;
+  //       this.min = this.minValue;
+  //       this.max = this.maxValue;
+  //       this.Options = {
+  //         floor: this.minValue,
+  //         ceil: this.resources2.price[0].max_price,
+  //         // step: 1
+  //       };
+  //     },
+  //       error => {
+  //         this.spinner.hide();
+  //         this.dialog.open(ErrorModalComponent, {
+  //   data: { errorModal:true }
+  // });
+  //         // console.log(error);
+  //       });
+  //   }
 
-  }
+  // }
 
   onPageChange(Page: number) {
     this.Page = Page;
@@ -457,51 +460,51 @@ getProductsByCategory(category: string): void {
 
 
   //price-filter
-  price_min(min, m) {
+  // price_min(min, m) {
 
-    this.range = [];
-    // console.log(min);
-    // console.log(m);
+  //   this.range = [];
+  //   // console.log(min);
+  //   // console.log(m);
 
 
-    let mini: number = Math.round(+min);
-    let maxi: number = Math.round(+m);
-    /* this.order = "acc" */
-    this.range.push(mini);
-    this.range.push(maxi);
-    console.log("range-", this.range);
-    let order = "";
-    if (this.prof != undefined) {
+  //   let mini: number = Math.round(+min);
+  //   let maxi: number = Math.round(+m);
+  //   /* this.order = "acc" */
+  //   this.range.push(mini);
+  //   this.range.push(maxi);
+  //   console.log("range-", this.range);
+  //   let order = "";
+  //   if (this.prof != undefined) {
 
-      this.getProfesionWise(min, m);
-    }
-    else {
-      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount,this.brand, this.user_id).subscribe((resp) => {
-        this.spinner.hide();
+  //     this.getProfesionWise(min, m);
+  //   }
+  //   else {
+  //     return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount,this.brand, this.user_id).subscribe((resp) => {
+  //       this.spinner.hide();
 
-        console.log("--S2")
-        console.log(resp);
-        this.resources2 = resp;
-        console.log(this.resources2, "rangedata");
-        this.resources2data1 = this.resources2.data;
-        for (var i = 0; i < this.resources2.data.length; i++) {
-          if (this.resources2.data[i]) {
-            var text = this.resources2.data[i].low_image_1.split("Powertexmodel");
-            this.resources2data1[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
-          }
-        }
-        this.percenages = this.resources2.count[0];
+  //       console.log("--S2")
+  //       console.log(resp);
+  //       this.resources2 = resp;
+  //       console.log(this.resources2, "rangedata");
+  //       this.resources2data1 = this.resources2.data;
+  //       for (var i = 0; i < this.resources2.data.length; i++) {
+  //         if (this.resources2.data[i]) {
+  //           var text = this.resources2.data[i].low_image_1.split("Powertexmodel");
+  //           this.resources2data1[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
+  //         }
+  //       }
+  //       this.percenages = this.resources2.count[0];
 
-      },
-        error => {
-          this.spinner.hide();
-          this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
-          // console.log(error);
-        });
-    }
-  }
+  //     },
+  //       error => {
+  //         this.spinner.hide();
+  //         this.dialog.open(ErrorModalComponent, {
+  //   data: { errorModal:true }
+  // });
+  //         // console.log(error);
+  //       });
+  //   }
+  // }
   min: any;
   max: any;
   getProfesionWise(min, m) {
@@ -587,31 +590,31 @@ getProductsByCategory(category: string): void {
     this.catgHidden = !this.catgHidden;
   }
 
-  disc(p) {
-    console.log(p);
-    this.selected_disc = p;
-    this.discount = p;
-    if (this.prof != undefined) {
-      this.getProfesionWisePercent(this.discount);
+  // disc(p) {
+  //   console.log(p);
+  //   this.selected_disc = p;
+  //   this.discount = p;
+  //   if (this.prof != undefined) {
+  //     this.getProfesionWisePercent(this.discount);
 
-    }
-    else {
-      this.spinner.show();
-      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount,this.brand, this.user_id).subscribe((resp) => {
-        console.log("--S3")
-        this.spinner.hide();
-        this.resources2 = resp;
-        this.resources2data = this.resources2.data;
-      },
-        error => {
-          this.spinner.hide();
-          this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
-          // console.log(error);
-        });
-    }
-  }
+  //   }
+  //   else {
+  //     this.spinner.show();
+  //     return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount,this.brand, this.user_id).subscribe((resp) => {
+  //       console.log("--S3")
+  //       this.spinner.hide();
+  //       this.resources2 = resp;
+  //       this.resources2data = this.resources2.data;
+  //     },
+  //       error => {
+  //         this.spinner.hide();
+  //         this.dialog.open(ErrorModalComponent, {
+  //   data: { errorModal:true }
+  // });
+  //         // console.log(error);
+  //       });
+  //   }
+  // }
   resources2datacount: any = [];
   getProfesionWisePercent(dis) {
     this.resources2 = [];
@@ -722,4 +725,65 @@ getProductsByCategory(category: string): void {
         // console.log(error);
       });
   }
+//----------------------------------------------------------------------//
+applyFilters() {
+  let filtered = [...this.resources2];
+
+  // Filter by price
+  if (this.minValue > 0 || this.maxValue > 0) {
+    filtered = filtered.filter(p =>
+      (!this.minValue || p.discounted_price >= this.minValue) &&
+      (!this.maxValue || p.discounted_price <= this.maxValue)
+    );
+  }
+
+  // Filter by brand
+  if (this.selectedBrand) {
+    filtered = filtered.filter(p => p.brand === this.selectedBrand);
+  }
+
+  // Filter by discount
+  if (this.selectedDiscount > 0) {
+    filtered = filtered.filter(p => p.discount_percent >= this.selectedDiscount);
+  }
+
+  // Sorting
+  if (this.sortOrder === 'asc') {
+    filtered.sort((a, b) => a.discounted_price - b.discounted_price);
+  } else if (this.sortOrder === 'desc') {
+    filtered.sort((a, b) => b.discounted_price - a.discounted_price);
+  }
+
+  this.resources2dataproduct = filtered;
+}
+price_min(min: number, max: number) {
+  this.minValue = min;
+  this.maxValue = max;
+  this.applyFilters();
+}
+
+disc(value: any) {
+  if (typeof value === 'string') {
+    this.selectedBrand = value;
+  } else {
+    this.selectedDiscount = value;
+  }
+  this.applyFilters();
+}
+
+Ascend(type: 'acc' | 'dec') {
+  this.sortOrder = type === 'acc' ? 'asc' : 'desc';
+  this.applyFilters();
+}
+
+clearfilters(value: number) {
+  this.selectedDiscount = value;
+  this.selectedBrand = null;
+  this.minValue = 0;
+  this.maxValue = 0;
+  this.sortOrder = null;
+  this.applyFilters();
+}
+
+
 }

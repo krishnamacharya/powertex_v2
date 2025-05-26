@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 // import { Http, RequestOptions, Headers } from "@angular/http";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { BehaviorSubject, forkJoin, Observable } from "rxjs";
 
 @Injectable({
@@ -254,13 +254,13 @@ export class GlobalServiceService {
   }
 
   
-   getdata1(): Observable<any> {
+  getdata1(): Observable<any> {
     return this.http.get(this.UrlData('get_product_category/'));
   }
 
 
 
-getProductsByCategory(category: string): Observable<any> {
+  getProductsByCategory(category: string): Observable<any> {
   const token = localStorage.getItem('access'); // Or use a token service
   const headers = new HttpHeaders({
     Authorization: `Bearer ${token}`
@@ -293,6 +293,11 @@ getProductsByCategory(category: string): Observable<any> {
   LoginUser(body:any) {
     return this.http.post(this.UrlData('api/login/'), body);
   }
+  getSearchData(key: string, value: string): Observable<any> {
+  const params = new HttpParams().set(key, value);
+  return this.http.get(this.UrlData('/search/'), { params });
+}
+
 //------------------------------------------------------------------------------------------------------- New Logic end
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(

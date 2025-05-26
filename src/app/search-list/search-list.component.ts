@@ -77,7 +77,7 @@ selected_sort: any;
         this.getdata1();
       }
       else {
-        this.getsearch();
+        this.getsearch1();
       }
 
     },
@@ -111,31 +111,57 @@ selected_sort: any;
       });
 
   }
-  getsearch() {
+  // getsearch() {
     
-    this.spinner.show();
-    this.p2 = "";
-    this.p3 = "All";
-    return this.service.getDatawithQueryParams3('7.3', this.search_val, this.p2, this.p3).subscribe((resp) => {
+  //   this.spinner.show();
+  //   this.p2 = "";
+  //   this.p3 = "All";
+  //   return this.service.getDatawithQueryParams3('7.3', this.search_val, this.p2, this.p3).subscribe((resp) => {
+  //     this.spinner.hide();
+  //     console.log(resp);
+
+
+  //     this.resources2 = resp;
+  //     for (var i = 0; i < this.resources2.length; i++) {
+  //       if (this.resources2[i]) {
+  //         var text = this.resources2[i].low_image_1.split("Powertexmodel");
+  //         this.resources2[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
+  //       }
+  //     }
+  //   },
+  //    error => {         this.spinner.hide();
+  //       this.dialog.open(ErrorModalComponent, {
+  //   data: { errorModal:true }
+  // });
+  //       // console.log(error);
+  //     });
+  // }
+
+  getsearch1() {
+  this.spinner.show();
+
+  this.service.getSearchData('search', this.search_val).subscribe(
+    (resp: any) => {
       this.spinner.hide();
       console.log(resp);
 
-
       this.resources2 = resp;
-      for (var i = 0; i < this.resources2.length; i++) {
+
+      for (let i = 0; i < this.resources2.length; i++) {
         if (this.resources2[i]) {
-          var text = this.resources2[i].low_image_1.split("Powertexmodel");
+          const text = this.resources2[i].low_image_1.split("Powertexmodel");
           this.resources2[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
         }
       }
     },
-     error => {         this.spinner.hide();
-        this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
-        // console.log(error);
+    error => {
+      this.spinner.hide();
+      this.dialog.open(ErrorModalComponent, {
+        data: { errorModal: true }
       });
-  }
+    }
+  );
+}
 
   //price Range
   minValue: number = 500;

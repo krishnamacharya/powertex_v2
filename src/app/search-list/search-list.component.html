@@ -159,9 +159,9 @@
               style="cursor: pointer"
             >
               <img
-                [src]="p.low_image_1"
+                [src]="p.high_image_1"
                 (error)="
-                  p.low_image_1 =
+                  p.high_image_1 =
                     'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
                 "
                 class="card-img-top img-fluid"
@@ -175,20 +175,24 @@
               <p class="fw-semibold text-truncate mb-1" title="{{ p.modelno }}">
                 {{ p.modelno | slice : 0 : 20 }}
               </p>
-              <p class="mb-1">
-                <span class="fw-bold" style="color: #009b77"
-                  >Rs.{{ p.net_price }}</span
-                >
-                <!-- Only show the discount and strikethrough price if discount is greater than 0 -->
-                <span
-                  *ngIf="p.discount > 0"
-                  class="text-muted text-decoration-line-through ms-2"
-                  >Rs.{{ p.mrp }}</span
-                >
-                <span *ngIf="p.discount > 0" class="ms-2 text-success"
-                  >{{ p.discount }}% Off</span
-                >
-              </p>
+       <p class="mb-1">
+  <span class="fw-bold" style="color: #009b77">
+    Rs.{{ p.discounted_price }}
+  </span>
+
+  <!-- Wrap MRP and discount in a span for horizontal alignment -->
+  <span *ngIf="p.discount_percent > 0" class="ms-2">
+    <span class="text-muted text-decoration-line-through">
+      Rs.{{ p.mrp }}
+    </span>
+    <span class="text-success ms-2">
+      {{ p.discount_percent }}% Off
+    </span>
+  </span>
+</p>
+
+
+              
               <p class="text-muted small mb-0">(Excluding GST)</p>
             </div>
           </div>
