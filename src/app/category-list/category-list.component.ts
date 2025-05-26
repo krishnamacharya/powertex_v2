@@ -155,12 +155,12 @@ p: any;
         // this.d=this.category;
         this.e = (this.sub_c);
         this.e = (this.e)
-        console.log(this.d, "", this.e, "", this.select, this.modal, this.user_id);
         this.getdata1();
       } else {
         this.spinner.show();
         this.getsearch();
       }
+        console.log(this.d, "",this.sub_c, this.e, "", this.select, this.modal, this.user_id);
   
       this.spinner.show;
     }, error => {
@@ -246,7 +246,7 @@ p: any;
     this.spinner.show();
     this.order = '',
       this.range = [];
-    return this.service.getDatawithQueryParamsBrand('10', this.d, this.e, this.select, this.modal,this.brand).subscribe((resp) => {
+    return this.service.getDatawithQueryParamsBrands(this.d).subscribe((resp) => {
       this.spinner.hide();
       console.log(resp, "data1");
       this.resources2 = resp;
@@ -297,7 +297,7 @@ p: any;
 
     this.sidemenu = false
     this.spinner.show();
-    return this.service.getDatawithMethodParams1('profession/', this.prof).subscribe((resp) => {
+    return this.service.getDatawithQueryParamsBrands( this.prof).subscribe((resp) => {
     // return this.service.getDatawithQueryParams1('10.08', this.prof).subscribe((resp) => {
       if (this.service.response == null) {
         console.log(this.route.routeConfig.component.name);
@@ -305,10 +305,10 @@ p: any;
         setTimeout(() => {
           this.spinner.hide();
 
-        }, 4000);
+        },);
       }
       console.log("prof", resp);
-      this.resources2 = resp;
+      this.resources2 = resp.Done;
       // this.spinner.hide(); 
       // this.resources2data1 = this.resources2.data;
       this.resources2data1 = this.resources2;
@@ -373,9 +373,7 @@ p: any;
       this.sidemenu = true
       this.d = p.category
       this.e = p.subcategory
-      this.select = "All"
-      this.modal = p.modelno;
-      this.brand = p.brand;
+      
 
       // console.log("your Category", category, "productid", p.productid);
       this.getdata1()

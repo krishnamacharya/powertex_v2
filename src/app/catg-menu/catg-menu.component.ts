@@ -6,14 +6,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ErrorModalComponent } from '../authentication-views/error-modal/error-modal.component';
 declare var $: any;
 interface Resources {
-subcategory: any;
+	subcategory: any;
 	category: any,
 	detail: any
 }
 @Component({
 	selector: 'app-catg-menu',
 	standalone: false,
-	templateUrl:'./catg-menu.component.html',
+	templateUrl: './catg-menu.component.html',
 	styleUrls: ['./catg-menu.component.scss']
 
 })
@@ -22,7 +22,8 @@ export class CatgMenuComponent implements OnInit {
 	hoveredCategory: String = '';
 	resources: Resources[] = [];
 	categoryList: any;
-hoverTimeout: any; 
+	hoverTimeout: any;
+	b: string;
 	constructor(private service: GlobalServiceService, private router: Router, private dialog: MatDialog, private spinner: NgxSpinnerService) {
 		this.service.getresource.subscribe(data => {
 			this.resources = data
@@ -39,7 +40,7 @@ hoverTimeout: any;
 	ngOnInit() {
 		// this.getprodimg();
 		// this.getData1();
-    
+
 
 		// duration of scroll animation
 		var scrollDuration = 300;
@@ -121,7 +122,7 @@ hoverTimeout: any;
 	}
 	getprodimg() {
 		this.spinner.show();
-		 this.service.getdata1().subscribe((resp: any) => {
+		this.service.getdata1().subscribe((resp: any) => {
 			this.spinner.hide();
 			this.resources = resp.data;
 			// this.service.resources.next(resp);
@@ -135,58 +136,56 @@ hoverTimeout: any;
 			});
 	}
 	modal: any = [1];
-	// selected_Sub(cat: any, sub: string) {
-	// 	console.log(cat, sub);
-	// 	// let br = '';
-	// 	let b = cat;
-	// 	let c = btoa(sub);
-
-	// 	let d = btoa(this.modal);
-	// 	let e = btoa("All");
-	// 	 this.router.navigate(['/category', b,c,d,e]);
-	// 	// this.router.navigate(['/category', b, c, d, e, br]);
-	// 	// this.router.navigate(['/Brands',cat,sub]);
-	// }
 
 
-selected_Sub(cat: any, sub: string) {
-  const b = cat;
-  const c = sub;
-  const d = (this.modal[0]);
-  const e = "All";
 
-  console.log("Navigating to: ", b, c, d, e);
+	selected_Sub(cat: any, sub: any) {
 
-  this.router.navigate(['/category', b,c,d,e]).then(success => {
-    if (success) {
-      console.log("Navigation successful");
-    } else {
-      console.error("Navigation failed");
-    }
-  });
-}
+		const c = sub;
 
-	  
-	selected_catg(cat: any) {
-		let category = cat;
 
-		this.router.navigate(['/category', category]);
+		console.log("Navigating to-----subcategory: ", c);
+
+		this.router.navigate(['/category', c]).then(success => {
+			if (success) {
+				console.log("Navigation successful");
+			} else {
+				console.error("Navigation failed");
+			}
+		});
 	}
 
+
+	selected_catg(cat: any) {
+		const c = cat;
+		
+
+		this.router.navigate(['/category', c]).then(success => {
+			if (success) {
+				console.log("Navigation successful");
+			} else {
+				console.error("Navigation failed");
+			}
+		});
+	}
+
+
+
+
 	get hoveredSubcategories() {
-  const found = this.resources.find(r => r.category === this.hoveredCategory);
-  return found?.subcategory || [];
-}
+		const found = this.resources.find(r => r.category === this.hoveredCategory);
+		return found?.subcategory || [];
+	}
 
-onHoverEnter(category: string) {
-  clearTimeout(this.hoverTimeout); // cancel any pending close
-  this.hoveredCategory = category;
-}
+	onHoverEnter(category: string) {
+		clearTimeout(this.hoverTimeout); // cancel any pending close
+		this.hoveredCategory = category;
+	}
 
-onHoverLeave() {
-  this.hoverTimeout = setTimeout(() => {
-    this.hoveredCategory = '';
-  }, 300); // 300ms delay before closing dropdown
-}
+	onHoverLeave() {
+		this.hoverTimeout = setTimeout(() => {
+			this.hoveredCategory = '';
+		}, 300); // 300ms delay before closing dropdown
+	}
 
 }

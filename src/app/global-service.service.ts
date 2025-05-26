@@ -7,8 +7,8 @@ import { BehaviorSubject, forkJoin, Observable } from "rxjs";
   providedIn: "root"
 })
 export class GlobalServiceService {
-  getSubcategoryList(category: string):void {
-   
+  getSubcategoryList(category: string): void {
+
   }
 
   options: any;
@@ -23,18 +23,7 @@ export class GlobalServiceService {
     // window.localStorage.clear();
   }
 
-  // createauthorizationheaders(headers:Headers){
-  //   this.token = localStorage.getItem('token');
 
-  //   // const headers = new Headers();
-  //   headers.append('Content-Type', 'application/json');
-  //   headers.append( 'Web','P0W3RTEX@123#');
-
-  //     headers.append( 'Authorization',this.token);
-
-  //   this.options = new RequestOptions({ headers: headers });
-
-  // }
 
   apiUrl = "https://www.pptshopee.in/get/";
   posturl = "https://www.pptshopee.in/";
@@ -120,8 +109,8 @@ export class GlobalServiceService {
   loginurl = "http://192.168.0.223:8001/";
 
   postdata(body, methodName) {
-  return this.http.post(this.loginurl+ methodName, body, this.options);
-}
+    return this.http.post(this.loginurl + methodName, body, this.options);
+  }
 
   postData1(methodName, param1) {
     return this.http.post(this.posturl + methodName + "/" + "?param_other1=" + param1, this.options);
@@ -215,9 +204,9 @@ export class GlobalServiceService {
   getDatawithInput_id(input_id) {
     return this.http.get(this.apiUrl + "?input_id=" + input_id, this.options);
   }
-  proffesionurl="192.168.0.223:8001/get_Profession/";
+  proffesionurl = "192.168.0.223:8001/get_Profession/";
   getDatawithInput_id1(input_id) {
-    return this.http.get(this.proffesionurl );
+    return this.http.get(this.proffesionurl);
   }
   getDatawithMethodParams1(methodName, param1) {
     return this.http.get(
@@ -247,26 +236,19 @@ export class GlobalServiceService {
   ///--New Code Start-----------------------------------------------------------
 
 
-    //New code 
+  //New code 
 
   UrlData(endpoint: string): string {
     return `${this.geturl1}${endpoint}`;
   }
 
-  
-   getdata1(): Observable<any> {
+  getdata1(): Observable<any> {
     return this.http.get(this.UrlData('get_product_category/'));
   }
 
-
-
-
-getProductsByCategory(category: string): Observable<any> {
-  return this.http.get(this.UrlData('get_category_wise/') + '?category=' + encodeURIComponent(category));
-}
-
-
-
+  getProductsByCategory(category: string): Observable<any> {
+    return this.http.get(this.UrlData('get_category_wise/') + '?category=' + encodeURIComponent(category));
+  }
 
   getBannerData(): Observable<any> {
     return this.http.get<any>(this.UrlData('get_banner/'))
@@ -283,11 +265,47 @@ getProductsByCategory(category: string): Observable<any> {
     return this.http.post(this.UrlData('api/register/'), data);
   }
 
-   // POST Method
-  LoginUser(body:any) {
+  // POST Method
+  LoginUser(body: any) {
     return this.http.post(this.UrlData('api/login/'), body);
   }
-//------------------------------------------------------------------------------------------------------- New Logic end
+
+
+
+  getDatawithQueryParamsBrand(input_id, param1, param2, param3, param4, param5) {
+    return this.http.get(
+      this.apiUrl +
+      "?input_id=" +
+      input_id +
+      "&param_other1=" +
+      param1 +
+      "&param_other2=" +
+      param2 +
+      "&param_other3=" +
+      param3 +
+      "&param_other4=" +
+      param4 +
+      "&brand=" +
+      param5,
+      this.options
+    );
+  }
+
+
+
+
+getDatawithQueryParamsBrands(param: any): Observable<any> {
+  return this.http.get(this.UrlData(`get_list/?subcategory=${encodeURIComponent(param)}`));
+}
+
+// getDatawithQueryParamsBrands(paramType: string, paramValue: any): Observable<any> {
+//   const queryParam = `${encodeURIComponent(paramType)}=${encodeURIComponent(paramValue)}`;
+//   return this.http.get(this.UrlData(`get_list/?${queryParam}`));
+// }
+
+
+
+  //--------------------------------------------------- New Logic end------------------------
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1 + "&fromdate=" +
@@ -480,24 +498,7 @@ getProductsByCategory(category: string): Observable<any> {
       this.options
     );
   }
-  getDatawithQueryParamsBrand(input_id, param1, param2, param3, param4, param5) {
-    return this.http.get(
-      this.apiUrl +
-      "?input_id=" +
-      input_id +
-      "&param_other1=" +
-      param1 +
-      "&param_other2=" +
-      param2 +
-      "&param_other3=" +
-      param3 +
-      "&param_other4=" +
-      param4 +
-      "&brand=" +
-      param5,
-      this.options
-    );
-  }
+
   getDatawithQueryParams1nd4(input_id, param1, param4) {
     return this.http.get(
       this.apiUrl +
@@ -695,6 +696,9 @@ getProductsByCategory(category: string): Observable<any> {
     );
   }
 
+
+
+
   getDatawithQueryParams7User_idBrand1(
     input_id,
     param1,
@@ -837,10 +841,10 @@ getProductsByCategory(category: string): Observable<any> {
 
   //new version code
 
-   private usernameSource = new BehaviorSubject<string | null>(null);
-    private accessSource = new BehaviorSubject<string | null>(null);
+  private usernameSource = new BehaviorSubject<string | null>(null);
+  private accessSource = new BehaviorSubject<string | null>(null);
   username$ = this.usernameSource.asObservable();
-  access$=this.accessSource.asObservable();
+  access$ = this.accessSource.asObservable();
 
   setUsername(name: string) {
     this.usernameSource.next(name);
@@ -850,11 +854,11 @@ getProductsByCategory(category: string): Observable<any> {
     return localStorage.getItem('username');
   }
 
-  setAccessToken(access:any){
+  setAccessToken(access: any) {
     this.accessSource.next(access)
   }
 
-  getAccessToken():any|null{
+  getAccessToken(): any | null {
     return localStorage.getItem('access')
   }
 }
