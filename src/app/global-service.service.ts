@@ -7,6 +7,9 @@ import { BehaviorSubject, forkJoin, Observable } from "rxjs";
   providedIn: "root"
 })
 export class GlobalServiceService {
+  getDataWithDynamicParam(arg0: string, subcategory: any) {
+    throw new Error('Method not implemented.');
+  }
   getSubcategoryList(category: string): void {
 
   }
@@ -307,14 +310,25 @@ export class GlobalServiceService {
 
 
 
-getDatawithQueryParamsBrands(param: any): Observable<any> {
-  return this.http.get(this.UrlData(`get_list/?subcategory=${encodeURIComponent(param)}`));
+// getDatawithQueryParamsBrands(param: any): Observable<any> {
+//   return this.http.get(this.UrlData(`get_list/?subcategory=${encodeURIComponent(param)}`));
+// }
+
+
+getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> {
+  const queryParam = `${encodeURIComponent(paramType)}=${encodeURIComponent(value)}`;
+  const url = `http://192.168.0.223:8001/get_list/?${queryParam}`;
+  return this.http.get(url);
 }
 
-// getDatawithQueryParamsBrands(paramType: string, paramValue: any): Observable<any> {
-//   const queryParam = `${encodeURIComponent(paramType)}=${encodeURIComponent(paramValue)}`;
-//   return this.http.get(this.UrlData(`get_list/?${queryParam}`));
+
+// // userform.service.ts
+// getDatawithQueryParamsBrands(type: 'category' | 'subcategory', value: any): Observable<any> {
+//   const encodedValue = encodeURIComponent(value);
+//   const url = `http://192.168.0.223:8001/get_list/?${type}=${encodedValue}`;
+//   return this.http.get(url);
 // }
+
 
 
 

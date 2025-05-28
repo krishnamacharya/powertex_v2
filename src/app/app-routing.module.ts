@@ -280,7 +280,7 @@ const routes: Routes = [
   { path: "sample", component: SampleComponent },
   { path: "store-location", component: StoreLocationComponent },
   { path: "category/:search", component: CategoryListComponent },
-  { path: "category/:d", component: CategoryListComponent },
+  { path: "category", component: CategoryListComponent },
   // { path: "category/:b/:c/:d/:e", component: CategoryListComponent },
   { path: "category/:b/:c/:d/:e/:br", component: CategoryListComponent },
   { path: "category/:prof", component: CategoryListComponent },

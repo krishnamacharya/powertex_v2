@@ -1,113 +1,28 @@
-<!-- Outside of any row/col layout
-<div class="dropdown-wrapper">
-  <button
-    class="btn px-4 py-2 fw-bold text-white"
-    style="background-color: rgb(53, 105, 88);"
-    (click)="toggleDrop(!showDropdown)"
-  >
-    Shop by Categories
-  </button>
+<div class="category-dropdown-wrapper" (mouseleave)="showDropdown = false">
+<div class="category-dropdown position-absolute top-0 start-0 bg-white shadow-sm">
 
-   <div
-    class="bg-black border shadow mt-2 p-3"
-    *ngIf="showDropdown"
-    style="width: 400px; "
-  >
-    <div class="row">
-      <div
-        class="col-4"
-        *ngFor="let p of resources | slice: 0:10"
-        (mouseenter)="hoveredCategory = p.Category"
-        (mouseleave)="hoveredCategory = ''"
-      >
-        <div class="fw-bold mb-2" (click)="selected_catg(p.Category)">
-          {{ p.Category }}
-          <i class="fa fa-angle-right float-end"></i>
-        </div>
-
-        <ul *ngIf="hoveredCategory === p.Category" class="list-unstyled ps-3">
-          <li
-            *ngFor="let subp of p.detail"
-            (click)="selected_Sub(p.Category, subp.SubCategory)"
-          >
-            <a href="javascript:void(0)" class="d-block py-1 text-secondary">
-              {{ subp.SubCategory }}
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="text-center mt-3">
-      <a routerLink="/all-Category" class="btn btn-outline-primary btn-sm">
-        Explore All..
-      </a>
-    </div>
-  </div>
-</div> -->
-<div
-  class="position-absolute top-0 start-0 bg-white shadow-sm"
-  style="width: 270px; z-index: 1;"
->
-  <!-- Dropdown Button -->
-  <button
-    class="btn text-white w-100 h-20 text-start fw-bold"
-    style="background-color:#009b77; border-radius: 0; height: 43px;"
-    (click)="toggleDrop(!showDropdown)"
-  >
+  <button class="btn category-toggle text-white fw-bold" (click)="toggleDrop(!showDropdown)">
     <i class="fa fa-bars me-2"></i> Shop by Categories
   </button>
 
-  <!-- Dropdown Content -->
-  <div
-    class="bg-white border mt-1 px-3 py-2"
-    *ngIf="showDropdown"
-    style="max-height: 800px; overflow-y: auto;"
-  >
-    <div class="row">
-    <div
-  class="col-12 py-2"
-  *ngFor="let p of resources | slice: 0:15"
-  (mouseenter)="onHoverEnter(p.category)"
-  (mouseleave)="onHoverLeave()"
-  style="display: flex; flex-direction: column;"
->
-        <div
-          class="fw-semibold d-flex justify-content-between align-items-center text-muted"
-          style="cursor: pointer;"
-           (click)="selected_catg(p.category )"
-        >
+  <div class="dropdown-content" *ngIf="showDropdown">
+    <div class="category-list">
+      <div class="category-item" *ngFor="let p of resources; let i = index" (mouseenter)="onCategoryHover(i)" (mouseleave)="onCategoryLeave()">
+        <div class="category-title" (click)="selected_catg(p.category)">
           {{ p.category }}
           <i class="fa fa-angle-right"></i>
         </div>
 
-        <!-- Subcategories -->
-        <ul
-          *ngIf="hoveredCategory === p.category"
-          class="list-unstyled ps-3 pt-2"
-        >
-          <li
-            *ngFor="let subp of p.subcategory"
-            (click)="selected_Sub(p.category, subp.subcategory)"
-          >
-            <a
-              href="javascript:void(0)"
-              class="d-block py-1 text-secondary small"
-              style="text-decoration: none;"
-              >{{ subp.subcategory  }}</a
-            >
-          </li>
-        </ul>
+        <!-- Subcategories shown on right -->
+        <div class="subcategory-panel" *ngIf="hoveredCategoryIndex === i">
+          <ul class="list-unstyled mb-0">
+            <li *ngFor="let subp of p.subcategory" (click)="selected_Sub(subp.subcategory)">
+              <a href="javascript:void(0)" class="subcategory-link">{{ subp.subcategory }}</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-
-    <!-- Explore All Button -->
-    <!-- <div class="text-center mt-3">
-      <a routerLink="/all-Category" class="btn  btn-sm text-black">
-        Explore All..
-      </a>
-    </div>
-     -->
   </div>
 </div>
- 
+</div>

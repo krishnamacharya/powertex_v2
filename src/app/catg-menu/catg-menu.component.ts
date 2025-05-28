@@ -138,15 +138,23 @@ export class CatgMenuComponent implements OnInit {
 	modal: any = [1];
 
 
+	//new code 
 
-	selected_Sub(cat: any, sub: any) {
+hoveredCategoryIndex: number | null = null;
 
-		const c = sub;
+  onCategoryHover(index: number) {
+    this.hoveredCategoryIndex = index;
+  }
+
+  onCategoryLeave() {
+    this.hoveredCategoryIndex = null;
+  }
 
 
-		console.log("Navigating to-----subcategory: ", c);
+	selected_Sub(sub: any) {
+		console.log("Navigating to-----subcategory: ");
 
-		this.router.navigate(['/category', c]).then(success => {
+		 this.router.navigate(['/category'], { queryParams: { subcategory: sub } }).then(success => {
 			if (success) {
 				console.log("Navigation successful");
 			} else {
@@ -157,10 +165,7 @@ export class CatgMenuComponent implements OnInit {
 
 
 	selected_catg(cat: any) {
-		const c = cat;
-		
-
-		this.router.navigate(['/category', c]).then(success => {
+		this.router.navigate(['/category'], { queryParams: { category: cat } }).then(success => {
 			if (success) {
 				console.log("Navigation successful");
 			} else {
@@ -171,21 +176,11 @@ export class CatgMenuComponent implements OnInit {
 
 
 
-
 	get hoveredSubcategories() {
 		const found = this.resources.find(r => r.category === this.hoveredCategory);
 		return found?.subcategory || [];
 	}
 
-	onHoverEnter(category: string) {
-		clearTimeout(this.hoverTimeout); // cancel any pending close
-		this.hoveredCategory = category;
-	}
 
-	onHoverLeave() {
-		this.hoverTimeout = setTimeout(() => {
-			this.hoveredCategory = '';
-		}, 300); // 300ms delay before closing dropdown
-	}
 
 }

@@ -101,7 +101,7 @@
     <div class="col-md-10" [ngClass]="{ 'col-md-12': sidemenu == false }">
       <div class="row justify-content-start flex-wrap">
         <div *ngFor="
-            let p of resources2data1
+            let p of products
               | paginate : { itemsPerPage: 32, currentPage: Page };
             let i = index
           " class="mb-4" style="width: 20%">
