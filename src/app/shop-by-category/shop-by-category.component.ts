@@ -133,6 +133,7 @@ ngOnInit() {
       this.getProductsByCategory(category);
     }
   });
+  this.applyFilters();
 }
 
   card1(arg0: { Category: string; }) {

@@ -32,10 +32,14 @@ hoverTimeout: any;
 			}
 		});
 	}
-	toggleDrop(state: boolean) {
-		this.showDropdown = state;
-		console.log('Dropdown visible:', this.showDropdown);
-	}
+// 	toggleDrop(): void {
+//     this.showDropdown = true;
+
+//     setTimeout(() => {
+//       this.showDropdown = false;
+//     }, 10000); // auto-close after 5 seconds
+//   }
+
 	ngOnInit() {
 		// this.getprodimg();
 		// this.getData1();
@@ -178,15 +182,30 @@ selected_Sub(cat: any, sub: string) {
   return found?.subcategory || [];
 }
 
+toggleDrop() {
+  this.showDropdown = !this.showDropdown;
+  if (!this.showDropdown) {
+    this.hoveredCategory = null; // Reset hover when closing
+  }
+}
+
 onHoverEnter(category: string) {
-  clearTimeout(this.hoverTimeout); // cancel any pending close
   this.hoveredCategory = category;
 }
 
 onHoverLeave() {
+  this.hoveredCategory = null;
+}
+onHoverLeaveWithDelay(): void {
   this.hoverTimeout = setTimeout(() => {
-    this.hoveredCategory = '';
-  }, 300); // 300ms delay before closing dropdown
+    this.hoveredCategory = null;
+  }, 300); // Delay in ms
 }
 
+cancelHoverLeaveDelay(): void {
+  if (this.hoverTimeout) clearTimeout(this.hoverTimeout);
+}
+toggleCategory(category: string): void {
+  this.hoveredCategory = this.hoveredCategory === category ? null : category;
+}
 }
