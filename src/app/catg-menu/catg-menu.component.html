@@ -10,7 +10,6 @@
       <div class="category-item" *ngFor="let p of resources; let i = index" (mouseenter)="onCategoryHover(i)" (mouseleave)="onCategoryLeave()">
         <div class="category-title" (click)="selected_catg(p.category)">
           {{ p.category }}
-          <i class="fa fa-angle-right"></i>
         </div>
 
         <!-- Subcategories shown on right -->

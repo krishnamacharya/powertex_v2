@@ -138,9 +138,8 @@ export class CatgMenuComponent implements OnInit {
 	modal: any = [1];
 
 
-	//new code 
-
-hoveredCategoryIndex: number | null = null;
+	//new code
+	  hoveredCategoryIndex: number | null = null;
 
   onCategoryHover(index: number) {
     this.hoveredCategoryIndex = index;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 // import { MatDialog } from '@angular/material/dialog';
 import { GlobalServiceService } from '../global-service.service';
 import { Router } from '@angular/router';
@@ -13,50 +13,9 @@ import { ErrorModalComponent } from '../authentication-views/error-modal/error-m
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
 
-  newArrival = [
-    {
-      image: 'assets/images/cat1.png',
-      brand: 'Palm',
-      name: 'Circumstances And Owing To The Claims',
-      price: 114.80,
-      oldPrice: null,
-      rating: 4
-    },
-    {
-      image: 'assets/images/cat2.png',
-      brand: 'HTC',
-      name: 'Maxime Placeat Facere Possimus Voluptas',
-      price: 105.20,
-      oldPrice: null,
-      rating: 3
-    },
-    {
-      image: 'assets/images/cat3.png',
-      brand: 'Apple',
-      name: 'Similique Culpa Rerum Officia Deserunt',
-      price: 117.20,
-      oldPrice: null,
-      rating: 2
-    },
-    {
-      image: 'assets/images/cat5.png',
-      brand: 'Canon',
-      name: 'Quis Autem Vel Eum Iure Reprehenderit',
-      price: 128.00,
-      oldPrice: null,
-      rating: 1
-    },
-    {
-      image: 'assets/images/cat6.png',
-      brand: 'Apple',
-      name: 'Voluptates Repudiandae Quo Voluptas',
-      price: 122.00,
-      oldPrice: 140.00,
-      rating: 5
-    }
-  ];
+export class HomeComponent implements OnInit {
+  
 
   bestSellers = [
     {
@@ -123,6 +82,7 @@ export class HomeComponent implements OnInit {
   itemsPerPage1 = 7; // Show 5 categories per view
   endIndex = this.itemsPerPage1;
   catg_prod_list: any[];
+  scrollContainer: any;
 
   scrollLeft() {
     if (this.startIndex > 0) {
@@ -152,6 +112,9 @@ export class HomeComponent implements OnInit {
   sidebanners3: any;
   sidebanners4: any;
   videos: any = ["video1", "video2", "video3", "video4", "video5", "video6"];
+  newArrival: any[] = [];
+ 
+
   // Banners:any =["Banner01","Banner02","Banner03","Banner04","Banner05"]
   token: any
   constructor(@Inject(GlobalServiceService) private service: GlobalServiceService, private router: Router, public dialog: MatDialog) { }
@@ -165,6 +128,9 @@ export class HomeComponent implements OnInit {
     // this.resources = JSON.parse(localStorage.getItem('get_products_categoryone'));
     this.get_prof();
     this.get_banners();
+    this.getNewArrivals();
+
+
     // this.get_sideBanners();
     // this.spinner.hide();
     // this.card2();
@@ -265,6 +231,13 @@ export class HomeComponent implements OnInit {
       this.getprod_deatils();
     });
   }
+getNewArrivals() {
+  this.service.getNewarrivals('newarrivals/').subscribe((resp) => {
+    const decodedData = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
+    this.newArrival = decodedData.Done;
+    console.log("data ......done",this.newArrival)
+  });
+}
 
   getprod_deatils() {
     for (let d of this.resources1) {
@@ -414,8 +387,28 @@ card1() {
 
   ];
 
+ @ViewChild('newArrivalSlider') newArrivalSlider!: ElementRef;
+  @ViewChild('bestSellersSlider') bestSellersSlider!: ElementRef;
+  @ViewChild('specialSlider') specialSlider!: ElementRef;
 
+scrollLeftp(section: string) {
+  const slider = this.getSlider(section);
+  slider.scrollLeft -= 300;
+}
 
+scrollRightp(section: string) {
+  const slider = this.getSlider(section);
+  slider.scrollLeft += 300;
+}
+
+getSlider(section: string): HTMLElement {
+  switch (section) {
+    case 'new': return this.newArrivalSlider.nativeElement;
+    case 'best': return this.bestSellersSlider.nativeElement;
+    case 'special': return this.specialSlider.nativeElement;
+    default: return null!;
+  }
+}
 }
 
 
