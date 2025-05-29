@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalServiceService } from '../global-service.service';
-import { NavigationExtras, Router } from '@angular/router';
+import { NavigationExtras, NavigationStart, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ErrorModalComponent } from '../authentication-views/error-modal/error-modal.component';
@@ -24,6 +24,7 @@ export class CatgMenuComponent implements OnInit {
 	categoryList: any;
 	hoverTimeout: any;
 	b: string;
+	routeSub: any;
 	constructor(private service: GlobalServiceService, private router: Router, private dialog: MatDialog, private spinner: NgxSpinnerService) {
 		this.service.getresource.subscribe(data => {
 			this.resources = data
@@ -33,14 +34,21 @@ export class CatgMenuComponent implements OnInit {
 			}
 		});
 	}
-	toggleDrop(state: boolean) {
-		this.showDropdown = state;
-		console.log('Dropdown visible:', this.showDropdown);
-	}
-	ngOnInit() {
-		// this.getprodimg();
-		// this.getData1();
 
+	ngOnInit() {
+
+		this.routeSub = this.router.events.subscribe(event => {
+			if (event instanceof NavigationStart) {
+				this.showDropdown = false;
+			}
+		});
+	}
+
+	ngOnDestroy(): void {
+		// Prevent memory leak
+		if (this.routeSub) {
+			this.routeSub.unsubscribe();
+		}
 
 		// duration of scroll animation
 		var scrollDuration = 300;
@@ -102,11 +110,6 @@ export class CatgMenuComponent implements OnInit {
 				$(rightPaddle).addClass('hidden');
 			}
 
-			// print important values
-			// $('#print-wrapper-size span').text(menuWrapperSize);
-			// $('#print-menu-size span').text(menuSize);
-			// $('#print-menu-invisible-size span').text(menuInvisibleSize);
-			// $('#print-menu-position span').text(menuPosition);
 
 		});
 
@@ -139,21 +142,26 @@ export class CatgMenuComponent implements OnInit {
 
 
 	//new code
-	  hoveredCategoryIndex: number | null = null;
+	hoveredCategoryIndex: number | null = null;
 
-  onCategoryHover(index: number) {
-    this.hoveredCategoryIndex = index;
-  }
+	onCategoryHover(index: number) {
+		this.hoveredCategoryIndex = index;
+	}
 
-  onCategoryLeave() {
-    this.hoveredCategoryIndex = null;
-  }
+	toggleDrop(state: boolean) {
+		this.showDropdown = state;
+		console.log('Dropdown visible:', this.showDropdown);
+	}
+
+	// onCategoryLeave() {
+	// 	this.hoveredCategoryIndex = null;
+	// }
 
 
 	selected_Sub(sub: any) {
 		console.log("Navigating to-----subcategory: ");
 
-		 this.router.navigate(['/category'], { queryParams: { subcategory: sub } }).then(success => {
+		this.router.navigate(['/category'], { queryParams: { subcategory: sub } }).then(success => {
 			if (success) {
 				console.log("Navigation successful");
 			} else {
