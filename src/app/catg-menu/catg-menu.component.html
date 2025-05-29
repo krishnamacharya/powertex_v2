@@ -1,5 +1,6 @@
 <div class="category-dropdown-wrapper" (mouseleave)="showDropdown = false">
-<div class="category-dropdown position-absolute top-0 start-0 bg-white shadow-sm">
+  <!-- <div class="category-dropdown-wrapper"> -->
+<div class="category-dropdown position-absolute top-0 start-0 shadow-sm">
 
   <button class="btn category-toggle text-white fw-bold" (click)="toggleDrop(!showDropdown)">
     <i class="fa fa-bars me-2"></i> Shop by Categories
@@ -7,7 +8,7 @@
 
   <div class="dropdown-content" *ngIf="showDropdown">
     <div class="category-list">
-      <div class="category-item" *ngFor="let p of resources; let i = index" (mouseenter)="onCategoryHover(i)" (mouseleave)="onCategoryLeave()">
+      <div class="category-item" *ngFor="let p of resources; let i = index" (mouseenter)="onCategoryHover(i)" >
         <div class="category-title" (click)="selected_catg(p.category)">
           {{ p.category }}
         </div>

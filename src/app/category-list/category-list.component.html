@@ -135,23 +135,24 @@
               <p class="fw-semibold text-truncate mb-1" title="{{p.modelno }}">
                 {{p.modelno }}
               </p>
-              <p class="fw-semibold text-truncate mb-1">
+              <!-- <p class="fw-semibold text-truncate mb-1">
                 <span class="text-muted text-decoration-line-through"
                   *ngIf="p.discount_percent && p.discount_percent > 0">
                   &#8377;Price {{p.mrp }}
                 </span>
-              </p>
-              <p class="fw-semibold text-truncate mb-1" title="{{ p.discounted_price }}" style="color: #009b77">
-                Dis Price:{{p.discounted_price }}
-              </p>
+              </p> -->
+            
               <div *ngIf="sidemenu">
                 <p class="mb-1">
-                  <span class="fw-bold" style="color: #009b77">₹{{ p.mrp }}</span>
-                  <span class="text-muted text-decoration-line-through ms-2"
+                  <span class="fw-bold" style="color: #009b77">Price : ₹{{ p.mrp }}</span>
+                  <!-- <span class="text-muted text-decoration-line-through ms-2"
                     *ngIf="p.discount_percent && p.discount_percent > 0">
-                    &#8377;{{p.mrp }}
-                  </span>
+                    &#8377;{{p.mrp }}dfdfd
+                  </span> -->
                 </p>
+                  <p class="fw-semibold text-truncate mb-1" title="{{ p.discounted_price }}" style="color: #009b77">
+                Dis Price:{{p.discounted_price }}
+              </p>
                 <p class="text-success mb-1" *ngIf="p.discount_percent && p.discount_percent > 0">
                   {{p.discount_percent }}% Off
                 </p>
