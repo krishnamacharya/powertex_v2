@@ -239,36 +239,35 @@ export class GlobalServiceService {
   ///--New Code Start-----------------------------------------------------------
 
 
-  //New code 
 
   UrlData(endpoint: string): string {
     return `${this.geturl1}${endpoint}`;
   }
 
-  
+
   getdata1(): Observable<any> {
     return this.http.get(this.UrlData('get_product_category/'));
   }
 
 
-getProductsByCategory(category: string): Observable<any> {
-  const token = localStorage.getItem('access');
+  getProductsByCategory(category: string): Observable<any> {
+    const token = localStorage.getItem('access');
 
-  const headers = token
-    ? new HttpHeaders({ Authorization: `Bearer ${token}` })
-    : undefined;
+    const headers = token
+      ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+      : undefined;
 
-  return this.http.get(
-    this.UrlData('get_list/') + '?category=' + encodeURIComponent(category),
-    headers ? { headers } : {}
-  );
-}
+    return this.http.get(
+      this.UrlData('get_list/') + '?category=' + encodeURIComponent(category),
+      headers ? { headers } : {}
+    );
+  }
 
 
 
   getBannerData(): Observable<any> {
     return this.http.get<any>(this.UrlData('get_banner/'))
-  } 
+  }
 
 
   getProfessionData(): Observable<any> {
@@ -287,37 +286,30 @@ getProductsByCategory(category: string): Observable<any> {
   }
 
 
-
- 
-
-
-
-// getDatawithQueryParamsBrands(param: any): Observable<any> {
-//   return this.http.get(this.UrlData(`get_list/?subcategory=${encodeURIComponent(param)}`));
-// }
+  // getDatawithQueryParamsBrands(param: any): Observable<any> {
+  //   return this.http.get(this.UrlData(`get_list/?subcategory=${encodeURIComponent(param)}`));
+  // }
 
 
-getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> {
-  const queryParam = `${encodeURIComponent(paramType)}=${encodeURIComponent(value)}`;
-  const url = `http://192.168.0.223:8001/get_list/?${queryParam}`;
-  return this.http.get(url);
-}
+  getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> {
+    const queryParam = `${encodeURIComponent(paramType)}=${encodeURIComponent(value)}`;
+    const url = `http://192.168.0.223:8001/get_list/?${queryParam}`;
+    return this.http.get(url);
+  }
 
 
-
-  //--------------------------------------------------- New Logic end------------------------
   getSearchData(key: string, value: string): Observable<any> {
-  const params = new HttpParams().set(key, value);
-  return this.http.get(this.UrlData('/search/'), { params });
-}
+    const params = new HttpParams().set(key, value);
+    return this.http.get(this.UrlData('/search/'), { params });
+  }
 
   getNewarrivals(endpoint: string) {
-  return this.http.get(`http://192.168.0.223:8001/${endpoint}`, {
-    responseType: 'arraybuffer'  // important for TextDecoder to work
-  });
-}
+    return this.http.get(`http://192.168.0.223:8001/${endpoint}`, {
+      responseType: 'arraybuffer'  // important for TextDecoder to work
+    });
+  }
 
-//------------------------------------------------------------------------------------------------------- New Logic end
+  //------------------------------------------------------------------------------------------------------- New Logic end
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(
       this.posturl + methodName + "?param_other2=" + param1 + "&fromdate=" +
@@ -338,7 +330,7 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
     );
   }
 
-   getDatawithQueryParamsBrand(input_id, param1, param2, param3, param4, param5) {
+  getDatawithQueryParamsBrand(input_id, param1, param2, param3, param4, param5) {
     return this.http.get(
       this.apiUrl +
       "?input_id=" +
