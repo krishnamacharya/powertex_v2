@@ -62,23 +62,23 @@
 //   }
 //   isRoot: boolean;
 
- 
+
 
 //   ngOnInit() {
 //     this.sub = this.route.queryParams.subscribe(params => {
 //       this.page = +params['page'] || 0;
 //     });
-  
+
 //     this.alert = false;
 //     this.token = localStorage.getItem('token');
 //     console.log("token", this.token);
-  
+
 //     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
-  
+
 //     this.sub = this.route.params.subscribe(params => {
 //       this.prof = params['search'];
 //       this.profession = params['profession'];
-  
+
 //       if (this.token == null) {
 //         this.user_id = '';
 //       } else {
@@ -87,7 +87,7 @@
 //           this.log_as_cust = false;
 //         }
 //       }
-  
+
 //       console.log("search", this.prof);
 //       if (this.prof === undefined) {
 //         this.d = params['b'];
@@ -110,7 +110,7 @@
 //         this.getsearch();
 //       }
 //         console.log(this.d, "",this.sub_c, this.e, "", this.select, this.modal, this.user_id);
-  
+
 //       this.spinner.show;
 //     }, error => {
 //       this.spinner.hide();
@@ -119,7 +119,7 @@
 //       });
 //     });
 //   }
-  
+
 //   ngOnDestroy() {
 //     this.sub.unsubscribe();
 //   }
@@ -128,11 +128,11 @@
 //  }
 //   /* ================current location====================== */
 //   /* goToPage(pageNum) {
-    
+
 //    this.router.navigate(['%app-category-list'], { queryParams: { page: pageNum } });
 //  }  */
 //   /*\ nextPage() {
-  
+
 //     this.router.navigate(['%app-category-list'], { queryParams: { page:  this.Page + 1 } });
 //   } */
 //   /* ======================================= */
@@ -288,7 +288,7 @@
 //       this.sidemenu = true
 //       this.d = p.category
 //       this.e = p.subcategory
-      
+
 
 //       // console.log("your Category", category, "productid", p.productid);
 //       this.getdata1()
@@ -670,7 +670,7 @@ export class CategoryListComponent implements OnInit {
   page: any;
   resources2dataproduct: any;
   brand: any;
-p: any;
+  p: any;
   title: any;
   products: any;
 
@@ -680,23 +680,23 @@ p: any;
   }
   isRoot: boolean;
 
- 
+
 
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe(params => {
       this.page = +params['page'] || 0;
     });
-  
+
     this.alert = false;
     this.token = localStorage.getItem('token');
     console.log("token", this.token);
-  
+
     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
-  
+
     this.sub = this.route.params.subscribe(params => {
       this.prof = params['search'];
       this.profession = params['profession'];
-  
+
       if (this.token == null) {
         this.user_id = '';
       } else {
@@ -705,7 +705,7 @@ p: any;
           this.log_as_cust = false;
         }
       }
-  
+
       console.log("search", this.prof);
       if (this.prof === undefined) {
         this.d = params['b'];
@@ -727,8 +727,8 @@ p: any;
         this.spinner.show();
         this.getsearch();
       }
-        console.log(this.d, "",this.sub_c, this.e, "", this.select, this.modal, this.user_id);
-  
+      console.log(this.d, "", this.sub_c, this.e, "", this.select, this.modal, this.user_id);
+
       this.spinner.show;
     }, error => {
       this.spinner.hide();
@@ -737,13 +737,13 @@ p: any;
       });
     });
   }
-  
+
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
   goBack() {
-  this._location.back();
- }
+    this._location.back();
+  }
 
   percenages: any = [];
   clearfilters(p) {
@@ -787,8 +787,8 @@ p: any;
           error => {
             this.spinner.hide();
             this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
+              data: { errorModal: true }
+            });
             // console.log(error);
           });
 
@@ -800,7 +800,7 @@ p: any;
   css1: any = 'img-thumbnail';
 
   getdata1() {
-     this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       const category = params['category'];
       const subcategory = params['subcategory'];
 
@@ -814,12 +814,12 @@ p: any;
         this.service.getDatawithQueryParamsBrands('subcategory', subcategory).subscribe(resp => {
           this.products = resp.Done || [];
         });
-      
+
       }
-    
+
     })
   }
-    
+
 
 
   Options: any;
@@ -831,7 +831,7 @@ p: any;
   branding: any;
   getsearch() {
 
-   this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe(params => {
       const category = params['category'];
       const subcategory = params['subcategory'];
 
@@ -871,7 +871,7 @@ p: any;
       this.sidemenu = true
       this.d = p.category
       this.e = p.subcategory
-      
+
 
       // console.log("your Category", category, "productid", p.productid);
       this.getdata1()
@@ -912,11 +912,11 @@ p: any;
           // step: 1
         };
       },
-        error => {
+        (error) => {
           this.spinner.hide();
           this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
+            data: { errorModal: true }
+          });
           // console.log(error);
         });
     }
@@ -950,7 +950,7 @@ p: any;
       this.getProfesionWise(min, m);
     }
     else {
-      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount,this.brand, this.user_id).subscribe((resp) => {
+      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
         this.spinner.hide();
 
         console.log("--S2")
@@ -970,8 +970,8 @@ p: any;
         error => {
           this.spinner.hide();
           this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
+            data: { errorModal: true }
+          });
           // console.log(error);
         });
     }
@@ -1004,8 +1004,8 @@ p: any;
       error => {
         this.spinner.hide();
         this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
+          data: { errorModal: true }
+        });
         // console.log(error);
       });
   }
@@ -1040,8 +1040,8 @@ p: any;
       error => {
         this.spinner.hide();
         this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
+          data: { errorModal: true }
+        });
         // console.log(error);
       });
   }
@@ -1071,7 +1071,7 @@ p: any;
     }
     else {
       this.spinner.show();
-      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount,this.brand, this.user_id).subscribe((resp) => {
+      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
         console.log("--S3")
         this.spinner.hide();
         this.resources2 = resp;
@@ -1080,8 +1080,8 @@ p: any;
         error => {
           this.spinner.hide();
           this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
+            data: { errorModal: true }
+          });
           // console.log(error);
         });
     }
@@ -1101,8 +1101,8 @@ p: any;
         error => {
           // this.spinner.hide();
           this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
+            data: { errorModal: true }
+          });
           // console.log(error);
         });
     }
@@ -1141,8 +1141,8 @@ p: any;
       error => {
         this.spinner.hide();
         this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
+          data: { errorModal: true }
+        });
         // console.log(error);
       });
   }
@@ -1167,7 +1167,7 @@ p: any;
     } else {
       // this.ngxSmartService.getModal('loginModal').open();
       this.dialog.open(LoginModalComponent, {
-        data: {  }
+        data: {}
       });
     }
 
@@ -1177,13 +1177,13 @@ p: any;
     this.router.navigate(['/prod-category', category])
 
   }
-  specftndetails: any =[];
-  viewDetails(p){
+  specftndetails: any = [];
+  viewDetails(p) {
 
-    console.log(p,'p');
+    console.log(p, 'p');
     this.spinner.show();
 
-    return this.service.getDatawithQueryParams2userid('3.72',p.productid,this.loginUserData.user_id).subscribe((resp:any) => {
+    return this.service.getDatawithQueryParams2userid('3.72', p.productid, this.loginUserData.user_id).subscribe((resp: any) => {
       this.spinner.hide();
       this.specftndetails = resp.details;
       $("#SpecificationModal").modal('show');
@@ -1191,8 +1191,8 @@ p: any;
       error => {
         this.spinner.hide();
         this.dialog.open(ErrorModalComponent, {
-    data: { errorModal:true }
-  });
+          data: { errorModal: true }
+        });
         // console.log(error);
       });
   }
