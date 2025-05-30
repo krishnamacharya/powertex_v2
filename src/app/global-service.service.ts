@@ -868,7 +868,7 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
   }
 
   check_user() {
-    return JSON.parse(localStorage.getItem("loginUserData"));
+    return JSON.parse(localStorage.getItem("access"));
   }
 
 

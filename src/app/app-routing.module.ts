@@ -295,7 +295,7 @@ const routes: Routes = [
   //Registered Customer-User
   // { path: "wishlist", component: WishListComponent, canActivate: [AuthGuard] },
   { path: "wishlist", component: ViewCartComponent, canActivate: [AuthGuard] },
-  { path: "viewcart", component: ViewCartComponent, canActivate: [AuthGuard] },
+  { path: "viewcart", component: ViewCartComponent },
   // { path: "viewcart", component: ViewCartComponent },
   { path: "myOrders", component: MyOrdersComponent },
   

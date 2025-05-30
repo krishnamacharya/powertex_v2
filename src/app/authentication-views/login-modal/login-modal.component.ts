@@ -212,9 +212,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         this.authService.setUsername(username);
          this.authService.setAccessToken(access);
         // ✅ Close the modal
-        this.dialogRef.close();
-
-        // ✅ Redirect to home
+        this.closeLoginModal()
 
       },
       (error) => {
