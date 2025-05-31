@@ -875,7 +875,7 @@ getProductsByPriceRange(min: number, max: number): Observable<any> {
   }
 
   check_user() {
-    return JSON.parse(localStorage.getItem("loginUserData"));
+    return JSON.parse(localStorage.getItem("access"));
   }
 
 

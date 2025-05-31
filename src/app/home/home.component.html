@@ -754,7 +754,7 @@
       <div
         class="card h-100 shadow-sm border rounded product-card position-relative"
       >
-        <div class="product-image text-center p-3">
+        <div class="product-image text-center p-3" (click)="sub_cat(product)">
           <img
             [src]="product.high_image_1"
             [alt]="product.name"

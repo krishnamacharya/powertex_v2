@@ -64,7 +64,7 @@
           </a> -->
 
           <!-- My Cart -->
-          <a
+          <a  *ngIf="username; else loginLink"
             class="nav-link position-relative d-flex align-items-center px-2"
             routerLink="/viewcart"
           >

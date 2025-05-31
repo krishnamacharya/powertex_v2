@@ -83,6 +83,7 @@ export class HomeComponent implements OnInit {
   endIndex = this.itemsPerPage1;
   catg_prod_list: any[];
   scrollContainer: any;
+  p: any;
 
   scrollLeft() {
     if (this.startIndex > 0) {
@@ -113,6 +114,9 @@ export class HomeComponent implements OnInit {
   sidebanners4: any;
   videos: any = ["video1", "video2", "video3", "video4", "video5", "video6"];
   newArrival: any[] = [];
+    sidemenu: boolean = true
+     d: string;
+  e: string;
  
 
   // Banners:any =["Banner01","Banner02","Banner03","Banner04","Banner05"]
@@ -375,7 +379,7 @@ card1() {
     {
       discount: '10% Discount',
       title: 'Ingco Water Pump',
-      image: 'assets/images/promo1.png'
+      image: 'assets/images/promo1.png'     
     }];
   professions = [
     { name: 'Carpenter', image: 'assets/images/carpenter.png' },
@@ -409,7 +413,33 @@ getSlider(section: string): HTMLElement {
     default: return null!;
   }
 }
+
+
+  sub_cat(product) {
+
+    console.log(product);
+    if (product.productid) {
+      let category = product.category;
+      let sub_category = product.subcategory;
+      let model = product.modelno;
+
+      let obj = product;
+      localStorage.setItem('key', JSON.stringify(obj));
+      console.log(product);
+      // this.obj.setCategory(p);
+
+    console.log("clicked") 
+      this.router.navigateByUrl('/product-detail');
+      this.router.navigate(['/product-detail', product.productid]);
+    }
+    else {
+      this.sidemenu = true
+      this.d = product.category
+      this.e = product.subcategory
+    
+  }
+
 }
 
-
-
+}
+ 
