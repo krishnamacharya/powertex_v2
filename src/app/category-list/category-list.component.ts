@@ -746,55 +746,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   percenages: any = [];
-  clearfilters(p) {
-    this.selected_disc = p;
-    if (this.prof != undefined) {
-      this.spinner.show();
-      this.getsearch();
-    }
-    else {
-      {
 
-        this.spinner.show();
-        this.order = '',
-          this.range = [];
-        return this.service.getDatawithQueryParamsBrand('10', this.d, this.e, this.select, this.modal, this.brand).subscribe((resp) => {
-          this.spinner.hide();
-          console.log(resp);
-          this.resources2 = resp;
-
-          this.resources2data = this.resources2.data;
-          this.percenages = this.resources2.count[0];
-          this.minValue = this.resources2.price[0].min_price;
-          this.maxValue = this.resources2.price[0].max_price;
-          this.min = this.minValue;
-          this.max = this.maxValue;
-          this.Options = {
-            floor: this.minValue,
-            ceil: this.resources2.price[0].max_price,
-            // step: 1
-          };
-          if (this.resources2data.length >= 1) {
-
-            this.showslider = true;
-
-          }
-          else {
-            this.showslider = false;
-          }
-
-        },
-          error => {
-            this.spinner.hide();
-            this.dialog.open(ErrorModalComponent, {
-              data: { errorModal: true }
-            });
-            // console.log(error);
-          });
-
-      }
-    }
-  }
   brands: any = [];
   class: any = 'C_s';
   css1: any = 'img-thumbnail';
@@ -877,51 +829,101 @@ export class CategoryListComponent implements OnInit {
       this.getdata1()
     }
   }
+  
   resources3: any
   resources2data1: any = []
   //price order-filter
-  Ascend(order) {
-
-    this.resources2data1 = []
-    this.spinner.show();
-    this.order = "";
-    this.order = order;
-    // this.range=[];
+    clearfilters(p) {
+    this.selected_disc = p;
     if (this.prof != undefined) {
-      this.getProfesionorderwise(this.order);
+      this.spinner.show();
+      this.getsearch();
     }
     else {
-      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
-        console.log("--S1")
+      {
+
+        this.spinner.show();
+        this.order = '',
+          this.range = [];
+        return this.service.getDatawithQueryParamsBrand('10', this.d, this.e, this.select, this.modal, this.brand).subscribe((resp) => {
+          this.spinner.hide();
+          console.log(resp);
+          this.resources2 = resp;
+
+          this.resources2data = this.resources2.data;
+          this.percenages = this.resources2.count[0];
+          this.minValue = this.resources2.price[0].min_price;
+          this.maxValue = this.resources2.price[0].max_price;
+          this.min = this.minValue;
+          this.max = this.maxValue;
+          this.Options = {
+            floor: this.minValue,
+            ceil: this.resources2.price[0].max_price,
+            // step: 1
+          };
+          if (this.resources2data.length >= 1) {
+
+            this.showslider = true;
+
+          }
+          else {
+            this.showslider = false;
+          }
+
+        },
+          error => {
+            this.spinner.hide();
+            this.dialog.open(ErrorModalComponent, {
+              data: { errorModal: true }
+            });
+            // console.log(error);
+          });
+
+      }
+    }
+  }
+
+
+Ascend(order: string) {
+  this.resources2data1 = [];
+  this.spinner.show();
+  this.order = order;
+
+  if (this.prof !== undefined) {
+    this.getProfesionorderwise(this.order);
+  } else {
+    return this.service.getDataSortedByOrder(order).subscribe(
+      (resp) => {
+        console.log("--S1");
         this.spinner.hide();
         this.resources2 = resp;
         this.resources2data1 = this.resources2.data;
-        for (var i = 0; i < this.resources2.data.length; i++) {
-          if (this.resources2.data[i]) {
-            var text = this.resources2.data[i].low_image_1.split("Powertexmodel");
+
+        for (let i = 0; i < this.resources2data1.length; i++) {
+          if (this.resources2data1[i]) {
+            const text = this.resources2data1[i].low_image_1.split("Powertexmodel");
             this.resources2data1[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
           }
         }
+
         this.minValue = this.resources2.price[0].min_price;
         this.maxValue = this.resources2.price[0].max_price;
         this.min = this.minValue;
         this.max = this.maxValue;
         this.Options = {
           floor: this.minValue,
-          ceil: this.resources2.price[0].max_price,
-          // step: 1
+          ceil: this.maxValue,
         };
       },
-        (error) => {
-          this.spinner.hide();
-          this.dialog.open(ErrorModalComponent, {
-            data: { errorModal: true }
-          });
-          // console.log(error);
+      (error) => {
+        this.spinner.hide();
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true },
         });
-    }
-
+      }
+    );
   }
+}
 
 
   onPageChange(Page: number) {
