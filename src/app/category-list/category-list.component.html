@@ -267,27 +267,26 @@
               </p> -->
 
               <div *ngIf="sidemenu">
-                <p class="mb-1">
-                  <span
-                    class="text-muted text-decoration-line-through ms-2"
-                    *ngIf="p.discount_percent && p.discount_percent > 0"
-                  >
-                    ₹{{ p.mrp }}
-                  </span>
-                  <span class="fw-bold" style="color: #009b77">{{
-                    p.discounted_price
-                  }}</span>
-                </p>
-                <p
-                  class="text-success mb-1"
-                  *ngIf="p.discount_percent && p.discount_percent > 0"
-                ></p>
-                <p
-                  class="text-success mb-1"
-                  *ngIf="p.discount_percent && p.discount_percent > 0"
-                >
-                  {{ p.discount_percent }}% Off
-                </p>
+               <p class="mb-1">
+  <span
+    class="text-muted text-decoration-line-through me-2"
+    *ngIf="p.discount_percent && p.discount_percent > 0"
+  >
+    ₹{{ p.mrp }}
+  </span>
+
+  <span class="fw-bold me-2" style="color: #009b77">
+     {{ p.discounted_price }}
+  </span>
+
+  <span
+    class="text-success"
+    *ngIf="p.discount_percent && p.discount_percent > 0"
+  >
+    {{ p.discount_percent }}% Off
+  </span>
+</p>
+
                 <p class="text-muted small mb-0">(Including GST)</p>
               </div>
               <!-- Cart Icon at bottom-right -->

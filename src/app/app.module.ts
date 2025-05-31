@@ -310,6 +310,7 @@ import { WhSubcatgComponent } from './wh-manager/wh-stock/wh-subcatg/wh-subcatg.
 import { WhModalComponent } from './wh-manager/wh-stock/wh-modal/wh-modal.component';
 import { BrandProtectionComponent } from './brand-protection/brand-protection.component';
 import { ShopByCategoryComponent } from './shop-by-category/shop-by-category.component';
+import { ProfessionwiseProductsComponent } from './professionwise-products/professionwise-products.component';
 
 @NgModule({
   declarations: [
@@ -598,7 +599,8 @@ import { ShopByCategoryComponent } from './shop-by-category/shop-by-category.com
     WhSubcatgComponent,
     WhModalComponent,
     BrandProtectionComponent,
-    ShopByCategoryComponent
+    ShopByCategoryComponent,
+    ProfessionwiseProductsComponent
     
   ],
   imports: [
