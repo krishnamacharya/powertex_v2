@@ -290,20 +290,19 @@ getProductsByProffesion(profession: string): Observable<any> {
   });
 }
 
- 
-
-  // getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> {
-  //   const queryParam = `${encodeURIComponent(paramType)}=${encodeURIComponent(value)}`;
-  //   const url = `http://192.168.0.223:8001/get_list/?${queryParam}`;
-  //   return this.http.get(url);
+  // getDatawithQueryParamsBrands(param: any): Observable<any> {
+  //   return this.http.get(this.UrlData(`get_list/?subcategory=${encodeURIComponent(param)}`));
   // }
 
 
-  getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> {
+getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> {
   const queryParam = `${encodeURIComponent(paramType)}=${encodeURIComponent(value)}`;
   const url = this.UrlData(`get_list/?${queryParam}`);
   return this.http.get(url);
 }
+
+
+
 
   getSearchData(key: string, value: string): Observable<any> {
     const params = new HttpParams().set(key, value);
@@ -315,18 +314,6 @@ getProductsByProffesion(profession: string): Observable<any> {
       responseType: 'arraybuffer'  // important for TextDecoder to work
     });
   }
-
-
-  getDataSortedByOrder(order: string): Observable<any> {
-  const url = this.UrlData(`get_sorted_data/?order=${encodeURIComponent(order)}`);
-  return this.http.get(url);
-}
-
-getProductsByPriceRange(min: number, max: number): Observable<any> {
-   const url = this.UrlData(`get_list/?min=${min}&max=${max}`);
-  return this.http.get(url);
-}
-
 
   //------------------------------------------------------------------------------------------------------- New Logic end
   getDatawithMethodParam12(methodName, param1, param2, param3) {
@@ -879,7 +866,7 @@ getProductsByPriceRange(min: number, max: number): Observable<any> {
   }
 
   check_user() {
-    return JSON.parse(localStorage.getItem("access"));
+    return JSON.parse(localStorage.getItem("loginUserData"));
   }
 
 
