@@ -84,6 +84,7 @@ export class HomeComponent implements OnInit {
   catg_prod_list: any[];
   scrollContainer: any;
   p: any;
+data: any;
 
   scrollLeft() {
     if (this.startIndex > 0) {
@@ -440,6 +441,12 @@ getSlider(section: string): HTMLElement {
   }
 
 }
+selected_prof(cat: any) {
+  let shotform = cat;
+  console.log('Selected Category:', shotform);
+  this.router.navigate(['/professionwise-products', shotform]);
+}
+
 
 }
  

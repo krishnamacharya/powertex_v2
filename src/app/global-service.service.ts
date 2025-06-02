@@ -284,7 +284,11 @@ export class GlobalServiceService {
   LoginUser(body: any) {
     return this.http.post(this.UrlData('api/login/'), body);
   }
-
+getProductsByProffesion(profession: string): Observable<any> {
+  return this.http.get<any>(this.UrlData('professionwiselist/'), {
+    params: { profession }
+  });
+}
 
   // getDatawithQueryParamsBrands(param: any): Observable<any> {
   //   return this.http.get(this.UrlData(`get_list/?subcategory=${encodeURIComponent(param)}`));
