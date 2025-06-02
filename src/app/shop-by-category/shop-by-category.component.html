@@ -156,30 +156,29 @@
 
             <!-- Card Body -->
             <div class="card-body ps-4 py-3 position-relative">
-              <p class="fw-semibold text-truncate mb-2 text-muted">
-                {{ p.long_name }}
-              </p>
+             <p class="fw-semibold text-truncate mb-2 text-muted small">
+  {{ p.long_name }}
+</p>
+
               <p class="text-muted mb-1">{{ p.brand }}</p>
               <p class="fw-semibold text-truncate mb-2" title="{{ p.modelno }}">
                 {{ p.modelno }}
               </p>
               <div *ngIf="sidemenu">
-                <p class="mb-1">
-                  <span class="text-muted text-decoration-line-through ms-2"
-                    *ngIf="p.discount_percent && p.discount_percent > 0">
-                    ₹{{ p.mrp }}
-                  </span>
-                  <span class="fw-bold" style="color: #009b77">{{
-                    p.discounted_price
-                    }}</span>
-                </p>
-                <p class="text-success mb-1" *ngIf="p.discount_percent && p.discount_percent > 0">
-                <p
-                  class="text-success mb-1"
-                  *ngIf="p.discount_percent && p.discount_percent > 0"
-                >
-                  {{ p.discount_percent }}% Off
-                </p>
+             <p class="d-flex align-items-center gap-2 mb-1">
+  <span class="text-muted text-decoration-line-through"
+    *ngIf="p.discount_percent && p.discount_percent > 0">
+    ₹{{ p.mrp }}
+  </span>
+  <span class="fw-bold" style="color: #009b77">
+    {{ p.discounted_price }}
+  </span>
+
+  <span class="text-black " *ngIf="p.discount_percent && p.discount_percent > 0">
+    {{ p.discount_percent }}% Off
+  </span>
+</p>
+
                 <p class="text-muted small mb-0">(Including GST)</p>
               </div>
             </div>
