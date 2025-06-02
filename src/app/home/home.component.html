@@ -423,6 +423,7 @@
               <div
                 class="col-6 col-sm-4 col-md-2"
                 *ngFor="let item of prof.slice(0, 5)"
+                (click)="selected_prof(item.shotform)"
               >
                 <div class="card border-0 bg-transparent">
                   <img
@@ -443,6 +444,7 @@
               <div
                 class="col-6 col-sm-4 col-md-2"
                 *ngFor="let item of prof.slice(5, 10)"
+                (click)="selected_prof(item.shotform)"
               >
                 <div class="card border-0 bg-transparent">
                   <img
@@ -451,7 +453,7 @@
                     class="img-fluid mb-2"
                     style="height: 150px; width: 100%; object-fit: contain"
                   />
-                  <p class="font-weight-medium">{{ item.shotform }}</p>
+                  <p class="font-weight-medium">{{ item.profession  }}</p>
                 </div>
               </div>
             </div>
