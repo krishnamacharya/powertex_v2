@@ -44,8 +44,8 @@
           <img
             id="zoom_01"
             class="img-fluid rounded-3 mb-4"
-            [src]="select_image"
-            [attr.data-zoom-image]="details.high_image_1"
+            [src]="details?.high_image_1"
+            [attr.data-zoom-image]="details?.high_image_1"
             onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
             alt="{{ details.modelno }}"
             style="max-height: 400px; object-fit: contain"
@@ -74,154 +74,127 @@
     </div> -->
 
     <!-- Product Details -->
-    <div class="col-lg-5">
-      <div
-        class="border-2 rounded-4"
-        style="background-color: #ffffff; height: 550px"
-      >
-        <div class="card-body">
-          <h3 class="fw-bold mb-4">
-            <ng-container
-              *ngIf="details.category != 'Spare Parts'; else onlyModel"
-            >
-              {{ details.subcategory }} {{ details.modelno }}
-            </ng-container>
-            <ng-template #onlyModel>{{ details.modelno }}</ng-template>
-          </h3>
+<div class="col-lg-5">
+  <div class="border-2 rounded-4" style="background-color: #ffffff; height: 550px">
+    <div class="card-body">
+      <h3 class="fw-bold mb-4">
+        <ng-container *ngIf="details?.category !== 'Spare Parts'; else onlyModel">
+          {{ details?.subcategory }} {{ details?.modelno }} 
+        </ng-container>
+        <ng-template #onlyModel>{{ details?.modelno }}</ng-template>
+      </h3>
 
-          <table class="table table-borderless table-sm mb-4">
-            <tbody *ngFor="let pd of details.details">
-              <tr *ngIf="details.details.length != 1">
-                <td class="fw- text-black">{{ pd.attribute }}</td>
-                <td class="text-dark">{{ pd.actual_value }}</td>
-              </tr>
-            </tbody>
-          </table>
+      <table class="table table-borderless table-sm mb-4">
+        <tbody>
+          <tr *ngFor="let pd of details?.specs">
+            <td class="fw-bold text-black">{{ pd.attribute }}</td>
+            <td class="text-dark">{{ pd.actual_value }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-          <div class="mb-4">
-            <h3 class="d-inline fw-bold" style="color: #009b77">
-              &#8377; {{ details.net_price }}
-            </h3>
-            <span
-              class="text-muted text-decoration-line-through ms-2"
-              *ngIf="details.discount && details.discount > 0"
-            >
-              &#8377;{{ details.mrp }}
-            </span>
+      <div class="mb-4">
+        <h3 class="d-inline fw-bold" style="color: #009b77">
+          {{ details?.discounted_price }}
+        </h3>
+        <span
+          class="text-muted text-decoration-line-through ms-2"
+          *ngIf="details?.discount_percent && details.discount_percent > 0"
+        >
+          &#8377;{{ details?.mrp }}
+        </span>
 
-            <!-- Discount Badge -->
-            <span
-              class="badge bg-success ms-2 fs-6 px-2 py-1"
-              *ngIf="details.discount && details.discount > 0"
-            >
-              {{ details.discount }}% OFF
-            </span>
+        <span
+          class="badge bg-success ms-2 fs-6 px-2 py-1"
+          *ngIf="details?.discount_percent && details.discount_percent > 0"
+        >
+          {{ details?.discount_percent }}% OFF
+        </span>
 
-            <div><small class="text-muted">(Excluding GST)</small></div>
-          </div>
+        <div><small class="text-muted">(Excluding GST)</small></div>
+      </div>
 
-          <div class="d-flex align-items-center mb-4">
-            <div class="text-warning fs-5 me-2">
-              <i class="fa fa-star" *ngFor="let i of [1, 2, 3, 4]"></i
-              ><i class="fa fa-star-o"></i>
-            </div>
-            <span class="text-primary fs-6">{{ details.review }} Ratings</span>
-          </div>
-          <!-- Quantity & Wishlist -->
-          <div
-            class="d-flex align-items-center justify-content-between mb-4 w-100"
-          >
-            <!-- Quantity Block -->
-            <div class="d-flex flex-column align-items-start mb-4 w-100">
-              <!-- Quantity Block -->
-              <label class="mb-2 fw-semibold">Quantity</label>
-              <div class="input-group mb-3">
-                <button
-                  class="btn border border-secondary bg-white"
-                  type="button"
-                  (click)="decreaseQty()"
-                  style=" border: 1px solid rgb(168, 165, 165) "
-                >
-                  <i
-                    class="fa fa-minus"
-                    style="color: rgb(124, 116, 116); pointer-events: none"
-                  ></i>
-                </button>
-                <input
-                  type="text"
-                  class="form-control text-center px-2"
-                  [(ngModel)]="quantity"
-                  readonly
-                  style="max-width: 50px; border: 1px solid rgb(168, 165, 165);"
-                />
-                <button
-                  class="btn border border-secondary bg-white"
-                  type="button"
-                  (click)="increaseQty()"
-                  style=" border: 1px solid rgb(168, 165, 165) "
-                >
-                  <i
-                    class="fa fa-plus"
-                    style="color: rgb(124, 116, 116); pointer-events: none"
-                  ></i>
-                </button>
-              </div>
-
-              <!-- Wishlist Block Under Quantity -->
-              <div
-                class="d-flex align-items-center mt-2"
-                style="cursor: pointer"
-                (click)="addToWishlist(details)"
-                role="button"
-                aria-label="Add to Wishlist"
-              >
-                <i
-                  class="fa fa-heart fs-4 me-2"
-                  [ngClass]="{
-                    'text-danger': isWishlisted,
-                    'text-secondary': !isWishlisted
-                  }"
-                ></i>
-                <small class="text-muted">Add to Wishlist</small>
-              </div>
-            </div>
-          </div>
-
-          <div class="d-grid gap-3 d-md-flex mb-4">
-            <button
-              class="btn btn-lg px-4 shadow-sm"
-              style="
-                background-color: #009b77;
-                color: white;
-                border: 1px solid #009b77;
-              "
-              (click)="addToCart(details)"
-              [disabled]="dis_cart()"
-            >
-              <i class="fa fa-shopping-cart me-2"></i> Add to Cart
-            </button>
-
-            <button
-              class="btn btn-lg px-4 shadow-sm text-black"
-              style="
-                color: #009b77;
-                border: 2px solid #009b77;
-                background-color: transparent;
-              "
-              (click)="buyNow(details)"
-              [disabled]="dis_buy()"
-            >
-              Buy Now
-            </button>
-          </div>
-
-          <!-- <a href="#details" class="text-decoration-none fs-6">
-            <i class="fa fa-info-circle"></i> View Details
-          </a> -->
+      <div class="d-flex align-items-center mb-4">
+        <div class="text-warning fs-5 me-2">
+          <i class="fa fa-star" *ngFor="let i of [1, 2, 3, 4]"></i>
+          <i class="fa fa-star-o"></i>
         </div>
+        <span class="text-primary fs-6">{{ details?.review }} Ratings</span>
+      </div>
+
+      <!-- Quantity & Wishlist -->
+      <div class="d-flex align-items-center justify-content-between mb-4 w-100">
+        <div class="d-flex flex-column align-items-start mb-4 w-100">
+          <label class="mb-2 fw-semibold">Quantity</label>
+          <div class="input-group mb-3">
+            <button
+              class="btn border border-secondary bg-white"
+              type="button"
+              (click)="decreaseQty()"
+              style="border: 1px solid rgb(168, 165, 165)"
+            >
+              <i class="fa fa-minus" style="color: rgb(124, 116, 116); pointer-events: none"></i>
+            </button>
+            <input
+              type="text"
+              class="form-control text-center px-2"
+              [(ngModel)]="quantity"
+              readonly
+              style="max-width: 50px; border: 1px solid rgb(168, 165, 165);"
+            />
+            <button
+              class="btn border border-secondary bg-white"
+              type="button"
+              (click)="increaseQty()"
+              style="border: 1px solid rgb(168, 165, 165)"
+            >
+              <i class="fa fa-plus" style="color: rgb(124, 116, 116); pointer-events: none"></i>
+            </button>
+          </div>
+
+          <div
+            class="d-flex align-items-center mt-2"
+            style="cursor: pointer"
+            (click)="addToWishlist(details)"
+            role="button"
+            aria-label="Add to Wishlist"
+          >
+            <i
+              class="fa fa-heart fs-4 me-2"
+              [ngClass]="{
+                'text-danger': isWishlisted,
+                'text-secondary': !isWishlisted
+              }"
+            ></i>
+            <small class="text-muted">Add to Wishlist</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-grid gap-3 d-md-flex mb-4">
+        <button
+          class="btn btn-lg px-4 shadow-sm"
+          style="background-color: #009b77; color: white; border: 1px solid #009b77;"
+          (click)="addToCart(details)"
+          [disabled]="dis_cart()"
+        >
+          <i class="fa fa-shopping-cart me-2"></i> Add to Cart
+        </button>
+
+        <button
+          class="btn btn-lg px-4 shadow-sm text-black"
+          style="color: #009b77; border: 2px solid #009b77; background-color: transparent;"
+          (click)="buyNow(details)"
+          [disabled]="dis_buy()"
+        >
+          Buy Now
+        </button>
       </div>
     </div>
   </div>
+</div>
+
+
 
   <!-- Product Tabs -->
   <div class="card mb-4" id="details" style="background-color: #ffffff">
@@ -263,16 +236,12 @@
           style="background-color: #ffffff"
         >
         <table class="table table-striped" style="background-color: #ffffff;">
-          <tbody *ngFor="let pd of details.details">
-            <tr *ngIf="details.details.length != 1">
-              <td class="fw-bold">{{ pd.attribute }}</td>
-              <td>:</td>
-              <td>{{ pd.actual_value }}</td>
-            </tr>
-            <tr *ngIf="pd.attribute == null">
-              <td colspan="3">Not Available</td>
-            </tr>
-          </tbody>
+           <tbody>
+          <tr *ngFor="let pd of details?.specs">
+            <td class="fw-bold text-black">{{ pd.attribute }}</td>
+            <td class="text-dark">{{ pd.actual_value }}</td>
+          </tr>
+        </tbody>
         </table>
         
         </div>
@@ -394,89 +363,144 @@
     </div>
 
     <!-- Related Products -->
+<!-- Related Products -->
+<div class="mt-4" *ngIf="relatedProducts.length > 0">
+  <h5 class="mb-3">Related Products</h5>
 
-    <div *ngIf="reviewdetails?.releted_products.length > 0" class="mb-5">
-      <h5 class="fw-semibold text-muted">Related Products</h5>
+  <div
+    class="d-flex flex-wrap justify-content-start gap-3"
+    style="row-gap: 1.5rem"
+  >
+    <div
+      *ngFor="let product of relatedProducts"
+      style="width: 19%"
+    >
+      <div
+        class="card product-card position-relative"
+        style="
+          background-color: #fdfbfb;
+          border-color: rgba(133, 132, 132, 0.2);
+          border-width: 1.5px;
+          border-style: solid;
+          cursor: pointer;
+          height: 342px;
+        "
+        (mouseenter)="product.showIcons = true"
+        (mouseleave)="product.showIcons = false"
+      >
+        <!-- Image -->
+        <div class="text-center px-3 pt-3 position-relative">
+          <img
+            [src]="product.high_image_1"
+            (error)="
+              product.high_image_1 =
+                'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
+            "
+            class="card-img-top img-fluid"
+            style="height: 120px; object-fit: contain"
+            alt="{{ product.brand }}"
+          />
+        </div>
 
-      <div class="position-relative">
-        <!-- Left Chevron Icon -->
-        <button
-          class="position-absolute top-50 start-0 translate-middle-y border-0 bg-transparent p-0 related-prev"
+        <!-- Icons -->
+        <div
+          class="position-absolute top-0 end-0 p-2 z-2 icon-container d-flex flex-column align-items-end"
+          [ngClass]="{ 'd-none': !product.showIcons }"
+          style="pointer-events: auto"
         >
-          <i class="fa fa-chevron-left fs-4" style="color: #5e5757"></i>
-        </button>
-
-        <!-- Right Chevron Icon -->
-        <button
-          class="position-absolute top-50 end-0 translate-middle-y border-0 bg-transparent p-0 related-next"
-        >
-          <i class="fa fa-chevron-right fs-4" style="color: #5e5757"></i>
-        </button>
-
-        <!-- Product Cards -->
-        <div class="row gx-3 gy-4 mx-5">
           <div
-            class="col-lg-2 col-md-4 col-6"
-            style="width: 210px"
-            *ngFor="let data of reviewdetails.releted_products | slice : 0 : 4"
+            class="d-flex align-items-center justify-content-center rounded-circle mb-2"
+            style="
+              width: 36px;
+              height: 36px;
+              background-color: #dc3545;
+              border: 1.5px solid #dc3545;
+            "
+            *ngIf="product.wishlist == '1'"
+            title="Remove from wishlist"
           >
-            <div
-              class="card h-295 product-card position-relative"
-              style="
-                background-color: #fdfbfb;
-                border-color: rgb(230, 219, 219);
-                border-width: 1.5px;
-                border-style: solid;
-              "
-              (click)="selected_catg(data)"
-            >
-              <!-- Wishlist Icon -->
-              <div
-              *ngIf="log_as_cust"
-              class="position-absolute top-0 end-0 p-2 z-2 text-end icon-container d-none"
-            >
-              <i
-                *ngIf="data.wishlist == '1'"
-                class="fa fa-heart text-danger cursor_pointer d-block mb-2"
-              ></i>
-              <i
-                *ngIf="data.wishlist != '1'"
-                class="fa fa-heart-o text-secondary cursor_pointer d-block mb-2"
-              ></i>
-              <i
-                class="fa fa-eye cursor_pointer d-block"
-                style="color: rgb(102, 96, 96)"
-              ></i>
-            </div>
-
-              <!-- Image Section -->
-              <div class="position-relative">
-                <img
-                  [src]="data.Image"
-                  onError="this.src='https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png';"
-                  class="img-fluid rounded"
-                  alt="{{ data.modelno }}"
-                  style="max-height: 130px; object-fit: contain"
-                />
-              </div>
-
-              <!-- Card Body with Reduced Padding and Left-Aligned Text -->
-              <div class="card-body px-1 py-2 text-start position-relative">
-                <h6 class="text-muted mb-1">{{ data.subcategory }}</h6>
-                <h5
-                  class="fw-semibold text-truncate mb-2"
-                  title="{{ data.modelno }}"
-                >
-                  {{ data.modelno }}
-                </h5>
-              
-                <p class="mb-0" style="color: #009b77">{{ data.brand }}</p>
-              </div>
-            </div>
+            <i class="fa fa-heart text-danger cursor_pointer"></i>
           </div>
+
+          <div
+            class="d-flex align-items-center justify-content-center rounded-circle mb-2"
+            style="
+              width: 36px;
+              height: 36px;
+              background-color: #f1efeb;
+              border: 1.5px solid #c0c4c7;
+            "
+            *ngIf="product.wishlist != '1'"
+            (click)="wish_list(product, '1'); $event.stopPropagation()"
+            title="Add to wishlist"
+          >
+            <i class="fa fa-heart-o text-black cursor_pointer"></i>
+          </div>
+
+          <div
+            class="d-flex align-items-center justify-content-center rounded-circle"
+            style="
+              width: 36px;
+              height: 36px;
+              background-color: #f1efeb;
+              border: 1.5px solid #c0c4c7;
+            "
+            title="View details"
+          >
+            <i class="fa fa-eye text-black cursor_pointer"></i>
+          </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body py-3 position-relative text-start">
+          <p class="fw-semibold text-truncate mb-2 text-muted">
+            {{ product.long_name || product.brand }}
+          </p>
+          <p class="text-muted mb-1">{{ product.brand }}</p>
+          <p
+            class="fw-semibold text-truncate mb-2"
+            title="{{ product.modelno }}"
+          >
+            {{ product.modelno }}
+          </p>
+          <div>
+            <p class="mb-1">
+              <span
+                class="text-muted text-decoration-line-through me-2"
+                *ngIf="
+                  product.discount_percent && product.discount_percent > 0
+                "
+              >
+                ₹{{ product.mrp }}
+              </span>
+              <span class="fw-bold" style="color: #009b77">
+                ₹{{ product.discounted_price }}
+              </span>
+            </p>
+            <p
+              class="text-success mb-1"
+              *ngIf="
+                product.discount_percent && product.discount_percent > 0
+              "
+            >
+              {{ product.discount_percent }}% Off
+            </p>
+            <p class="text-muted small mb-0">(Including GST)</p>
+          </div>
+
+          <button
+            class="btn position-absolute cart-btn"
+            style="bottom: 10px; right: 10px"
+          >
+            <i class="fa fa-shopping-cart text-secondary"></i>
+          </button>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+
   </div>
 
   <!-- Modals -->

@@ -94,7 +94,7 @@
           style="height: 180px; border-color: #d9d9d9"
         >
           <img
-            src="assets/images/catg-img.png"
+            src={{data.Image}}
             alt="{{ data.category }}"
             class="card-img-top"
             style="height: 100px; object-fit: contain; margin-top: 20px"
@@ -453,7 +453,7 @@
                     class="img-fluid mb-2"
                     style="height: 150px; width: 100%; object-fit: contain"
                   />
-                  <p class="font-weight-medium">{{ item.profession  }}</p>
+                  <p class="font-weight-medium">{{ item.profession }}</p>
                 </div>
               </div>
             </div>
@@ -749,7 +749,7 @@
    </div>
   <ng-template #productList let-items="items">
     <div
-      *ngFor="let product of items; let i = index"
+      *ngFor="let product of items; let i = index"class="product-card"
       [ngClass]="{ 'mp-2': i !== items.length - 1 }"
       style="width: calc(100% / 5 - 0.2rem); min-width: calc(100% / 5 - 0.6rem)"
     >
