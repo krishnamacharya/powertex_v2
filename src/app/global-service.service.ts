@@ -314,6 +314,10 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
       responseType: 'arraybuffer'  // important for TextDecoder to work
     });
   }
+   getProductDetails(productId: string): Observable<any> {
+  const params = new HttpParams().set('productid', productId);
+  return this.http.get<any>(this.UrlData('get_product_details/'), { params });
+}
 
   //------------------------------------------------------------------------------------------------------- New Logic end
   getDatawithMethodParam12(methodName, param1, param2, param3) {

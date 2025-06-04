@@ -61,6 +61,7 @@ export class ShopByCategoryComponent {
   selectedBrand: string | null = null;
   selectedDiscount: number = 0;
   sortOrder: 'asc' | 'desc' | null = null; 
+product: any;
   constructor(private router: Router, private route: ActivatedRoute, private service: GlobalServiceService, public dataService: DataServiceService, private _location: Location,
     private eventemit: ComponentCommunicationService, private dialog: MatDialog, private spinner: NgxSpinnerService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute,) {
     this.obj.id = 4;

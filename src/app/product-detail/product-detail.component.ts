@@ -18,6 +18,7 @@ import { ErrorModalComponent } from '../authentication-views/error-modal/error-m
 import { MatDialog } from '@angular/material/dialog';
 interface Reviewdetails {
   releted_products: any[];
+
   review_dtl: any;
 }
 @Component({
@@ -29,6 +30,9 @@ interface Reviewdetails {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent implements OnInit {
+wish_list(_t163: any,arg1: string) {
+throw new Error('Method not implemented.');
+}
   starList: boolean[] = [true, true, true, true, true];
   rating: number;
   review_dtl: any;
@@ -69,7 +73,7 @@ export class ProductDetailComponent implements OnInit {
   reviewdetails: Reviewdetails;
   description: any;
   page: string | number;
-
+  relatedProducts: any[] = [];
   constructor(
     public globalService: GlobalServiceService,
     private dialog: MatDialog,
@@ -95,7 +99,7 @@ export class ProductDetailComponent implements OnInit {
     this.sub = this.route.params.subscribe(
       (params) => {
         this.id = params['productid'];
-        this.getData();
+        this.fetchProductDetails();
       },
       (error) => {
         // this.spinner.hide();
@@ -111,6 +115,18 @@ export class ProductDetailComponent implements OnInit {
       return false;
     };
   }
+fetchProductDetails(): void {
+  this.globalService.getProductDetails(this.id).subscribe((res: any) => {
+    if (res && res.Done && res.Done.length > 0) {
+      this.details = res.Done[0];
+       this.relatedProducts = this.details.reletedproducs || [];
+
+      console.log(this.details)
+    } else {
+      console.error('Product details not found');
+    }
+  });
+}
 
   setStar(data: any) {
     this.rating = data + 1;
