@@ -673,6 +673,8 @@ export class CategoryListComponent implements OnInit {
   p: any;
   title: any;
   products: any;
+  brands: any[] = [];
+  selectedBrands: any[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute, private service: GlobalServiceService, public dataService: DataServiceService, private _location: Location,
     private eventemit: ComponentCommunicationService, private dialog: MatDialog, private spinner: NgxSpinnerService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute,) {
@@ -795,7 +797,7 @@ export class CategoryListComponent implements OnInit {
       }
     }
   }
-  brands: any = [];
+
   class: any = 'C_s';
   css1: any = 'img-thumbnail';
 
@@ -808,24 +810,28 @@ export class CategoryListComponent implements OnInit {
         this.title = category;
         this.service.getDatawithQueryParamsBrands('category', category).subscribe(resp => {
           this.products = resp.Done || [];
-            this.setPriceRange(); // Move here
+          this.setPriceRange(); // Move here
+          this.extractBrands();
         });
       } else if (subcategory) {
         this.title = subcategory;
         this.service.getDatawithQueryParamsBrands('subcategory', subcategory).subscribe(resp => {
           this.products = resp.Done || [];
-            this.setPriceRange(); // Move here
+          this.setPriceRange(); // Move here
+          this.extractBrands();
+
         });
 
       }
 
     })
   }
- minPrice: number = 0;
+  //max and Min price 
+  minPrice: number = 0;
   maxPrice: number = 0;
   priceRange = { min: 0, max: 0 };
 
-   setPriceRange() {
+  setPriceRange() {
     if (this.products.length === 0) return;
 
     const prices = this.products.map(p => p.mrp);
@@ -839,33 +845,50 @@ export class CategoryListComponent implements OnInit {
   //   return this.products.filter(p => p.mrp >= this.minPrice && p.mrp <= this.maxPrice);
   // }
 
-validateMinPrice() {
-  if (this.minPrice < this.priceRange.min) {
-    this.minPrice = this.priceRange.min;
+ 
+  onBrandCheckboxChange(event: Event, brand: string) {
+    const input = event.target as HTMLInputElement;
+    if (input.checked) {
+      this.selectedBrands.push(brand);
+    } else {
+      this.selectedBrands = this.selectedBrands.filter(b => b !== brand);
+    }
   }
-  if (this.minPrice > this.maxPrice) {
-    this.minPrice = this.maxPrice;
-  }
-}
 
-validateMaxPrice() {
-  if (this.maxPrice > this.priceRange.max) {
-    this.maxPrice = this.priceRange.max;
+ // Extract unique brand names from products
+  extractBrands() {
+    const allBrands = this.products.map(p => p.brand).filter(Boolean);
+    this.brands = [...new Set(allBrands)];
   }
-  if (this.maxPrice < this.minPrice) {
-    this.maxPrice = this.minPrice;
-  }
-}
 
 
- //sort low to high and high to low
+  validateMinPrice() {
+    if (this.minPrice < this.priceRange.min) {
+      this.minPrice = this.priceRange.min;
+    }
+    if (this.minPrice > this.maxPrice) {
+      this.minPrice = this.maxPrice;
+    }
+  }
+
+  validateMaxPrice() {
+    if (this.maxPrice > this.priceRange.max) {
+      this.maxPrice = this.priceRange.max;
+    }
+    if (this.maxPrice < this.minPrice) {
+      this.maxPrice = this.minPrice;
+    }
+  }
+
+
+  //sort low to high and high to low
 
   sortOrder: 'asc' | 'desc' = 'asc'; // default is Low to High
 
   get sortedFilteredProducts() {
     let filtered = this.products.filter(p => p.mrp >= this.minPrice && p.mrp <= this.maxPrice);
 
-  const activeRanges = this.discountRanges.filter(r => r.checked);
+    const activeRanges = this.discountRanges.filter(r => r.checked);
     if (activeRanges.length > 0) {
       filtered = filtered.filter(p => {
         const discount = +p.discount_percent || 0;
@@ -873,9 +896,19 @@ validateMaxPrice() {
       });
     }
 
+    // Brand Filter
+    if (this.selectedBrands.length > 0) {
+      filtered = filtered.filter(p => this.selectedBrands.includes(p.brand));
+    }
+
+
     return filtered.sort((a, b) => {
       return this.sortOrder === 'asc' ? a.mrp - b.mrp : b.mrp - a.mrp;
     });
+  }
+  // Check if there are products to display (no products for the selected filters)
+  get hasProducts() {
+    return this.sortedFilteredProducts.length > 0;
   }
 
   setSortOrder(order: 'asc' | 'desc') {
@@ -883,7 +916,7 @@ validateMaxPrice() {
   }
   //percentage Discount
 
-   discountRanges = [
+  discountRanges = [
     { label: '5% to 10%', min: 5, max: 10, checked: false },
     { label: '10% to 20%', min: 10, max: 20, checked: false },
     { label: '20% to 30%', min: 20, max: 30, checked: false },
@@ -894,6 +927,10 @@ validateMaxPrice() {
 
   clearDiscountFilters() {
     this.discountRanges.forEach(range => (range.checked = false));
+  }
+  // Method to check if no products are found for the selected discount range
+  get isNoProductsForDiscount() {
+    return this.sortedFilteredProducts.length === 0;
   }
 
   Options: any;
@@ -913,13 +950,13 @@ validateMaxPrice() {
         this.title = category;
         this.service.getDatawithQueryParamsBrands('category', category).subscribe(resp => {
           this.products = resp.Done || [];
-            this.setPriceRange(); // Move here
+          this.setPriceRange(); // Move here
         });
       } else if (subcategory) {
         this.title = subcategory;
         this.service.getDatawithQueryParamsBrands('subcategory', subcategory).subscribe(resp => {
           this.products = resp.Done || [];
-            this.setPriceRange(); // Move here
+          this.setPriceRange(); // Move here
         });
       }
     });
@@ -1022,35 +1059,35 @@ validateMaxPrice() {
     console.log("range-", this.range);
     let order = "";
 
-      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
-        this.spinner.hide();
+    return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
+      this.spinner.hide();
 
-        console.log("--S2")
-        console.log(resp);
-        this.resources2 = resp;
-        console.log(this.resources2, "rangedata");
-        this.resources2data1 = this.resources2.data;
-        for (var i = 0; i < this.resources2.data.length; i++) {
-          if (this.resources2.data[i]) {
-            var text = this.resources2.data[i].low_image_1.split("Powertexmodel");
-            this.resources2data1[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
-          }
+      console.log("--S2")
+      console.log(resp);
+      this.resources2 = resp;
+      console.log(this.resources2, "rangedata");
+      this.resources2data1 = this.resources2.data;
+      for (var i = 0; i < this.resources2.data.length; i++) {
+        if (this.resources2.data[i]) {
+          var text = this.resources2.data[i].low_image_1.split("Powertexmodel");
+          this.resources2data1[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
         }
-        this.percenages = this.resources2.count[0];
+      }
+      this.percenages = this.resources2.count[0];
 
-      },
-        error => {
-          this.spinner.hide();
-          this.dialog.open(ErrorModalComponent, {
-            data: { errorModal: true }
-          });
-          // console.log(error);
+    },
+      error => {
+        this.spinner.hide();
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true }
         });
-    
+        // console.log(error);
+      });
+
   }
   min: any;
   max: any;
- 
+
   resourcesporder: any
   resources2dataorderwise: any = []
 
@@ -1095,9 +1132,9 @@ validateMaxPrice() {
     }
   }
   resources2datacount: any = [];
- 
 
- 
+
+
 
   catg_crumb(d) {
     let category = d;

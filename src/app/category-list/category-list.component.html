@@ -31,11 +31,11 @@
         <!-- Brand Filter -->
         <h4 class="mt-4 mb-3">Brand</h4>
         <ul class="list-unstyled">
-          <li *ngFor="let p of brands" class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" (change)="disc(p.brand)"
-              [checked]="selected_disc === p.brand" id="{{ p.brand }}" style="border: 2px solid rgb(102, 96, 96)" />
-            <label class="form-check-label ms-2" for="{{ p.brand }}" style="color: rgb(102, 96, 96)">
-              {{ p.brand }}
+          <li *ngFor="let brand of brands" class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" [id]="brand" [checked]="selectedBrands.includes(brand)"
+              (change)="onBrandCheckboxChange($event, brand)" style="border: 2px solid rgb(102, 96, 96)" />
+            <label class="form-check-label ms-2" [for]="brand" style="color: rgb(102, 96, 96)">
+              {{ brand }}
             </label>
           </li>
         </ul>
@@ -66,10 +66,10 @@
 
         <!-- Discount -->
         <h4 class="mt-4 mb-3">Discount</h4>
-        <ul class="list-unstyled" >
+        <ul class="list-unstyled">
           <li class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" (click)="clearDiscountFilters()"  [checked]="selected_disc === 0"
-              id="clearFilters" style="border: 1px solid rgb(124, 119, 119)" />
+            <input class="form-check-input" type="checkbox" (click)="clearDiscountFilters()"
+              [checked]="selected_disc === 0" id="clearFilters" style="border: 1px solid rgb(124, 119, 119)" />
             <label class="form-check-label ms-2" for="clearFilters" style="color: rgb(102, 96, 96)">
               Clear Filters
             </label>
@@ -77,110 +77,120 @@
 
           <ng-container *ngFor="let range of discountRanges">
             <li class="form-check mb-2">
-              <input class="form-check-input" type="checkbox"
-              [(ngModel)]="range.checked" [id]="range.label"
+              <input class="form-check-input" type="checkbox" [(ngModel)]="range.checked" [id]="range.label"
                 style="border: 1px solid rgb(124, 119, 119)" />
-              <label class="form-check-label ms-2" style="color: rgb(102, 96, 96)"  [for]="range.label">
-               <span>{{ range.label }}</span>
-              
+              <label class="form-check-label ms-2" style="color: rgb(102, 96, 96)" [for]="range.label">
+                <span>{{ range.label }}</span>
+
               </label>
             </li>
           </ng-container>
+          <!-- Show message if no products match the selected discount range -->
+          <div *ngIf="isNoProductsForDiscount" class="alert alert-warning">
+            No products found for the selected discount range.
+          </div>
         </ul>
       </div>
     </div>
 
     <!-- Product List Section -->
+
     <div class="col-md-10" [ngClass]="{ 'col-md-12': sidemenu == false }">
-      <div class="row justify-content-start flex-wrap" *ngIf="sortedFilteredProducts.length > 0;else noData">
-        <div *ngFor="
+      <div *ngIf="hasProducts; else noData" class="grid-container">
+        <div class="row justify-content-start flex-wrap" *ngIf="sortedFilteredProducts.length > 0;else noData">
+          <div *ngFor="
             let p of sortedFilteredProducts
               | paginate : { itemsPerPage: 32, currentPage: Page };
             let i = index
           " class="mb-4 col-md-3">
-          <div class="card h-100 product-card position-relative" style="
+            <div class="card h-100 product-card position-relative" style="
               background-color: #fdfbfb;
               border-color: rgba(133, 132, 132, 0.2);
               border-width: 1.5px;
               border-style: solid;
             ">
-            <!-- Wishlist Icon -->
-            <div class="position-absolute top-0 end-0 p-2 z-2 icon-container d-flex flex-column align-items-end"
-              [ngClass]="{ 'd-none': !p.showIcons }" style="pointer-events: auto">
-              <div class="d-flex align-items-center justify-content-center rounded-circle mb-2" style="
+              <!-- Wishlist Icon -->
+              <div class="position-absolute top-0 end-0 p-2 z-2 icon-container d-flex flex-column align-items-end"
+                [ngClass]="{ 'd-none': !p.showIcons }" style="pointer-events: auto">
+                <div class="d-flex align-items-center justify-content-center rounded-circle mb-2" style="
                   width: 36px;
                   height: 36px;
                   background-color: #dc3545;
                   border: 1.5px solid #dc3545;
                 " *ngIf="p.wishlist == '1'" title="Remove from wishlist">
-                <i class="fa fa-heart text-danger cursor_pointer"></i>
-              </div>
+                  <i class="fa fa-heart text-danger cursor_pointer"></i>
+                </div>
 
-              <div class="d-flex align-items-center justify-content-center rounded-circle mb-2" style="
+                <div class="d-flex align-items-center justify-content-center rounded-circle mb-2" style="
                   width: 36px;
                   height: 36px;
                   background-color: #f1efeb;
                   border: 1.5px solid #c0c4c7;
                 " *ngIf="p.wishlist != '1'" title="Add to wishlist">
-                <i class="fa fa-heart-o text-black cursor_pointer" style="background-color: white"></i>
-              </div>
+                  <i class="fa fa-heart-o text-black cursor_pointer" style="background-color: white"></i>
+                </div>
 
-              <div class="d-flex align-items-center justify-content-center rounded-circle" style="
+                <div class="d-flex align-items-center justify-content-center rounded-circle" style="
                   width: 36px;
                   height: 36px;
                   background-color: #f1efeb;
                   border: 1.5px solid #c0c4c7;
                 " (click)="sub_cat(p); $event.stopPropagation()" title="View details">
-                <i class="fa fa-eye text-black cursor_pointer"></i>
+                  <i class="fa fa-eye text-black cursor_pointer"></i>
+                </div>
               </div>
-            </div>
-            <!-- Image Section -->
-            <div class="text-center px-3 pt-3 position-relative" (click)="sub_cat(p)">
-              <img [src]="p.high_image_1" (error)="
+              <!-- Image Section -->
+              <div class="text-center px-3 pt-3 position-relative" (click)="sub_cat(p)">
+                <img [src]="p.high_image_1" (error)="
                   p.low_image_1 =
                     'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
                 " class="card-img-top img-fluid" style="height: 120px; object-fit: contain" alt="{{ p.brand }}" />
-            </div>
+              </div>
 
-            <!-- Card Body -->
-            <div class="card-body ps-4 py-3 position-relative">
-              <p class="text-muted mb-1">{{ p.brand }}</p>
-              <p class="fw-semibold text-truncate mb-1" title="{{ p.modelno }}">
-                {{ p.modelno }}
-              </p>
-
-
-              <div *ngIf="sidemenu">
-                <p class="mb-1">
-                  <span class="text-muted text-decoration-line-through me-2"
-                    *ngIf="p.discount_percent && p.discount_percent > 0">
-                    ₹{{ p.mrp }}
-                  </span>
-
-                  <span class="fw-bold me-2" style="color: #009b77">
-                    {{ p.discounted_price }}
-                  </span>
-
-                  <span class="text-success" *ngIf="p.discount_percent && p.discount_percent > 0">
-                    {{ p.discount_percent }}% Off
-                  </span>
+              <!-- Card Body -->
+              <div class="card-body ps-4 py-3 position-relative">
+                <p class="text-muted mb-1">{{ p.brand }}</p>
+                <p class="fw-semibold text-truncate mb-1" title="{{ p.modelno }}">
+                  {{ p.modelno }}
                 </p>
 
-                <p class="text-muted small mb-0">(Including GST)</p>
+
+                <div *ngIf="sidemenu">
+                  <p class="mb-1">
+                    <span class="text-muted text-decoration-line-through me-2"
+                      *ngIf="p.discount_percent && p.discount_percent > 0">
+                      ₹{{ p.mrp }}
+                    </span>
+
+                    <span class="fw-bold me-2" style="color: #009b77">
+                      {{ p.discounted_price }}
+                    </span>
+
+                    <span class="text-success" *ngIf="p.discount_percent && p.discount_percent > 0">
+                      {{ p.discount_percent }}% Off
+                    </span>
+                  </p>
+
+                  <p class="text-muted small mb-0">(Including GST)</p>
+                </div>
+                <!-- Cart Icon at bottom-right -->
+                <!-- <i class="fa fa-shopping-cart fa-1x text-success cursor_pointer position-absolute bottom-0 end-0 m-3"></i> -->
               </div>
-              <!-- Cart Icon at bottom-right -->
-              <!-- <i class="fa fa-shopping-cart fa-1x text-success cursor_pointer position-absolute bottom-0 end-0 m-3"></i> -->
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Pagination -->
-      <div style="text-align: center; padding: 20px">
-        <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+        <!-- Pagination -->
+        <div style="text-align: center; padding: 20px" class="text-danger text-center">
+          <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+        </div>
       </div>
     </div>
 
+    <!-- No products found message -->
+    <ng-template #noData>
+      <p class="text-danger text-center h3">No products found for the selected filters.</p>
+    </ng-template>
     <!-- <ngx-spinner class="loader_spinner"></ngx-spinner> -->
 
     <!-- Packing Confirm Modal -->
