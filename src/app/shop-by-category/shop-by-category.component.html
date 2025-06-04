@@ -158,25 +158,39 @@
 
 
                 <div *ngIf="sidemenu">
-                  <p class="mb-1">
-                    <span class="text-muted text-decoration-line-through me-2"
-                      *ngIf="p.discount_percent && p.discount_percent > 0">
-                      ₹{{ p.mrp }}
-                    </span>
+  <p class="mb-1">
+    <span class="text-muted text-decoration-line-through me-2"
+      *ngIf="p.discount_percent && p.discount_percent > 0">
+      ₹{{ p.mrp }}
+    </span>
 
-                    <span class="fw-bold me-2" style="color: #009b77">
-                      {{ p.discounted_price }}
-                    </span>
+    <span class="fw-bold me-2" style="color: #009b77">
+      ₹{{ p.discounted_price }}
+    </span>
+  </p>
 
-                    <span class="text-success" *ngIf="p.discount_percent && p.discount_percent > 0">
-                      {{ p.discount_percent }}% Off
-                    </span>
-                  </p>
+  <span class="text-success" *ngIf="p.discount_percent && p.discount_percent > 0">
+    {{ p.discount_percent }}% Off
+  </span>
 
-                  <p class="text-muted small mb-0">(Including GST)</p>
-                </div>
-                <!-- Cart Icon at bottom-right -->
-                <!-- <i class="fa fa-shopping-cart fa-1x text-success cursor_pointer position-absolute bottom-0 end-0 m-3"></i> -->
+  <p class="text-muted small mb-0">(Including GST)</p>
+
+  <!-- ⭐ Rating section placed below GST -->
+  <div class="rating text-warning small">
+    <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+      <span
+        [ngClass]="i < p.rating ? 'fa fa-star' : 'fa fa-star-o'">
+      </span>
+    </ng-container>
+  </div>
+</div>
+
+               <button
+          class="btn position-absolute cart-btn"
+          style="bottom: 10px; right: 10px"
+        >
+          <i class="fa fa-shopping-cart text-secondary"></i>
+        </button>
               </div>
             </div>
           </div>
