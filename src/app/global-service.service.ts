@@ -306,7 +306,7 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
 
   getSearchData(key: string, value: string): Observable<any> {
     const params = new HttpParams().set(key, value);
-    return this.http.get(this.UrlData('/search/'), { params });
+    return this.http.get(this.UrlData('search/'), { params });
   }
 
   getNewarrivals(endpoint: string) {
