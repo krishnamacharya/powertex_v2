@@ -58,7 +58,9 @@ export class ProfessionwiseProductsComponent {
     p: any;
     selectedBrand: string | null = null;
     selectedDiscount: number = 0;
-    sortOrder: 'asc' | 'desc' | null = null; 
+      products: any;
+  brands: any[] = [];
+  selectedBrands: any[] = [];
     constructor(private router: Router, private route: ActivatedRoute, private service: GlobalServiceService, public dataService: DataServiceService, private _location: Location,
       private eventemit: ComponentCommunicationService, private dialog: MatDialog, private spinner: NgxSpinnerService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute,) {
       this.obj.id = 4;
@@ -66,61 +68,7 @@ export class ProfessionwiseProductsComponent {
     isRoot: boolean;
     
   
-    // ngOnInit() {
-    //   /* =========================== */
-    //   this.sub = this.route.queryParams.subscribe(params => {
-    //     // Defaults to 0 if no query param provided.
-    //     this.page = +params['page'] || 0;
-    //   });
-  
-    //   // $("#success-alert").hide();
-    //   this.alert = false;
-    //   this.token = localStorage.getItem('token');
-    //   console.log("token", this.token);
-  
-    //   this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
-    //   // console.log("token",this.loginUserData.user_type);
-    //   this.sub = this.route.params.subscribe(params => {
-    //     this.prof = params['search'];
-    //     this.profession = params['profession'];
-    //     if (this.token == null) {
-    //       this.user_id = '';
-    //     } else {
-    //       this.user_id = this.loginUserData.user_id;
-    //       if (this.loginUserData.user_type != 'Customer' || this.loginUserData.user_type != 'Guest') {
-    //         this.log_as_cust = false;
-    //       }
-    //     }
-  
-    //     console.log("search", this.prof);
-    //     if (this.prof === undefined) {
-    //       this.d = params['b'];
-    //       this.sub_c = params['c'];
-    //       this.modal = atob(params['d']);
-    //       this.select = atob(params['e']);
-    //       this.brand = ('');
-    //       // this.d=this.category;
-    //       this.e = atob(this.sub_c);
-    //       this.e = encodeURIComponent(this.e)
-    //       console.log(this.d, "", this.e, "", this.select, this.modal, this.user_id);
-    //       this.getdata1();
-    //     }
-    //     else {
-    //       this.spinner.show();
-    //       this.getsearch();
-    //     }
-    //     this.spinner.show
-    //   },
-    //     error => {
-    //       this.spinner.hide();
-    //       this.dialog.open(ErrorModalComponent, {
-    //   data: { errorModal:true }
-    // });
-    //       // console.log(error);
-    //     });
-  
-    // }
-  
+    
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const profession = params.get('profession');
@@ -187,7 +135,9 @@ export class ProfessionwiseProductsComponent {
     // }
 getProductsByProffesion(shotform: string): void {
   this.service.getProductsByProffesion(shotform).subscribe((data: any) => {
-    this.resources2dataproduct = data.Done;
+    this.products = data.Done;
+        this.setPriceRange(); // Move here
+          this.extractBrands();
   });
 }
 
@@ -258,7 +208,6 @@ getProductsByProffesion(shotform: string): void {
     //     }
     //   }
     // }
-    brands: any = [];
     class: any = 'C_s';
     css1: any = 'img-thumbnail';
   
@@ -707,25 +656,7 @@ getProductsByProffesion(shotform: string): void {
   
     }
     specftndetails: any =[];
-    // viewDetails(p){
-  
-    //   console.log(p,'p');
-    //   this.spinner.show();
-  
-    //   return this.service.getDatawithQueryParams2userid('3.72',p.productid,this.loginUserData.user_id).subscribe((resp:any) => {
-    //     this.spinner.hide();
-    //     this.specftndetails = resp.details;
-    //     $("#SpecificationModal").modal('show');
-    //   },
-    //     error => {
-    //       this.spinner.hide();
-    //       this.dialog.open(ErrorModalComponent, {
-    //   data: { errorModal:true }
-    // });
-    //       // console.log(error);
-    //     });
-    // }
-  //----------------------------------------------------------------------//
+   
   applyFilters() {
     let filtered = [...this.resources2];
   
@@ -784,7 +715,114 @@ getProductsByProffesion(shotform: string): void {
     this.sortOrder = null;
     this.applyFilters();
   }
-  
+  //apply filter all 
+
+   //max and Min price 
+  minPrice: number = 0;
+  maxPrice: number = 0;
+  priceRange = { min: 0, max: 0 };
+
+  setPriceRange() {
+    if (this.products.length === 0) return;
+
+    const prices = this.products.map(p => p.mrp);
+    this.priceRange.min = Math.min(...prices);
+    this.priceRange.max = Math.max(...prices);
+    this.minPrice = this.priceRange.min;
+    this.maxPrice = this.priceRange.max;
+  }
+
+  // filteredProducts() {
+  //   return this.products.filter(p => p.mrp >= this.minPrice && p.mrp <= this.maxPrice);
+  // }
+
+ 
+  onBrandCheckboxChange(event: Event, brand: string) {
+    const input = event.target as HTMLInputElement;
+    if (input.checked) {
+      this.selectedBrands.push(brand);
+    } else {
+      this.selectedBrands = this.selectedBrands.filter(b => b !== brand);
+    }
+  }
+
+ // Extract unique brand names from products
+  extractBrands() {
+    const allBrands = this.products.map(p => p.brand).filter(Boolean);
+    this.brands = [...new Set(allBrands)];
+  }
+
+
+  validateMinPrice() {
+    if (this.minPrice < this.priceRange.min) {
+      this.minPrice = this.priceRange.min;
+    }
+    if (this.minPrice > this.maxPrice) {
+      this.minPrice = this.maxPrice;
+    }
+  }
+
+  validateMaxPrice() {
+    if (this.maxPrice > this.priceRange.max) {
+      this.maxPrice = this.priceRange.max;
+    }
+    if (this.maxPrice < this.minPrice) {
+      this.maxPrice = this.minPrice;
+    }
+  }
+
+
+  //sort low to high and high to low
+
+  sortOrder: 'asc' | 'desc' = 'asc'; // default is Low to High
+
+  get sortedFilteredProducts() {
+    let filtered = this.products.filter(p => p.mrp >= this.minPrice && p.mrp <= this.maxPrice);
+
+    const activeRanges = this.discountRanges.filter(r => r.checked);
+    if (activeRanges.length > 0) {
+      filtered = filtered.filter(p => {
+        const discount = +p.discount_percent || 0;
+        return activeRanges.some(r => discount >= r.min && discount < r.max);
+      });
+    }
+
+    // Brand Filter
+    if (this.selectedBrands.length > 0) {
+      filtered = filtered.filter(p => this.selectedBrands.includes(p.brand));
+    }
+
+
+    return filtered.sort((a, b) => {
+      return this.sortOrder === 'asc' ? a.mrp - b.mrp : b.mrp - a.mrp;
+    });
+  }
+  // Check if there are products to display (no products for the selected filters)
+  get hasProducts() {
+    return this.sortedFilteredProducts.length > 0;
+  }
+
+  setSortOrder(order: 'asc' | 'desc') {
+    this.sortOrder = order;
+  }
+  //percentage Discount
+
+  discountRanges = [
+    { label: '5% to 10%', min: 5, max: 10, checked: false },
+    { label: '10% to 20%', min: 10, max: 20, checked: false },
+    { label: '20% to 30%', min: 20, max: 30, checked: false },
+    { label: '30% to 40%', min: 30, max: 40, checked: false },
+    { label: '40% to 50%', min: 40, max: 50, checked: false },
+    { label: 'More than 50%', min: 50, max: 100, checked: false }
+  ];
+
+  clearDiscountFilters() {
+    this.discountRanges.forEach(range => (range.checked = false));
+  }
+  // Method to check if no products are found for the selected discount range
+  get isNoProductsForDiscount() {
+    return this.sortedFilteredProducts.length === 0;
+  }
   
   }
   
