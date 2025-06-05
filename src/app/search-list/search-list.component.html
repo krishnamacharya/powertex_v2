@@ -115,17 +115,14 @@
       </ul>
     </div>
 
-    <!-- Product List Section -->
-   <div class="col-md-10">
+<!-- Product List Section -->
+<div class="col-md-10">
   <div class="row">
     <div
-      class="col mb-4"
-  style="flex: 0 0 25%; max-width: 25%" 
-      *ngFor="
-        let p of resources2
-          | paginate : { itemsPerPage: 15, currentPage: Page };
-        let i = index
-      "
+    class="col-12 col-sm-12 col-md-4 col-lg-3 mb-4"
+
+
+      *ngFor="let p of resources2 | paginate : { itemsPerPage: 15, currentPage: Page }; let i = index"
     >
       <div
         class="card h-100 shadow-sm border rounded product-card position-relative"
@@ -137,44 +134,44 @@
         "
       >
         <!-- Icons -->
-      <div class="position-absolute top-0 end-0 p-2 z-2 icon-container d-flex flex-column align-items-end"
-                [ngClass]="{ 'd-none': !p.showIcons }" style="pointer-events: auto">
-                <div class="d-flex align-items-center justify-content-center rounded-circle mb-2" style="
-                  width: 36px;
-                  height: 36px;
-                  background-color: #dc3545;
-                  border: 1.5px solid #dc3545;
-                " *ngIf="p.wishlist == '1'" title="Remove from wishlist">
-                  <i class="fa fa-heart text-danger cursor_pointer"></i>
-                </div>
+        <div
+          class="position-absolute top-0 end-0 p-2 z-2 icon-container d-flex flex-column align-items-end"
+          [ngClass]="{ 'd-none': !p.showIcons }"
+          style="pointer-events: auto"
+        >
+          <div
+            class="d-flex align-items-center justify-content-center rounded-circle mb-2"
+            style="width: 36px; height: 36px; background-color: #dc3545; border: 1.5px solid #dc3545"
+            *ngIf="p.wishlist == '1'"
+            title="Remove from wishlist"
+          >
+            <i class="fa fa-heart text-danger cursor_pointer"></i>
+          </div>
 
-                <div class="d-flex align-items-center justify-content-center rounded-circle mb-2" style="
-                  width: 36px;
-                  height: 36px;
-                  background-color: #f1efeb;
-                  border: 1.5px solid #c0c4c7;
-                " *ngIf="p.wishlist != '1'" title="Add to wishlist">
-                  <i class="fa fa-heart-o text-black cursor_pointer" style="background-color: white"></i>
-                </div>
+          <div
+            class="d-flex align-items-center justify-content-center rounded-circle mb-2"
+            style="width: 36px; height: 36px; background-color: #f1efeb; border: 1.5px solid #c0c4c7"
+            *ngIf="p.wishlist != '1'"
+            title="Add to wishlist"
+          >
+            <i class="fa fa-heart-o text-black cursor_pointer" style="background-color: white"></i>
+          </div>
 
-                <div class="d-flex align-items-center justify-content-center rounded-circle" style="
-                  width: 36px;
-                  height: 36px;
-                  background-color: #f1efeb;
-                  border: 1.5px solid #c0c4c7;
-                " (click)="sub_cat(p); $event.stopPropagation()" title="View details">
-                  <i class="fa fa-eye text-black cursor_pointer"></i>
-                </div>
-              </div>
+          <div
+            class="d-flex align-items-center justify-content-center rounded-circle"
+            style="width: 36px; height: 36px; background-color: #f1efeb; border: 1.5px solid #c0c4c7"
+            (click)="sub_cat(p); $event.stopPropagation()"
+            title="View details"
+          >
+            <i class="fa fa-eye text-black cursor_pointer"></i>
+          </div>
+        </div>
 
         <!-- Product Image -->
         <div (click)="sub_cat(p)" class="product-image text-center p-3" style="cursor: pointer">
           <img
             [src]="p.high_image_1"
-            (error)="
-              p.high_image_1 =
-                'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
-            "
+            (error)="p.high_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'"
             class="img-fluid"
             style="height: 160px; object-fit: contain"
             alt="{{ p.subcategory }}"
@@ -190,9 +187,7 @@
 
           <p class="fw-bold text-success mb-1 price">
             Rs.{{ p.discounted_price }}
-            <del *ngIf="p.discount_percent > 0" class="text-muted small ms-2">
-              Rs.{{ p.mrp }}
-            </del>
+            <del *ngIf="p.discount_percent > 0" class="text-muted small ms-2">Rs.{{ p.mrp }}</del>
           </p>
 
           <p *ngIf="p.discount_percent > 0" class="fw-medium mb-1" style="color: #009b77">
@@ -204,18 +199,13 @@
           <!-- ⭐ Rating -->
           <div class="rating text-warning small">
             <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
-              <span
-                [ngClass]="i < p.rating ? 'fa fa-star' : 'fa fa-star-o'"
-              ></span>
+              <span [ngClass]="i < p.rating ? 'fa fa-star' : 'fa fa-star-o'"></span>
             </ng-container>
           </div>
         </div>
 
         <!-- Cart Icon -->
-        <button
-          class="btn position-absolute cart-btn"
-          style="bottom: 10px; right: 10px"
-        >
+        <button class="btn position-absolute cart-btn" style="bottom: 10px; right: 10px">
           <i class="fa fa-shopping-cart text-secondary"></i>
         </button>
       </div>
@@ -227,6 +217,7 @@
     <pagination-controls (pageChange)="Page = $event"></pagination-controls>
   </div>
 </div>
+
 
   </div>
 </div>
