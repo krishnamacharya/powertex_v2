@@ -1,118 +1,96 @@
-<ngx-spinner class="custom_loader">
-  <img src="../../../assets/Loader.gif" />
-</ngx-spinner>
-
 <div class="container-fluid" style="padding: 30px 65px">
   <div class="row justify-content-center">
     <!-- Sidebar / Filters -->
-    <div
-      class="col-md-2 pe-3"
-      style="
+    <div class="col" *ngIf="products.length > 0" style="
         background-color: white;
         border-radius: 8px;
         border: 1px solid rgba(133, 132, 132, 0.2);
-        padding: 10px;
-      "
-    >
-      <!-- Price Filter -->
-      <h4 class="mb-3 text-muted">Price</h4>
+      ">
+      <div class="pad_t_b_5" style="
+          background-color: white;
+          padding: 10px;
+          border-radius: 8px;
+          border-color: rgb(114, 110, 110);
+        ">
+        <!-- Price Filter -->
+        <h4 class="mb-3">Price</h4>
 
-      <div class="row mt-2">
-        <div class="col-6">
-          <p class="mb-1 small fw-medium">Min</p>
-          <input
-            type="text"
-            class="form-control form-control-sm"
-            (change)="price_min(minValue, maxValue)"
-            [(ngModel)]="minValue"
-            style="padding: 4px !important"
-          />
+        <div class="row mt-2">
+          <div class="col-6">
+            <p class="mb-1 small fw-medium">Min value:</p>
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="minPrice" [min]="priceRange.min"
+              [max]="priceRange.max" (ngModelChange)="validateMinPrice()" style="padding: 4px !important" />
+          </div>
+          <div class="col-6">
+            <p class="mb-1 small fw-medium">Max value:</p>
+            <input type="number" class="form-control form-control-sm" [(ngModel)]="maxPrice" [min]="priceRange.min"
+              [max]="priceRange.max" (ngModelChange)="validateMaxPrice()" style="padding: 4px !important" />
+          </div>
         </div>
-        <div class="col-6">
-          <p class="mb-1 small fw-medium">Max</p>
-          <input
-            type="text"
-            class="form-control form-control-sm"
-            (change)="price_min(minValue, maxValue)"
-            [(ngModel)]="maxValue"
-            style="padding: 4px !important"
-          />
+
+        <!-- Brand Filter -->
+        <h4 class="mt-4 mb-3">Brand</h4>
+        <ul class="list-unstyled">
+          <li *ngFor="let brand of brands" class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" [id]="brand" [checked]="selectedBrands.includes(brand)"
+              (change)="onBrandCheckboxChange($event, brand)" style="border: 2px solid rgb(102, 96, 96)" />
+            <label class="form-check-label ms-2" [for]="brand" style="color: rgb(102, 96, 96)">
+              {{ brand }}
+            </label>
+          </li>
+        </ul>
+        <!-- Sort By -->
+        <h4 class="mt-4 mb-3">Sort By</h4>
+        <ul class="list-unstyled">
+          <li class="mb-2 d-flex align-items-center">
+            <input type="radio" class="form-check-input me-2" name="sortOption" [(ngModel)]="sortOrder" [value]="'asc'"
+              style="border: 1px solid rgb(124, 119, 119)" />
+            <label style="cursor: pointer" class="form-check-label">
+              Price Low to High
+            </label>
+          </li>
+          <li class="mb-2 d-flex align-items-center">
+            <input type="radio" class="form-check-input me-2" name="sortOption" [(ngModel)]="sortOrder" [value]="'desc'"
+              style="border: 1px solid rgb(124, 119, 119)" />
+            <label style="cursor: pointer" class="form-check-label">
+              Price High to Low
+            </label>
+          </li>
+        </ul>
+
+        <!-- Image below all filters -->
+        <div class="text-center mt-4">
+          <img src="assets/images/catg-img.png" alt="Promotional Filter Banner" class="img-fluid rounded shadow-sm"
+            style="height: 200px; width: 250px" />
         </div>
+
+        <!-- Discount -->
+        <h4 class="mt-4 mb-3">Discount</h4>
+        <ul class="list-unstyled">
+          <li class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" (click)="clearDiscountFilters()"
+              [checked]="selected_disc === 0" id="clearFilters" style="border: 1px solid rgb(124, 119, 119)" />
+            <label class="form-check-label ms-2" for="clearFilters" style="color: rgb(102, 96, 96)">
+              Clear Filters
+            </label>
+          </li>
+
+          <ng-container *ngFor="let range of discountRanges">
+            <li class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="range.checked" [id]="range.label"
+                style="border: 1px solid rgb(124, 119, 119)" />
+              <label class="form-check-label ms-2" style="color: rgb(102, 96, 96)" [for]="range.label">
+                <span>{{ range.label }}</span>
+
+              </label>
+            </li>
+          </ng-container>
+          <!-- Show message if no products match the selected discount range -->
+          <div *ngIf="isNoProductsForDiscount" class="alert alert-warning">
+            No products found for the selected discount range.
+          </div>
+        </ul>
       </div>
-      <!-- Sort By Section (aligned like Discount) -->
-      <h4 class="mt-4 mb-3 text-muted">Sort By</h4>
-      <ul class="list-unstyled">
-        <li class="form-check mb-2">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            [checked]="selected_sort === 'asc'"
-            (change)="setSort('asc')"
-            style="border: 2px solid rgb(102, 96, 96)"
-          />
-          <label
-            class="form-check-label ms-2"
-            style="color: rgb(102, 96, 96); cursor: pointer"
-          >
-            Price Low to High
-          </label>
-        </li>
-        <li class="form-check mb-2">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            [checked]="selected_sort === 'desc'"
-            (change)="setSort('desc')"
-            style="border: 2px solid rgb(102, 96, 96)"
-          />
-          <label
-            class="form-check-label ms-2"
-            style="color: rgb(102, 96, 96); cursor: pointer"
-          >
-            Price High to Low
-          </label>
-        </li>
-        <li class="form-check mb-2">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            [checked]="selected_sort === 'popularity'"
-            (change)="setSort('popularity')"
-            style="border: 2px solid rgb(102, 96, 96)"
-          />
-          <label
-            class="form-check-label ms-2"
-            style="color: rgb(102, 96, 96); cursor: pointer"
-          >
-            Popularity
-          </label>
-        </li>
-      </ul>
-      <!-- Image below all filters -->
-      <div class="text-center mt-4">
-        <img
-          src="assets/images/image.png"
-          alt="Promotional Filter Banner"
-          class="img-fluid rounded shadow-sm"
-          style="height: 200px; width: 250px"
-        />
-      </div>
-      <!-- Discount Filter -->
-      <h4 class="mt-4 mb-3 text-muted">Discount</h4>
-      <ul class="list-unstyled">
-        <li *ngFor="let d of [10, 20, 30, 40, 50]" class="form-check mb-2">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            [checked]="selected_disc === d"
-            (change)="disc(d)"
-            style="border: 2px solid rgb(102, 96, 96)"
-          />
-          <label class="form-check-label ms-2" style="color: rgb(102, 96, 96)">
-            {{ d }}% or More
-          </label>
-        </li>
-      </ul>
     </div>
 
 <!-- Product List Section -->
@@ -178,23 +156,23 @@
           />
         </div>
 
-        <!-- Product Body -->
-        <div class="card-body p-3">
-          <p class="text-muted mb-1 small brand">{{ p.subcategory }}</p>
-          <p class="fw-medium mb-1 name text-truncate" title="{{ p.modelno }}">
-            {{ p.modelno }}
-          </p>
+              <!-- Product Body -->
+              <div class="card-body p-3">
+                <p class="text-muted mb-1 small brand">{{ p.subcategory }}</p>
+                <p class="fw-medium mb-1 name text-truncate" title="{{ p.modelno }}">
+                  {{ p.modelno }}
+                </p>
 
           <p class="fw-bold text-success mb-1 price">
             Rs.{{ p.discounted_price }}
             <del *ngIf="p.discount_percent > 0" class="text-muted small ms-2">Rs.{{ p.mrp }}</del>
           </p>
 
-          <p *ngIf="p.discount_percent > 0" class="fw-medium mb-1" style="color: #009b77">
-            {{ p.discount_percent }}% OFF
-          </p>
+                <p *ngIf="p.discount_percent > 0" class="fw-medium mb-1" style="color: #009b77">
+                  {{ p.discount_percent }}% OFF
+                </p>
 
-          <p class="text-muted small mb-1">(Excluding GST)</p>
+                <p class="text-muted small mb-1">(Excluding GST)</p>
 
           <!-- ⭐ Rating -->
           <div class="rating text-warning small">
@@ -209,6 +187,7 @@
           <i class="fa fa-shopping-cart text-secondary"></i>
         </button>
       </div>
+
     </div>
   </div>
 
@@ -223,3 +202,7 @@
 </div>
 
 <ngx-spinner class="loader_spinner"></ngx-spinner>
+  <!-- No products found message -->
+  <ng-template #noData>
+    <p class="text-danger text-center h3">No products found for the selected filters.</p>
+  </ng-template>
