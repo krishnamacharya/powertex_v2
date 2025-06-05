@@ -28,7 +28,7 @@
             <p class="mb-1 small fw-medium">Max value:</p>
             <input type="number" class="form-control form-control-sm" [(ngModel)]="maxPrice" [min]="priceRange.min"
               [max]="priceRange.max" (ngModelChange)="validateMaxPrice()" style="padding: 4px !important" />
-          </div>
+          </div> 
         </div>
 
          <!-- Brand Filter -->
@@ -97,7 +97,7 @@
     </div>
     <!-- Product List Section -->
 
-    <div class="col-md-10" [ngClass]="{ 'col-md-12': sidemenu == false }">
+    <div class="col-md-10" [ngClass]="{ 'col-12 col-sm-12 col-md-4 col-lg-3 mb-4': sidemenu == false }">
       <div *ngIf="hasProducts; else noData" class="grid-container">
         <div class="row justify-content-start flex-wrap" *ngIf="sortedFilteredProducts.length > 0;else noData">
           <div *ngFor="
@@ -110,7 +110,7 @@
               border-color: rgba(133, 132, 132, 0.2);
               border-width: 1.5px;
               border-style: solid;
-            ">
+            ">      
               <!-- Wishlist Icon -->
               <div class="position-absolute top-0 end-0 p-2 z-2 icon-container d-flex flex-column align-items-end"
                 [ngClass]="{ 'd-none': !p.showIcons }" style="pointer-events: auto">
@@ -136,7 +136,7 @@
                   width: 36px;
                   height: 36px;
                   background-color: #f1efeb;
-                  border: 1.5px solid #c0c4c7;
+                  border: 1.5px solid #c0c4c7; 
                 " (click)="sub_cat(p); $event.stopPropagation()" title="View details">
                   <i class="fa fa-eye text-black cursor_pointer"></i>
                 </div>

@@ -633,3 +633,9 @@ app-product-card {
 .chevron-right {
   right: 0;
 }
+::ng-deep .col-lg-5th {
+  @media (min-width: 992px) {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
