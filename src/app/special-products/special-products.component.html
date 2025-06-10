@@ -250,7 +250,7 @@
                 <img
                   [src]="p.high_image_1"
                   (error)="
-                    p.low_image_1 =
+                    p.high_image_1 =
                       'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
                   "
                   class="card-img-top img-fluid"
@@ -269,7 +269,7 @@
                   {{ p.modelno }}
                 </p>
 
-                <div *ngIf="sidemenu"> 
+                <div *ngIf="sidemenu">
                   <p class="mb-1">
                     <span
                       class="text-muted text-decoration-line-through me-2"
@@ -383,3 +383,4 @@
     </div>
   </div>
 </div>
+     

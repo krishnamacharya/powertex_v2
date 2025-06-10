@@ -100,7 +100,7 @@
             style="height: 100px; object-fit: contain; margin-top: 20px"
           />
           <div class="card-body p-2">
-            <p class="card-text font-weight-semibold mb-0 text-uppercase">
+            <p class="card-text fw-semibold mb-2 text-uppercase">
               {{ data.category }}
             </p>
           </div>
@@ -210,30 +210,39 @@
   <!---=========product-section cards-->
   <div class="container py-5 product-section">
     <!-- NEW ARRIVAL SECTION -->
-    <div class="position-relative d-flex align-items-center mb-4">
-      <h5
-        class="flex-grow-1 mb-0 fw-bold text-uppercase"
-        style="color: #009b77"
-      >
-        New Arrivals
-      </h5>
+  <div class="position-relative d-flex align-items-center mb-4">
+  <h5
+    class="flex-grow-1 mb-0 fw-bold text-uppercase"
+    style="color: #009b77"
+  >
+    New Arrivals
+  </h5>
 
-      <!-- Chevron Controls -->
-      <div
-        class="text-dark"
-        style="cursor: pointer; font-size: 3rem"
-        (click)="scrollLeftp('new')"
-      >
-        &#8249;
-      </div>
-      <div
-        class="text-dark ms-2"
-        style="cursor: pointer; font-size: 3rem"
-        (click)="scrollRightp('new')"
-      >
-        &#8250;
-      </div>
-    </div>
+  <!-- View All Link -->
+  <a
+    class="text-decoration-none fw-semibold me-3"
+    style="color: #009b77; cursor: pointer"
+     [routerLink]="['/new-arrivals1']"
+  >
+    View All
+  </a>
+
+  <!-- Chevron Controls -->
+  <div
+    class="text-dark"
+    style="cursor: pointer; font-size: 3rem"
+    (click)="scrollLeftp('new')"
+  >
+    &#8249;
+  </div>
+  <div
+    class="text-dark ms-2"
+    style="cursor: pointer; font-size: 3rem"
+    (click)="scrollRightp('new')"
+  >
+    &#8250;
+  </div>
+</div>
 
     <div
       class="product-slider"
@@ -274,8 +283,8 @@
 
     <div
       class="product-slider"
-      #newArrivalSlider
-      *ngIf="newArrival?.length > 0"
+      #bestSellersSlider
+      *ngIf="bestSellers?.length > 0"
     >
       <ng-container
         *ngTemplateOutlet="productList; context: { items: newArrival }"
@@ -372,27 +381,33 @@
     <h5 class="flex-grow-1 mb-0 fw-bold text-uppercase" style="color: #009b77">
       SPECIAL PRODUCTS
     </h5>
-
+  <a
+    class="text-decoration-none fw-semibold me-3"
+    style="color: #009b77; cursor: pointer"
+     [routerLink]="['/specialproducts']"
+  >
+    View All
+  </a>
     <!-- Chevron Controls -->
     <div
       class="text-dark"
       style="cursor: pointer; font-size: 3rem"
-      (click)="scrollLeftp('best')"
+      (click)="scrollLeftp('special')"
     >
       &#8249;
     </div>
     <div
       class="text-dark ms-2"
       style="cursor: pointer; font-size: 3rem"
-      (click)="scrollRightp('best')"
+      (click)="scrollRightp('special')"
     >
       &#8250;
     </div>
   </div>
 
-  <div class="product-slider" #newArrivalSlider *ngIf="newArrival?.length > 0">
+  <div class="product-slider" #specialSlider *ngIf="special?.length > 0">
     <ng-container
-      *ngTemplateOutlet="productList; context: { items: newArrival }"
+      *ngTemplateOutlet="productList; context: { items: special }"
     ></ng-container>
   </div>
   <p *ngIf="bestSellers?.length === 0">No best sellers found.</p>
@@ -400,7 +415,9 @@
   <!--================shopby profession-->
   <section class="shop-by-profession py-5" style="background: #f9f9f9">
     <div class="container">
-      <h2 class="text-center mb-4">Shop by Profession</h2>
+<h2 class="text-center mb-4 fw-semibold">Shop by Profession</h2>
+
+
 
       <div id="professionCarousel" class="carousel slide" data-bs-ride="false">
         <!-- Carousel Indicators -->
@@ -432,7 +449,8 @@
                     class="img-fluid mb-2"
                     style="height: 150px; width: 100%; object-fit: contain"
                   />
-                  <p class="font-weight-medium">{{ item.profession }}</p>
+                  <p style="font-size: 1.25rem; font-weight: 600;">{{ item.profession }}</p>
+
                 </div>
               </div>
             </div>
@@ -452,8 +470,7 @@
                     [alt]="item.shotform"
                     class="img-fluid mb-2"
                     style="height: 150px; width: 100%; object-fit: contain"
-                  />
-                  <p class="font-weight-medium">{{ item.profession }}</p>
+                  /> <p style="font-size: 1.25rem; font-weight: 600;">{{ item.profession }}</p>
                 </div>
               </div>
             </div>
@@ -756,12 +773,14 @@
     <div class="card h-100 shadow-sm border rounded product-card position-relative">
       
       <div class="product-image text-center p-3" (click)="sub_cat(product)">
-        <img
-          [src]="product.high_image_1"
-          [alt]="product.name"
-          class="img-fluid"
-          style="height: 160px; object-fit: contain"
-        />
+       <img
+  [src]="product.high_image_1"
+  (error)="product.high_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'"
+  [alt]="product.name"
+  class="img-fluid"
+  style="height: 160px; object-fit: contain"
+/>
+
       </div>
       <div class="card-body p-3">
         <p class="text-muted mb-1 small brand">{{ product.brand }}</p>

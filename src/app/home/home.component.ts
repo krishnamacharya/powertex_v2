@@ -85,6 +85,7 @@ export class HomeComponent implements OnInit {
   scrollContainer: any;
   p: any;
 data: any;
+ 
 
   scrollLeft() {
     if (this.startIndex > 0) {
@@ -115,6 +116,7 @@ data: any;
   sidebanners4: any;
   videos: any = ["video1", "video2", "video3", "video4", "video5", "video6"];
   newArrival: any[] = [];
+  special: any[] = [];
     sidemenu: boolean = true
      d: string;
   e: string;
@@ -134,6 +136,7 @@ data: any;
     this.get_prof();
     this.get_banners();
     this.getNewArrivals();
+    this.getSpecialProducts();
 
 
     // this.get_sideBanners();
@@ -242,6 +245,13 @@ getNewArrivals() {
     this.newArrival = decodedData.Done;
     console.log("data ......done",this.newArrival)
   });
+}
+getSpecialProducts() {
+  this.service.getSpecialProducts().subscribe((resp) => {
+    const decodedData = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
+    this.special = decodedData.Done;
+    console.log("data ...special",this.special)
+  }); 
 }
 
   getprod_deatils() {
@@ -382,15 +392,7 @@ card1() {
       title: 'Ingco Water Pump',
       image: 'assets/images/promo1.png'     
     }];
-  professions = [
-    { name: 'Carpenter', image: 'assets/images/carpenter.png' },
-    { name: 'Demolition', image: 'assets/images/demolition2.png' },
-    { name: 'Electrician', image: 'assets/images/electrician.png' },
-    { name: 'Plumber', image: 'assets/images/plumber.png' },
-    { name: 'Repairing', image: 'assets/images/repair.png' },
-    { name: 'Painting', image: 'assets/images/painter.png' },
 
-  ];
 
  @ViewChild('newArrivalSlider') newArrivalSlider!: ElementRef;
   @ViewChild('bestSellersSlider') bestSellersSlider!: ElementRef;

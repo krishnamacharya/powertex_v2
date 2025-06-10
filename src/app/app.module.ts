@@ -311,6 +311,8 @@ import { WhModalComponent } from './wh-manager/wh-stock/wh-modal/wh-modal.compon
 import { BrandProtectionComponent } from './brand-protection/brand-protection.component';
 import { ShopByCategoryComponent } from './shop-by-category/shop-by-category.component';
 import { ProfessionwiseProductsComponent } from './professionwise-products/professionwise-products.component';
+import { NewArrivals1Component } from './new-arrivals1/new-arrivals1.component';
+import { SpecialProductsComponent } from './special-products/special-products.component';
 
 @NgModule({
   declarations: [
@@ -600,7 +602,9 @@ import { ProfessionwiseProductsComponent } from './professionwise-products/profe
     WhModalComponent,
     BrandProtectionComponent,
     ShopByCategoryComponent,
-    ProfessionwiseProductsComponent
+    ProfessionwiseProductsComponent,
+    NewArrivals1Component,
+    SpecialProductsComponent
     
   ],
   imports: [

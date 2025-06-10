@@ -30,9 +30,10 @@ interface Reviewdetails {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailComponent implements OnInit {
-wish_list(_t163: any,arg1: string) {
-throw new Error('Method not implemented.');
-}
+  p: any;
+  wish_list(_t163: any, arg1: string) {
+    throw new Error('Method not implemented.');
+  }
   starList: boolean[] = [true, true, true, true, true];
   rating: number;
   review_dtl: any;
@@ -115,18 +116,18 @@ throw new Error('Method not implemented.');
       return false;
     };
   }
-fetchProductDetails(): void {
-  this.globalService.getProductDetails(this.id).subscribe((res: any) => {
-    if (res && res.Done && res.Done.length > 0) {
-      this.details = res.Done[0];
-       this.relatedProducts = this.details.reletedproducs || [];
+  fetchProductDetails(): void {
+    this.globalService.getProductDetails(this.id).subscribe((res: any) => {
+      if (res && res.Done && res.Done.length > 0) {
+        this.details = res.Done[0];
+        this.relatedProducts = this.details.reletedproducs || [];
 
-      console.log(this.details)
-    } else {
-      console.error('Product details not found');
-    }
-  });
-}
+        console.log(this.details);
+      } else {
+        console.error('Product details not found');
+      }
+    });
+  }
 
   setStar(data: any) {
     this.rating = data + 1;
@@ -255,13 +256,29 @@ fetchProductDetails(): void {
         }
       );
   }
+  Options: any;
+  showslider: boolean = true;
+  resources2data: any = [];
+  minValue: number = 1;
+  maxValue: number = 10000;
+  sidemenu: boolean = true;
+  branding: any;
+  brand: any;
+  sub_cat(p) {
+    console.log();
+    if (p.productid) {
+      let category = p.category;
+      let sub_category = p.subcategory;
+      let model = p.modelno;
 
-  sub_cat() {
-    for (let p of this.details) {
-      this.subcatg = p.modelno;
-      console.log('sub', this.subcatg);
+      let obj = p;
+      localStorage.setItem('key', JSON.stringify(obj));
+      console.log(p);
+      // this.obj.setCategory(p);
+      console.log('clicked');
+      // this.router.navigateByUrl('/product-detail');
+      this.router.navigate(['/product-detail', p.productid]);
     }
-    return this.getattribute();
   }
   getattribute() {
     // this.spinner.show();
@@ -441,7 +458,7 @@ fetchProductDetails(): void {
       return this.globalService
         .getDatawithQueryParams2userid(
           '3.72',
-          p.productid, 
+          p.productid,
           this.loginUserData.user_id
         )
         .subscribe(
@@ -454,7 +471,7 @@ fetchProductDetails(): void {
           (error) => {
             // this.spinner.hide();
             // //this.ngxSmartService.getModal('errorModal').open();
-            this.dialog.open(ErrorModalComponent, { 
+            this.dialog.open(ErrorModalComponent, {
               data: { errorModal: true },
             });
           }
