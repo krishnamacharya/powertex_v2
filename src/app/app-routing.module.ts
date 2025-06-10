@@ -264,6 +264,8 @@ import { WhSubcatgComponent } from './wh-manager/wh-stock/wh-subcatg/wh-subcatg.
 import { BrandProtectionComponent } from './brand-protection/brand-protection.component';
 import { ShopByCategoryComponent } from './shop-by-category/shop-by-category.component';
 import { ProfessionwiseProductsComponent } from './professionwise-products/professionwise-products.component';
+import { NewArrivals1Component } from './new-arrivals1/new-arrivals1.component';
+import { SpecialProductsComponent } from './special-products/special-products.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -293,6 +295,8 @@ const routes: Routes = [
   { path: "Brands/:b", component: BrandsComponent },
   { path: "shop-by-category/:category", component: ShopByCategoryComponent },
   { path: 'professionwise-products/:profession', component: ProfessionwiseProductsComponent },
+  { path: "new-arrivals1", component: NewArrivals1Component },
+    { path: "specialproducts", component: SpecialProductsComponent },
 
 
   //Registered Customer-User
@@ -608,7 +612,7 @@ const routes: Routes = [
   },
   { path: 'po-print', component: PurchaseOrderPrintComponent, canActivate: [AuthGuard] },
   { path: "checkout/:id", component: StepperComponent, canActivate: [AuthGuard] },
-  { path: "profile", component: UserProfileComponent, canActivate: [AuthGuard] },
+  { path: "profile", component: UserProfileComponent },
   { path: "transport-generation", component: MakeChallanComponent, canActivate: [AuthGuard] },
   //{ path: "accountant-dashboard", component: AccountantDashboardComponent, canActivate: [AuthGuard] },
   // { path: "warehouse-dashboard", component: WhDashboardComponent, canActivate: [AuthGuard] },

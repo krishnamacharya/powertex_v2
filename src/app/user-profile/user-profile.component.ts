@@ -12,10 +12,28 @@ declare var $: any;
 @Component({
   selector: 'app-user-profile',
   standalone: false,
-  templateUrl: './user-profile.component.html',
+  templateUrl:'./user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
+  formData = {
+  address_category: '',
+  contact_person: '',
+  default1: '',
+  email: '',
+  mobile: '',
+  address1: '',
+  address2: '',
+  address3: '',
+  address4: '',
+  city: '',
+  state: '',
+  district: '',
+  pin: '',
+  country: '',
+  business_name: ''
+};
+
   loginUserData: any;
   edit: any = true;
   editUserEmail: any = true;
@@ -94,6 +112,11 @@ export class UserProfileComponent implements OnInit {
       }
     }
   };
+  
+  submitForm() {
+    
+    console.log('Form Data:', this.formData);
+  }
   cancelEditData() {
     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
     this.editUserEmail = true;

@@ -12,7 +12,7 @@ declare var $: any;
   selector: 'app-wish-listwh-pending-packing-moreinfo',
   standalone: false,
   
-  templateUrl: './wish-listwh-pending-packing-moreinfo.component.html',
+  templateUrl:'./wish-listwh-pending-packing-moreinfo.component.html',
   styleUrl: './wish-listwh-pending-packing-moreinfo.component.scss'
 })
 export class WishListwhPendingPackingMoreinfoComponent implements OnInit {

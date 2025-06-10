@@ -263,7 +263,14 @@ export class GlobalServiceService {
     );
   }
 
-
+ getNewArrivals1(): Observable<any> {
+    return this.http.get<any>(this.UrlData('newarrivals/'))
+  }
+getSpecialProducts(): Observable<ArrayBuffer> {
+  return this.http.get(this.UrlData('specialproducts/'), {
+    responseType: 'arraybuffer'
+  });
+}
 
   getBannerData(): Observable<any> {
     return this.http.get<any>(this.UrlData('get_banner/'))
