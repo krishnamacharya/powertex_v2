@@ -26,34 +26,30 @@ export class CategoryListComponent implements OnInit {
   category: any;
   sub_c: any;
   sub: any;
-  d: any;
-  e: any;
-  f: any;
-  resources2: any = [];
+
+
   option: any;
   modal: any = [];
-  range: any = [];
-  select: any;
-  order: string;
-  catgHidden: boolean = false;
+
+
+
+
   discount: number = 1;
   selected_disc: number = 2;
-  prof: any;
+
   wish_color = "#a09898";
   loginUserData: any;
   methodname: string;
   token: any;
   wish_alert: any;
   alert: boolean;
-  obj: any = {};
   user_id: any;
   icon: boolean;
   profession: any;
   log_as_cust: boolean = true;
   sort: any;
-  search: any;
+
   page: any;
-  resources2dataproduct: any;
   brand: any;
   p: any;
   title: any;
@@ -63,7 +59,7 @@ export class CategoryListComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private service: GlobalServiceService, public dataService: DataServiceService, private _location: Location,
     private eventemit: ComponentCommunicationService, private dialog: MatDialog, private spinner: NgxSpinnerService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute,) {
-    this.obj.id = 4;
+
   }
   isRoot: boolean;
 
@@ -81,7 +77,7 @@ export class CategoryListComponent implements OnInit {
     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
 
     this.sub = this.route.params.subscribe(params => {
-      this.prof = params['search'];
+
       this.profession = params['profession'];
 
       if (this.token == null) {
@@ -93,28 +89,10 @@ export class CategoryListComponent implements OnInit {
         }
       }
 
-      console.log("search", this.prof);
-      if (this.prof === undefined) {
-        this.d = params['b'];
-        this.sub_c = params['c'];
-        this.modal = (params['d']);
-        this.select = params['e'];
-        this.brand = '';
-        this.e = (this.sub_c);  // Still encoding for safety in URLs with spaces
-        console.log("Received route params:", this.d, this.sub_c, this.modal, this.select);
 
-        this.modal = (params['d']);
-        this.select = (params['e']);
-        this.brand = '';
-        // this.d=this.category;
-        this.e = (this.sub_c);
-        this.e = (this.e)
-        this.getdata1();
-      } else {
-        this.spinner.show();
-        this.getsearch();
-      }
-      console.log(this.d, "", this.sub_c, this.e, "", this.select, this.modal, this.user_id);
+
+      this.getsearch();
+
 
       this.spinner.show;
     }, error => {
@@ -132,58 +110,10 @@ export class CategoryListComponent implements OnInit {
     this._location.back();
   }
 
-  percenages: any = [];
-  clearfilters(p) {
-    this.selected_disc = p;
-    if (this.prof != undefined) {
-      this.spinner.show();
-      this.getsearch();
-    }
-    else {
-      {
 
-        this.spinner.show();
-        this.order = '',
-          this.range = [];
-        return this.service.getDatawithQueryParamsBrand('10', this.d, this.e, this.select, this.modal, this.brand).subscribe((resp) => {
-          this.spinner.hide();
-          console.log(resp);
-          this.resources2 = resp;
 
-          this.resources2data = this.resources2.data;
-          this.percenages = this.resources2.count[0];
-          this.minValue = this.resources2.price[0].min_price;
-          this.maxValue = this.resources2.price[0].max_price;
-          this.min = this.minValue;
-          this.max = this.maxValue;
-          this.Options = {
-            floor: this.minValue,
-            ceil: this.resources2.price[0].max_price,
-            // step: 1
-          };
-          if (this.resources2data.length >= 1) {
 
-            this.showslider = true;
 
-          }
-          else {
-            this.showslider = false;
-          }
-
-        },
-          error => {
-            this.spinner.hide();
-            this.dialog.open(ErrorModalComponent, {
-              data: { errorModal: true }
-            });
-            // console.log(error);
-          });
-
-      }
-    }
-  }
-
-  class: any = 'C_s';
   css1: any = 'img-thumbnail';
 
   getdata1() {
@@ -230,7 +160,7 @@ export class CategoryListComponent implements OnInit {
   //   return this.products.filter(p => p.mrp >= this.minPrice && p.mrp <= this.maxPrice);
   // }
 
- 
+
   onBrandCheckboxChange(event: Event, brand: string) {
     const input = event.target as HTMLInputElement;
     if (input.checked) {
@@ -240,7 +170,7 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
- // Extract unique brand names from products
+  // Extract unique brand names from products
   extractBrands() {
     const allBrands = this.products.map(p => p.brand).filter(Boolean);
     this.brands = [...new Set(allBrands)];
@@ -266,7 +196,7 @@ export class CategoryListComponent implements OnInit {
   }
 
 
-  //sort low to high and high to low
+  //sort low to high and high to low,Discount,brand filters
 
   sortOrder: 'asc' | 'desc' = 'asc'; // default is Low to High
 
@@ -318,14 +248,9 @@ export class CategoryListComponent implements OnInit {
     return this.sortedFilteredProducts.length === 0;
   }
 
-  Options: any;
-  showslider: boolean = true;
-  resources2data: any = [];
-  minValue: number = 1
-  maxValue: number = 10000;
   sidemenu: boolean = true
-  branding: any;
-  
+
+
   getsearch() {
 
     this.route.queryParams.subscribe(params => {
@@ -352,14 +277,11 @@ export class CategoryListComponent implements OnInit {
 
 
 
+
   sub_cat(p) {
 
     console.log(p);
     if (p.productid) {
-      let category = p.category;
-      let sub_category = p.subcategory;
-      let model = p.modelno;
-
       let obj = p;
       localStorage.setItem('key', JSON.stringify(obj));
       console.log(p);
@@ -370,159 +292,17 @@ export class CategoryListComponent implements OnInit {
     }
     else {
       this.sidemenu = true
-      this.d = p.category
-      this.e = p.subcategory
-
-
       // console.log("your Category", category, "productid", p.productid);
       this.getdata1()
     }
   }
-  resources3: any
-  resources2data1: any = []
-  //price order-filter
-  Ascend(order) {
 
-    this.resources2data1 = []
-    this.spinner.show();
-    this.order = "";
-    this.order = order;
-    // this.range=[];
-    if (this.prof != undefined) {
-      // this.getProfesionorderwise(this.order);
-    }
-    else {
-      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
-        console.log("--S1")
-        this.spinner.hide();
-        this.resources2 = resp;
-        this.resources2data1 = this.resources2.data;
-        for (var i = 0; i < this.resources2.data.length; i++) {
-          if (this.resources2.data[i]) {
-            var text = this.resources2.data[i].low_image_1.split("Powertexmodel");
-            this.resources2data1[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
-          }
-        }
-        this.minValue = this.resources2.price[0].min_price;
-        this.maxValue = this.resources2.price[0].max_price;
-        this.min = this.minValue;
-        this.max = this.maxValue;
-        this.Options = {
-          floor: this.minValue,
-          ceil: this.resources2.price[0].max_price,
-          // step: 1
-        };
-      },
-        (error) => {
-          this.spinner.hide();
-          this.dialog.open(ErrorModalComponent, {
-            data: { errorModal: true }
-          });
-          // console.log(error);
-        });
-    }
-
-  }
 
 
   onPageChange(Page: number) {
     this.Page = Page;
     window.scrollTo(0, 0);
   }
-
-
-  //price-filter
-  price_min(min, m) {
-
-    this.range = [];
-    // console.log(min);
-    // console.log(m);
-
-
-    let mini: number = Math.round(+min);
-    let maxi: number = Math.round(+m);
-    /* this.order = "acc" */
-    this.range.push(mini);
-    this.range.push(maxi);
-    console.log("range-", this.range);
-    let order = "";
-
-    return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
-      this.spinner.hide();
-
-      console.log("--S2")
-      console.log(resp);
-      this.resources2 = resp;
-      console.log(this.resources2, "rangedata");
-      this.resources2data1 = this.resources2.data;
-      for (var i = 0; i < this.resources2.data.length; i++) {
-        if (this.resources2.data[i]) {
-          var text = this.resources2.data[i].low_image_1.split("Powertexmodel");
-          this.resources2data1[i].low_image_1 = 'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel' + text[1];
-        }
-      }
-      this.percenages = this.resources2.count[0];
-
-    },
-      error => {
-        this.spinner.hide();
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal: true }
-        });
-        // console.log(error);
-      });
-
-  }
-  min: any;
-  max: any;
-
-  resourcesporder: any
-  resources2dataorderwise: any = []
-
-
-
-  price_max(min, m) {
-    console.log(min);
-    console.log(m);
-  }
-
-  price(min, max) {
-    console.log(min, "--", max);
-
-  }
-  disp_catg() {
-    this.catgHidden = !this.catgHidden;
-  }
-
-  disc(p) {
-    console.log(p);
-    this.selected_disc = p;
-    this.discount = p;
-    if (this.prof != undefined) {
-      // this.getProfesionWisePercent(this.discount);
-
-    }
-    else {
-      this.spinner.show();
-      return this.service.getDatawithQueryParams7User_idBrand('10', this.d, this.e, this.select, this.modal, this.order, this.range, this.discount, this.brand, this.user_id).subscribe((resp) => {
-        console.log("--S3")
-        this.spinner.hide();
-        this.resources2 = resp;
-        this.resources2data = this.resources2.data;
-      },
-        error => {
-          this.spinner.hide();
-          this.dialog.open(ErrorModalComponent, {
-            data: { errorModal: true }
-          });
-          // console.log(error);
-        });
-    }
-  }
-  resources2datacount: any = [];
-
-
-
 
   catg_crumb(d) {
     let category = d;
