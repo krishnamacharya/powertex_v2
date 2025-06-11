@@ -146,128 +146,198 @@
 
       <div *ngIf="selectedTabIndex === 1">
         <h4>Add Address</h4>
-      <form (ngSubmit)="submitForm()" #myForm="ngForm" class="p-4 border rounded shadow-sm bg-light">
-  <!-- Row 1 -->
-  <div class="row mb-3">
-    <div class="col-md-4">
-      <label class="form-label">Address Category</label>
-      <select name="address_category" class="form-select border border-dark-50"
-              [(ngModel)]="formData.address_category">
-        <option value="">Select Category</option>
-        <option value="HOME">Billing Address</option>
-        <option value="OFFC">Shipping Address</option>
-    
-      </select>
-    </div>
+        <form
+          (ngSubmit)="submitForm()"
+          #myForm="ngForm"
+          class="p-4 border rounded shadow-sm bg-light"
+        >
+          <!-- Row 1 -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">Address Category</label>
+              <select
+                name="address_category"
+                class="form-select border border-dark-50"
+                [(ngModel)]="formData.address_category"
+              >
+                <option value="">Select Category</option>
+                <option value="HOME">Billing Address</option>
+                <option value="OFFC">Shipping Address</option>
+              </select>
+            </div>
 
-    <div class="col-md-4">
-      <label class="form-label">Contact Person</label>
-      <input type="text" name="contact_person" class="form-control border border-dark-50"
-             maxlength="30" [(ngModel)]="formData.contact_person" />
-    </div>
+            <div class="col-md-4">
+              <label class="form-label">Contact Person</label>
+              <input
+                type="text"
+                name="contact_person"
+                class="form-control border border-dark-50"
+                maxlength="30"
+                [(ngModel)]="formData.contact_person"
+              />
+            </div>
 
-    <div class="col-md-4">
-      <label class="form-label">Default</label>
-      <select name="default1" class="form-select border border-dark-50"
-              [(ngModel)]="formData.default1">
-        <option value="">Select</option>
-        <option value="Y">Yes</option>
-        <option value="N">No</option>
-      </select>
-    </div>
-  </div>
+            <div class="col-md-4">
+              <label class="form-label">Default</label>
+              <select
+                name="default1"
+                class="form-select border border-dark-50"
+                [(ngModel)]="formData.default1"
+              >
+                <option value="">Select</option>
+                <option value="Y">Yes</option>
+                <option value="N">No</option>
+              </select>
+            </div>
+          </div>
 
-  <!-- Row 2 -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <label class="form-label">Email</label>
-      <input type="email" name="email" class="form-control border border-dark-50"
-             maxlength="100" [(ngModel)]="formData.email" />
-    </div>
+          <!-- Row 2 -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                class="form-control border border-dark-50"
+                maxlength="100"
+                [(ngModel)]="formData.email"
+              />
+            </div>
 
-    <div class="col-md-6">
-      <label class="form-label">Mobile</label>
-      <input type="text" name="mobile" class="form-control border border-dark-50"
-             maxlength="20" [(ngModel)]="formData.mobile" />
-    </div>
-  </div>
+            <div class="col-md-6">
+              <label class="form-label">Mobile</label>
+              <input
+                type="text"
+                name="mobile"
+                class="form-control border border-dark-50"
+                maxlength="20"
+                [(ngModel)]="formData.mobile"
+              />
+            </div>
+          </div>
 
-  <!-- Row 3 -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <label class="form-label">Address 1</label>
-      <textarea name="address1" class="form-control border border-dark-50"
-                [(ngModel)]="formData.address1" rows="2"></textarea>
-    </div>
+          <!-- Row 3 -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Address 1</label>
+              <textarea
+                name="address1"
+                class="form-control border border-dark-50"
+                [(ngModel)]="formData.address1"
+                rows="2"
+              ></textarea>
+            </div>
 
-    <div class="col-md-6">
-      <label class="form-label">Address 2</label>
-      <textarea name="address2" class="form-control border border-dark-50"
-                [(ngModel)]="formData.address2" rows="2"></textarea>
-    </div>
-  </div>
+            <div class="col-md-6">
+              <label class="form-label">Address 2</label>
+              <textarea
+                name="address2"
+                class="form-control border border-dark-50"
+                [(ngModel)]="formData.address2"
+                rows="2"
+              ></textarea>
+            </div>
+          </div>
 
-  <!-- Row 4 -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <label class="form-label">Address 3</label>
-      <input type="text" name="address3" class="form-control border border-dark-50"
-             maxlength="50" [(ngModel)]="formData.address3" />
-    </div>
+          <!-- Row 4 -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Address 3</label>
+              <input
+                type="text"
+                name="address3"
+                class="form-control border border-dark-50"
+                maxlength="50"
+                [(ngModel)]="formData.address3"
+              />
+            </div>
 
-    <div class="col-md-6">
-      <label class="form-label">Address 4</label>
-      <input type="text" name="address4" class="form-control border border-dark-50"
-             maxlength="50" [(ngModel)]="formData.address4" />
-    </div>
-  </div>
+            <div class="col-md-6">
+              <label class="form-label">Address 4</label>
+              <input
+                type="text"
+                name="address4"
+                class="form-control border border-dark-50"
+                maxlength="50"
+                [(ngModel)]="formData.address4"
+              />
+            </div>
+          </div>
 
-  <!-- Row 5 -->
-  <div class="row mb-3">
-    <div class="col-md-4">
-      <label class="form-label">City</label>
-      <input type="text" name="city" class="form-control border border-dark-50"
-             maxlength="50" [(ngModel)]="formData.city" />
-    </div>
+          <!-- Row 5 -->
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label">City</label>
+              <input
+                type="text"
+                name="city"
+                class="form-control border border-dark-50"
+                maxlength="50"
+                [(ngModel)]="formData.city"
+              />
+            </div>
 
-    <div class="col-md-4">
-      <label class="form-label">State</label>
-      <input type="text" name="state" class="form-control border border-dark-50"
-             maxlength="50" [(ngModel)]="formData.state" />
-    </div>
+            <div class="col-md-4">
+              <label class="form-label">State</label>
+              <input
+                type="text"
+                name="state"
+                class="form-control border border-dark-50"
+                maxlength="50"
+                [(ngModel)]="formData.state"
+              />
+            </div>
 
-    <div class="col-md-4">
-      <label class="form-label">District</label>
-      <input type="text" name="district" class="form-control border border-dark-50"
-             maxlength="30" [(ngModel)]="formData.district" />
-    </div>
-  </div>
+            <div class="col-md-4">
+              <label class="form-label">District</label>
+              <input
+                type="text"
+                name="district"
+                class="form-control border border-dark-50"
+                maxlength="30"
+                [(ngModel)]="formData.district"
+              />
+            </div>
+          </div>
 
-  <!-- Row 6 -->
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <label class="form-label">PIN</label>
-      <input type="text" name="pin" class="form-control border border-dark-50"
-             maxlength="10" [(ngModel)]="formData.pin" />
-    </div>
+          <!-- Row 6 -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">PIN</label>
+              <input
+                type="text"
+                name="pin"
+                class="form-control border border-dark-50"
+                maxlength="10"
+                [(ngModel)]="formData.pin"
+              />
+            </div>
 
-    <div class="col-md-6">
-      <label class="form-label">Country</label>
-      <input type="text" name="country" class="form-control border border-dark-50"
-             maxlength="20" [(ngModel)]="formData.country" />
-    </div>
-  </div>
+            <div class="col-md-6">
+              <label class="form-label">Country</label>
+              <input
+                type="text"
+                name="country"
+                class="form-control border border-dark-50"
+                maxlength="20"
+                [(ngModel)]="formData.country"
+              />
+            </div>
+          </div>
 
-  <!-- Final Row -->
-  <div class="mb-3">
-    <label class="form-label">Business Name</label>
-    <input type="text" name="business_name" class="form-control border border-dark-50"
-           [(ngModel)]="formData.business_name" />
-  </div>
+          <!-- Final Row -->
+          <div class="mb-3">
+            <label class="form-label">Business Name</label>
+            <input
+              type="text"
+              name="business_name"
+              class="form-control border border-dark-50"
+              [(ngModel)]="formData.business_name"
+            />
+          </div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
       </div>
 
       <div *ngIf="selectedTabIndex === 2">

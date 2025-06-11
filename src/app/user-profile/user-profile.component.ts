@@ -31,9 +31,10 @@ export class UserProfileComponent implements OnInit {
   district: '',
   pin: '',
   country: '',
-  business_name: ''
+  business_name: '',
+  user_id:localStorage.getItem('user_id'),
 };
-
+ 
   loginUserData: any;
   edit: any = true;
   editUserEmail: any = true;
@@ -112,10 +113,19 @@ export class UserProfileComponent implements OnInit {
       }
     }
   };
-  
-  submitForm() {
-    
+ submitForm() {
     console.log('Form Data:', this.formData);
+
+    this.globalService.postProfileAddress(this.formData).subscribe({
+      next: (response) => {
+        console.log('Success:', response);
+        // Optionally show success message or reset form
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        // Optionally show error message
+      },
+    });
   }
   cancelEditData() {
     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));

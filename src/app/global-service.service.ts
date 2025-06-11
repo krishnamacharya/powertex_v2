@@ -325,7 +325,9 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
   const params = new HttpParams().set('productid', productId);
   return this.http.get<any>(this.UrlData('get_product_details/'), { params });
 }
-
+ postProfileAddress(data: any) {
+    return this.http.post(this.UrlData('post_profile_address/'), data);
+  }
   //------------------------------------------------------------------------------------------------------- New Logic end
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(
@@ -885,8 +887,10 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
 
   private usernameSource = new BehaviorSubject<string | null>(null);
   private accessSource = new BehaviorSubject<string | null>(null);
+   private userIdSource = new BehaviorSubject<string | null>(null);
   username$ = this.usernameSource.asObservable();
   access$ = this.accessSource.asObservable();
+  userId$ =this.userIdSource.asObservable();
 
   setUsername(name: string) {
     this.usernameSource.next(name);
@@ -902,5 +906,11 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
 
   getAccessToken(): any | null {
     return localStorage.getItem('access')
+  }
+  setUserId(user_id:any){
+        this.userIdSource.next(user_id)
+  }
+   getUserId(): any | null {
+    return localStorage.getItem('user_id')
   }
 }

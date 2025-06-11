@@ -208,8 +208,9 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         localStorage.setItem('username', username);
         localStorage.setItem("access",access);
         localStorage.setItem('loginUserData', JSON.stringify({ user_id: this.logindata.userid, first_name:this.logindata.first_name, mobile:this.logindata.Mobile}));
-
+        localStorage.setItem('user_id',this.logindata.userid)
         this.route.navigateByUrl('/home');
+        console.log(this.logindata)
         // ✅ Notify other components
         this.authService.setUsername(username);
          this.authService.setAccessToken(access);
