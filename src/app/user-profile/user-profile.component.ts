@@ -70,6 +70,10 @@ export class UserProfileComponent implements OnInit {
 
   loginData: any = {};
 
+  toggleTab(index: number) {
+  this.selectedTabIndex = this.selectedTabIndex === index ? null : index;
+}
+
   ngOnInit() {
     this.alert = false;
     this.token = localStorage.getItem('token');

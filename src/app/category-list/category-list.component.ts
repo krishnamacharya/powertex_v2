@@ -12,7 +12,6 @@ import { ToasterService } from './../toastr-service.service';
 import { Location, } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorModalComponent } from '../authentication-views/error-modal/error-modal.component';
-import { LoginModalComponent } from '../authentication-views/login-modal/login-modal.component';
 declare var $: any;
 
 @Component({
@@ -26,17 +25,10 @@ export class CategoryListComponent implements OnInit {
   category: any;
   sub_c: any;
   sub: any;
-
-
   option: any;
   modal: any = [];
-
-
-
-
   discount: number = 1;
   selected_disc: number = 2;
-
   wish_color = "#a09898";
   loginUserData: any;
   methodname: string;
@@ -48,7 +40,6 @@ export class CategoryListComponent implements OnInit {
   profession: any;
   log_as_cust: boolean = true;
   sort: any;
-
   page: any;
   brand: any;
   p: any;
@@ -201,7 +192,7 @@ export class CategoryListComponent implements OnInit {
   sortOrder: 'asc' | 'desc' = 'asc'; // default is Low to High
 
   get sortedFilteredProducts() {
-    let filtered = this.products.filter(p => p.mrp >= this.minPrice && p.mrp <= this.maxPrice);
+    let filtered = this.products.filter((p: any) => p.mrp >= this.minPrice && p.mrp <= this.maxPrice);
 
     const activeRanges = this.discountRanges.filter(r => r.checked);
     if (activeRanges.length > 0) {
@@ -217,7 +208,7 @@ export class CategoryListComponent implements OnInit {
     }
 
 
-    return filtered.sort((a, b) => {
+    return filtered.sort((a: any, b) => {
       return this.sortOrder === 'asc' ? a.mrp - b.mrp : b.mrp - a.mrp;
     });
   }
@@ -243,7 +234,7 @@ export class CategoryListComponent implements OnInit {
   clearDiscountFilters() {
     this.discountRanges.forEach(range => (range.checked = false));
   }
-  // Method to check if no products are found for the selected discount range
+
   get isNoProductsForDiscount() {
     return this.sortedFilteredProducts.length === 0;
   }
