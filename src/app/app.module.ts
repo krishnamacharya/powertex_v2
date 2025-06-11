@@ -313,6 +313,8 @@ import { ShopByCategoryComponent } from './shop-by-category/shop-by-category.com
 import { ProfessionwiseProductsComponent } from './professionwise-products/professionwise-products.component';
 import { NewArrivals1Component } from './new-arrivals1/new-arrivals1.component';
 import { SpecialProductsComponent } from './special-products/special-products.component';
+import { AddAddressComponent } from './add-address/add-address.component';
+import { GetAddressComponent } from './get-address/get-address.component';
 
 @NgModule({
   declarations: [
@@ -604,7 +606,9 @@ import { SpecialProductsComponent } from './special-products/special-products.co
     ShopByCategoryComponent,
     ProfessionwiseProductsComponent,
     NewArrivals1Component,
-    SpecialProductsComponent
+    SpecialProductsComponent,
+    AddAddressComponent,
+    GetAddressComponent
     
   ],
   imports: [

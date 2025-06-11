@@ -328,6 +328,12 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
  postProfileAddress(data: any) {
     return this.http.post(this.UrlData('post_profile_address/'), data);
   }
+  getUserAddress(): Observable<any> {
+  const userId = localStorage.getItem('user_id'); // Get user ID from localStorage
+  const url = this.UrlData(`post_profile_address/?id=${userId}`);
+  return this.http.get<any>(url);
+}
+
   //------------------------------------------------------------------------------------------------------- New Logic end
   getDatawithMethodParam12(methodName, param1, param2, param3) {
     return this.http.get(

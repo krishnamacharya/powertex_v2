@@ -266,6 +266,8 @@ import { ShopByCategoryComponent } from './shop-by-category/shop-by-category.com
 import { ProfessionwiseProductsComponent } from './professionwise-products/professionwise-products.component';
 import { NewArrivals1Component } from './new-arrivals1/new-arrivals1.component';
 import { SpecialProductsComponent } from './special-products/special-products.component';
+import { AddAddressComponent } from './add-address/add-address.component';
+import { GetAddressComponent } from './get-address/get-address.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -296,7 +298,9 @@ const routes: Routes = [
   { path: "shop-by-category/:category", component: ShopByCategoryComponent },
   { path: 'professionwise-products/:profession', component: ProfessionwiseProductsComponent },
   { path: "new-arrivals1", component: NewArrivals1Component },
-    { path: "specialproducts", component: SpecialProductsComponent },
+  { path: "specialproducts", component: SpecialProductsComponent },
+  {path: "add-address",component:AddAddressComponent},
+  {path:"get-address",component:GetAddressComponent},
 
 
   //Registered Customer-User
