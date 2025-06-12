@@ -65,13 +65,13 @@ export class UserProfileComponent implements OnInit {
   otpField: any;
   otp: any;
   modalService: NgbModal;
-  selectedTabIndex: number = 0;
+  selectedTabIndex: number| null = null; // initially closed
   constructor(private authService: GlobalServiceService, private spinner: NgxSpinnerService, private globalService: GlobalServiceService, private route: Router, private eventEmmit: ComponentCommunicationService, private dataService: DataServiceService, private dialog: MatDialog, private toasterService: ToasterService) {
   }
 
   loginData: any = {};
 
-  toggleTab(index: number) {
+  toggleTab(index: number):void {
   this.selectedTabIndex = this.selectedTabIndex === index ? null : index;
 }
 
