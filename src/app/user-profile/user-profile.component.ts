@@ -47,7 +47,12 @@ export class UserProfileComponent implements OnInit {
   otpField: any;
   otp: any;
   modalService: NgbModal;
-  selectedTabIndex: number = 0;
+  selectedTabIndex: number| null = null; // initially closed
+
+
+
+
+
   service: any;
   constructor(
     private authService: GlobalServiceService,
