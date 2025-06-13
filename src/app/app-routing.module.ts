@@ -300,6 +300,7 @@ const routes: Routes = [
   { path: "new-arrivals1", component: NewArrivals1Component },
   { path: "specialproducts", component: SpecialProductsComponent },
   {path: "add-address",component:AddAddressComponent},
+  {path: "add-address/:seqNo",component:AddAddressComponent},
   {path:"get-address",component:GetAddressComponent},
 
 

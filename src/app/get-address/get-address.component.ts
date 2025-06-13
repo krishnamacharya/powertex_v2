@@ -12,7 +12,7 @@ declare var $: any;
 @Component({
   selector: 'app-get-address',
   standalone: false,
-  templateUrl: './get-address.component.html',
+  templateUrl:'./get-address.component.html',
   styleUrl: './get-address.component.scss'
 })
 export class GetAddressComponent {
@@ -32,6 +32,13 @@ export class GetAddressComponent {
     error: (err) => {
       console.error('Error fetching addresses:', err);
     }
+  });
+}
+
+editAddress(address:any) {
+  this.route.navigate(['/add-address'], {
+    queryParams: { seq_no: address.seq_no},
+     state: { address },
   });
 }
 

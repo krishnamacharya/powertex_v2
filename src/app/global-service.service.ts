@@ -40,8 +40,6 @@ export class GlobalServiceService {
 
 
 
-
-
   updateData(body, methodName) {
     return this.http.put(this.posturl + methodName, body, this.options);
   }
@@ -328,10 +326,22 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
  postProfileAddress(data: any) {
     return this.http.post(this.UrlData('post_profile_address/'), data);
   }
+  updateProfileAddress(seqNo: string, data: any) {
+  return this.http.patch(this.UrlData(`post_profile_address/${seqNo}`), data);
+}
+
   getUserAddress(): Observable<any> {
   const userId = localStorage.getItem('user_id'); // Get user ID from localStorage
   const url = this.UrlData(`post_profile_address/?id=${userId}`);
   return this.http.get<any>(url);
+}
+getProfileAddressById(seq_no: string) {
+  return this.http.get(this.UrlData(`post_profile_address/${seq_no}`));
+}
+
+
+changePassword(payload: any) {
+  return this.http.post(this.UrlData('Changepassword/'), payload);
 }
 
   //------------------------------------------------------------------------------------------------------- New Logic end

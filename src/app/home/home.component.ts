@@ -196,28 +196,6 @@ data: any;
         });
       });
   }
-
-  //   get_sideBanners() {
-  //     return this.service.getBannerData().subscribe((resp) => {
-
-  //       // this.sidebanners = resp;
-  //       // this.sidebanners1 = this.sidebanners.filter((e) => e.Slider == 'SLIDER1')
-  //       // this.sidebanners2 = this.sidebanners.filter((e) => e.Slider == 'SLIDER2')
-  //       // this.sidebanners3 = this.sidebanners.filter((e) => e.Slider == 'SLIDER3')
-  //       // this.sidebanners4 = this.sidebanners.filter((e) => e.Slider == 'SLIDER4')
-
-  //     },
-  //       error => {
-  //         // this.spinner.hide();
-  //         // //this.ngxSmartService.getModal('errorModal').open();
-  // this.dialog.open(ErrorModalComponent, {
-  //       data: { errorModal:true }
-  //     });
-  //         this.dialog.open(ErrorModalComponent, {
-  //           data: { errorModal:true }
-  //         });
-  //       });
-  //   }
   ImgClick(data) {
     this.router.navigate(['/search', data]);
 
@@ -235,7 +213,7 @@ data: any;
 
     this.service.getDatawithQueryParams1('4.8', category).subscribe((resp) => {
       this.resources1 = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
-      this.catg_prod_list = this.resources1;  // 👈 store the array here
+      this.catg_prod_list = this.resources1; 
       this.getprod_deatils();
     });
   }
@@ -244,7 +222,7 @@ getNewArrivals() {
     const decodedData = JSON.parse(new TextDecoder().decode(new Uint8Array(resp)));
     this.newArrival = decodedData.Done;
     console.log("data ......done",this.newArrival)
-  });
+  }); 
 }
 getSpecialProducts() {
   this.service.getSpecialProducts().subscribe((resp) => {
@@ -287,62 +265,8 @@ card1() {
   card3dat: any;
   card3discp: any;
 
-  //   card2(){
-  //     this.service.getData3('sup/getcardtwolist').subscribe((resp) => {
-  //       this.card2dat = resp;
-  //       this.card2discp=this.card2dat.data;
-  //     console.log(this.card2dat,"card2dat");     
-  //     },
-  //       error => {
-
-  // this.dialog.open(ErrorModalComponent, {
-  //       data: { errorModal:true }
-  //     });
-  //         this.dialog.open(ErrorModalComponent, {
-  //           data: { errorModal:true }
-  //         });
-  //       });
-
-
-
-  //   }
-
-  //   card3(){
-  //     this.service.getData3('sup/getcardthreelist').subscribe((resp) => {
-  //       this.card3dat = resp;
-  //       this.card3discp=this.card3dat.data;
-  //     console.log(this.card3dat,"card3dat");     
-  //     },
-  //       error => {
-
-  // this.dialog.open(ErrorModalComponent, {
-  //       data: { errorModal:true }
-  //     });
-  //         this.dialog.open(ErrorModalComponent, {
-  //           data: { errorModal:true }
-  //         });
-  //       });
-
-
-
-  //   }
-
-
-  //   shop_by_prof(data) {
-
-  //        console.log("prof",data);      
-
-  //     this.router.navigate(['/category',data.shotform ,data]);
-
-  // }
-
   shop_by_prof(p) {
 
-    // this.spinner.show();
-
-    // this.service.getDatawithQueryParams1('1.02', data.shotform).subscribe((data) => {
-    // console.log("prof",data);      
-    //  });
     this.router.navigate(['/category', p.shotform]);
     // this.spinner.show();
   }

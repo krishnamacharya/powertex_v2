@@ -83,57 +83,6 @@ selectedBrands: any[] = [];
     });
   }
 
-  // card1(arg0: { Category: string; }) {
-  //   this.spinner.show();
-  //   this.p1 =arg0.Category;;
-  //   this.p2 ="";
-  //   this.p3 = "All";
-  //   this.order = '',
-  //     this.range = [];
-  //   return this.service.getDatawithQueryParamsBrand('7.3', this.p1, this.p2,this.p3, this.order, this.range).subscribe((resp) => {
-  //     this.spinner.hide();
-  //     console.log(resp, "data1");
-  //     this.resources2 = resp;
-  //     console.log(resp, "gfrdeewgergergreterg");
-
-  //     this.resources2dataproduct = this.resources2.data;
-  //     this.percenages = this.resources2.count[0];
-  //     this.minValue = this.resources2.price[0].min_price;
-  //     this.maxValue = this.resources2.price[0].max_price;
-  //     this.brands = this.resources2.brand;
-  //     console.log(this.brands, "kjjhjghjjkhgj,bhjg")
-  //     this.min = this.minValue;
-  //     this.max = this.maxValue;
-
-  //     this.Options = {
-  //       floor: this.minValue,
-  //       ceil: this.resources2.price[0].max_price,
-
-  //       // step: 1
-  //     };
-  //     this.Ascend("acc")
-  //     if (this.resources2dataproduct.length >= 1) {
-
-  //       this.showslider = true;
-
-  //     }
-  //     else {
-  //       this.showslider = false;
-  //     }
-
-  //   },
-  //     error => {
-  //       this.spinner.hide();
-  //       this.dialog.open(ErrorModalComponent, {
-  //   data: { errorModal:true }
-  // });
-  //       // console.log(error);
-  //     });
-  // }
-
-  // ngOnDestroy() {
-  //   this.sub.unsubscribe();
-  // }
   getProductsByCategory(category: string): void {
     this.service.getProductsByCategory(category).subscribe((data: any) => {
       this.products = data.Done;
@@ -253,66 +202,8 @@ selectedBrands: any[] = [];
   goBack() {
     this._location.back();
   }
-  /* ================current location====================== */
-  /* goToPage(pageNum) {
-    
-   this.router.navigate(['%app-category-list'], { queryParams: { page: pageNum } });
- }  */
-  /*\ nextPage() {
   
-    this.router.navigate(['%app-category-list'], { queryParams: { page:  this.Page + 1 } });
-  } */
-  /* ======================================= */
   percenages: any = [];
-  // clearfilters(p) {
-  //   this.selected_disc = p;
-  //   if (this.prof != undefined) {
-  //     this.spinner.show();
-  //     this.getsearch();
-  //   }
-  //   else {
-  //     {
-
-  //       this.spinner.show();
-  //       this.order = '',
-  //         this.range = [];
-  //       return this.service.getDatawithQueryParamsBrand('10', this.d, this.e, this.select, this.modal, this.brand).subscribe((resp) => {
-  //         this.spinner.hide();
-  //         console.log(resp);
-  //         this.resources2 = resp;
-
-  //         this.resources2data = this.resources2.data;
-  //         this.percenages = this.resources2.count[0];
-  //         this.minValue = this.resources2.price[0].min_price;
-  //         this.maxValue = this.resources2.price[0].max_price;
-  //         this.min = this.minValue;
-  //         this.max = this.maxValue;
-  //         this.Options = {
-  //           floor: this.minValue,
-  //           ceil: this.resources2.price[0].max_price,
-  //           // step: 1
-  //         };
-  //         if (this.resources2data.length >= 1) {
-
-  //           this.showslider = true;
-
-  //         }
-  //         else {
-  //           this.showslider = false;
-  //         }
-
-  //       },
-  //         error => {
-  //           this.spinner.hide();
-  //           this.dialog.open(ErrorModalComponent, {
-  //   data: { errorModal:true }
-  // });
-  //           // console.log(error);
-  //         });
-
-  //     }
-  //   }
-  // }
   brands: any = [];
   class: any = 'C_s';
   css1: any = 'img-thumbnail';
