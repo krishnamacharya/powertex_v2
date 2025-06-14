@@ -343,6 +343,12 @@ getProfileAddressById(seq_no: string) {
 changePassword(payload: any) {
   return this.http.post(this.UrlData('Changepassword/'), payload);
 }
+getWishlist(userId: number) {
+  return this.http.get<any[]>(this.UrlData(`wishlist/?userid=${userId}`));
+}
+
+
+
 
   //------------------------------------------------------------------------------------------------------- New Logic end
   getDatawithMethodParam12(methodName, param1, param2, param3) {

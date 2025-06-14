@@ -268,6 +268,7 @@ import { NewArrivals1Component } from './new-arrivals1/new-arrivals1.component';
 import { SpecialProductsComponent } from './special-products/special-products.component';
 import { AddAddressComponent } from './add-address/add-address.component';
 import { GetAddressComponent } from './get-address/get-address.component';
+import { WishListComponent } from './wish-list/wish-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -306,7 +307,7 @@ const routes: Routes = [
 
   //Registered Customer-User
   // { path: "wishlist", component: WishListComponent, canActivate: [AuthGuard] },
-  { path: "wishlist", component: ViewCartComponent, canActivate: [AuthGuard] },
+  { path: "wishlist", component: WishListComponent, canActivate: [AuthGuard] },
   { path: "viewcart", component: ViewCartComponent },
   // { path: "viewcart", component: ViewCartComponent },
   { path: "myOrders", component: MyOrdersComponent },

@@ -9,23 +9,38 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-wish-list',
   standalone: false,
-  
+
   templateUrl: './wish-list.component.html',
-  styleUrl: './wish-list.component.scss'
+  styleUrl: './wish-list.component.scss',
 })
 export class WishListComponent implements OnInit {
+  pPage: string | number;
+  viewDetails(_t19: {
+    long_name: string;
+    enduser_price: number;
+    mrp: number;
+    discount_e: number;
+    image: string;
+  }) {
+    throw new Error('Method not implemented.');
+  }
+  wishList: any[] = [];
   loginUserData: any;
-  wishList: any = [];
   methodname: any;
   token: string;
   obj: any = {};
   wish_alert: any;
   alert: boolean;
   icon: boolean;
-  p:any;
+  p: any;
   spinner = inject(NgxSpinnerService);
 
-  constructor(private golbalService: GlobalServiceService,public dialog: MatDialog, private eventemit: ComponentCommunicationService,  private toasterService:ToasterService) {
+  constructor(
+    private golbalService: GlobalServiceService,
+    public dialog: MatDialog,
+    private eventemit: ComponentCommunicationService,
+    private toasterService: ToasterService
+  ) {
     this.obj.id = 1;
   }
 
@@ -34,106 +49,105 @@ export class WishListComponent implements OnInit {
     this.alert = false;
     this.token = localStorage.getItem('token');
     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
-    this.getData();
+    // this.getData();
+    this.fetchWishlist();
   }
+fetchWishlist(): void {
+  const userId = 18; 
 
-  getData() {
-    this.spinner.show();
-    this.golbalService.getDatawithQueryParams1('7.2', this.loginUserData.user_id).subscribe((resp) => {
-      this.spinner.hide();
-      resp;
-      this.wishList = resp;
-      console.log(this.wishList);
+  this.golbalService.getWishlist(userId).subscribe({
+    next: (data: any[]) => {
+       
+      this.wishList = data
+        .filter(item => item.dtl && item.dtl.length > 0)
+        .map(item => ({
+          ...item.dtl[0],
+          srlno: item.srlno,  
+          wishlist_id: item.wishlist,
+        }));
     },
-     error => {
-           this.spinner.hide();
-           this.dialog.open(ErrorModalComponent, {
-             data: { errorModal:true }
-           });
-           // this.ngxSmartService.getModal('errorModal').open();
-     
-         });
-  }
-
-  //remove wishlist 
-  // remove(obj){
-  //   this.methodname = 'delete_wishlist/?seq_no='+seqno;
-  //     this.golbalService.deleteData(this.methodname).subscribe(data=>{
-  //       if(data.status=="deleted"){
-  //         alert('Product Deleted Successfully');
-  //         this.getData();
-  //       }
-  //     })
-  // }
-
-  //update wishlist
+    error: (err) => {
+      console.error('Error fetching wishlist:', err);
+    },
+  });
+}
+ 
   remove(obj) {
     this.spinner.show();
-    let body = { "s.no": obj.seq_no, "productid": obj.productid, "user_id": this.loginUserData.user_id, "wishlist": 0 }
-    console.log(body)
-    this.methodname = "wishlist_insert/";
-    this.golbalService.postData(body, this.methodname).subscribe(data => {
-      this.spinner.hide();
-      console.log(data);
-      if (data['Status'] == 0) {
-        this.wish_alert = "This Item Removed"
-        this.addwish();
-        this.obj.wishList_count = data['count'];
-        this.obj.id = 4;
-        this.eventemit.fire(this.obj);
-        this.getData();
+    let body = {
+      's.no': obj.seq_no,
+      productid: obj.productid,
+      user_id: this.loginUserData.user_id,
+      wishlist: 0,
+    };
+    console.log(body);
+    this.methodname = 'wishlist_insert/';
+    this.golbalService.postData(body, this.methodname).subscribe(
+      (data) => {
+        this.spinner.hide();
+        console.log(data);
+        if (data['Status'] == 0) {
+          this.wish_alert = 'This Item Removed';
+          this.addwish();
+          this.obj.wishList_count = data['count'];
+          this.obj.id = 4;
+          this.eventemit.fire(this.obj);
+          // this.getData();
+        }
+      },
+      (error) => {
+        this.spinner.hide();
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true },
+        });
+        // this.ngxSmartService.getModal('errorModal').open();
       }
-    },
-    error => {
-      this.spinner.hide();
-      this.dialog.open(ErrorModalComponent, {
-        data: { errorModal:true }
-      });
-      // this.ngxSmartService.getModal('errorModal').open();
-
-    });
+    );
   }
 
   addtocart(item) {
     this.spinner.show();
-    console.log(item.productid)
+    console.log(item.productid);
     if (this.token != '' && this.token != undefined) {
-      this.methodname = "addtocart_site/";
-      let body = { "user_id": this.loginUserData.user_id, "productid": item.productid, "qty": 1 }
-      this.golbalService.postData(body, this.methodname).subscribe((data) => {
-        this.spinner.hide();
-        if (data['Status'] == "Update sucessfully") {
-         
-          
-          /* this.wish_alert = "This Item Already Added to Cart" */
-          // this.icon = true;
-          this.addwish();
-          // this.message=data.Status;
-          this.obj.cartItem_count = data['count'];
-          this.obj.id = 1;
-          this.eventemit.fire(this.obj);
-          //alert("This Item Already Added to Cart");
-          //$('#alrdyItemAddedModal').modal('show');
-          //this.router.navigateByUrl('viewcart');
-        } else if (data['Status'] == "Inserted sucessfully") {
-          this.wish_alert = "Added to Cart"
-          // this.icon = true;
-          this.addwish();
-          //  this.message=data.Status;
-          this.obj.cartItem_count = data['count'];
-          this.eventemit.fire(this.obj);
-          //$('#insertItemModal').modal('show');
-          //alert(data.Status);
+      this.methodname = 'addtocart_site/';
+      let body = {
+        user_id: this.loginUserData.user_id,
+        productid: item.productid,
+        qty: 1,
+      };
+      this.golbalService.postData(body, this.methodname).subscribe(
+        (data) => {
+          this.spinner.hide();
+          if (data['Status'] == 'Update sucessfully') {
+            /* this.wish_alert = "This Item Already Added to Cart" */
+            // this.icon = true;
+            this.addwish();
+            // this.message=data.Status;
+            this.obj.cartItem_count = data['count'];
+            this.obj.id = 1;
+            this.eventemit.fire(this.obj);
+            //alert("This Item Already Added to Cart");
+            //$('#alrdyItemAddedModal').modal('show');
+            //this.router.navigateByUrl('viewcart');
+          } else if (data['Status'] == 'Inserted sucessfully') {
+            this.wish_alert = 'Added to Cart';
+            // this.icon = true;
+            this.addwish();
+            //  this.message=data.Status;
+            this.obj.cartItem_count = data['count'];
+            this.eventemit.fire(this.obj);
+            //$('#insertItemModal').modal('show');
+            //alert(data.Status);
+          }
+        },
+        (error) => {
+          this.spinner.hide();
+          this.dialog.open(ErrorModalComponent, {
+            data: { errorModal: true },
+          });
+          // this.ngxSmartService.getModal('errorModal').open();
         }
-      },
-      error => {
-        this.spinner.hide();
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal:true }
-        });
-        // this.ngxSmartService.getModal('errorModal').open();
-  
-      });
+      );
     }
   }
 
@@ -143,6 +157,4 @@ export class WishListComponent implements OnInit {
       this.alert = false;
     }, 5000);
   }
-
 }
-

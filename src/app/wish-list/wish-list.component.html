@@ -1,100 +1,232 @@
 <div class="container pad_t_5per pad_b_5per">
-    <p class="bread-crumb1"><span><a href="javascript.void(0)" routerLink="/home" style="
-      color: #878787 !important;
-  " >Home</a></span>&nbsp;>&nbsp;<span>WishList</span></p>
-  <div class="reg_form pad_15 mar_b_30">
-
-    <div class="row">
-      <div class="col-sm-12 head_header">
-        <div class="fl">
-          <h4>MY WISHLIST
-            <span *ngIf="wishList.length>0">({{wishList.length}})</span>
-          </h4>
+  <div class="row">
+    <!-- Left Promo Image Section -->
+    <div class="col-md-4 p-0 bg-light border-end">
+      <div class="position-relative text-white">
+        <!-- Image -->
+        <img
+          src="assets/images/profile-img.png"
+          class="img-fluid"
+          style="width: 360px; height: 340px; margin-bottom: 50px"
+          alt="Tools Promo"
+        />
+        <div
+          class="position-absolute"
+          style="top: 60%; left: 25%; transform: translate(-25%, -50%)"
+        >
+          <p class="text-white mb-1" style="font-size: 1.5rem">
+            Up To 20% Discount
+          </p>
+          <h5 class="fw-bold text-white" style="font-size: 2rem">
+            Essential Tools
+          </h5>
         </div>
+      </div>
+      <div
+        class="p-3"
+        style="
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 15px;
+          width: 100%;
+          max-width: 360px;
+        "
+      >
+        <p class="text-muted" style="font-size: 1.2rem; color: #6c757d">
+          Explore a range of essential tools that bring <br />value to your
+          daily tasks. Get them now <br />
+          with a special discount!
+        </p>
       </div>
     </div>
 
-    <div class="row border_styles" *ngFor="let item of wishList | paginate: { itemsPerPage: 5, currentPage: p };">
-      <div class="col-md-12">
+    <!-- Right Wishlist Cards Section -->
+    <div class="col-md-8">
+      <h4 class="mb-4 fw-bold">
+        MY WISHLIST
+        <span *ngIf="wishList.length > 0">({{ wishList.length }})</span>
+      </h4>
+      <div *ngIf="wishList.length > 0; else emptyState">
+        <div class="row">
+          <div
+            class="col-12 col-sm-6 col-md-4 col-lg-4 mb-4"
+            *ngFor="
+              let p of wishList
+                | paginate : { itemsPerPage: 8, currentPage: pPage }
+            "
+          >
+            <div
+              class="card h-100 position-relative"
+              style="
+                background-color: #fdfbfb;
+                border: 1.5px solid rgba(133, 132, 132, 0.2);
+              "
+            >
+              <!-- Icons -->
+              <div
+                class="position-absolute top-0 end-0 p-2 z-2 icon-container d-flex flex-column align-items-end"
+                style="pointer-events: auto"
+              >
+                <div
+                  class="d-flex align-items-center justify-content-center rounded-circle mb-2"
+                  style="
+                    width: 36px;
+                    height: 36px;
+                    background-color: #f1efeb;
+                    border: 1.5px solid #c0c4c7;
+                  "
+                  title="Remove from wishlist"
+                  (click)="remove(p)"
+                >
+                  <i class="fa fa-trash text-black cursor_pointer"></i>
+                </div>
+                <div
+                  class="d-flex align-items-center justify-content-center rounded-circle"
+                  style="
+                    width: 36px;
+                    height: 36px;
+                    background-color: #f1efeb;
+                    border: 1.5px solid #c0c4c7;
+                  "
+                  title="View Details"
+                  (click)="viewDetails(p)"
+                >
+                  <i class="fa fa-eye text-black cursor_pointer"></i>
+                </div>
+              </div>
 
-        <!-- <div class="col-md-8"> -->
-        <div class="col-md-2">
-          <img [src]="item.image" class="product_image">
-        </div>
+              <!-- Image -->
+              <div
+                class="text-center px-3 pt-3 position-relative"
+                (click)="viewDetails(p)"
+              >
+                <img
+                  [src]="p.high_image_1"
+                  (error)="p.high_image_1 =  'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'"
+                  class="card-img-top img-fluid"
+                  style="height: 150px; object-fit: contain"
+                  alt="{{ p.long_name }}"
+                />
+              </div>
 
-        <div class="col-md-6 pad_l_40">
-          <div class="mar_b_10 prod_name">{{item.long_name}}</div>
-          <div class="mar_b_10">
-            <span class="f_size_18">&#8377;&nbsp;</span>
-            <span class="actual_price">{{item.enduser_price}}</span>&nbsp;
-            <span class="end_user_price">&#8377;&nbsp;{{item.mrp}}</span> &nbsp;
-            <span class="offer_price">{{item.discount_e}}% off</span>
+              <!-- Card Body -->
+              <div class="card-body ps-3 py-3 position-relative">
+                <p class="text-muted small mb-1">{{ "Brand" }}</p>
+                <p
+                  class="fw-semibold text-truncate mb-1"
+                  title="{{ p.long_name }}"
+                >
+                  {{ p.long_name }}
+                </p>
+
+                <p class="mb-1">
+                  <span
+                    class="text-muted text-decoration-line-through me-2"
+                    *ngIf="p.mrp"
+                  >
+                    ₹{{ p.mrp }}
+                  </span>
+                  <span class="fw-bold me-2" style="color: #009b77">
+                    {{ p.discounted_price }}
+                  </span>
+                </p>
+
+                <span
+                  class="text-success"
+                  *ngIf="p.discount_e && p.discount_e > 0"
+                >
+                  {{ p.discount_e }}% Off
+                </span>
+
+                <p class="text-muted small mb-1">(Including GST)</p>
+
+                <!-- Rating (if applicable) -->
+                <div class="rating text-warning small mb-2">
+                  <ng-container
+                    *ngFor="let star of [1, 2, 3, 4, 5]; let i = index"
+                  >
+                    <!-- Rating stars if needed -->
+                  </ng-container>
+                </div>
+
+                <button
+                  class="btn btn-sm position-absolute d-flex align-items-center gap-1"
+                  style="bottom: 10px; right: 10px; background-color: #009b77"
+                  (click)="addtocart(p)"
+                >
+                  <i class="fa fa-shopping-cart"></i>
+                  Add to Cart
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="mar_b_10">
-            <span class="remove_btn" (click)="remove(item)">REMOVE</span>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <a class="ad_cart_whishlist" title="Add To Cart" (click)="addtocart(item)">
-            <span class="glyphicon glyphicon-shopping-cart" style="padding-right:5px;font-size:10px;"></span> ADD TO CART
-          </a>
         </div>
 
-        <!-- </div> -->
-
-
+        <!-- Pagination -->
+        <div class="text-center mt-3">
+          <pagination-controls
+            (pageChange)="pPage = $event"
+          ></pagination-controls>
+        </div>
       </div>
+
+      <!-- Empty State -->
+      <ng-template #emptyState>
+        <div class="text-center">
+          <img
+            src="../assets/empty_shopping_cart.png"
+            class="img-fluid mb-3"
+            style="max-width: 250px"
+          />
+          <p class="text-muted mb-3 fs-5">Your wishlist is currently empty.</p>
+          <a routerLink="/home" class="btn btn-success">Continue Shopping</a>
+        </div>
+      </ng-template>
     </div>
-    <pagination-controls *ngIf="wishList.length>0" (pageChange)="p = $event"></pagination-controls>
-
-    <div class="row" *ngIf="wishList.length==0">
-      <div class="col-md-12">
-        <div class="no_data">
-          <img class="no_data_cnter" src="../assets/empty_shopping_cart.png" />
-          <!-- <span class="nodata_txt">No Products are Available</span> -->
-        </div>
-      </div>
-      <br/>
-      <div class="col-md-12">
-        <div class="continue_shop txt_center" routerLink="/home">
-          <!-- <button class="btn btn-primary" (click)="addToCart()"> Add To Cart</button> -->
-          <button class="btn btn-success" style="margin-top: -35px;">Continue Shopping</button>
-        </div>
-      </div>
-    </div>
-
   </div>
 
   <ngx-spinner class="loader_spinner"></ngx-spinner>
-  
+
   <!-- success small alert -->
-  <div class="smallSuccess_alert" *ngIf="alert" style="top:10%;margin-left: 25%">
-    <strong>
-      <i class="fa fa-check add_icon"></i> {{wish_alert}} </strong>
+  <div
+    class="smallSuccess_alert"
+    *ngIf="alert"
+    style="top: 10%; margin-left: 25%"
+  >
+    <strong> <i class="fa fa-check add_icon"></i> {{ wish_alert }} </strong>
   </div>
 
   <!-- delete modal pop up-->
   <div id="confirmModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-body" style="padding:0;">
+        <div class="modal-body" style="padding: 0">
           <div class="row">
             <div class="col-md-12">
               <h4 class="alert_heading">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal">
+                  &times;
+                </button>
               </h4>
               <div class="right_mark">
                 <i class="fa fa-check" aria-hidden="true"></i>
               </div>
-              <div class="pad_15 text-center content_msg" style="padding: 10% 0;">
+              <div
+                class="pad_15 text-center content_msg"
+                style="padding: 10% 0"
+              >
                 <span>This Item Already Added to Cart</span>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger fl" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success fr" data-dismiss="modal">OK</button>
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">
+            OK
+          </button>
         </div>
       </div>
     </div>
@@ -153,3 +285,4 @@
       </div>
     </div>
   </div> -->
+</div>

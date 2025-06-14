@@ -6,8 +6,6 @@ import { ComponentCommunicationService } from "../component-communication.servic
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToasterService } from './../toastr-service.service';
-import { ErrorModalComponent } from '../authentication-views/error-modal/error-modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 @Component({
   selector: 'app-get-address',
@@ -36,7 +34,7 @@ export class GetAddressComponent {
 }
 
 editAddress(address:any) {
-  this.route.navigate(['/add-address'], {
+  this.route.navigate(['/add-address/'], {
     queryParams: { seq_no: address.seq_no},
      state: { address },
   });

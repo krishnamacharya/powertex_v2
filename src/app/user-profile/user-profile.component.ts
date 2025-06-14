@@ -73,6 +73,9 @@ export class UserProfileComponent implements OnInit {
     if (index === 1) {
       this.route.navigate(['/get-address']); 
     }
+     if (index === 4) {
+      this.route.navigate(['/wishlist']); 
+    }
   }
   ngOnInit() {
     this.alert = false;
