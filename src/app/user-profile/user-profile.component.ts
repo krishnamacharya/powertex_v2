@@ -434,9 +434,19 @@ changePassword(form: any, confirmPassword: string): void {
     }, 5000);
   }
 
+  // editprofile() {
+  //   this.route.navigateByUrl('/Supplier-Profile-Edit');
+  // }
+
   editprofile() {
-    this.route.navigateByUrl('/Supplier-Profile-Edit');
+  const user_id = localStorage.getItem('user_id');
+  if (user_id) {
+    this.route.navigate(['/Supplier-Profile-Edit'], {
+      queryParams: { userid: user_id }
+    });
   }
+}
+
   openChangePasswordModal(content: any) {
     this.modalService.open(content, { size: 'lg' });
   }

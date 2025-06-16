@@ -261,14 +261,14 @@ export class GlobalServiceService {
     );
   }
 
- getNewArrivals1(): Observable<any> {
+  getNewArrivals1(): Observable<any> {
     return this.http.get<any>(this.UrlData('newarrivals/'))
   }
-getSpecialProducts(): Observable<ArrayBuffer> {
-  return this.http.get(this.UrlData('specialproducts/'), {
-    responseType: 'arraybuffer'
-  });
-}
+  getSpecialProducts(): Observable<ArrayBuffer> {
+    return this.http.get(this.UrlData('specialproducts/'), {
+      responseType: 'arraybuffer'
+    });
+  }
 
   getBannerData(): Observable<any> {
     return this.http.get<any>(this.UrlData('get_banner/'))
@@ -289,22 +289,22 @@ getSpecialProducts(): Observable<ArrayBuffer> {
   LoginUser(body: any) {
     return this.http.post(this.UrlData('api/login/'), body);
   }
-getProductsByProffesion(profession: string): Observable<any> {
-  return this.http.get<any>(this.UrlData('professionwiselist/'), {
-    params: { profession }
-  });
-}
+  getProductsByProffesion(profession: string): Observable<any> {
+    return this.http.get<any>(this.UrlData('professionwiselist/'), {
+      params: { profession }
+    });
+  }
 
   // getDatawithQueryParamsBrands(param: any): Observable<any> {
   //   return this.http.get(this.UrlData(`get_list/?subcategory=${encodeURIComponent(param)}`));
   // }
 
 
-getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> {
-  const queryParam = `${encodeURIComponent(paramType)}=${encodeURIComponent(value)}`;
-  const url = this.UrlData(`get_list/?${queryParam}`);
-  return this.http.get(url);
-}
+  getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> {
+    const queryParam = `${encodeURIComponent(paramType)}=${encodeURIComponent(value)}`;
+    const url = this.UrlData(`get_list/?${queryParam}`);
+    return this.http.get(url);
+  }
 
 
 
@@ -319,11 +319,11 @@ getDatawithQueryParamsBrands(paramType: string, value: string): Observable<any> 
       responseType: 'arraybuffer'  // important for TextDecoder to work
     });
   }
-   getProductDetails(productId: string): Observable<any> {
-  const params = new HttpParams().set('productid', productId);
-  return this.http.get<any>(this.UrlData('get_product_details/'), { params });
-}
- postProfileAddress(data: any) {
+  getProductDetails(productId: string): Observable<any> {
+    const params = new HttpParams().set('productid', productId);
+    return this.http.get<any>(this.UrlData('get_product_details/'), { params });
+  }
+  postProfileAddress(data: any) {
     return this.http.post(this.UrlData('post_profile_address/'), data);
   }
   updateProfileAddress(seqNo: string, data: any) {
@@ -347,7 +347,17 @@ getWishlist(userId: number) {
   return this.http.get<any[]>(this.UrlData(`wishlist/?userid=${userId}`));
 }
 
+//userprofile to supplier
+getUserProfile(userid: string): Observable<any[]> {
+  const apiUrl = `http://192.168.0.223:8001/get_user_profile/?userid=${userid}`;
+  return this.http.get<any[]>(apiUrl);
+}
 
+//userProfile Update
+updateUserProfile(userid: string, supplierData: any): Observable<any> {
+  const url = `http://192.168.0.223:8001/get_user_profile/?userid=${userid}`;
+  return this.http.patch(url, supplierData);
+}
 
 
   //------------------------------------------------------------------------------------------------------- New Logic end
@@ -908,18 +918,41 @@ getWishlist(userId: number) {
   //new version code
 
   private usernameSource = new BehaviorSubject<string | null>(null);
+  private userfirstname = new BehaviorSubject<string | null>(null);
+
   private accessSource = new BehaviorSubject<string | null>(null);
-   private userIdSource = new BehaviorSubject<string | null>(null);
+  private userIdSource = new BehaviorSubject<string | null>(null);
+  private emailSource = new BehaviorSubject<string | null>(null);
+  private mobileSource = new BehaviorSubject<string | null>(null);
+  private userTypeSource = new BehaviorSubject<string | null>(null);
+  private modulesSource = new BehaviorSubject<string | null>(null);
+  private discountSource = new BehaviorSubject<string | null>(null);
+
+
+
   username$ = this.usernameSource.asObservable();
   access$ = this.accessSource.asObservable();
-  userId$ =this.userIdSource.asObservable();
+  userId$ = this.userIdSource.asObservable();
+  email$ = this.emailSource.asObservable();
+  mobile$ = this.mobileSource.asObservable();
+  userType$ = this.userTypeSource.asObservable();
+  modules$ = this.modulesSource.asObservable();
+  discount$ = this.discountSource.asObservable();
 
-  setUsername(name: string) {
-    this.usernameSource.next(name);
+  setUsername(username: string) {
+    this.usernameSource.next(username);
   }
 
   getUsername(): string | null {
     return localStorage.getItem('username');
+  }
+
+  setfirst_name(first_name: string) {
+    this.userfirstname.next(first_name);
+  }
+
+  getfirst_name(): string | null {
+    return localStorage.getItem('first_name');
   }
 
   setAccessToken(access: any) {
@@ -929,10 +962,46 @@ getWishlist(userId: number) {
   getAccessToken(): any | null {
     return localStorage.getItem('access')
   }
-  setUserId(user_id:any){
-        this.userIdSource.next(user_id)
+  setUserId(user_id: any) {
+    this.userIdSource.next(user_id)
   }
-   getUserId(): any | null {
+  getUserId(): any | null {
     return localStorage.getItem('user_id')
   }
+
+  setEmail(email: string) {
+    this.emailSource.next(email);
+  }
+  getEmail(): string | null {
+    return localStorage.getItem('email');
+  }
+
+  setMobile(mobile: string) {
+    this.mobileSource.next(mobile);
+  }
+  getMobile(): string | null {
+    return localStorage.getItem('mobile');
+  }
+
+  setUserType(usertype: string) {
+    this.userTypeSource.next(usertype);
+  }
+  getUserType(): string | null {
+    return localStorage.getItem('usertype');
+  }
+
+  setModules(modules: string) {
+    this.modulesSource.next(modules);
+  }
+  getModules(): string | null {
+    return localStorage.getItem('module_assign');
+  }
+
+  setDiscount(discount: string) {
+    this.discountSource.next(discount);
+  }
+  getDiscount(): string | null {
+    return localStorage.getItem('discount');
+  }
+
 }

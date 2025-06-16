@@ -73,30 +73,23 @@
 
           <div class="row g-3">
             <div class="col-md-6">
-              <p><strong>First Name:</strong> {{ loginUserData.first_name }}</p>
+              <p><strong>Name:</strong> {{ loginUserData.first_name }}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>Last Name:</strong> {{ loginUserData.last_name }}</p>
+              <p><strong>UserName:</strong> {{ loginUserData.username}}</p>
             </div>
-            <div class="col-md-6">
-              <p><strong>Gender:</strong> {{ loginUserData.salatation }}</p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Email:</strong> {{ loginUserData.email }}</p>
-            </div>
+           
             <div class="col-md-6">
               <p><strong>Mobile:</strong> {{ loginUserData.mobile }}</p>
             </div>
+          
             <div class="col-md-6">
-              <p><strong>Address 1:</strong> {{ loginUserData.address1 }}</p>
+              <p><strong>usertype:</strong> {{ loginUserData.usertype }}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>Address 2:</strong> {{ loginUserData.address2 }}</p>
+              <p><strong>Gst</strong> {{ loginUserData.Gst||"no GST" }}</p>
             </div>
-            <div class="col-md-6">
-              <p><strong>State:</strong> {{ loginUserData.state }}</p>
-            </div>
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <p><strong>City:</strong> {{ loginUserData.city }}</p>
             </div>
             <div class="col-md-6">
@@ -104,7 +97,7 @@
             </div>
             <div class="col-md-6">
               <p><strong>Pincode:</strong> {{ loginUserData.pin }}</p>
-            </div>
+            </div> -->
           </div>
         </div>
 
