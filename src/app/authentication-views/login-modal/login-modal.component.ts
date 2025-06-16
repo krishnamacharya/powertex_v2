@@ -109,6 +109,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
   closeLoginModal() {
     this.showLoginModal = false; // <-- Change to false
+      document.body.style.overflow = ''; // Reset to default
     console.log("Modal closed");
   }
 
@@ -121,80 +122,11 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.showResendbtn = false;
   }
   logindata: any
-  // gotoLogin() {
-  //   this.spinner.show();
-  //   this.loginMoethod = 'login/';
-  //   this.body = { "email": this.loginData.userId, "password": this.loginData.password };
-  //   this.authService.LoginUser(this.body).subscribe((data) => {
-  //     this.spinner.hide();
-  //     console.log("login data",data);
-  //     this.logindata=data
-  //      this.route.navigateByUrl("./home");
-  //     // if (data['status'] == "Your request is under process") {
-  //     //   this.toasterService.error("Please Contact Powertex");
-  //     // }
-  //     // if (data['status'] == "success") {
-  //     //   // this.dialogRef.close();
-  //     //   this.dialog.getDialogById(this.container._config.id ?? '')?.close();
-
-  //     //   this.message = data['status'];
-  //     //   this.token = data['token'];
-
-  //     //   localStorage.setItem('token', this.token);
-  //     //   this.loginUserData = this.logindata.data;
-  //     //   if(this.loginUserData.role =='Dealer'||this.loginUserData.role =='Branch Manager'){
-  //     //     //  alert(this.loginUserData.user_type);
-  //     //     this.check_schemes();
-
-  //     //   }
-
-
-  //     //   localStorage.setItem('loginUserData', JSON.stringify(this.loginUserData));
-  //     //   /*   ==========================================toaster binding with logged in user name=============================================================== */
-  //     //   this.toasterService.success('Hi' + '  ' + this.loginUserData.first_name + '  ' + 'you are logged in successfully');
-  //     //   /* alert(this.loginUserData.first_name)  */
-
-  //     //   /*   alert(JSON.stringify(this.loginUserData)) */
-
-  //     //   /* ========================================================================================================= */
-
-  //     //   /*  =============================code responsible for redirecting to home page======================================================= */
-  //     //   if (this.loginUserData.user_type != 'Customer' && this.loginUserData.user_type != 'Guest') {
-  //     //     this.route.navigateByUrl("dashboard");
-  //     //   }
-  //     //   // else {
-  //     //   //   this.route.navigateByUrl("home");
-  //     //   // }
-  //     //   /*  =====================================================**code responsible for redirecting to home page ends**============================ */
-  //     //   this.data.token = data['token'];
-  //     //   this.data.loginUserData = this.logindata.data;
-  //     //   if (this.loginUserData.user_type == 'Customer' || this.loginUserData.user_type == 'Dealer' || this.loginUserData.user_type == 'Guest') {
-  //     //     this.ItemsCount();
-  //     //   }
-  //     //   if (this.loginUserData.designation == 'Warehouse Manager' || this.loginUserData.designation == 'Accounts Manager') {
-  //     //     // Commented for Notification
-  //     //     // this.headerComponent.getNotificationCount();
-  //     //   }
-
-  //     // } else {
-  //     //   this.displaMsg = true;
-  //     //   setTimeout(() => {
-  //     //     this.displaMsg = false;
-  //     //   }, 3000);
-  //     // }
-  //   },
-
-
-
-
-  // closeDialog() {
-  //   this.dialogRef.close();
-  // }
-  gotoLogin() {
+  gotoLogin() {  
     this.spinner.show();
     this.loginMoethod = 'login/';
     this.body = { "email": this.loginData.userId, "password": this.loginData.password };
-
+    document.body.style.overflow = 'hidden'; // Disable scroll
     this.authService.LoginUser(this.body).subscribe(
       (data) => {
         this.spinner.hide();
@@ -317,7 +249,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         // this.spinner.hide();
         this.checkUser = data;
         if (this.checkUser.status == "1") {
-          console.log(this.checkUser);
+          console.log(this.checkUser); 
           this.guestuser = false;
           this.showLogin = false;
           this.showForgotPswd = true;
