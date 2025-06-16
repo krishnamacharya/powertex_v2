@@ -466,7 +466,6 @@ getUserDetails(userid: string) {
 updateSupplier() {
   const userid = this.supplier.id;
 
-  const url = `http://192.168.0.223:8001/get_user_profile/?userid=${userid}`;
 
   // Build the payload according to your backend's expected format
   const payload = {
@@ -480,7 +479,7 @@ updateSupplier() {
     ...this.supplier.dtl?.[0] // Spread business details (if exists)
   };
 
-  this.globalService.updateUserProfile(url, payload).subscribe(
+  this.globalService.updateUserProfile(userid, payload).subscribe(
     (res) => {
       alert('User profile updated successfully!');
        this.route.navigate(['/profile']); // 🔁 Redirect after success
