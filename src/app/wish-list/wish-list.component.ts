@@ -5,16 +5,23 @@ import { ToasterService } from '../toastr-service.service';
 import { ErrorModalComponent } from '../authentication-views/error-modal/error-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {  Router } from '@angular/router';
 
 @Component({
   selector: 'app-wish-list',
   standalone: false,
 
-  templateUrl: './wish-list.component.html',
+  templateUrl:'./wish-list.component.html',
   styleUrl: './wish-list.component.scss',
 })
-export class WishListComponent implements OnInit {
+export class WishListComponent implements OnInit {   
   pPage: string | number;
+  sidemenu: boolean = true
+  select: string;
+  modal: any = [];
+  brand: any;
+  d: string;
+  e: string;
   viewDetails(_t19: {
     long_name: string;
     enduser_price: number;
@@ -39,7 +46,7 @@ export class WishListComponent implements OnInit {
     private golbalService: GlobalServiceService,
     public dialog: MatDialog,
     private eventemit: ComponentCommunicationService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,private router: Router
   ) {
     this.obj.id = 1;
   }
@@ -156,5 +163,38 @@ fetchWishlist(): void {
     setInterval(() => {
       this.alert = false;
     }, 5000);
+  }
+   sub_cat(p) {
+
+
+    console.log(p);
+    if (p.productid) {
+      let category = p.category;
+      let sub_category = p.subcategory;
+      let model = p.modelno;
+
+      let obj = p;
+      localStorage.setItem('key', JSON.stringify(obj));
+      console.log(p);
+      // this.obj.setCategory(p);
+      console.log("clicked")
+      // this.router.navigateByUrl('/product-detail');
+      this.router.navigate(['/product-detail', p.productid]);
+    }
+    else {
+
+      this.sidemenu = true
+      this.d = p.category
+      this.e = p.subcategory
+      this.select = "All"
+      this.modal = p.modelno;
+      this.brand = p.brand;
+
+      // console.log("your Category", category, "productid", p.productid);
+      this.getdata1()
+    }
+  }
+  getdata1() {
+    throw new Error('Method not implemented.');
   }
 }

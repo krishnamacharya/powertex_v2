@@ -89,7 +89,7 @@
                     border: 1.5px solid #c0c4c7;
                   "
                   title="View Details"
-                  (click)="viewDetails(p)"
+                   (click)="sub_cat(p); $event.stopPropagation()"
                 >
                   <i class="fa fa-eye text-black cursor_pointer"></i>
                 </div>
@@ -98,7 +98,7 @@
               <!-- Image -->
               <div
                 class="text-center px-3 pt-3 position-relative"
-                (click)="viewDetails(p)"
+         (click)="sub_cat(p); $event.stopPropagation()"
               >
                 <img
                   [src]="p.high_image_1"
