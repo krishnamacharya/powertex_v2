@@ -444,17 +444,24 @@ userData: any = {};
 
 
 getUserDetails(userid: string) {
-  const apiUrl = `http://192.168.0.223:8001/get_user_profile/?userid=${userid}`;
-  this.http.get(apiUrl).subscribe((response: any) => {
-     if (Array.isArray(response) && response.length > 0) {
-        this.supplier = response[0]; // Take the first item from the array
-          // If dtl is missing or empty, initialize a blank structure
-        if (!this.supplier.dtl || !this.supplier.dtl.length) {
-          this.supplier.dtl = [{}];
-        }
+  this.globalService.getUserProfile(userid).subscribe((response: any) => {
+    if (Array.isArray(response) && response.length > 0) {
+      this.supplier = response[0]; // Take the first item from the array
+
+      // Initialize dtl if it's missing or empty
+      if (!this.supplier.dtl || !this.supplier.dtl.length) {
+        this.supplier.dtl = [{}];
       }
-    });
-  }
+    } else {
+      // Handle empty response
+      this.supplier = { dtl: [{}] };
+    }
+  }, error => {
+    console.error('Error fetching user profile:', error);
+    // Fallback in case of error
+    this.supplier = { dtl: [{}] };
+  });
+}
 
 updateSupplier() {
   const userid = this.supplier.id;
@@ -473,7 +480,7 @@ updateSupplier() {
     ...this.supplier.dtl?.[0] // Spread business details (if exists)
   };
 
-  this.http.patch(url, payload).subscribe(
+  this.globalService.updateUserProfile(url, payload).subscribe(
     (res) => {
       alert('User profile updated successfully!');
        this.route.navigate(['/profile']); // 🔁 Redirect after success

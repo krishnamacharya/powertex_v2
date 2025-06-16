@@ -71,7 +71,10 @@ export class UserProfileComponent implements OnInit {
     this.selectedTabIndex = this.selectedTabIndex === index ? null : index;
 
     if (index === 1) {
-      this.route.navigate(['/get-address']); // 👈 update this path if needed
+      this.route.navigate(['/get-address']); 
+    }
+     if (index === 4) {
+      this.route.navigate(['/wishlist']); 
     }
   }
   ngOnInit() {
@@ -109,7 +112,7 @@ export class UserProfileComponent implements OnInit {
   getaddress(): void {
     this.globalService.getUserAddress().subscribe({
       next: (data: any) => {
-        this.address = data.data; // ✅ Assign the 'data' array
+        this.address = data.data;
         console.log('Fetched addresses:', this.address);
       },
       error: (err) => {
@@ -388,13 +391,6 @@ export class UserProfileComponent implements OnInit {
     this.newAddress = false;
   }
 
-  // tabChanged(data) {
-  //   if (data.tab.textLabel == 'Logout') {
-  //     this.logOut();
-  //   }
-  // };
-
-
 logOut(): void {
   // Clear all stored data
   localStorage.clear();
@@ -405,49 +401,31 @@ logOut(): void {
   
   this.route.navigate(['/home']);
 }
-  changePassword(form, password) {
-    this.spinner.show();
-    if (this.loginData.setpassword == this.loginData.confirmPassword) {
-      var regMoethod = 'reset_password/';
-      var resetPswdBody = {
-        username: this.loginUserData.email,
-        password: password,
-      };
-      form.reset();
-      this.authService.postData(resetPswdBody, regMoethod).subscribe(
-        (data) => {
-          this.spinner.hide();
-          if (data['status'] == 1) {
-            this.message = data['status'];
-            this.wish_alert = 'Password Changed Successfully';
-            this.addwish();
-            this.icon = true;
-            this.icon2 = false;
-          } else {
-            //alert(data.status);
-
-            this.wish_alert = data['status'];
-            this.addwish();
-            this.icon = false;
-            this.icon2 = true;
-          }
-        },
-        (error) => {
-          this.spinner.hide();
-          this.dialog.open(ErrorModalComponent, {
-            data: { errorModal: true },
-          });
-          // console.log(error);
-        }
-      );
-    } else {
-      //alert("password Should match");
-      this.wish_alert = 'Password and Confirm Password Should match';
-      this.addwish();
-      this.icon = false;
-      this.icon2 = true;
-    }
+changePassword(form: any, confirmPassword: string): void {
+  if (!form.valid || this.loginData.setpassword !== confirmPassword) {
+    return;
   }
+
+  const userId = localStorage.getItem('user_id'); 
+
+  const payload = {
+    password: this.loginData.setpassword,
+    password2: confirmPassword,
+    userid: userId
+  };
+
+  this.globalService.changePassword(payload).subscribe({
+    next: (res: any) => {
+      console.log('Password changed successfully:', res);
+      alert('Password updated successfully.');
+      form.resetForm();
+    },
+    error: (err) => {
+      console.error('Password change failed:', err);
+      alert('Failed to update password. Please try again.');
+    }
+  });
+}
 
   addwish() {
     this.alert = true;
@@ -472,7 +450,7 @@ logOut(): void {
   openChangePasswordModal(content: any) {
     this.modalService.open(content, { size: 'lg' });
   }
-  // Your existing methods and properties
+
   tabChanged(event: any) {
     this.selectedTabIndex = event.index;
   }

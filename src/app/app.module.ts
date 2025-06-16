@@ -608,7 +608,7 @@ import { GetAddressComponent } from './get-address/get-address.component';
     NewArrivals1Component,
     SpecialProductsComponent,
     AddAddressComponent,
-    GetAddressComponent
+    GetAddressComponent,
     
   ],
   imports: [
