@@ -60,7 +60,7 @@ export class ViewCartComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.viewcart();
+    this.viewcart1();
     this.getPriceDetails();
     this.getoffers();
   }
@@ -102,6 +102,60 @@ export class ViewCartComponent implements OnInit {
           
               });
   }
+viewcart1(): void {
+  this.user_id = this.loginUserData.user_id;
+
+  this.globalService.getCartByUserId(this.user_id).subscribe({
+    next: (data: any) => {
+      // Case 1: if API returns raw array
+      if (Array.isArray(data)) {
+        this.carItems = data;
+        this.cartdata = { values: data }; // in case your HTML still uses cartdata.values
+      } 
+      // Optional Case 2: if your backend changes to return { status: "success", values: [...] }
+      else if (data['status'] === "success") {
+        this.carItems = data['values'];
+        this.cartdata = data;
+      } 
+      else {
+        console.error("Unexpected response format", data);
+        return;
+      }
+
+      console.log(this.carItems, "carItems");
+
+      localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
+
+      this.grandtotal = 0;
+      this.gsttotal = 0;
+
+      this.carItems.forEach(item => {
+        const dtl = item.dtl?.[0];
+        if (dtl) {
+          const mrp = parseFloat(dtl.mrp);
+          const discount = parseFloat(dtl.discount_percent);
+          const gst = parseFloat(dtl.gst);
+          const discountedPrice = mrp - (mrp * (discount / 100));
+          const gstAmount = discountedPrice * (gst / 100);
+          const finalPrice = discountedPrice + gstAmount;
+
+          this.grandtotal += finalPrice;
+          this.gsttotal += gstAmount;
+
+          item.aftergst = finalPrice;        
+          item.gst_amount = gstAmount;
+        }
+      });
+
+      this.obj.cartItem_count = this.carItems.length;
+      this.eventEmmit.fire(this.obj);
+    },
+    error: (err) => {
+      console.error("Failed to load cart data", err);
+    }
+  });
+}
+  
 
   increment(data) {
     data.qty++;
@@ -166,11 +220,15 @@ export class ViewCartComponent implements OnInit {
   }
   change() {
     this.route.navigateByUrl('home');
+  } // your cart items array
+
+remove(type: string): void {
+  if (type === 'All') {
+    this.carItems = []; // Clear the array
+    console.log('All items removed from cart');
   }
-  remove(item) {
-    this.removeItem = item;
-    $('#confirmModal').modal('show');
-  }
+}
+
 
   deleteConfirm() {
 
@@ -266,7 +324,7 @@ export class ViewCartComponent implements OnInit {
       if (this.applycodedetails.apply == true) {
         this.messagep = true;
         this.applyprice(this.promocode, this.applycodedetails, true)
-      }
+      } 
        else{
         //  this.applycodedetails=""
         //  this.message=false
@@ -278,11 +336,6 @@ export class ViewCartComponent implements OnInit {
     })
   }
   promo_amount: any;  
-  // <p class="grand_price text-right">{{cartdata.endusergrandtotal | currency:'INR'}}</p>       TAXABLE AMOUNT
-  // <p class="grand_price text-right">{{pricedetails.devicediscamount| currency:'INR'}}</p>     EXTRA DISCOUNT
-  // <p class="grand_price text-right">{{cartdata.grand_tax| currency:'INR'}}</p>                GST AMOUNT(18%)
-  // <p class="grand_price text-right">{{pricedetails.trasnport_charges| currency:'INR'}}</p>    Transport Ch
-  // <p class="grand_price text-right">{{grandtotal + ( pricedetails.trasnport_charges) | currency:'INR'}}  GRAND TOTAL
   applyprice(code, data, event) {
     // this.cartdata2 = JSON.parse(localStorage.getItem('cartdata2'));
     this.pricedetails2 = JSON.parse(localStorage.getItem('pricedetails2'));

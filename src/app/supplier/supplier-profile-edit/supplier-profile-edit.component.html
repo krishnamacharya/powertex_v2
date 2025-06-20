@@ -1,28 +1,102 @@
-<form #editForm="ngForm" *ngIf="supplier" class="p-4 bg-white shadow rounded-3">
- <div class="row g-3">
-  <div class="col-md-3" *ngFor="let field of mainFields">
-    <label class="form-label">{{ field.label }}</label>
-    <input
-      type="text"
-      class="form-control"
-      name="{{ field.name }}"
-      [(ngModel)]="supplier[field.name]"
-    />
-  </div>
+<div class="container py-5 user_profile">
+  <div class="row shadow-sm rounded overflow-hidden bg-white">
+    <!-- LEFT PANEL: Image and Text -->
+     <div class="col-md-4 p-0 bg-light border-end">
+      <div class="position-relative text-white">
+        <!-- Image -->
+        <img
+          src="assets/images/profile-img.png"
+          class="img-fluid"
+          style="width: 360px; height: 340px; margin-bottom: 50px"
+          alt="Tools Promo"
+        />
+        <div
+          class="position-absolute"
+          style="top: 60%; left: 25%; transform: translate(-25%, -50%)"
+        >
+          <p class="text-white mb-1" style="font-size: 1.5rem">
+            Up To 20% Discount
+          </p>
+          <h5 class="fw-bold text-white" style="font-size: 2rem">
+            Essential Tools
+          </h5>
+        </div>
+      </div>
+      <div
+        class="p-3"
+        style="
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          padding: 15px;
+          width: 100%;
+          max-width: 360px;
+        "
+      >
+        <p class="text-muted" style="font-size: 1.2rem; color: #6c757d">
+          Explore a range of essential tools that bring <br />value to your
+          daily tasks. Get them now <br />
+          with a special discount!
+        </p>
+      </div>
+    </div>
+
+<!-- RIGHT PANEL: Supplier Edit Form -->
+<div class="col-md-8 p-4">
+  <form *ngIf="supplier" #editForm="ngForm" class="p-4 border rounded shadow-sm bg-light">
+    <h4 class=" mb-4 fw-bold text-black">Edit Supplier</h4>
+
+    <!-- Main Fields -->
+    <div class="row g-3">
+      <div class="col-md-4" *ngFor="let field of mainFields">
+        <label class="form-label">
+          {{ field.label }} <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          [name]="field.name"
+          style="border: 1px solid black"
+          required
+          [(ngModel)]="supplier[field.name]"
+        />
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- Business Details -->
+    <h5 class="fw-bold text-black">Business Details</h5>
+    <div class="row g-3 mt-2" *ngIf="supplier.dtl && supplier.dtl.length">
+      <div class="col-md-4" *ngFor="let field of businessFields">
+        <label class="form-label">
+          {{ field.label }} <span class="text-danger">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          [name]="field.name"
+          style="border: 1px solid black"
+          required
+          [(ngModel)]="supplier.dtl[0][field.name]"
+        />
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="mt-4 d-flex justify-content-end">
+      <button
+        type="submit"
+        class="btn px-4 text-white"
+        style="background-color: #009b77"
+        (click)="updateSupplier()"
+        [disabled]="editForm.invalid"
+      >
+        Update
+      </button>
+    </div>
+  </form>
 </div>
 
 
-  <hr class="my-4">
-
-  <h5 class="fw-bold text-primary">Business Details</h5>
-  <div class="row g-3 mt-2" *ngIf="supplier.dtl && supplier.dtl.length">
-    <div class="col-md-4" *ngFor="let field of businessFields">
-      <label class="form-label">{{ field.label }}</label>
-      <input type="text" class="form-control" name="{{ field.name }}" [(ngModel)]="supplier.dtl[0][field.name]">
-    </div>
   </div>
-
-  <div class="mt-4 d-flex justify-content-end">
-    <button type="submit" class="btn btn-primary px-4" (click)="updateSupplier()">Update</button>
-  </div>
-</form>
+</div>

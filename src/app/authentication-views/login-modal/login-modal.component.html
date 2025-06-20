@@ -2,14 +2,19 @@
 <div
   *ngIf="showLoginModal"
   class="modal-backdrop fade show"
-  style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 998;"
+  style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 998;
+  "
   (click)="closeLoginModal()"
 ></div>
 
 <!-- Your existing modal card below -->
-<div
-  class="d-flex align-items-center justify-content-center position-relative"
->
+<div class="d-flex align-items-center justify-content-center position-relative">
   <div
     class="card shadow-lg custom-card d-flex flex-row"
     style="
@@ -96,7 +101,11 @@
 
           <!-- Password Input -->
           <div class="mb-3">
-            <mat-form-field appearance="fill" class="full-width" style="width: 100%">
+            <mat-form-field
+              appearance="fill"
+              class="full-width"
+              style="width: 100%"
+            >
               <div style="display: flex; align-items: center; width: 100%">
                 <input
                   [type]="show ? 'text' : 'password'"
@@ -124,7 +133,7 @@
                 ></span>
               </div>
             </mat-form-field>
-            
+
             <a class="forgot-password" (click)="gotoForgotPassword('2')"
               >Forgot Password?</a
             >
@@ -179,268 +188,280 @@
     </div>
   </div>
 
-
-<!-- Success Alert -->
-<div
-  class="smallSuccess_alert"
-  *ngIf="alert"
-  style="bottom: 30%; margin-left: 40%; width: 30%"
->
-  <strong>
-    <i class="fa fa-check add_icon" *ngIf="icon && !icon2"></i>
-    <i class="fa fa-close remove_icon" *ngIf="!icon && icon2"></i>
-    {{ wish_alert }}
-  </strong>
-</div>
-
-<!-- Modal Popups -->
-<!-- Login Status Modal -->
-<div class="modal fade" id="loginStatusModal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body" style="padding: 0">
-        <div class="row">
-          <div class="col-md-12">
-            <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">
-                ×
-              </button>
-            </h4>
-            <div class="right_mark">
-              <i class="fa fa-check" aria-hidden="true"></i>
-            </div>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0">
-              <span>{{ message }}</span>
+  <!-- Success Alert -->
+  <div
+    class="smallSuccess_alert"
+    *ngIf="alert"
+    style="bottom: 30%; margin-left: 40%; width: 30%"
+  >
+    <strong>
+      <i class="fa fa-check add_icon" *ngIf="icon && !icon2"></i>
+      <i class="fa fa-close remove_icon" *ngIf="!icon && icon2"></i>
+      {{ wish_alert }}
+    </strong>
+  </div>
+  <!-- Login Status Modal -->
+  <div class="modal fade" id="loginStatusModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding: 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">
+                  ×
+                </button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div
+                class="pad_15 text-center content_msg"
+                style="padding: 10% 0"
+              >
+                <span>{{ message }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-success fr" data-dismiss="modal">
-          OK
-        </button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">
+            OK
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Scheme Details Modal -->
-<div class="modal fade" id="schemeModal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body" style="padding: 0">
-        <div class="row">
-          <div class="col-md-12">    
-            <h4 class="alert_heading1">Scheme's Details</h4>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0">
-              <div class="row">
-                <div
-                  class="col-md-6"
-                  *ngFor="let data of schemes_data; let i = index"
-                >
-                  <div class="scheme_data">
-                    <div class="scheme_tar">
-                      <h4 class="text-center" style="color: green !important">
-                        Scheme {{ i + 1 }}
-                      </h4>
-                      <h4 class="text-center">
-                        Target {{ data.scheme_value }}
-                      </h4>
+  <!-- Scheme Details Modal -->
+  <div class="modal fade" id="schemeModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding: 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading1">Scheme's Details</h4>
+              <div
+                class="pad_15 text-center content_msg"
+                style="padding: 10% 0"
+              >
+                <div class="row">
+                  <div
+                    class="col-md-6"
+                    *ngFor="let data of schemes_data; let i = index"
+                  >
+                    <div class="scheme_data">
+                      <div class="scheme_tar">
+                        <h4 class="text-center" style="color: green !important">
+                          Scheme {{ i + 1 }}
+                        </h4>
+                        <h4 class="text-center">
+                          Target {{ data.scheme_value }}
+                        </h4>
+                      </div>
+                      <h5 class="text-center">{{ data.scheme_benfit1 }}</h5>
+                      <h5 class="text-center">{{ data.scheme_benfit2 }}</h5>
                     </div>
-                    <h5 class="text-center">{{ data.scheme_benfit1 }}</h5>
-                    <h5 class="text-center">{{ data.scheme_benfit2 }}</h5>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12 text-center">
-                <b
-                  ><a routerLink="/schemes-list" data-dismiss="modal"
-                    ><i class="fa fa-arrow-right" style="font-size: 17px"></i
-                    >know more</a
-                  ></b
-                >
+              <div class="row">
+                <div class="col-md-12 text-center">
+                  <b
+                    ><a routerLink="/schemes-list" data-dismiss="modal"
+                      ><i class="fa fa-arrow-right" style="font-size: 17px"></i
+                      >know more</a
+                    ></b
+                  >
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-success fr"
+            data-dismiss="modal"
+            (click)="showcredit()"
+          >
+            OK
+          </button>
+        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
-          Close
-        </button>
-        <button
-          type="button"
-          class="btn btn-success fr"
-          data-dismiss="modal"
-          (click)="showcredit()"
+    </div>
+  </div>
+
+  <!-- OTP Verification Modal -->
+  <div class="modal fade" id="loginOtpVerifyModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding: 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">
+                  ×
+                </button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div
+                class="pad_15 text-center content_msg"
+                style="padding: 10% 0"
+              >
+                <span>OTP Verified Successfully</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password Reset Success Modal -->
+  <div class="modal fade" id="loginResetPwdModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body" style="padding: 0">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="alert_heading">
+                <button type="button" class="close" data-dismiss="modal">
+                  ×
+                </button>
+              </h4>
+              <div class="right_mark">
+                <i class="fa fa-check" aria-hidden="true"></i>
+              </div>
+              <div
+                class="pad_15 text-center content_msg"
+                style="padding: 10% 0"
+              >
+                <span>Password Updated Successfully</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger fl" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-success fr" data-dismiss="modal">
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Credit Limit Exceeded Modal -->
+  <div id="creditstatus" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Conditional Messages -->
+        <div
+          class="modal-body text-center"
+          *ngIf="loginUserData?.alert && !loginUserData?.alert1"
         >
-          OK
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- OTP Verification Modal -->
-<div class="modal fade" id="loginOtpVerifyModal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body" style="padding: 0">
-        <div class="row">
-          <div class="col-md-12">
-            <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">
-                ×
-              </button>
-            </h4>
-            <div class="right_mark">
-              <i class="fa fa-check" aria-hidden="true"></i>
-            </div>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0">
-              <span>OTP Verified Successfully</span>
-            </div>
-          </div>
+          <h4>You have exceeded credit limit amount!!!</h4>
+        </div>
+        <div
+          class="modal-body text-center"
+          *ngIf="loginUserData?.alert1 && !loginUserData?.alert"
+        >
+          <h4>You have exceeded credit period days!!!</h4>
+        </div>
+        <div
+          class="modal-body text-center"
+          *ngIf="loginUserData?.alert && loginUserData?.alert1"
+        >
+          <h4>
+            You have exceeded credit limit amount and credit period days!!!
+          </h4>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button class="btn btn-success" data-dismiss="modal">OK</button>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-success fr" data-dismiss="modal">
-          OK
-        </button>
-      </div>
     </div>
   </div>
-</div>
 
-<!-- Password Reset Success Modal -->
-<div class="modal fade" id="loginResetPwdModal" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body" style="padding: 0">
-        <div class="row">
-          <div class="col-md-12">
-            <h4 class="alert_heading">
-              <button type="button" class="close" data-dismiss="modal">
-                ×
-              </button>
-            </h4>
-            <div class="right_mark">
-              <i class="fa fa-check" aria-hidden="true"></i>
-            </div>
-            <div class="pad_15 text-center content_msg" style="padding: 10% 0">
-              <span>Password Updated Successfully</span>
-            </div>
-          </div>
+  <!-- Credit Days Exceeded Modal -->
+  <div id="creditdays" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header alert_heading">
+          <button type="button" class="close" data-dismiss="modal">×</button>
+          <h4 class="modal-title text-center">Credit Period Limit</h4>
+        </div>
+        <div class="modal-body text-center">
+          <h4>Sorry, You have exceeded credit period days !!!</h4>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button class="btn btn-success" data-dismiss="modal">OK</button>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger fl" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-success fr" data-dismiss="modal">
-          OK
-        </button>
-      </div>
     </div>
   </div>
+  <!-- CSS for background and overlay -->
+  <style>
+    .bg-image {
+      background-image: url("/assets/images/image.png"); /* replace with your image path */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6); /* dark semi-transparent overlay */
+    }
+    .custom-card {
+      position: relative; /* for stacking context */
+      z-index: 2;
+      background: transparent;
+      border: none;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    /* Make inputs full width */
+    .full-width {
+      width: 60px;
+    }
+
+    /* Style your button */
+    .login_acunt {
+      width: 100%;
+      padding: 10px;
+      background-color: #009b77;
+      color: #fff;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+    .login_acunt:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+
+    /* Utility margin class */
+  </style>
 </div>
-
-<!-- Credit Limit Exceeded Modal -->
-<div id="creditstatus" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- Conditional Messages -->
-      <div
-        class="modal-body text-center"
-        *ngIf="loginUserData?.alert && !loginUserData?.alert1"
-      >
-        <h4>You have exceeded credit limit amount!!!</h4>
-      </div>
-      <div
-        class="modal-body text-center"
-        *ngIf="loginUserData?.alert1 && !loginUserData?.alert"
-      >
-        <h4>You have exceeded credit period days!!!</h4>
-      </div>
-      <div
-        class="modal-body text-center"
-        *ngIf="loginUserData?.alert && loginUserData?.alert1"
-      >
-        <h4>You have exceeded credit limit amount and credit period days!!!</h4>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-danger" data-dismiss="modal">Close</button>
-        <button class="btn btn-success" data-dismiss="modal">OK</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Credit Days Exceeded Modal -->
-<div id="creditdays" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header alert_heading">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h4 class="modal-title text-center">Credit Period Limit</h4>
-      </div>
-      <div class="modal-body text-center">
-        <h4>Sorry, You have exceeded credit period days !!!</h4>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-danger" data-dismiss="modal">Close</button>
-        <button class="btn btn-success" data-dismiss="modal">OK</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- CSS for background and overlay -->
-<style>
-  .bg-image {
-    background-image: url("/assets/images/image.png"); /* replace with your image path */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
-  .overlay {
-    background-color: rgba(0, 0, 0, 0.6); /* dark semi-transparent overlay */
-  }
-  .custom-card {
-    position: relative; /* for stacking context */
-    z-index: 2;
-    background: transparent;
-    border: none;
-    padding: 20px;
-    border-radius: 8px;
-  }
-
-  /* Make inputs full width */
-  .full-width {
-    width: 60px;
-  }
-
-  /* Style your button */
-  .login_acunt {
-    width: 100%;
-    padding: 10px;
-    background-color: #009b77;
-    color: #fff;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-  }
-  .login_acunt:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
-  }
-
-  /* Utility margin class */
-</style>
