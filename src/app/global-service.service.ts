@@ -349,7 +349,7 @@ getWishlist(userId: number) {
 
 //userprofile to supplier
 getUserProfile(userid: string): Observable<any[]> {
-  const apiUrl = `http://192.168.0.223:8001/get_user_profile/?userid=${userid}`;
+  const apiUrl = this.UrlData(`get_user_profile/?userid=${userid}`);
   return this.http.get<any[]>(apiUrl);
 }
 
