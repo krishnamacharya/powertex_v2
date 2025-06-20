@@ -346,6 +346,15 @@ changePassword(payload: any) {
 getWishlist(userId: number) {
   return this.http.get<any[]>(this.UrlData(`wishlist/?userid=${userId}`));
 }
+addToCart(payload: any) {
+  return this.http.post(this.UrlData('addtocart/'), payload);
+}
+getCartByUserId(user_id: string) {
+  const url = `http://192.168.0.223:8001/addtocart/?userid=${user_id}`;
+  return this.http.get(url);
+}
+
+
 
 //userprofile to supplier
 getUserProfile(userid: string): Observable<any[]> {

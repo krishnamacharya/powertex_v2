@@ -108,8 +108,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
   };
 
   closeLoginModal() {
-    this.showLoginModal = false; // <-- Change to false
-      document.body.style.overflow = ''; // Reset to default
+    this.showLoginModal = false;
+      document.body.style.overflow = ''; 
     console.log("Modal closed");
   }
 
@@ -126,7 +126,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.loginMoethod = 'login/';
     this.body = { "email": this.loginData.userId, "password": this.loginData.password };
-    document.body.style.overflow = 'hidden'; // Disable scroll
+    document.body.style.overflow = 'hidden'; 
     this.authService.LoginUser(this.body).subscribe(
       (data) => {
         this.spinner.hide();
@@ -142,7 +142,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         const access = (data as any).access || (data as any).access;
         localStorage.setItem('username', username);
         localStorage.setItem('first_name', first_name);
-           localStorage.setItem('Clientid', Clientid);
+        localStorage.setItem('Clientid', Clientid);
         localStorage.setItem("access",access);
         localStorage.setItem('loginUserData', JSON.stringify({ user_id: this.logindata.userid, first_name:this.logindata.first_name,username:this.logindata.username, mobile:this.logindata.Mobile,Clientid:this.logindata.Clientid,usertype:this.logindata.usertype,GST:this.logindata.GST}));
         localStorage.setItem('user_id',this.logindata.userid)
@@ -226,8 +226,8 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
 
     // Open the Register modal
     this.dialog.open(RegisterComponent, {
-      disableClose: true, // Optional
-      data: {} // Optional: pass any data to RegisterComponent
+      disableClose: true,    
+      data: {} 
     });
   }
 

@@ -31,6 +31,7 @@ interface Reviewdetails {
 })
 export class ProductDetailComponent implements OnInit {
   p: any;
+cartForm: any;
   wish_list(_t163: any, arg1: string) {
     throw new Error('Method not implemented.');
   }
@@ -87,6 +88,12 @@ export class ProductDetailComponent implements OnInit {
   ) {
     this.obj.id = 1;
   }
+  cartData: any = {
+  qty: 1,
+  productid: null,
+  category: ''
+};
+
   // data: any;
 
   /*  ======================================================== */
@@ -335,44 +342,67 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  addToCart(body): Subscription | void {
-    this.token = localStorage.getItem('token');
-    /* // this.spinner.show(); */
-    if (localStorage['token'] != '' && localStorage['token'] != undefined) {
-      this.methodname = 'addtocart_site/';
-      this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
-      body = {
-        user_id: this.loginUserData.user_id,
-        productid: this.data.productid,
-        qty: 1,
-      };
-      //// this.spinner.show();
-      return this.globalService.postData(body, this.methodname).subscribe(
-        (data) => {
-          // this.spinner.hide();
+  // addToCart(body): Subscription | void {
+  //   this.token = localStorage.getItem('token');
+  //   /* // this.spinner.show(); */
+  //   if (localStorage['token'] != '' && localStorage['token'] != undefined) {
+  //     this.methodname = 'addtocart_site/';
+  //     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
+  //     body = {
+  //       user_id: this.loginUserData.user_id,
+  //       productid: this.data.productid,
+  //       qty: 1,
+  //     };
+  //     //// this.spinner.show();
+  //     return this.globalService.postData(body, this.methodname).subscribe(
+  //       (data) => {
+  //         // this.spinner.hide();
 
-          if (data['Status'] == 'Update sucessfully') {
-            this.toasterService.info(' This item already added to cart');
-          } else if (data['Status'] == 'Inserted sucessfully') {
-            this.obj.cartItem_count = data['count'];
-            this.eventemit.fire(this.obj);
-            // $('#insertItemModal').modal('show');
-          }
-        },
-        (error) => {
-          // this.spinner.hide();
-          // //this.ngxSmartService.getModal('errorModal').open();
-          this.dialog.open(ErrorModalComponent, {
-            data: { errorModal: true },
-          });
-          // console.log(error);
-        }
-      );
-    } else {
-      // this.ngxSmartService.getModal('loginModal').open();
-    }
-  }
+  //         if (data['Status'] == 'Update sucessfully') {
+  //           this.toasterService.info(' This item already added to cart');
+  //         } else if (data['Status'] == 'Inserted sucessfully') {
+  //           this.obj.cartItem_count = data['count'];
+  //           this.eventemit.fire(this.obj);
+  //           // $('#insertItemModal').modal('show');
+  //         }
+  //       },
+  //       (error) => {
+  //         // this.spinner.hide();
+  //         // //this.ngxSmartService.getModal('errorModal').open();
+  //         this.dialog.open(ErrorModalComponent, {
+  //           data: { errorModal: true },
+  //         });
+  //         // console.log(error);
+  //       }
+  //     );
+  //   } else {
+  //     // this.ngxSmartService.getModal('loginModal').open();
+  //   }
+  // }
   quantity: number = 1;
+addToCart1(cartData: any): void {
+  const userId = localStorage.getItem('user_id');
+
+  const payload = {
+    userid: userId,
+    qty: cartData.qty || 1, 
+    productid: cartData.productid,
+    category: cartData.category,
+    markuser_id: userId,
+    savelater: 0
+  };
+
+  this.globalService.addToCart(payload).subscribe({
+    next: (res: any) => {
+      console.log('Item added to cart:', res);
+      alert('Item added to cart successfully.');
+    },
+    error: (err) => {
+      console.error('Failed to add to cart:', err);
+      alert('Failed to add item to cart. Please try again.');
+    }
+  });
+}
 
   increaseQty() {
     this.quantity++;
