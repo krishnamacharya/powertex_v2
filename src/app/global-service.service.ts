@@ -346,9 +346,21 @@ changePassword(payload: any) {
 getWishlist(userId: number) {
   return this.http.get<any[]>(this.UrlData(`wishlist/?userid=${userId}`));
 }
+
+// global.service.ts
+deleteWishlistItemBySrlno(srlno: number) {
+  return this.http.delete(this.UrlData(`wishlist/?id=${srlno}`));
+}
+
+
 addToCart(payload: any) {
   return this.http.post(this.UrlData('addtocart/'), payload);
 }
+// global.service.ts
+deleteCartItemBySrlno(seq_no: number) {
+  return this.http.delete(this.UrlData(`addtocart/?id=${seq_no}`));
+}
+
 getCartByUserId(user_id: string) {
   const url = `http://192.168.0.223:8001/addtocart/?userid=${user_id}`;
   return this.http.get(url);

@@ -10,17 +10,17 @@ declare var $: any;
 @Component({
   selector: 'app-view-cart',
   standalone: false,
-  
+
   templateUrl: './view-cart.component.html',
-  styleUrl: './view-cart.component.scss'
+  styleUrl: './view-cart.component.scss',
 })
 export class ViewCartComponent implements OnInit {
   Spl_netprice: any;
-  final_amount: any
-  gstamount: any
-  grand_total: any
-  taxAmount: any
-  net_amount: any
+  final_amount: any;
+  gstamount: any;
+  grand_total: any;
+  taxAmount: any;
+  net_amount: any;
   po: any = [];
   h;
   headerData: any;
@@ -34,7 +34,7 @@ export class ViewCartComponent implements OnInit {
   setPosition: any;
   // location: Coordinates;
   methodname: string;
-  body: { "user_id": string; "productid": string; "qty": number; };
+  body: { user_id: string; productid: string; qty: number };
   quantity: number;
   CartItem: any = {};
   grandtotal: any;
@@ -48,16 +48,21 @@ export class ViewCartComponent implements OnInit {
   alert: boolean;
   grand_tax: any;
 
-  constructor(private globalService: GlobalServiceService, private route: Router, private dialog:MatDialog, private spinner: NgxSpinnerService,
-    private dataservice: DataServiceService, private eventEmmit: ComponentCommunicationService) {
+  constructor(
+    private globalService: GlobalServiceService,
+    private route: Router,
+    private dialog: MatDialog,
+    private spinner: NgxSpinnerService,
+    private dataservice: DataServiceService,
+    private eventEmmit: ComponentCommunicationService
+  ) {
     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
     console.log(this.loginUserData);
     this.obj.id = 1;
   }
-  body67:{
-    header:{};
-
-  }
+  body67: {
+    header: {};
+  };
 
   ngOnInit() {
     this.viewcart1();
@@ -66,96 +71,109 @@ export class ViewCartComponent implements OnInit {
   }
   cartdata: any = [];
   cartdata2: any = [];
-  gsttotal: number = 0
+  gsttotal: number = 0;
   viewcart() {
     // this.deletecode();
 
     /* this.spinner.show(); */
-    this.input_id = "4.2";
+    this.input_id = '4.2';
     this.user_id = this.loginUserData.user_id;
-    this.globalService.getDatawithQueryParams1(this.input_id, this.user_id).subscribe((data) => {
-      /*  this.spinner.hide(); */
-      if (data['status'] == "success") {
-        this.carItems = data['values'];
-        this.cartdata = data;
-        console.log(this.carItems,"carItems");
-        console.log(this.cartdata,"cartdata");
-        // this.cartdata2 = data;
-      localStorage.setItem('cartdata2',JSON.stringify(this.cartdata))
+    this.globalService
+      .getDatawithQueryParams1(this.input_id, this.user_id)
+      .subscribe(
+        (data) => {
+          /*  this.spinner.hide(); */
+          if (data['status'] == 'success') {
+            this.carItems = data['values'];
+            this.cartdata = data;
+            console.log(this.carItems, 'carItems');
+            console.log(this.cartdata, 'cartdata');
+            // this.cartdata2 = data;
+            localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
 
-        this.getPriceDetails();
+            this.getPriceDetails();
+            this.obj.cartItem_count = this.carItems.length;
+            this.eventEmmit.fire(this.obj);
+            this.grandtotal = 0;
+            this.carItems.forEach((data) => {
+              this.grandtotal = this.grandtotal + data.aftergst;
+              this.gsttotal = this.gsttotal + data.gst_amount;
+            });
+          }
+        },
+        (error) => {
+          this.spinner.hide();
+          this.dialog.open(ErrorModalComponent, {
+            data: { errorModal: true },
+          });
+          // this.ngxSmartService.getModal('errorModal').open();
+        }
+      );
+  }
+  viewcart1(): void {
+    this.user_id = this.loginUserData.user_id;
+
+    this.globalService.getCartByUserId(this.user_id).subscribe({
+      next: (data: any) => {
+        // Case 1: if API returns raw array
+        if (Array.isArray(data)) {
+          this.carItems = data;
+          this.cartdata = { values: data }; // in case your HTML still uses cartdata.values
+        }
+        // Optional Case 2: if your backend changes to return { status: "success", values: [...] }
+        else if (data['status'] === 'success') {
+          this.carItems = data['values'];
+          this.cartdata = data;
+        } else {
+          console.error('Unexpected response format', data);
+          return;
+        }
+
+        console.log(this.carItems, 'carItems');
+
+        localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
+
+        this.grandtotal = 0;
+        this.gsttotal = 0;
+
+        this.carItems.forEach((item) => {
+          const dtl = item.dtl?.[0];
+          if (dtl) {
+            const mrp = parseFloat(dtl.mrp);
+            const discount = parseFloat(dtl.discount_percent);
+            const gst = parseFloat(dtl.gst);
+            const discountedPrice = mrp - mrp * (discount / 100);
+            const gstAmount = discountedPrice * (gst / 100);
+            const finalPrice = discountedPrice + gstAmount;
+
+            this.grandtotal += finalPrice;
+            this.gsttotal += gstAmount;
+
+            item.aftergst = finalPrice;
+            item.gst_amount = gstAmount;
+          }
+        });
+
         this.obj.cartItem_count = this.carItems.length;
         this.eventEmmit.fire(this.obj);
-        this.grandtotal = 0;
-        this.carItems.forEach(data => {
-          this.grandtotal = this.grandtotal + ((data.aftergst));
-          this.gsttotal = this.gsttotal + (data.gst_amount)
-        });
-      }
-    },
-       error => {
-                this.spinner.hide();
-                this.dialog.open(ErrorModalComponent, {
-                  data: { errorModal:true }
-                });
-                // this.ngxSmartService.getModal('errorModal').open();
-          
-              });
+      },
+      error: (err) => {
+        console.error('Failed to load cart data', err);
+      },
+    });
   }
-viewcart1(): void {
-  this.user_id = this.loginUserData.user_id;
-
-  this.globalService.getCartByUserId(this.user_id).subscribe({
-    next: (data: any) => {
-      // Case 1: if API returns raw array
-      if (Array.isArray(data)) {
-        this.carItems = data;
-        this.cartdata = { values: data }; // in case your HTML still uses cartdata.values
-      } 
-      // Optional Case 2: if your backend changes to return { status: "success", values: [...] }
-      else if (data['status'] === "success") {
-        this.carItems = data['values'];
-        this.cartdata = data;
-      } 
-      else {
-        console.error("Unexpected response format", data);
-        return;
-      }
-
-      console.log(this.carItems, "carItems");
-
-      localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
-
-      this.grandtotal = 0;
-      this.gsttotal = 0;
-
-      this.carItems.forEach(item => {
-        const dtl = item.dtl?.[0];
-        if (dtl) {
-          const mrp = parseFloat(dtl.mrp);
-          const discount = parseFloat(dtl.discount_percent);
-          const gst = parseFloat(dtl.gst);
-          const discountedPrice = mrp - (mrp * (discount / 100));
-          const gstAmount = discountedPrice * (gst / 100);
-          const finalPrice = discountedPrice + gstAmount;
-
-          this.grandtotal += finalPrice;
-          this.gsttotal += gstAmount;
-
-          item.aftergst = finalPrice;        
-          item.gst_amount = gstAmount;
-        }
-      });
-
-      this.obj.cartItem_count = this.carItems.length;
-      this.eventEmmit.fire(this.obj);
-    },
-    error: (err) => {
-      console.error("Failed to load cart data", err);
-    }
-  });
-}
-  
+  deleteFromCart(seq_no: number): void {
+    this.globalService.deleteCartItemBySrlno(seq_no).subscribe({
+      next: () => {
+        this.carItems = this.carItems.filter((item) => item.seq_no !== seq_no);
+        alert(`Cart item with srlno ${seq_no} deleted successfully`);
+        console.log(`Cart item with srlno ${seq_no} deleted successfully`);
+      },
+      error: (err) => {
+        console.error(`Error deleting cart item with srlno ${seq_no}:`, err);
+      },
+    });
+  }
 
   increment(data) {
     data.qty++;
@@ -167,49 +185,50 @@ viewcart1(): void {
       data.qty--;
       this.updateCart(data);
     }
-
   }
-  /* ==================================== */
+
   select_qty(data) {
-
     data.qty;
-    this.updateCart(data)
-
+    this.updateCart(data);
   }
-  /* ====================================== */
-  /* ===================================== */
   pricedetails: any = [];
   pricedetails2: any = [];
   getPriceDetails() {
     this.cartdata2 = JSON.parse(localStorage.getItem('cartdata2'));
-    let body = { "net_amount": this.cartdata2.grandtotal, "gst": this.gsttotal, "process": "PO" }
+    let body = {
+      net_amount: this.cartdata2.grandtotal,
+      gst: this.gsttotal,
+      process: 'PO',
+    };
     console.log(body);
-    this.globalService.postData(body, "promocode/checkom/").subscribe((resp1) => {
-      this.pricedetails = resp1;
-      localStorage.setItem('pricedetails2',JSON.stringify(this.pricedetails))
-    })
+    this.globalService
+      .postData(body, 'promocode/checkom/')
+      .subscribe((resp1) => {
+        this.pricedetails = resp1;
+        localStorage.setItem(
+          'pricedetails2',
+          JSON.stringify(this.pricedetails)
+        );
+      });
   }
   updateCart(data) {
     /* this.spinner.show(); */
-    this.methodname = "addtocart_site/";
-    this.body = { "user_id": this.loginUserData.user_id, "productid": data.productid, "qty": data.qty }
-    this.globalService.postData(this.body, this.methodname).subscribe((data) => {
-      /*  this.spinner.hide(); */
-      console.log(data);
-      if (data['Status'] == "Update sucessfully") {
-        // this.message = data.Status;
-        /*   this.wish_alert = 'Updated sucessfully';
-          this.addwish(); */
-        // this.icon = true;
-        //alert("cart Updated Successfully");
-        //$('#cartUpdatedModal').modal('show');
-        this.viewcart();
-      }
-    },
-      error => {         /*  this.spinner.hide(); */
-        // this.ngxSmartService.getModal('errorModal').open();
-        // console.log(error);
-      });
+    this.methodname = 'addtocart_site/';
+    this.body = {
+      user_id: this.loginUserData.user_id,
+      productid: data.productid,
+      qty: data.qty,
+    };
+    this.globalService.postData(this.body, this.methodname).subscribe(
+      (data) => {
+        /*  this.spinner.hide(); */
+        console.log(data);
+        if (data['Status'] == 'Update sucessfully') {
+          this.viewcart();
+        }
+      },
+      (error) => {}
+    );
   }
 
   addwish() {
@@ -222,120 +241,125 @@ viewcart1(): void {
     this.route.navigateByUrl('home');
   } // your cart items array
 
-remove(type: string): void {
-  if (type === 'All') {
-    this.carItems = []; // Clear the array
-    console.log('All items removed from cart');
+  remove(type: string): void {
+    if (type === 'All') {
+      this.carItems = []; // Clear the array
+      console.log('All items removed from cart');
+    }
   }
-}
-
 
   deleteConfirm() {
-
     this.spinner.show();
     $('#confirmModal').modal('hide');
     this.user_id = this.loginUserData.user_id;
-    this.methodname = 'delete_cart/?user_id=' + this.user_id + '&productid=' + this.removeItem;
-    this.globalService.deleteData(this.methodname).subscribe((data) => {
-      this.spinner.hide();
-      this.viewcart();
-    },
-    error => {
-      this.spinner.hide();
-      this.dialog.open(ErrorModalComponent, {
-        data: { errorModal:true }
-      });
-      // this.ngxSmartService.getModal('errorModal').open();
-
-    });
+    this.methodname =
+      'delete_cart/?user_id=' + this.user_id + '&productid=' + this.removeItem;
+    this.globalService.deleteData(this.methodname).subscribe(
+      (data) => {
+        this.spinner.hide();
+        this.viewcart();
+      },
+      (error) => {
+        this.spinner.hide();
+        this.dialog.open(ErrorModalComponent, {
+          data: { errorModal: true },
+        });
+        // this.ngxSmartService.getModal('errorModal').open();
+      }
+    );
   }
   addupd(selected, attr, field) {
-
     if (attr['category'] && this.count == 0) {
       this.fieldArray.push(attr);
       this.po = [...selected, ...this.fieldArray];
-    }
-    else {
+    } else {
       this.po = [...selected, ...this.fieldArray];
     }
     //this.poHidden = !this.poHidden;
     //this.addressHidden = !this.poHidden;
     this.check_po(this.po);
-    console.log("total", this.po);
-    window.scrollTo(0, 0)
-
+    console.log('total', this.po);
+    window.scrollTo(0, 0);
   }
   check_po(po: any) {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
   gotoCheckout() {
-    if (this.loginUserData.user_type == "Customer") {
+    if (this.loginUserData.user_type == 'Customer') {
       this.route.navigateByUrl('checkout/1');
-
     } else {
       this.route.navigate(['/Dealer-ORDERS'], { queryParams: { cart: true } });
     }
 
     //
-
   }
 
-  offerdetails: any
-  promocodedata: any = []
+  offerdetails: any;
+  promocodedata: any = [];
   getoffers() {
-    this.globalService.getDataOnlyWithMethod("promocode/available").subscribe((resp1) => {
-      this.offerdetails = resp1;
-      for (var i = 0; i < this.offerdetails.length; i++) {
-        if (this.offerdetails[i].promocodename != null && this.offerdetails[i].active != 0 && (this.offerdetails[i].applicable == 'Web' || this.offerdetails[i].applicable == 'Web/Mobile')) {
-          this.promocodedata.push(this.offerdetails[i])
-
+    this.globalService
+      .getDataOnlyWithMethod('promocode/available')
+      .subscribe((resp1) => {
+        this.offerdetails = resp1;
+        for (var i = 0; i < this.offerdetails.length; i++) {
+          if (
+            this.offerdetails[i].promocodename != null &&
+            this.offerdetails[i].active != 0 &&
+            (this.offerdetails[i].applicable == 'Web' ||
+              this.offerdetails[i].applicable == 'Web/Mobile')
+          ) {
+            this.promocodedata.push(this.offerdetails[i]);
+          }
+          console.log(this.promocodedata, 'promocodedata');
         }
-        console.log(this.promocodedata, "promocodedata")
-      }
-
-    });
+      });
   }
 
   promocode: any;
   deletecode() {
-    this.promocode = ''
+    this.promocode = '';
     // this.applycodedetails = ''
-    this.messagep = false
-    this.applyprice(this.promocode, this.applycodedetails, false)
+    this.messagep = false;
+    this.applyprice(this.promocode, this.applycodedetails, false);
   }
-  applycodedetails: any
-  data: any
-  messagep: boolean = false
-  applyfor: any
+  applycodedetails: any;
+  data: any;
+  messagep: boolean = false;
+  applyfor: any;
   applycode(promocode) {
     // $('#viewpromocodesmodal').modal('hide');
-    this.promocode = promocode
+    this.promocode = promocode;
     for (let d of this.promocodedata) {
       if (d.promocodename == promocode) {
-        this.applyfor = d.applyfor
+        this.applyfor = d.applyfor;
       }
     }
     // this.response.price
     this.cartdata2 = JSON.parse(localStorage.getItem('cartdata2'));
-    this.data = { "promocode": promocode, "net_amount": this.cartdata2.endusergrandtotal, "applyfor": this.applyfor, "user_id": this.loginUserData.user_id }
-    this.globalService.postData(this.data, "promocode/check/").subscribe((resp1) => {
-      this.applycodedetails = resp1;
-      console.log(this.applycodedetails, "this.applycodedetails")
-      if (this.applycodedetails.apply == true) {
-        this.messagep = true;
-        this.applyprice(this.promocode, this.applycodedetails, true)
-      } 
-       else{
-        //  this.applycodedetails=""
-        //  this.message=false
-        //  console.log(this.applycodedetails,"this.applycodedetails")
-        //  this.applyprice(this.promocode, this.applycodedetails, false)
+    this.data = {
+      promocode: promocode,
+      net_amount: this.cartdata2.endusergrandtotal,
+      applyfor: this.applyfor,
+      user_id: this.loginUserData.user_id,
+    };
+    this.globalService
+      .postData(this.data, 'promocode/check/')
+      .subscribe((resp1) => {
+        this.applycodedetails = resp1;
+        console.log(this.applycodedetails, 'this.applycodedetails');
+        if (this.applycodedetails.apply == true) {
+          this.messagep = true;
+          this.applyprice(this.promocode, this.applycodedetails, true);
+        } else {
+          //  this.applycodedetails=""
+          //  this.message=false
+          //  console.log(this.applycodedetails,"this.applycodedetails")
+          //  this.applyprice(this.promocode, this.applycodedetails, false)
           this.deletecode();
         }
-
-    })
+      });
   }
-  promo_amount: any;  
+  promo_amount: any;
   applyprice(code, data, event) {
     // this.cartdata2 = JSON.parse(localStorage.getItem('cartdata2'));
     this.pricedetails2 = JSON.parse(localStorage.getItem('pricedetails2'));
@@ -345,15 +369,12 @@ remove(type: string): void {
       this.promocode = code;
       this.cartdata.grand_tax = data.gst;
       this.grandtotal = data.finalamount;
-    }
-    else {
+    } else {
       this.cartdata.endusergrandtotal = this.cartdata2.endusergrandtotal;
       this.pricedetails.devicediscamount = this.pricedetails2.devicediscamount;
-      this.promocode = "";
+      this.promocode = '';
       this.cartdata.grand_tax = this.cartdata2.grand_tax;
       this.grandtotal = this.cartdata2.grandtotal;
-
     }
   }
-
 }

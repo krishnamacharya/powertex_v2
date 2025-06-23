@@ -151,7 +151,6 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
         // ✅ Notify other components
         this.authService.setUsername(username);
          this.authService.setAccessToken(access);
-        // ✅ Close the modal
         this.closeLoginModal()
 
       },
@@ -161,7 +160,7 @@ export class LoginModalComponent implements OnInit, AfterViewInit {
           data: { errorModal: true }
         });
       }
-    );
+    );  
   }
 
   schemesdata: any = []

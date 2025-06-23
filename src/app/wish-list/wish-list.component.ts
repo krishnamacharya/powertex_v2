@@ -22,6 +22,7 @@ export class WishListComponent implements OnInit {
   brand: any;
   d: string;
   e: string;
+item: any;
   viewDetails(_t19: {
     long_name: string;
     enduser_price: number;
@@ -78,39 +79,21 @@ fetchWishlist(): void {
     },
   });
 }
- 
-  remove(obj) {
-    this.spinner.show();
-    let body = {
-      's.no': obj.seq_no,
-      productid: obj.productid,
-      user_id: this.loginUserData.user_id,
-      wishlist: 0,
-    };
-    console.log(body);
-    this.methodname = 'wishlist_insert/';
-    this.golbalService.postData(body, this.methodname).subscribe(
-      (data) => {
-        this.spinner.hide();
-        console.log(data);
-        if (data['Status'] == 0) {
-          this.wish_alert = 'This Item Removed';
-          this.addwish();
-          this.obj.wishList_count = data['count'];
-          this.obj.id = 4;
-          this.eventemit.fire(this.obj);
-          // this.getData();
-        }
-      },
-      (error) => {
-        this.spinner.hide();
-        this.dialog.open(ErrorModalComponent, {
-          data: { errorModal: true },
-        });
-        // this.ngxSmartService.getModal('errorModal').open();
-      }
-    );
-  }
+deleteFromWishlist(srlno: number): void {
+  this.golbalService.deleteWishlistItemBySrlno(srlno).subscribe({
+    next: () => {
+      // Remove item locally from wishlist after successful deletion
+      this.wishList = this.wishList.filter(item => item.srlno !== srlno);
+      console.log(`Item with srlno ${srlno} removed from wishlist`);
+    },
+    error: (err) => {
+      console.error(`Error deleting item with srlno ${srlno}:`, err);
+    }
+  });
+}
+
+
+
 
   addtocart(item) {
     this.spinner.show();

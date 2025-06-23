@@ -41,7 +41,7 @@
     </div>
 
     <!-- Right Wishlist Cards Section -->
-    <div class="col-md-8">
+    <div class="col-md-8">  
       <h4 class="mb-4 fw-bold">
         MY WISHLIST
         <span *ngIf="wishList.length > 0">({{ wishList.length }})</span>
@@ -76,7 +76,7 @@
                     border: 1.5px solid #c0c4c7;
                   "
                   title="Remove from wishlist"
-                  (click)="remove(p)"
+                  (click)="deleteFromWishlist(p.srlno)"
                 >
                   <i class="fa fa-trash text-black cursor_pointer"></i>
                 </div>
@@ -89,29 +89,31 @@
                     border: 1.5px solid #c0c4c7;
                   "
                   title="View Details"
-                   (click)="sub_cat(p); $event.stopPropagation()"
+                  (click)="sub_cat(p); $event.stopPropagation()"
                 >
                   <i class="fa fa-eye text-black cursor_pointer"></i>
                 </div>
               </div>
 
               <!-- Image -->
-              <div
+              <div 
                 class="text-center px-3 pt-3 position-relative"
-         (click)="sub_cat(p); $event.stopPropagation()"
+                (click)="sub_cat(p); $event.stopPropagation()"
               >
                 <img
                   [src]="p.high_image_1"
-                  (error)="p.high_image_1 =  'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'"
+                  (error)="
+                    p.high_image_1 =
+                      'https://gstbucket1.s3.ap-south-1.amazonaws.com/Powertexmodel/noimage.png'
+                  "
                   class="card-img-top img-fluid"
                   style="height: 150px; object-fit: contain"
                   alt="{{ p.long_name }}"
                 />
               </div>
-
               <!-- Card Body -->
               <div class="card-body ps-3 py-3 position-relative">
-                <p class="text-muted small mb-1">{{ "Brand" }}</p>
+                <p class="text-muted small mb-1">{{ brand }}</p>
                 <p
                   class="fw-semibold text-truncate mb-1"
                   title="{{ p.long_name }}"
