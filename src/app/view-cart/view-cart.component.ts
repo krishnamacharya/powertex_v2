@@ -44,10 +44,11 @@ export class ViewCartComponent implements OnInit {
   obj: any = {};
   message: any;
   wish_alert: string;
-  icon: boolean;
+  icon: boolean;  
   alert: boolean;
   grand_tax: any;
-
+  savedItems: any[] = [];
+  seq_no: any;
   constructor(
     private globalService: GlobalServiceService,
     private route: Router,
@@ -68,7 +69,13 @@ export class ViewCartComponent implements OnInit {
     this.viewcart1();
     this.getPriceDetails();
     this.getoffers();
+    this.loadSavedItems();
+    this.carItems.forEach(item => {
+  item.qty = item.qty || 1;
+});
+
   }
+  
   cartdata: any = [];
   cartdata2: any = [];
   gsttotal: number = 0;
@@ -162,6 +169,7 @@ export class ViewCartComponent implements OnInit {
       },
     });
   }
+  
   deleteFromCart(seq_no: number): void {
     this.globalService.deleteCartItemBySrlno(seq_no).subscribe({
       next: () => {
@@ -211,25 +219,116 @@ export class ViewCartComponent implements OnInit {
         );
       });
   }
-  updateCart(data) {
-    /* this.spinner.show(); */
-    this.methodname = 'addtocart_site/';
-    this.body = {
-      user_id: this.loginUserData.user_id,
-      productid: data.productid,
-      qty: data.qty,
-    };
-    this.globalService.postData(this.body, this.methodname).subscribe(
-      (data) => {
-        /*  this.spinner.hide(); */
-        console.log(data);
-        if (data['Status'] == 'Update sucessfully') {
-          this.viewcart();
+ updateCart(data) {
+  const updatedBody = {
+    productid: data.productid,
+    qty: data.qty
+  };
+
+  this.globalService.patchCartItem(data.seq_no, updatedBody).subscribe(
+    (response) => {
+      console.log(response);
+      if (response['Status'] === 'Update sucessfully') {
+        this.viewcart(); // Refresh cart
+      }
+    },
+    (error) => {
+      console.error('Error updating cart:', error);
+    }
+  );
+}
+  saveForLater(item: any) {
+  const payload = {
+    user_id: this.loginUserData.user_id,
+    productid: item.dtl[0].productid,
+    qty: item.qty,
+    seq_no: item.seq_no
+  };
+
+  this.globalService.postSaveForLater(payload).subscribe({
+    next: (res) => {
+      console.log('Saved for later', res);
+      // remove from cart and add to savedItems list
+      this.carItems = this.carItems.filter(ci => ci.seq_no !== item.seq_no);
+      this.savedItems.push(item);
+    },
+    error: (err) => console.error('Save for later failed', err)
+  });
+}
+
+loadSavedItems() {
+  const userId = this.loginUserData.user_id;
+
+  this.globalService.getSaveForLaterItems(userId).subscribe({
+    next: (response: any) => {
+      this.savedItems = response;
+      console.log('Saved items loaded:', this.savedItems);
+    },
+    error: (err) => {
+      console.error('Error fetching saved items:', err);
+    }
+  });
+}
+deleteFromSaveForLater(item: any) {
+  const userId = this.loginUserData.user_id;
+  const payload = { seq_no: item.seq_no };
+
+  this.globalService.deleteSaveForLaterItem(userId, payload).subscribe({
+    next: (res: any) => {
+      console.log('Deleted successfully:', res);
+      this.savedItems = this.savedItems.filter(si => si.seq_no !== item.seq_no);
+    },
+    error: (err) => {
+      console.error('Error deleting item:', err);
+    }
+  });
+}
+
+
+// Move single item to cart
+moveToCart(item: any) {
+  const payload = {
+    user_id: this.loginUserData.user_id,
+    productid: item.dtl[0].productid,
+    qty: item.qty,
+    category: item.category,
+    userid: this.user_id,
+  };
+
+  // Step 1: Add to Cart
+  this.globalService.addToCart(payload).subscribe({
+    next: (res: any) => {
+      console.log('Added to cart:', res);
+
+      // ✅ Step 2: Include seq_no in patch body
+      const patchBody = {
+        savelater: 0,         // 🔁 correct key name based on your backend
+        seq_no: item.seq_no      // ✅ this is now added properly
+      };
+
+      // PATCH call to update saveto_later status
+      this.globalService.updateSaveForLaterStatus(this.loginUserData.user_id, patchBody).subscribe({
+        next: () => {
+          console.log('Updated saveto_later status');
+
+          // Step 3: Remove item from UI
+          this.savedItems = this.savedItems.filter(si => si.seq_no !== item.seq_no);
+
+          // Step 4: Refresh cart if needed
+          this.viewcart1?.();
+        },
+        error: (err) => {
+          console.error('Failed to update saveto_later status:', err);
         }
-      },
-      (error) => {}
-    );
-  }
+      });
+    },
+    error: (err) => {
+      console.error('Failed to add to cart:', err);
+    }
+  });
+}
+
+
 
   addwish() {
     this.alert = true;
@@ -377,4 +476,23 @@ export class ViewCartComponent implements OnInit {
       this.grandtotal = this.cartdata2.grandtotal;
     }
   }
+  applyPromocode() {
+  const couponCode = this.promocode; // example: "Get 10% off"
+  const customerId = this.loginUserData.user_id;
+const orderValue = Math.floor(Number(this.grandtotal));
+
+
+  this.globalService.getCouponDetails(couponCode, customerId, orderValue).subscribe({
+    next: (res: any) => {
+      this.applycodedetails = res;
+      this.messagep = true; // or check based on response
+      console.log('Coupon Applied:', res);
+    },
+    error: (err) => {
+      console.error('Coupon error:', err);
+      this.messagep = false;
+    }
+  });
+}
+
 }

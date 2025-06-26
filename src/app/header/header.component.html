@@ -8,26 +8,35 @@
       >
         <a routerLink="/home" class="navbar-brand d-flex align-items-center">
           <img
-            src="/assets/images/logo-1.svg"
+            src="/assets/images/Powertexlogo3.png"
             alt="powertextools Logo"
-            style="height: 105px;width: 270px; margin-top:5px; margin-bottom: -5%;"
-          /> 
+            style="
+              height: 70px;
+              width: 250px;
+            
+            "
+          />
         </a>
       </div>
 
       <!-- Search Bar -->
       <div class="col-12 col-md-5 d-flex justify-content-center my-2 my-md-0">
-        <form class="w-100" style="max-width: 450px">
-          <div class="input-group">
+        <form class="w-100" style="max-width: 350px">
+          <div
+            class="input-group"
+            style="border-radius: 0.5px; overflow: hidden"
+          >
             <input
-              class="form-control  rounded-start-pill"style="border-color:#009b77"
+              class="form-control"
               type="search"
               placeholder="Search Products Here"
               [(ngModel)]="search_val"
               name="search"
+              style="border: 1px solid #009b77; border-radius: 10px 0 0 10px"
             />
             <button
-              class="btn  rounded-end-pill px-3"style="background-color:#009b77"
+              class="btn px-3"
+              style="background-color: #009b77; border-radius: 0 10px 10px 0"
               (click)="search_btn(search_val)"
               type="submit"
             >
@@ -45,7 +54,7 @@
           <!-- Contact Info -->
           <div class="text-end d-none d-md-block">
             <div class="small text-muted">
-              <i class="fa fa-phone "  style="color: #009b77"></i> Contact Us
+              <i class="fa fa-phone" style="color: #009b77"></i> Contact Us
             </div>
             <div class="fw-bold small">0123 456 789</div>
           </div>
@@ -64,7 +73,8 @@
           </a>
 
           <!-- My Cart -->
-          <a  *ngIf="username; else loginLink"
+          <a
+            *ngIf="username; else loginLink"
             class="nav-link position-relative d-flex align-items-center px-2"
             routerLink="/viewcart"
           >
@@ -93,7 +103,6 @@
                 style="color: #009b77"
                 >Login</span
               >
-            
             </a>
           </ng-container>
           <ng-container *ngIf="username; else loginLink">
@@ -102,7 +111,7 @@
               routerLink="/profile"
             >
               <i class="fa fa-user fs-5"></i>
-                <span > {{ username }}</span>
+              <span> {{ username }}</span>
             </a>
           </ng-container>
         </div>

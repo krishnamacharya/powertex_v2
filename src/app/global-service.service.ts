@@ -32,9 +32,13 @@ export class GlobalServiceService {
   posturl = "https://www.pptshopee.in/";
   imageurl = "https://www.pptshopee.in";
 
-  apiUrl1 = 'http://192.168.0.223:8001/get/';
-  geturl1 = ' http://192.168.0.223:8001/'
-  imageurl1 = 'http://192.168.0.223:8001/'
+  // apiUrl1 = 'http://192.168.0.223:8001/get/';
+  // geturl1 = ' http://192.168.0.223:8001/'
+  // imageurl1 = 'http://192.168.0.223:8001/'
+
+  apiUrl1 = 'http://192.168.0.223:8000/get/';
+  geturl1 = ' http://192.168.0.223:8000/'
+  imageurl1 = 'http://192.168.0.223:8000 /'
 
 
 
@@ -315,7 +319,7 @@ export class GlobalServiceService {
   }
 
   getNewarrivals(endpoint: string) {
-    return this.http.get(`http://192.168.0.223:8001/${endpoint}`, {
+    return this.http.get(`http://192.168.0.223:8000/${endpoint}`, {
       responseType: 'arraybuffer'  // important for TextDecoder to work
     });
   }
@@ -360,9 +364,43 @@ addToCart(payload: any) {
 deleteCartItemBySrlno(seq_no: number) {
   return this.http.delete(this.UrlData(`addtocart/?id=${seq_no}`));
 }
+patchCartItem(seq_no: number, updatedData: any) {
+  const url = `http://192.168.0.223:8000/addtocart/${seq_no}`;
+  return this.http.patch(url, updatedData);
+}
+ postSaveForLater(itemData: {
+    user_id: number;
+    productid: string;
+    qty: number;
+    seq_no: number;
+  }): Observable<any> {
+    const url = (this.UrlData('savelater/'));
+    return this.http.post(url, itemData);
+  }
+  getSaveForLaterItems(userId: number) {
+  const url = (this.UrlData(`/savelater/?userid=${userId}`));
+  return this.http.get(url);
+}
+updateSaveForLaterStatus(userId: number, payload: any) {
+  const url = (this.UrlData(`/savelater/?userid=${userId}`));
+  return this.http.patch(url, payload);
+}
+deleteSaveForLaterItem(userId: number, payload: { seq_no: number }) {
+  const url = (this.UrlData(`/savelater/?userid=${userId}`));
+  return this.http.request('delete', url, {
+    body: payload,
+  });
+}
+
 
 getCartByUserId(user_id: string) {
-  const url = `http://192.168.0.223:8001/addtocart/?userid=${user_id}`;
+  const url = (this.UrlData(`/addtocart/?userid=${user_id}`));
+  return this.http.get(url);
+}
+
+getCouponDetails(couponCode: string, customerId: number, orderValue: number) {
+  const encodedCoupon = encodeURIComponent(couponCode); // handles space, %, etc.
+  const url = (this.UrlData(`/getcoupons/?id=${encodedCoupon}&customerid=${customerId}&ordervalue=${orderValue}`));
   return this.http.get(url);
 }
 
@@ -376,7 +414,7 @@ getUserProfile(userid: string): Observable<any[]> {
 
 //userProfile Update
 updateUserProfile(userid: string, supplierData: any): Observable<any> {
-  const url = `http://192.168.0.223:8001/get_user_profile/?userid=${userid}`;
+  const url = (this.UrlData(`/get_user_profile/?userid=${userid}`));
   return this.http.patch(url, supplierData);
 }
 

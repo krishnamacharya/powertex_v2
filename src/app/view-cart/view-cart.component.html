@@ -16,13 +16,14 @@
               style="width: 100px; height: auto; object-fit: cover"
             />
             <div class="ms-3 flex-grow-1">
-              <div class="fw-semibold text-dark mb-1">
+              <div class="fw-semibold text-dark mb-1 text-nowrap">
                 {{ item.dtl[0].subcategory }} {{ item.dtl[0].modelno }}
               </div>
-              <div class="mb-2">
-                <span class="text-success fw-bold">{{
-                  item.dtl[0].discounted_price
-                }}</span>
+
+              <div class="mb-2 d-flex align-items-center flex-wrap">
+                <span class="text-success fw-bold">
+                  ₹{{ item.dtl[0].discounted_price }}
+                </span>
                 <span
                   *ngIf="item.dtl[0].discount_percent > 0"
                   class="text-muted text-decoration-line-through ms-2"
@@ -37,12 +38,25 @@
                   ({{ item.dtl[0].discount_percent }}% off)
                 </span>
               </div>
+              <!-- Save for Later Button -->
+              <button
+                class="btn btn-success btn-sm mt-1"
+                (click)="saveForLater(item)"
+                style="
+                  background-color: #149275;
+                  padding: 2px 8px;
+                  font-size: 0.8rem;
+                "
+              >
+                Save Later
+              </button>
             </div>
 
             <div
-              class="d-flex justify-content-end align-items-center gap-3 w-100 mt-2"
+              class="d-flex align-items-center justify-content-between"
+              style="min-width: 220px"
             >
-              <!-- Quantity Block -->
+              <!-- Quantity Control -->
               <div class="input-group input-group-sm" style="max-width: 120px">
                 <button
                   class="btn border border-secondary bg-white"
@@ -74,11 +88,18 @@
                 </button>
               </div>
 
+              <!-- Price Display -->
+              <div
+                class="mt-1 text-dark fw-bold fs-6"
+                style="margin-left: 20px; min-width: 80px"
+              >
+                ₹{{ +item.dtl[0].discounted_price * item.qty }}
+              </div>
               <!-- Delete Icon -->
               <button
                 class="btn p-1.5 border"
                 style="border-color: black"
-               (click)="deleteFromCart(item.seq_no)"
+                (click)="deleteFromCart(item.seq_no)"
               >
                 <i
                   class="fa fa-trash"
@@ -96,7 +117,7 @@
             style="
               border: 1px solid #130c0c;
               color: rgb(87, 83, 83);
-              border-radius: 8px;    
+              border-radius: 8px;
               padding: 10px 20px;
               background-color: #ffffff;
             "
@@ -117,6 +138,62 @@
           >
             Add +
           </button>
+        </div>
+      </div>
+      <!-- Saved for Later Section -->
+      <div
+        *ngIf="savedItems.length > 0"
+        class="mt-4 p-4 rounded shadow-sm bg-white"
+      >
+        <h5 class="fw-bold mb-3">Saved for Later ({{ savedItems.length }})</h5>
+
+        <div *ngFor="let item of savedItems" class="border-bottom pb-3 mb-3">
+          <div class="d-flex align-items-start">
+            <img
+              [src]="item.dtl[0].high_image_1"
+              class="img-thumbnail"
+              style="width: 100px; height: auto; object-fit: cover"
+            />
+            <div class="ms-3 flex-grow-1">
+              <div class="fw-semibold text-dark mb-1 text-nowrap">
+                {{ item.dtl[0].subcategory }} {{ item.dtl[0].modelno }}
+              </div>
+              <div class="mb-2 d-flex align-items-center flex-wrap">
+                <span class="text-success fw-bold">
+                  ₹{{ item.dtl[0].discounted_price }}
+                </span>
+                <span
+                  *ngIf="item.dtl[0].discount_percent > 0"
+                  class="text-muted text-decoration-line-through ms-2"
+                >
+                  ₹{{ item.dtl[0].mrp }}
+                </span>
+              </div>
+
+              <!-- Move Back to Cart Button -->
+              <button
+                class="btn btn-sm"
+                (click)="moveToCart(item)"
+                style="
+                  background-color: #149275;
+                  padding: 2px 8px;
+                  font-size: 0.8rem;
+                "
+              >
+                Move to Cart
+              </button>
+            </div>
+            <button
+              class="btn p-1.5 border"
+              style="border-color: black"     
+              (click)="deleteFromSaveForLater(item)"
+            >
+              <i
+                class="fa fa-trash"
+                style="color: rgb(90, 85, 85); font-size: 1.1rem"
+              ></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -143,9 +220,7 @@
         </div>
         <div class="d-flex justify-content-between border-top pt-2 fw-bold">
           <span>Grand Total</span>
-          <span>{{
-            grandtotal + pricedetails.trasnport_charges | currency : "INR"
-          }}</span>
+          <span>{{ grandtotal | currency : "INR" }}</span>
         </div>
         <button
           class="btn w-60 mt-3"
@@ -170,7 +245,7 @@
           <div class="col-sm-6 d-flex gap-2">
             <button
               class="btn w-50"
-              (click)="applycode(promocode)"
+              (click)="applyPromocode()"
               style="background-color: #009b77"
             >
               Apply
