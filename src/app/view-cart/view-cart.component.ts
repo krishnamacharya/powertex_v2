@@ -49,6 +49,9 @@ export class ViewCartComponent implements OnInit {
   grand_tax: any;
   savedItems: any[] = [];
   seq_no: any;
+   sidemenu: boolean = true
+     d: string;
+  e: string;
   constructor(
     private globalService: GlobalServiceService,
     private route: Router,
@@ -79,96 +82,99 @@ export class ViewCartComponent implements OnInit {
   cartdata: any = [];
   cartdata2: any = [];
   gsttotal: number = 0;
-  viewcart() {
-    // this.deletecode();
+  // viewcart() {
+  //   // this.deletecode();
 
-    /* this.spinner.show(); */
-    this.input_id = '4.2';
-    this.user_id = this.loginUserData.user_id;
-    this.globalService
-      .getDatawithQueryParams1(this.input_id, this.user_id)
-      .subscribe(
-        (data) => {
-          /*  this.spinner.hide(); */
-          if (data['status'] == 'success') {
-            this.carItems = data['values'];
-            this.cartdata = data;
-            console.log(this.carItems, 'carItems');
-            console.log(this.cartdata, 'cartdata');
-            // this.cartdata2 = data;
-            localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
+  //   /* this.spinner.show(); */
+  //   this.input_id = '4.2';
+  //   this.user_id = this.loginUserData.user_id;
+  //   this.globalService
+  //     .getDatawithQueryParams1(this.input_id, this.user_id)
+  //     .subscribe(
+  //       (data) => {
+  //         /*  this.spinner.hide(); */
+  //         if (data['status'] == 'success') {
+  //           this.carItems = data['values'];
+  //           this.cartdata = data;
+  //           console.log(this.carItems, 'carItems');
+  //           console.log(this.cartdata, 'cartdata');
+  //           // this.cartdata2 = data;
+  //           localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
 
-            this.getPriceDetails();
-            this.obj.cartItem_count = this.carItems.length;
-            this.eventEmmit.fire(this.obj);
-            this.grandtotal = 0;
-            this.carItems.forEach((data) => {
-              this.grandtotal = this.grandtotal + data.aftergst;
-              this.gsttotal = this.gsttotal + data.gst_amount;
-            });
-          }
-        },
-        (error) => {
-          this.spinner.hide();
-          this.dialog.open(ErrorModalComponent, {
-            data: { errorModal: true },
-          });
-          // this.ngxSmartService.getModal('errorModal').open();
+  //           this.getPriceDetails();
+  //           this.obj.cartItem_count = this.carItems.length;
+  //           this.eventEmmit.fire(this.obj);
+  //           this.grandtotal = 0;
+  //           this.carItems.forEach((data) => {
+  //             this.grandtotal = this.grandtotal + data.aftergst;
+  //             this.gsttotal = this.gsttotal + data.gst_amount;
+  //           });
+  //         }
+  //       },
+  //       (error) => {
+  //         this.spinner.hide();
+  //         this.dialog.open(ErrorModalComponent, {
+  //           data: { errorModal: true },
+  //         });
+  //         // this.ngxSmartService.getModal('errorModal').open();
+  //       }
+  //     );
+  // }
+ viewcart1(): void {
+  this.user_id = this.loginUserData.user_id;
+
+  this.globalService.getCartByUserId(this.user_id).subscribe({
+    next: (data: any) => {
+      // Case 1: if API returns raw array
+      if (Array.isArray(data)) {
+        this.carItems = data;
+        this.cartdata = { values: data }; // in case your HTML still uses cartdata.values
+      }
+      // Optional Case 2: if your backend returns { status: "success", values: [...] }
+      else if (data['status'] === 'success') {
+        this.carItems = data['values'];
+        this.cartdata = data;
+      } else {
+        console.error('Unexpected response format', data);
+        return;
+      }
+
+      console.log(this.carItems, 'carItems');
+
+      localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
+
+      // ✅ Reset totals before calculation
+      this.gsttotal = 0;
+      this.grandtotal = 0;
+
+      this.carItems.forEach((item) => {
+        const dtl = item.dtl?.[0];
+        if (dtl) {
+          const mrp = parseFloat(dtl.mrp) || 0;
+          const discount = parseFloat(dtl.discount_percent) || 0;
+          const gst = parseFloat(dtl.gst) || 0;
+
+          const discountedPrice = mrp - mrp * (discount / 100);
+          const gstAmount = discountedPrice * (gst / 100);
+          const finalPrice = discountedPrice + gstAmount;
+
+          this.grandtotal += finalPrice;
+          this.gsttotal += gstAmount;
+
+          item.aftergst = finalPrice;
+          item.gst_amount = gstAmount;
         }
-      );
-  }
-  viewcart1(): void {
-    this.user_id = this.loginUserData.user_id;
+      });
 
-    this.globalService.getCartByUserId(this.user_id).subscribe({
-      next: (data: any) => {
-        // Case 1: if API returns raw array
-        if (Array.isArray(data)) {
-          this.carItems = data;
-          this.cartdata = { values: data }; // in case your HTML still uses cartdata.values
-        }
-        // Optional Case 2: if your backend changes to return { status: "success", values: [...] }
-        else if (data['status'] === 'success') {
-          this.carItems = data['values'];
-          this.cartdata = data;
-        } else {
-          console.error('Unexpected response format', data);
-          return;
-        }
+      this.obj.cartItem_count = this.carItems.length;
+      this.eventEmmit.fire(this.obj);
+    },
+    error: (err) => {
+      console.error('Failed to load cart data', err);
+    },
+  });
+}
 
-        console.log(this.carItems, 'carItems');
-
-        localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
-
-        this.grandtotal = 0;
-        this.gsttotal = 0;
-
-        this.carItems.forEach((item) => {
-          const dtl = item.dtl?.[0];
-          if (dtl) {
-            const mrp = parseFloat(dtl.mrp);
-            const discount = parseFloat(dtl.discount_percent);
-            const gst = parseFloat(dtl.gst);
-            const discountedPrice = mrp - mrp * (discount / 100);
-            const gstAmount = discountedPrice * (gst / 100);
-            const finalPrice = discountedPrice + gstAmount;
-
-            this.grandtotal += finalPrice;
-            this.gsttotal += gstAmount;
-
-            item.aftergst = finalPrice;
-            item.gst_amount = gstAmount;
-          }
-        });
-
-        this.obj.cartItem_count = this.carItems.length;
-        this.eventEmmit.fire(this.obj);
-      },
-      error: (err) => {
-        console.error('Failed to load cart data', err);
-      },
-    });
-  }
   
   deleteFromCart(seq_no: number): void {
     this.globalService.deleteCartItemBySrlno(seq_no).subscribe({
@@ -229,7 +235,7 @@ export class ViewCartComponent implements OnInit {
     (response) => {
       console.log(response);
       if (response['Status'] === 'Update sucessfully') {
-        this.viewcart(); // Refresh cart
+        this.viewcart1(); // Refresh cart
       }
     },
     (error) => {
@@ -300,21 +306,18 @@ moveToCart(item: any) {
     next: (res: any) => {
       console.log('Added to cart:', res);
 
-      // ✅ Step 2: Include seq_no in patch body
+    
       const patchBody = {
-        savelater: 0,         // 🔁 correct key name based on your backend
-        seq_no: item.seq_no      // ✅ this is now added properly
+        savelater: 0,         
+        seq_no: item.seq_no    
       };
 
-      // PATCH call to update saveto_later status
       this.globalService.updateSaveForLaterStatus(this.loginUserData.user_id, patchBody).subscribe({
         next: () => {
           console.log('Updated saveto_later status');
 
-          // Step 3: Remove item from UI
           this.savedItems = this.savedItems.filter(si => si.seq_no !== item.seq_no);
 
-          // Step 4: Refresh cart if needed
           this.viewcart1?.();
         },
         error: (err) => {
@@ -356,7 +359,7 @@ moveToCart(item: any) {
     this.globalService.deleteData(this.methodname).subscribe(
       (data) => {
         this.spinner.hide();
-        this.viewcart();
+        this.viewcart1();
       },
       (error) => {
         this.spinner.hide();
@@ -476,23 +479,56 @@ moveToCart(item: any) {
       this.grandtotal = this.cartdata2.grandtotal;
     }
   }
-  applyPromocode() {
-  const couponCode = this.promocode; // example: "Get 10% off"
+applyPromocode() {
+  const couponCode = this.promocode;
   const customerId = this.loginUserData.user_id;
-const orderValue = Math.floor(Number(this.grandtotal));
-
+  const orderValue = Math.floor(Number(this.grandtotal));
 
   this.globalService.getCouponDetails(couponCode, customerId, orderValue).subscribe({
     next: (res: any) => {
-      this.applycodedetails = res;
-      this.messagep = true; // or check based on response
-      console.log('Coupon Applied:', res);
+      if (res && res.status === 1) {
+        // It is a valid code
+        this.applycodedetails = { promo_amount: res.data };
+        this.messagep = true;
+      } else {
+        // Invalid code
+        this.applycodedetails = { promo_amount: 0 };
+        this.messagep = false;
+      } 
+      console.log('Coupon Response:', res);
     },
     error: (err) => {
       console.error('Coupon error:', err);
+      this.applycodedetails = { promo_amount: 0 };
       this.messagep = false;
     }
   });
 }
 
+
+  sub_cat(product) {
+
+    console.log(product);
+    if (product.productid) {
+      let category = product.category;
+      let sub_category = product.subcategory;
+      let model = product.modelno;
+
+      let obj = product;
+      localStorage.setItem('key', JSON.stringify(obj));
+      console.log(product);
+      // this.obj.setCategory(p);
+
+    console.log("clicked") 
+      this.route.navigateByUrl('/product-detail');
+      this.route.navigate(['/product-detail', product.productid]);
+    }
+    else {
+      this.sidemenu = true
+      this.d = product.category
+      this.e = product.subcategory
+    
+  }
+ 
+}
 }

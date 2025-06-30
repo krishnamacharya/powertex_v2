@@ -14,6 +14,7 @@
               [src]="item.dtl[0].high_image_1"
               class="img-thumbnail"
               style="width: 100px; height: auto; object-fit: cover"
+              (click)="sub_cat(item)"
             />
             <div class="ms-3 flex-grow-1">
               <div class="fw-semibold text-dark mb-1 text-nowrap">
@@ -49,6 +50,18 @@
                 "
               >
                 Save Later
+              </button>
+              <button
+                class="btn btn-sm mt-1"
+                (click)="deleteFromCart(item.seq_no)"
+                style="
+                  background-color: #d63744;
+                  padding: 2px 8px;
+                  font-size: 0.8rem;
+                  margin-left: 25px;
+                "
+              >
+                Remove
               </button>
             </div>
 
@@ -95,17 +108,6 @@
               >
                 ₹{{ +item.dtl[0].discounted_price * item.qty }}
               </div>
-              <!-- Delete Icon -->
-              <button
-                class="btn p-1.5 border"
-                style="border-color: black"
-                (click)="deleteFromCart(item.seq_no)"
-              >
-                <i
-                  class="fa fa-trash"
-                  style="color: rgb(90, 85, 85); font-size: 1.1rem"
-                ></i>
-              </button>
             </div>
           </div>
         </div>
@@ -153,6 +155,7 @@
               [src]="item.dtl[0].high_image_1"
               class="img-thumbnail"
               style="width: 100px; height: auto; object-fit: cover"
+              (click)="sub_cat(item)"
             />
             <div class="ms-3 flex-grow-1">
               <div class="fw-semibold text-dark mb-1 text-nowrap">
@@ -182,17 +185,19 @@
               >
                 Move to Cart
               </button>
+              <button
+                class="btn btn-sm mt-1"
+                (click)="deleteFromSaveForLater(item)"
+                style="
+                  background-color: #d63744;
+                  padding: 2px 8px;
+                  font-size: 0.8rem;
+                  margin-left: 25px;
+                "
+              >
+                Remove
+              </button>
             </div>
-            <button
-              class="btn p-1.5 border"
-              style="border-color: black"     
-              (click)="deleteFromSaveForLater(item)"
-            >
-              <i
-                class="fa fa-trash"
-                style="color: rgb(90, 85, 85); font-size: 1.1rem"
-              ></i>
-            </button>
           </div>
         </div>
       </div>
@@ -233,6 +238,7 @@
 
       <div class="bg-white p-4 rounded shadow-sm">
         <h4 class="fw-bold mb-3">Promocode</h4>
+
         <div class="row g-2">
           <div class="col-sm-6">
             <input
@@ -244,32 +250,41 @@
           </div>
           <div class="col-sm-6 d-flex gap-2">
             <button
-              class="btn w-50"
+              class="btn w-50 text-white"
               (click)="applyPromocode()"
               style="background-color: #009b77"
             >
               Apply
             </button>
-            <button
-              class="btn btn-outline-dark w-50"
+            <!-- <button
+              class="btn btn-dark w-50"
               (click)="deletecode()"
-              style="background-color: transparent; box-shadow: none"
+              title="Remove Promocode"      
             >
-              <i class="fa fa-trash" style="color: black"></i>
-            </button>
+              <i class="fa fa-trash"></i>
+            </button> -->
           </div>
         </div>
 
-        <div class="mt-2 text-success" *ngIf="applycodedetails && messagep">
-          <strong
-            >Promocode Applied! You saved
-            <span class="text-danger">{{
-              applycodedetails.promo_amount | currency
-            }}</span></strong
-          >
+        <!-- Success message -->
+        <div
+          class="mt-3 alert alert-success"
+          *ngIf="applycodedetails && messagep"
+        >
+          <strong>
+            Promocode Applied! You saved
+            <span class="text-success">{{
+              applycodedetails.promo_amount | currency : "INR"
+            }}</span>
+          </strong>
         </div>
-        <div class="mt-2 text-danger" *ngIf="applycodedetails && !messagep">
-          <strong>This Promocode is not applicable</strong>
+
+        <!-- Error message -->
+        <div
+          class="mt-3 alert alert-danger"
+          *ngIf="applycodedetails && !messagep"
+        >
+          <strong>This Promocode is not applicable. Please try another.</strong>
         </div>
       </div>
     </div>
