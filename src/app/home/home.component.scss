@@ -639,3 +639,35 @@ app-product-card {
     max-width: 20%;
   }
 }
+.discount-banner {
+  overflow: hidden;
+  background-color: #d8e65d;         /* New background color (vibrant orange) */
+  color: #fff;
+  padding: 20px 0;                   /* Increased vertical padding for height */
+  position: relative;
+  font-weight: bold;
+  font-size: 1.2rem;                 /* Bigger text */
+}
+
+.scrolling-content {
+  display: inline-flex;
+  white-space: nowrap;
+  padding-left: 100%;
+  animation: scroll-left 25s linear infinite;
+  align-items: center;
+}
+
+.discount-icon {
+  height: 50px;                      /* Larger icon to match banner height */
+  width: auto;
+  margin-right: 20px;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
