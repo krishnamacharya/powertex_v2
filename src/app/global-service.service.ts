@@ -28,13 +28,13 @@ export class GlobalServiceService {
   posturl = 'https://www.pptshopee.in/';
   imageurl = 'https://www.pptshopee.in';
 
-  // apiUrl1 = 'http://192.168.0.223:8001/get/';
-  // geturl1 = ' http://192.168.0.223:8001/'
-  // imageurl1 = 'http://192.168.0.223:8001/'
+  apiUrl1 = 'http://192.168.0.223:8001/get/';
+  geturl1 = ' http://192.168.0.223:8001/'
+  imageurl1 = 'http://192.168.0.223:8001/'
 
-  apiUrl1 = 'http://192.168.0.223:8000/get/';
-  geturl1 = ' http://192.168.0.223:8000/';
-  imageurl1 = 'http://192.168.0.223:8000 /';
+  // apiUrl1 = 'http://192.168.0.223:8000/get/';
+  // geturl1 = ' http://192.168.0.223:8000/';
+  // imageurl1 = 'http://192.168.0.223:8000 /';
 
   updateData(body, methodName) {
     return this.http.put(this.posturl + methodName, body, this.options);
@@ -355,7 +355,7 @@ export class GlobalServiceService {
     return this.http.delete(this.UrlData(`addtocart/?id=${seq_no}`));
   }
   patchCartItem(seq_no: number, updatedData: any) {
-    const url = (this.UrlData(`/addtocart/${seq_no}`));
+    const url = (this.UrlData(`addtocart/${seq_no}`));
     return this.http.patch(url, updatedData);
   }
   postSaveForLater(itemData: {
@@ -383,7 +383,7 @@ export class GlobalServiceService {
   }
 
   getCartByUserId(user_id: string) {
-    const url = this.UrlData(`/addtocart/?userid=${user_id}`);
+    const url = this.UrlData(`addtocart/?userid=${user_id}`);
     return this.http.get(url);
   }
 

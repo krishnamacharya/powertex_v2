@@ -385,7 +385,7 @@ addToCart1(cartData: any): void {
 
   const payload = {
     userid: userId,
-    qty: cartData.qty || 1, 
+    qty: this.quantity|| 1, 
     productid: cartData.productid,
     category: cartData.category,
     markuser_id: userId,
