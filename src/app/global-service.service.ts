@@ -239,7 +239,8 @@ export class GlobalServiceService {
   UrlData(endpoint: string): string {
     return `${this.geturl1}${endpoint}`;
   }
-
+   
+  
   getdata1(): Observable<any> {
     return this.http.get(this.UrlData('get_product_category/'));
   }
