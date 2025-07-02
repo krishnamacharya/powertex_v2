@@ -44,13 +44,13 @@ export class ViewCartComponent implements OnInit {
   obj: any = {};
   message: any;
   wish_alert: string;
-  icon: boolean;  
+  icon: boolean;
   alert: boolean;
   grand_tax: any;
   savedItems: any[] = [];
   seq_no: any;
-   sidemenu: boolean = true
-     d: string;
+  sidemenu: boolean = true
+  d: string;
   e: string;
   constructor(
     private globalService: GlobalServiceService,
@@ -74,11 +74,11 @@ export class ViewCartComponent implements OnInit {
     this.getoffers();
     this.loadSavedItems();
     this.carItems.forEach(item => {
-  item.qty = item.qty || 1;
-});
+      item.qty = item.qty || 1;
+    });
 
   }
-  
+
   cartdata: any = [];
   cartdata2: any = [];
   gsttotal: number = 0;
@@ -120,67 +120,199 @@ export class ViewCartComponent implements OnInit {
   //       }
   //     );
   // }
- viewcart1(): void {
-  this.user_id = this.loginUserData.user_id;
+  //  viewcart1(): void {
+  //   this.user_id = this.loginUserData.user_id;
 
-  this.globalService.getCartByUserId(this.user_id).subscribe({
-    next: (data: any) => {
-      // Case 1: if API returns raw array
-      if (Array.isArray(data)) {
-        this.carItems = data;
-        this.cartdata = { values: data }; // in case your HTML still uses cartdata.values
-      }
-      // Optional Case 2: if your backend returns { status: "success", values: [...] }
-      else if (data['status'] === 'success') {
-        this.carItems = data['values'];
-        this.cartdata = data;
-      } else {
-        console.error('Unexpected response format', data);
-        return;
-      }
+  //   this.globalService.getCartByUserId(this.user_id).subscribe({
+  //     next: (data: any) => {
+  //       // Case 1: if API returns raw array
+  //       if (Array.isArray(data)) {
+  //         this.carItems = data;
+  //         this.cartdata = { values: data }; // in case your HTML still uses cartdata.values
+  //       }
+  //       // Optional Case 2: if your backend returns { status: "success", values: [...] }
+  //       else if (data['status'] === 'success') {
+  //         this.carItems = data['values'];
+  //         this.cartdata = data;
+  //       } else {
+  //         console.error('Unexpected response format', data);
+  //         return;
+  //       }
 
-      console.log(this.carItems, 'carItems');
+  //       console.log(this.carItems, 'carItems');
 
-      localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
+  //       localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
 
-      // ✅ Reset totals before calculation
-      this.gsttotal = 0;
-      this.grandtotal = 0;
+  //       // ✅ Reset totals before calculation
+  //       this.gsttotal = 0;
+  //       this.grandtotal = 0;
 
-      this.carItems.forEach((item) => {
-        const dtl = item.dtl?.[0];
-        if (dtl) {
-          const mrp = parseFloat(dtl.mrp) || 0;
-          const discount = parseFloat(dtl.discount_percent) || 0;
-          const gst = parseFloat(dtl.gst) || 0;
+  //       this.carItems.forEach((item) => {
+  //         const dtl = item.dtl?.[0];
+  //         if (dtl) {
+  //           const mrp = parseFloat(dtl.mrp) || 0;
+  //           const discount = parseFloat(dtl.discount_percent) || 0;
+  //           const gst = parseFloat(dtl.gst) || 0;
 
-          const discountedPrice = mrp - mrp * (discount / 100);
-          const gstAmount = discountedPrice * (gst / 100);
-          const finalPrice = discountedPrice + gstAmount;
+  //           const discountedPrice = mrp - mrp * (discount / 100);
+  //           const gstAmount = discountedPrice * (gst / 100);
+  //           const finalPrice = discountedPrice + gstAmount;
 
-          this.grandtotal += finalPrice;
-          this.gsttotal += gstAmount;
+  //           this.grandtotal += finalPrice;
+  //           this.gsttotal += gstAmount;
 
-          item.aftergst = finalPrice;
-          item.gst_amount = gstAmount;
+  //           item.aftergst = finalPrice;
+  //           item.gst_amount = gstAmount;
+  //         }
+  //       });
+
+  //       // ✅ Add this line at the end:
+  // this.calculateFinalTotal();
+  //       this.obj.cartItem_count = this.carItems.length;
+  //       this.eventEmmit.fire(this.obj);
+  //     },
+  //     error: (err) => {
+  //       console.error('Failed to load cart data', err);
+  //     },
+  //   });
+  // }
+
+
+  //vamsi code
+
+  subtotal: number = 0;
+  gstAmount: number = 0;
+  totalWithGST: number = 0;
+  totalSavings: number = 0;
+
+  viewcart1(): void {
+    this.user_id = this.loginUserData.user_id;
+
+    this.globalService.getCartByUserId(this.user_id).subscribe({
+      next: (data: any) => {
+        if (Array.isArray(data)) {
+          this.carItems = data;
+          this.cartdata = { values: data };
+        } else if (data['status'] === 'success') {
+          this.carItems = data['values'];
+          this.cartdata = data;
+        } else {
+          console.error('Unexpected response format', data);
+          return;
         }
-      });
 
-      this.obj.cartItem_count = this.carItems.length;
-      this.eventEmmit.fire(this.obj);
-    },
-    error: (err) => {
-      console.error('Failed to load cart data', err);
-    },
+        localStorage.setItem('cartdata2', JSON.stringify(this.cartdata));
+
+        // 🔁 Reset totals
+        this.subtotal = 0;
+        this.gstAmount = 0;
+        this.totalWithGST = 0;
+
+        this.carItems.forEach((item) => {
+          const dtl = item.dtl?.[0];
+          const qty = item.qty || 1;
+
+          if (dtl) {
+      const mrp = parseFloat(dtl.mrp) || 0;
+      const discount = parseFloat(dtl.discount_percent) || 0;
+      const discountedPrice = mrp - (mrp * discount) / 100;
+
+      const totalPrice = discountedPrice * qty;
+
+      // ✅ GST-inclusive breakdown
+      const taxableAmount =Math.round( (totalPrice * 100) / 118);
+      const gstAmount = totalPrice - taxableAmount;
+      const savings = (mrp - discountedPrice) * qty;
+
+      this.subtotal += taxableAmount;
+      this.gstAmount += gstAmount;
+      this.totalSavings += savings;
+    }
   });
+
+  this.totalWithGST = Math.round(this.subtotal + this.gstAmount);
+
+
+        this.obj.cartItem_count = this.carItems.length;
+        this.eventEmmit.fire(this.obj);
+      },
+      error: (err) => {
+        console.error('Failed to load cart data', err);
+      },
+    });
+  }
+
+
+//   calculateFinalTotal(): void {
+//   this.subtotal = 0;
+//   this.gstAmount = 0;
+//   this.totalSavings = 0;
+
+//   this.carItems.forEach((item) => {
+//     const dtl = item.dtl?.[0];
+//     const qty = item.qty || 1;
+
+//     if (dtl) {
+//       const mrp = parseFloat(dtl.mrp) || 0;
+//       const discount = parseFloat(dtl.discount_percent) || 0;
+//       const discountedPrice = mrp - (mrp * discount) / 100;
+
+//       const itemSubtotal = discountedPrice * qty;
+//       const itemGST = itemSubtotal * 0.18;
+//       const itemSavings = (mrp - discountedPrice) * qty;
+
+//       this.subtotal += itemSubtotal;
+//       this.gstAmount += itemGST;
+//       this.totalSavings += itemSavings;
+//     }
+//   });
+
+//   this.totalWithGST = Math.round(this.subtotal + this.gstAmount);
+// }
+
+
+calculateFinalTotal(): void {
+  this.subtotal = 0;
+  this.gstAmount = 0;
+  this.totalSavings = 0;
+
+  this.carItems.forEach((item) => {
+    const dtl = item.dtl?.[0];
+    const qty = item.qty || 1;
+
+    if (dtl) {
+      const mrp = parseFloat(dtl.mrp) || 0;
+      const discount = parseFloat(dtl.discount_percent) || 0;
+      const discountedPrice = mrp - (mrp * discount) / 100;
+
+      const totalPrice = discountedPrice * qty;
+
+      // ✅ GST-inclusive breakdown
+      const taxableAmount =Math.round( (totalPrice * 100) / 118);
+      const gstAmount = totalPrice - taxableAmount;
+      const savings = (mrp - discountedPrice) * qty;
+
+      this.subtotal += taxableAmount;
+      this.gstAmount += gstAmount;
+      this.totalSavings += savings;
+    }
+  });
+
+  this.totalWithGST = Math.round(this.subtotal + this.gstAmount);
 }
 
-  
   deleteFromCart(seq_no: number): void {
     this.globalService.deleteCartItemBySrlno(seq_no).subscribe({
       next: () => {
         this.carItems = this.carItems.filter((item) => item.seq_no !== seq_no);
+
         alert(`Cart item with srlno ${seq_no} deleted successfully`);
+
+      this.calculateFinalTotal();
+
+      this.obj.cartItem_count = this.carItems.length;
+      this.eventEmmit.fire(this.obj);
+
         console.log(`Cart item with srlno ${seq_no} deleted successfully`);
       },
       error: (err) => {
@@ -192,18 +324,24 @@ export class ViewCartComponent implements OnInit {
   increment(data) {
     data.qty++;
     this.updateCart(data);
+  this.calculateFinalTotal();
+
   }
 
   decrement(data) {
     if (data.qty > 1) {
       data.qty--;
       this.updateCart(data);
+   this.calculateFinalTotal();
+
     }
   }
 
   select_qty(data) {
     data.qty;
     this.updateCart(data);
+   this.calculateFinalTotal();
+
   }
   pricedetails: any = [];
   pricedetails2: any = [];
@@ -225,111 +363,124 @@ export class ViewCartComponent implements OnInit {
         );
       });
   }
- updateCart(data) {
-  const updatedBody = {
-    productid: data.productid,
-    qty: data.qty
-  };
-
-  this.globalService.patchCartItem(data.seq_no, updatedBody).subscribe(
-    (response) => {
-      console.log(response);
-      if (response['Status'] === 'Update sucessfully') {
-        this.viewcart1(); // Refresh cart
-      }
-    },
-    (error) => {
-      console.error('Error updating cart:', error);
-    }
-  );
-}
-  saveForLater(item: any) {
-  const payload = {
-    user_id: this.loginUserData.user_id,
-    productid: item.dtl[0].productid,
-    qty: item.qty,
-    seq_no: item.seq_no
-  };
-
-  this.globalService.postSaveForLater(payload).subscribe({
-    next: (res) => {
-      console.log('Saved for later', res);
-      // remove from cart and add to savedItems list
-      this.carItems = this.carItems.filter(ci => ci.seq_no !== item.seq_no);
-      this.savedItems.push(item);
-    },
-    error: (err) => console.error('Save for later failed', err)
-  });
-}
-
-loadSavedItems() {
-  const userId = this.loginUserData.user_id;
-
-  this.globalService.getSaveForLaterItems(userId).subscribe({
-    next: (response: any) => {
-      this.savedItems = response;
-      console.log('Saved items loaded:', this.savedItems);
-    },
-    error: (err) => {
-      console.error('Error fetching saved items:', err);
-    }
-  });
-}
-deleteFromSaveForLater(item: any) {
-  const userId = this.loginUserData.user_id;
-  const payload = { seq_no: item.seq_no };
-
-  this.globalService.deleteSaveForLaterItem(userId, payload).subscribe({
-    next: (res: any) => {
-      console.log('Deleted successfully:', res);
-      this.savedItems = this.savedItems.filter(si => si.seq_no !== item.seq_no);
-    },
-    error: (err) => {
-      console.error('Error deleting item:', err);
-    }
-  });
-}
 
 
-// Move single item to cart
-moveToCart(item: any) {
-  const payload = {
-    user_id: this.loginUserData.user_id,
-    productid: item.dtl[0].productid,
-    qty: item.qty,
-    category: item.category,
-    userid: this.user_id,
-  };
+  updateCart(data) {
+    const updatedBody = {
+      productid: data.productid,
+      qty: data.qty
+    };
 
-  // Step 1: Add to Cart
-  this.globalService.addToCart(payload).subscribe({
-    next: (res: any) => {
-      console.log('Added to cart:', res);
 
-    
-      const patchBody = {
-        savelater: 0,         
-        seq_no: item.seq_no    
-      };
 
-      this.globalService.updateSaveForLaterStatus(this.loginUserData.user_id, patchBody).subscribe({
-        next: () => {
-          console.log('Updated saveto_later status');
 
-          this.savedItems = this.savedItems.filter(si => si.seq_no !== item.seq_no);
-
-          this.viewcart1?.();
-        },
-        error: (err) => {
-          console.error('Failed to update saveto_later status:', err);
+    this.globalService.patchCartItem(data.seq_no, updatedBody).subscribe(
+      (response) => {
+        console.log(response);
+        if (response['Status'] === 'Update sucessfully') {
+          this.viewcart1(); // Refresh cart
         }
-      });
-    },
-    error: (err) => {
-      console.error('Failed to add to cart:', err);
-    }
-  });
-}
+      },
+      (error) => {
+        console.error('Error updating cart:', error);
+      }
+    );
+  }
+  saveForLater(item: any) {
+    const payload = {
+      user_id: this.loginUserData.user_id,
+      productid: item.dtl[0].productid,
+      qty: item.qty,
+      seq_no: item.seq_no
+    };
+
+    this.globalService.postSaveForLater(payload).subscribe({
+      next: (res) => {
+        console.log('Saved for later', res);
+        // remove from cart and add to savedItems list
+        this.carItems = this.carItems.filter(ci => ci.seq_no !== item.seq_no);
+        this.savedItems.push(item);
+
+         // ✅ Recalculate totals
+      this.calculateFinalTotal();
+
+      // ✅ Update cart count in header
+      this.obj.cartItem_count = this.carItems.length;
+      this.eventEmmit.fire(this.obj);
+      },
+      error: (err) => console.error('Save for later failed', err)
+    });
+  }
+
+  loadSavedItems() {
+    const userId = this.loginUserData.user_id;
+
+    this.globalService.getSaveForLaterItems(userId).subscribe({
+      next: (response: any) => {
+        this.savedItems = response;
+        console.log('Saved items loaded:', this.savedItems);
+      },
+      error: (err) => {
+        console.error('Error fetching saved items:', err);
+      }
+    });
+  }
+  deleteFromSaveForLater(item: any) {
+    const userId = this.loginUserData.user_id;
+    const payload = { seq_no: item.seq_no };
+
+    this.globalService.deleteSaveForLaterItem(userId, payload).subscribe({
+      next: (res: any) => {
+        console.log('Deleted successfully:', res);
+        this.savedItems = this.savedItems.filter(si => si.seq_no !== item.seq_no);
+      },
+      error: (err) => {
+        console.error('Error deleting item:', err);
+      }
+    });
+  }
+
+
+  // Move single item to cart
+  moveToCart(item: any) {
+    const payload = {
+      user_id: this.loginUserData.user_id,
+      productid: item.dtl[0].productid,
+      qty: item.qty,
+      category: item.category,
+      userid: this.user_id,
+    };
+
+    // Step 1: Add to Cart
+    this.globalService.addToCart(payload).subscribe({
+      next: (res: any) => {
+        console.log('Added to cart:', res);
+
+
+        const patchBody = {
+          savelater: 0,
+          seq_no: item.seq_no
+        };
+
+        this.globalService.updateSaveForLaterStatus(this.loginUserData.user_id, patchBody).subscribe({
+          next: () => {
+            console.log('Updated saveto_later status');
+
+            this.savedItems = this.savedItems.filter(si => si.seq_no !== item.seq_no);
+
+            this.viewcart1?.();
+            
+          },
+          error: (err) => {
+            console.error('Failed to update saveto_later status:', err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Failed to add to cart:', err);
+      }
+    });
+  }
 
 
 
@@ -479,31 +630,31 @@ moveToCart(item: any) {
       this.grandtotal = this.cartdata2.grandtotal;
     }
   }
-applyPromocode() {
-  const couponCode = this.promocode;
-  const customerId = this.loginUserData.user_id;
-  const orderValue = Math.floor(Number(this.grandtotal));
+  applyPromocode() {
+    const couponCode = this.promocode;
+    const customerId = this.loginUserData.user_id;
+    const orderValue = Math.floor(Number(this.grandtotal));
 
-  this.globalService.getCouponDetails(couponCode, customerId, orderValue).subscribe({
-    next: (res: any) => {
-      if (res && res.status === 1) {
-        // It is a valid code
-        this.applycodedetails = { promo_amount: res.data };
-        this.messagep = true;
-      } else {
-        // Invalid code
+    this.globalService.getCouponDetails(couponCode, customerId, orderValue).subscribe({
+      next: (res: any) => {
+        if (res && res.status === 1) {
+          // It is a valid code
+          this.applycodedetails = { promo_amount: res.data };
+          this.messagep = true;
+        } else {
+          // Invalid code
+          this.applycodedetails = { promo_amount: 0 };
+          this.messagep = false;
+        }
+        console.log('Coupon Response:', res);
+      },
+      error: (err) => {
+        console.error('Coupon error:', err);
         this.applycodedetails = { promo_amount: 0 };
         this.messagep = false;
-      } 
-      console.log('Coupon Response:', res);
-    },
-    error: (err) => {
-      console.error('Coupon error:', err);
-      this.applycodedetails = { promo_amount: 0 };
-      this.messagep = false;
-    }
-  });
-}
+      }
+    });
+  }
 
 
   sub_cat(product) {
@@ -519,7 +670,7 @@ applyPromocode() {
       console.log(product);
       // this.obj.setCategory(p);
 
-    console.log("clicked") 
+      console.log("clicked")
       this.route.navigateByUrl('/product-detail');
       this.route.navigate(['/product-detail', product.productid]);
     }
@@ -527,8 +678,14 @@ applyPromocode() {
       this.sidemenu = true
       this.d = product.category
       this.e = product.subcategory
-    
+
+    }
+
   }
- 
+
+
+
+
+
 }
-}
+

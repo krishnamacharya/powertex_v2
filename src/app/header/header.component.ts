@@ -83,6 +83,7 @@ export class HeaderComponent implements OnInit {
 
 
     this.token = localStorage.getItem('token');
+     this.username = localStorage.getItem('username');
 
     this.loginUserData = JSON.parse(localStorage.getItem('loginUserData'));
     if ((this.token != undefined && this.token != '') && (this.loginUserData.user_type == 'Customer' || this.loginUserData.user_type == 'Guest')) {
