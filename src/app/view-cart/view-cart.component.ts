@@ -6,11 +6,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DataServiceService } from '../data-service.service';
 import { ComponentCommunicationService } from '../component-communication.service';
 import { ErrorModalComponent } from '../authentication-views/error-modal/error-modal.component';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 declare var $: any;
 @Component({
   selector: 'app-view-cart',
   standalone: false,
-
   templateUrl: './view-cart.component.html',
   styleUrl: './view-cart.component.scss',
 })
@@ -688,4 +690,3 @@ calculateFinalTotal(): void {
 
 
 }
-
